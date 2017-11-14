@@ -8,3 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app';
 }
+
+@Component({
+  selector: 'home',
+  template: `
+    <p>Welcome to the development demos for Angular Material!</p>
+    <p>Open the sidenav to select a demo.</p>
+  `
+})
+export class Home {}
