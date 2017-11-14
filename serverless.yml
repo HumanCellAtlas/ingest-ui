@@ -1,0 +1,17 @@
+service: ${self:custom.ingest-api.name}
+
+frameworkVersion: ">=1.0.0 <2.0.0"
+
+plugins:
+  - serverless-finch
+
+custom:
+  ingest-ui: ${file(ingest-ui.yml)}
+  private: ${file(private.yml)}
+  client:
+    bucketName: ${self:custom.ingest-ui.bucket-name}
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: ${self:custom.private.region}
