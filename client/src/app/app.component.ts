@@ -1,19 +1,16 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  title = 'app';
+  title = "app";
+  selectedValue: string = "";
+  items = [
+    { value: "0", view: "zero" },
+    { value: "1", view: "one" },
+    { value: "2", view: "Two" }
+  ];
 }
-
-@Component({
-  selector: 'home',
-  template: `
-    <p>Welcome to the development demos for Angular Material!</p>
-    <p>Open the sidenav to select a demo.</p>
-  `
-})
-export class Home {}
