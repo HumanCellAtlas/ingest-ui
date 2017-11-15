@@ -1,0 +1,5 @@
+<h1>Submissions</h1>
+<ul *ngIf="submissions$ | async as submission else noData">
+  <li>{{submission.submissionDate}} - {{submission.submissionState}}</li>
+</ul>
+<ng-template #noData>No Data Available</ng-template>
