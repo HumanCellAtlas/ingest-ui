@@ -2,28 +2,30 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {MatButtonModule, MatIconModule, MatInputModule, MatSelectModule} from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppComponent} from './app.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {IngestService} from './ingest.service';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NavigationComponent} from './navigation/navigation.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { NewSubmissionComponent } from './new-submission/new-submission.component';
 
 @NgModule({
   declarations: [
-    SubmissionComponent
+    AppComponent,
+    SubmissionComponent,
+    NavigationComponent,
+    WelcomeComponent,
+    NewSubmissionComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule
   ],
   providers: [IngestService],
-  bootstrap: [SubmissionComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

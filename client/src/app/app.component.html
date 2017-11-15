@@ -1,19 +1,14 @@
-<h1>
-  {{title}}
-</h1>
-
-<mat-form-field>
-  <input matInput placeholder="Simple Input" [(ngModel)]="title">
-</mat-form-field>
-
-<mat-icon>home</mat-icon>
-
-<button mat-raised-button>I'm a button</button>
-
-<mat-form-field>
-  <mat-select placeholder="I'm a select" [(ngModel)]="selectedValue">
-    <mat-option *ngFor="let item of items" [value]="item.value">
-      {{item.view}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<app-navigation></app-navigation>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+      <app-welcome></app-welcome>
+    </div>
+    <div class="col-4">
+      <app-new-submission></app-new-submission>
+    </div>
+  </div>
+  <div class="row">
+    <app-submission></app-submission>
+  </div>
+</div>
