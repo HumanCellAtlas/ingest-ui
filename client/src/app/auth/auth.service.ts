@@ -10,9 +10,9 @@ export class AuthService {
     clientID: AUTH_CONFIG.clientID,
     domain: AUTH_CONFIG.domain,
     responseType: 'token id_token',
-    audience: 'https://danielvaughan.eu.auth0.com/userinfo',
+    audience: AUTH_CONFIG.apiUrl,
     redirectUri: AUTH_CONFIG.callbackURL,
-    scope: 'openid profile'
+    scope: 'openid profile read:messages'
   });
 
   userProfile: any;

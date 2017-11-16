@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import { JwtModule } from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -17,8 +18,14 @@ import {WelcomeComponent} from './welcome/welcome.component';
 import {NewSubmissionComponent} from './new-submission/new-submission.component';
 import {CallbackComponent} from './callback/callback.component';
 import {HomeComponent} from './home/home.component';
-
-
+/*
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({
+    tokenGetter: (() => localStorage.getItem('access_token')),
+    globalHeaders: [{'Content-Type': 'application/json'}],
+  }), http, options);
+}
+*/
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,10 +41,27 @@ import {HomeComponent} from './home/home.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES)
+    HttpClientModule,
+    RouterModule.forRoot(ROUTES),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
+        },
+        whitelistedDomains: ['localhost:3001']
+      }
+    })
   ],
   providers: [IngestService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
+
+/*
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions]
+    }
+ */
