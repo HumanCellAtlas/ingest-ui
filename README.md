@@ -29,3 +29,7 @@ Run `serverless client deploy -v` to deploy to AWS.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Resources Used
+
+* [Auth0 Setup](https://auth0.com/docs/quickstart/spa/angular2)

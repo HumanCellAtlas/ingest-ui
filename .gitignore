@@ -93,3 +93,4 @@ fabric.properties
 
 /ingest-ui.iml
 /private.yml
+/client/src/app/auth/auth0-variables.ts
