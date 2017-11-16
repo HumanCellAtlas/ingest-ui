@@ -33,3 +33,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Resources Used
 
 * [Auth0 Setup](https://auth0.com/docs/quickstart/spa/angular2)
+* [CloudFront Setup](https://keita.blog/2015/11/24/hosting-a-single-page-app-on-s3-with-proper-urls/)

@@ -1,0 +1,11 @@
+<div *ngIf="auth.isAuthenticated()" class="container-fluid">
+  <div class="row">
+    <app-welcome></app-welcome>
+  </div>
+  <div class="row">
+    <app-submission style="width: 100%"></app-submission>
+  </div>
+</div>
+<h4 *ngIf="!auth.isAuthenticated()">
+  You are not logged in! Please <a (click)="auth.login()">Log In</a> to continue.
+</h4>
