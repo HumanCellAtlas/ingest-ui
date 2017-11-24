@@ -1,3 +1,4 @@
+<ng-template #noData>No Data Available</ng-template>
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
@@ -5,9 +6,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-8">
-      <p>This is your dashboard, You currently have 3 active draft submissions, using 420 GB of space on our storage
-        cloud. You have successfully completed 5 submissions to the Human Cell Atlas. Thanks for contributing to the
+    <div class="col-8" *ngIf="summary$ | async as summary">
+      <p>This is your dashboard, You currently have {{summary[1]}} active draft submissions, using {{summary[3]}} of space on our storage
+        cloud. You have successfully completed {{summary[2]}} submissions to the Human Cell Atlas. Thanks for contributing to the
         future of science.</p>
     </div>
     <div class="col-4">

@@ -1,5 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {IngestService} from '../ingest.service';
+import {Profile} from "./profile";
+import {AuthService} from '../auth/auth.service';
+import {Observable} from "rxjs/Observable";
+import {Summary} from "./summary";
 
 @Component({
   selector: 'app-welcome',
@@ -11,7 +15,14 @@ export class WelcomeComponent implements OnInit {
 
   profile: any;
 
-  constructor(public auth: AuthService) { }
+  secured$: Observable<Profile>;
+
+  unsecured$: Observable<Profile>;
+
+  summary$: Observable<Summary>;
+
+  constructor(public auth: AuthService, private ingestService: IngestService) {
+  }
 
   ngOnInit() {
     if (this.auth.userProfile) {
@@ -21,5 +32,8 @@ export class WelcomeComponent implements OnInit {
         this.profile = profile;
       });
     }
+    this.secured$ = this.ingestService.getSecured();
+    this.unsecured$ = this.ingestService.getUnsecured();
+    this.summary$ = this.ingestService.getSummary();
   }
 }

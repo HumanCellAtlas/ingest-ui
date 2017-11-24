@@ -39,8 +39,7 @@ export function tokenGetter(): string { return localStorage.getItem('access_toke
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
     JwtModule.forRoot({
-      config: { tokenGetter, whitelistedDomains: ['localhost:4200',
-          'betwwxbha9.execute-api.eu-west-2.amazonaws.com']
+      config: { tokenGetter, whitelistedDomains: ['localhost:8080']
       }
     })
   ],

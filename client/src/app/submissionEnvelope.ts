@@ -1,5 +1,5 @@
-export class Submission {
-  uuid : string;
+export class SubmissionEnvelope {
+  uuid : string
   submissionDate : string;
   updateDate : string;
   submissionState: string;

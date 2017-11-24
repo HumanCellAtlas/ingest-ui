@@ -12,7 +12,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: AUTH_CONFIG.apiUrl,
     redirectUri: AUTH_CONFIG.callbackURL,
-    scope: 'openid profile read:messages'
+    scope: 'openid profile read:profile'
   });
 
   userProfile: any;

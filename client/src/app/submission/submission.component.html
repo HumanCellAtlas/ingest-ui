@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">Dashboard</div>
   <div>
-    <table id="submissions" class="table table-striped" *ngIf="submissions$ | async as submissions else noData">
+    <table id="submissions" class="table table-striped" *ngIf="submissionEnvelopes$ | async as submissionEnvelopes else noData">
       <thead class="thead-light">
       <tr>
         <th>Updated</th>
@@ -13,14 +13,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let submission of submissions">
-        <td>{{submission.updateDate | date: "shortDate"}}</td>
-        <td>{{submission.uuid.uuid}}</td>
+      <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
+        <td>{{submissionEnvelope.updateDate | date: "shortDate"}}</td>
+        <td>{{submissionEnvelope.uuid.uuid}}</td>
         <td>Tissue Stability</td>
         <td>
-          <div [ngSwitch]="submission.submissionState">
-            <span *ngSwitchCase="'Draft'" class="badge badge-warning">{{submission.submissionState}}</span>
-            <span *ngSwitchCase="'Submitted'" class="badge badge-secondary">{{submission.submissionState}}</span>
+          <div [ngSwitch]="submissionEnvelope.submissionState">
+            <span *ngSwitchCase="'Draft'" class="badge badge-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Submitted'" class="badge badge-secondary">{{submissionEnvelopem.submissionState}}</span>
           </div>
         </td>
         <td>

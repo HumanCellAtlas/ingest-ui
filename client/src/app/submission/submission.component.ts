@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../ingest.service';
-import {Submission} from '../submission';
 import {Observable} from "rxjs/Observable";
+import {SubmissionEnvelope} from "../submissionEnvelope";
+import {ListResult} from "../hateoas";
 
 @Component({
   selector: 'app-submission',
@@ -11,13 +12,15 @@ import {Observable} from "rxjs/Observable";
 })
 export class SubmissionComponent implements OnInit {
 
-  submissions$: Observable<Submission[]>;
+  submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
+
+  submissionEnvelopeList$: Observable<ListResult<SubmissionEnvelope>>;
 
   constructor(private ingestService: IngestService) {
   }
 
   ngOnInit() {
-    this.submissions$ = this.ingestService.getAllSubmission();
+    this.submissionEnvelopes$ = this.ingestService.getAllSubmission();
   }
 }
 
