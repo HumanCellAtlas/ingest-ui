@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import {SubmissionEnvelope} from "./submissionEnvelope";
 import {ListResult} from "./hateoas";
-import {Profile} from "./welcome/profile";
 import {Summary} from "./welcome/summary";
 
 @Injectable()
@@ -19,31 +18,19 @@ export class IngestService {
   }
 
   public getAllSubmission(): Observable<SubmissionEnvelope[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`)
+    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`)
       .map((data: ListResult<SubmissionEnvelope>) => _.values(data._embedded.submissionEnvelopes))
       .do(console.log);
   }
 
   public getAllSubmissionHAL(): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`)
+    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`)
       .map((data: ListResult<SubmissionEnvelope>) => _.values(data))
       .do(console.log);
   }
 
-  public getUnsecured(): Observable<Profile> {
-    return this.http.get(`${this.API_URL}/users/unsecured`)
-      .map((data: Profile) => _.values(data))
-      .do(console.log);
-  }
-
-  public getSecured(): Observable<Profile> {
-    return this.http.get(`${this.API_URL}/users/secured`)
-      .map((data: Profile) => _.values(data))
-      .do(console.log);
-  }
-
   public getSummary(): Observable<Summary> {
-    return this.http.get(`${this.API_URL}/users/summary`)
+    return this.http.get(`${this.API_URL}/user/summary`)
       .map((data: Summary) => _.values(data))
       .do(console.log);
   }

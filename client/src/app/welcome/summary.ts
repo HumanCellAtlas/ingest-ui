@@ -1,6 +1,5 @@
 export class Summary {
-  principal: string;
   draftSubmissions : number;
+  pendingSubmissions : number;
   completedSubmissions: number;
-  storageSize: string;
 }
