@@ -1,0 +1,10 @@
+<div class="container">
+  <pre><code #uploadArea>{{uploadDetails?.stagingAreaLocation?.value}}</code></pre>
+  <form action="/staging/delete" method="POST">
+    <button [clipboard]="uploadArea.innerHTML.trim()"
+      (clipboardSuccess)="logSuccess( $event )"
+      (clipboardError)="logError( $event )">
+      Copy Text
+    </button>
+  </form>
+</div>

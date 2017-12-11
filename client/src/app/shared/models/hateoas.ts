@@ -6,4 +6,7 @@ export interface ListResult<T> {
 
 export interface EmbeddedList<T> {
   submissionEnvelopes: T[];
+  projects: T[];
+  files: T[];
+  samples: T[];
 }

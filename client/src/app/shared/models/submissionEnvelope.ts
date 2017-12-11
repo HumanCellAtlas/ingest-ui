@@ -3,4 +3,5 @@ export class SubmissionEnvelope {
   submissionDate : string;
   updateDate : string;
   submissionState: string;
+  stagingDetails: Object;
 }

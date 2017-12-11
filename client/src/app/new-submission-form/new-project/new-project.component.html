@@ -1,0 +1,27 @@
+<form>
+  <h2>Project</h2>
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" required>
+    <label for="description">Description</label>
+    <textarea type="text" class="form-control" id="description" rows="3"></textarea>
+  </div>
+
+  <h2>Other public sources</h2>
+  <div class="form-group">
+    <label for="publication">Link to original publication, if available</label>
+    <input type="text" class="form-control" id="publication">
+    <label for="repository">Link to original or alternative data repository</label>
+    <input type="text" class="form-control" id="repository">
+  </div>
+
+  <h2>This submission</h2>
+  <div class="form-group">
+    <label for="shortname">Short name (for easy reference in this system)</label>
+    <input type="text" class="form-control" id="shortname">
+  </div>
+
+  <button type="submit" class="btn btn-success" (click)="saveAndExit()">Save and Exit</button>
+  <button type="submit" class="btn btn-success" (click)="saveAndContinue()">Save and Continue</button>
+
+</form>

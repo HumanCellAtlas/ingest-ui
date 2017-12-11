@@ -1,27 +1,32 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {IngestService} from '../ingest.service';
+import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {SubmissionEnvelope} from "../submissionEnvelope";
-import {ListResult} from "../hateoas";
+import {IngestService} from "../shared/ingest.service";
+import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
-  styleUrls: ['./submission.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./submission.component.css']
 })
 export class SubmissionComponent implements OnInit {
+  submissionEnvelopeId: string;
+  submissionEnvelope$: Observable<SubmissionEnvelope>;
+  submissionEnvelope: SubmissionEnvelope;
 
-  submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
-
-  submissionEnvelopeList$: Observable<ListResult<SubmissionEnvelope>>;
-
-  constructor(private ingestService: IngestService) {
-  }
+  constructor(private ingestService: IngestService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.submissionEnvelopes$ = this.ingestService.getAllSubmission();
+    this.getSubmission()
   }
+
+  getSubmission(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.submissionEnvelopeId = '5a29dc366d51677f20c8b183';
+    console.log('id: '+id)
+    this.ingestService.getSubmission(this.submissionEnvelopeId)
+      .subscribe( submission => this.submissionEnvelope = submission)
+  }
+
 }
-
-
