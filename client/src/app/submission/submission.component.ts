@@ -14,8 +14,7 @@ export class SubmissionComponent implements OnInit {
   submissionEnvelope$: Observable<SubmissionEnvelope>;
   submissionEnvelope: SubmissionEnvelope;
 
-  constructor(private ingestService: IngestService,
-              private route: ActivatedRoute) { }
+  constructor(private ingestService: IngestService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.getSubmission()

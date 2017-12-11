@@ -7,7 +7,7 @@ import {RouterModule} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { SharedModule } from './shared/shared.module';
+import {SharedModule} from './shared/shared.module';
 
 import {IngestService} from './shared/ingest.service';
 import {AuthService} from './auth/auth.service';
@@ -21,26 +21,27 @@ import {WelcomeComponent} from './home/welcome/welcome.component';
 import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
 import {CallbackComponent} from './callback/callback.component';
 import {HomeComponent} from './home/home.component';
-import { ProjectComponent } from './submission/project/project.component';
-import { NewSubmissionFormComponent } from './new-submission-form/new-submission-form.component';
-import { SubmissionComponent } from './submission/submission.component';
-import { TabComponent } from './shared/tab/tab.component';
-import { TabsComponent } from './shared/tabs/tabs.component';
-import { FilesComponent } from './submission/files/files.component';
-import { SamplesComponent } from './submission/samples/samples.component';
-import { AssaysComponent } from './submission/assays/assays.component';
-import { ProtocolsComponent } from './submission/protocols/protocols.component';
-import { AnalysesComponent } from './submission/analyses/analyses.component';
-import { BundlesComponent } from './submission/bundles/bundles.component';
-import { NewProjectComponent } from './new-submission-form/new-project/new-project.component';
-import { UploadInfoComponent } from './submission/files/upload-info/upload-info.component';
-import { FileListComponent } from './submission/files/file-list/file-list.component';
-import { TeamComponent } from './submission/team/team.component';
-import { SubmitComponent } from './submission/submit/submit.component'
+import {ProjectComponent} from './submission/project/project.component';
+import {NewSubmissionFormComponent} from './new-submission-form/new-submission-form.component';
+import {SubmissionComponent} from './submission/submission.component';
+import {TabComponent} from './shared/tab/tab.component';
+import {TabsComponent} from './shared/tabs/tabs.component';
+import {FilesComponent} from './submission/files/files.component';
+import {SamplesComponent} from './submission/samples/samples.component';
+import {AssaysComponent} from './submission/assays/assays.component';
+import {ProtocolsComponent} from './submission/protocols/protocols.component';
+import {AnalysesComponent} from './submission/analyses/analyses.component';
+import {BundlesComponent} from './submission/bundles/bundles.component';
+import {NewProjectComponent} from './new-submission-form/new-project/new-project.component';
+import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
+import {FileListComponent} from './submission/files/file-list/file-list.component';
+import {TeamComponent} from './submission/team/team.component';
+import {SubmitComponent} from './submission/submit/submit.component'
 
 
-
-export function tokenGetter(): string { return localStorage.getItem('access_token'); }
+export function tokenGetter(): string {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ export function tokenGetter(): string { return localStorage.getItem('access_toke
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
     JwtModule.forRoot({
-      config: { tokenGetter, whitelistedDomains: ['localhost:8080']
+      config: {
+        tokenGetter, whitelistedDomains: ['localhost:8080', 'api.ingest.integration.data.humancellatlas.org']
       }
     }),
     SharedModule
@@ -84,7 +86,6 @@ export function tokenGetter(): string { return localStorage.getItem('access_toke
   providers: [IngestService, AuthService],
   bootstrap: [AppComponent]
 })
-
 
 
 export class AppModule {

@@ -43,7 +43,7 @@ export class SubmissionListComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['submission'];
+    this.router.navigate(['submission']);
   }
 }
 
