@@ -14,7 +14,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class SubmissionListComponent implements OnInit {
 
   submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
-
   submissionEnvelopeList$: Observable<ListResult<SubmissionEnvelope>>;
 
   constructor(private ingestService: IngestService,
@@ -23,19 +22,27 @@ export class SubmissionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.submissionEnvelopes$ = this.ingestService.pollSubmissions();
+    this.getSubmissions();
     // this.submissionEnvelopeList$ = this.ingestService.pollSubmissionsHAL();
+  }
+
+  getSubmissions(){
+    this.submissionEnvelopes$ = this.pollSubmissions();
   }
 
   getSubmitLink(submissionEnvelope){
     let links = submissionEnvelope['_links'];
     return links ? links['submit'] : null;
-  }s
+  }
 
   completeSubmission(submissionEnvelope) {
     let submitLink = this.getSubmitLink(submissionEnvelope);
     this.ingestService.submit(submitLink);
     console.log('completeSubmission');
+  }
+
+  pollSubmissions():  Observable<SubmissionEnvelope[]> {
+    return this.ingestService.getAllSubmissions();
   }
 
   viewSubmission(submissionEnvelope){

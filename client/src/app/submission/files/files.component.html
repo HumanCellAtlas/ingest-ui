@@ -1,3 +1,13 @@
-<h2>Data Files</h2>
-<app-file-list [files$]="files$"></app-file-list>
-<app-upload-info [uploadDetails]="uploadDetails" *ngIf="uploadDetails"></app-upload-info>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <app-file-list [files]="files" *ngIf="files"></app-file-list>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-lg-12">
+      <app-upload-info [submissionEnvelope]="submissionEnvelope" *ngIf="submissionEnvelope"></app-upload-info>
+    </div>
+  </div>
+

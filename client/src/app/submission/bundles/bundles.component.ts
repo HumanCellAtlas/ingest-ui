@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-bundles',
@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bundles.component.css']
 })
 export class BundlesComponent implements OnInit {
-
+  @Input() bundles;
+  s
   constructor() { }
 
   ngOnInit() {

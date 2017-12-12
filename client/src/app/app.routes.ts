@@ -14,25 +14,25 @@ export const ROUTES: Routes = [
   },
   { path: 'submissions/:id',
     component: SubmissionComponent,
-    children: [
-      {
-        path: '',
-        component: ProjectComponent
-      },
-      {
-        path: 'data',
-        component: SubmissionComponent
-      },
-      {
-        path: 'sample',
-        component: SubmissionComponent
-      },
-      {
-        path: 'team',
-        component: SubmissionComponent
-      }
-
-    ]
+    // children: [
+    //   {
+    //     path: '',
+    //     component: ProjectComponent
+    //   },
+    //   {
+    //     path: 'data',
+    //     component: SubmissionComponent
+    //   },
+    //   {
+    //     path: 'sample',
+    //     component: SubmissionComponent
+    //   },
+    //   {
+    //     path: 'team',
+    //     component: SubmissionComponent
+    //   }
+    //
+    // ]
   },
   { path: '**', redirectTo: '' }
 

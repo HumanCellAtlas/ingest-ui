@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class FileListComponent implements OnInit {
 
-  @Input() files$;
+  @Input() files;
 
   constructor() { }
 

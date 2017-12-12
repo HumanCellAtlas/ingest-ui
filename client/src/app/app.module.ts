@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
@@ -24,19 +24,19 @@ import {HomeComponent} from './home/home.component';
 import {ProjectComponent} from './submission/project/project.component';
 import {NewSubmissionFormComponent} from './new-submission-form/new-submission-form.component';
 import {SubmissionComponent} from './submission/submission.component';
-import {TabComponent} from './shared/tab/tab.component';
-import {TabsComponent} from './shared/tabs/tabs.component';
+import {TabComponent} from './shared/components/tab/tab.component';
+import {TabsComponent} from './shared/components/tabs/tabs.component';
 import {FilesComponent} from './submission/files/files.component';
 import {SamplesComponent} from './submission/samples/samples.component';
 import {AssaysComponent} from './submission/assays/assays.component';
 import {ProtocolsComponent} from './submission/protocols/protocols.component';
 import {AnalysesComponent} from './submission/analyses/analyses.component';
 import {BundlesComponent} from './submission/bundles/bundles.component';
-import {NewProjectComponent} from './new-submission-form/new-project/new-project.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
 import {FileListComponent} from './submission/files/file-list/file-list.component';
 import {TeamComponent} from './submission/team/team.component';
-import {SubmitComponent} from './submission/submit/submit.component'
+import {SubmitComponent} from './submission/submit/submit.component';
+import { MetadataListComponent } from './submission/metadata-list/metadata-list.component'
 
 
 export function tokenGetter(): string {
@@ -63,11 +63,11 @@ export function tokenGetter(): string {
     ProtocolsComponent,
     AnalysesComponent,
     BundlesComponent,
-    NewProjectComponent,
     UploadInfoComponent,
     FileListComponent,
     TeamComponent,
-    SubmitComponent
+    SubmitComponent,
+    MetadataListComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -81,9 +81,10 @@ export function tokenGetter(): string {
         tokenGetter, whitelistedDomains: ['localhost:8080', 'api.ingest.integration.data.humancellatlas.org']
       }
     }),
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
-  providers: [IngestService, AuthService],
+  providers: [IngestService, AuthService, FormBuilder],
   bootstrap: [AppComponent]
 })
 

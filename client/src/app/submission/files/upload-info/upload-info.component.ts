@@ -7,11 +7,13 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class UploadInfoComponent implements OnInit {
 
-  @Input() uploadDetails;
+  @Input() submissionEnvelope;
+  uploadDetails: Object;
 
   constructor() { }
 
   ngOnInit() {
+    this.uploadDetails = this.submissionEnvelope['stagingDetails'];
   }
 
   // I log Clipboard "copy" errors.

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+
 
 @Component({
   selector: 'app-protocols',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./protocols.component.css']
 })
 export class ProtocolsComponent implements OnInit {
+  @Input() protocols;
 
   constructor() { }
 

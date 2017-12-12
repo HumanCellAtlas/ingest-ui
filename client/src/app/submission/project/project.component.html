@@ -1,17 +1,52 @@
-<form>
+<form (ngSubmit)="createProject(projectForm.value)" [formGroup]="projectForm">
   <h2>Project</h2>
-  <div class="form-group">
-    <label for="title">Title</label>
-    <input type="text" class="form-control" id="title" required readonly>
+  <div class="form-group" >
+    <label for="name">Project ID</label>
+    <input type="text" class="form-control" id="projectId" formControlName="projectId">
+    <label for="name">Title</label>
+    <input type="text" class="form-control" id="name" formControlName="name">
     <label for="description">Description</label>
-    <textarea type="text" class="form-control" id="description" rows="3" readonly></textarea>
+    <textarea type="text" class="form-control" id="description" rows="3" formControlName="description"> ></textarea>
   </div>
+  <!--<h3>Contributors</h3>-->
+  <!--<div class="form-group" formArrayName="contributors">-->
+    <!--<div *ngFor="let contributor of contributors.controls; let i=index" [formGroupName]="i" >-->
+      <!--&lt;!&ndash;<div class="row" >&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-sm-8" >&ndash;&gt;-->
+          <!--<div class="card">-->
+            <!--<div class="card-body">-->
+              <!--<label for="contactName">Name</label>-->
+              <!--<input type="text" class="form-control" id="contactName" formControlName="name">-->
+              <!--<label for="contactCity">City</label>-->
+              <!--<input type="text" class="form-control" id="contactCity" formControlName="city">-->
+              <!--<label for="contactCity">Country</label>-->
+              <!--<input type="text" class="form-control" id="contactCountry" formControlName="country">-->
+              <!--<label for="contactCity">Institution</label>-->
+              <!--<input type="text" class="form-control" id="contactInstitution" formControlName="institution">-->
+              <!--<label for="contactCity">Address</label>-->
+              <!--<input type="text" class="form-control" id="contactAddress" formControlName="address">-->
+              <!--<label for="contactCity">Email</label>-->
+              <!--<input type="text" class="form-control" id="contactEmail" formControlName="email">-->
+              <!--<br/>-->
+              <!--<button (click)="removeContributor()" type=button class="btn btn-info">Remove</button>-->
+            <!--</div>-->
+
+          <!--</div>-->
+      <!--<br/>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+
+    <!--<button type=button (click)="addContributor()" class="btn btn-info"> Add Contributor-->
+      <!--<span class="glyphicon glyphicon-plus"></span>-->
+    <!--</button>-->
+  <!--</div>-->
 
   <div class="form-group" *ngIf="projects$ | async as projects" >
     <label for="project">Or choose existing</label>
     <select class="form-control" id="project" >
       <option *ngFor="let project of projects"
-              [value]="project.updateDate">
+              [value]="project.content.name">
         {{project.content.name}}
       </option>
     </select>
@@ -31,7 +66,10 @@
     <input type="text" class="form-control" id="shortname">
   </div>
 
-  <button type="submit" class="btn btn-success" (click)="saveAndExit()">Save and Exit</button>
-  <button type="submit" class="btn btn-success" (click)="saveAndContinue()">Save and Continue</button>
+  <button type="submit" class="btn btn-success">Save and Exit</button>
+  <button type="submit" class="btn btn-success">Save and Continue</button>
 
 </form>
+
+
+{{projectForm.value | json}}

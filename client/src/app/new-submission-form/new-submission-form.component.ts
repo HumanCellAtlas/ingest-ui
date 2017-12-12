@@ -21,15 +21,7 @@ export class NewSubmissionFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projects = this.ingestService.getAllProjects();
-  }
-
-  saveAndExit() {
-    console.log('save and exit.')
-  }
-
-  saveAndContinue() {
-    console.log('save and continue.')
+    this.projects = this.ingestService.getProjects();
   }
 
   navigate(path) {

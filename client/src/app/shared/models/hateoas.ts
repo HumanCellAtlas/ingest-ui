@@ -9,4 +9,8 @@ export interface EmbeddedList<T> {
   projects: T[];
   files: T[];
   samples: T[];
+  analyses: T[];
+  assays: T[];
+  protocols: T[];
+  bundleManifests: T[];
 }

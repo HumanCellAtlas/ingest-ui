@@ -1,10 +1,13 @@
-<div class="container">
-  <pre><code #uploadArea>{{uploadDetails?.stagingAreaLocation?.value}}</code></pre>
-  <form action="/staging/delete" method="POST">
-    <button [clipboard]="uploadArea.innerHTML.trim()"
-      (clipboardSuccess)="logSuccess( $event )"
-      (clipboardError)="logError( $event )">
-      Copy Text
+<div class="card">
+  <div class="card-header">
+    Upload Area Location
+  </div>
+  <div class="card-body" *ngIf="submissionEnvelope['stagingDetails']">
+    <pre class="pre-scrollable" ><code #uploadArea>{{submissionEnvelope['stagingDetails']?.stagingAreaLocation?.value}}</code></pre>
+    <button [clipboard]="submissionEnvelope['stagingDetails']?.stagingAreaLocation?.value"
+            (clipboardSuccess)="logSuccess( $event )"
+            (clipboardError)="logError( $event )">
+      Copy
     </button>
-  </form>
+  </div>
 </div>
