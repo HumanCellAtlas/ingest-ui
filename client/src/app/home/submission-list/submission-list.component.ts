@@ -4,6 +4,8 @@ import {Observable} from "rxjs/Observable";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
 import {ListResult} from "../../shared/models/hateoas";
 import {ActivatedRoute, Router} from "@angular/router";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: 'app-submission-list',
@@ -14,25 +16,50 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class SubmissionListComponent implements OnInit {
 
   submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
-  submissionEnvelopeList$: Observable<ListResult<SubmissionEnvelope>>;
+  submissionEnvelopes: SubmissionEnvelope[];
+  pagination: Object;
+  links: Object;
+  currentPageInfo: Object;
+  params: Object;
+
+  interval: number;
+
+  private alive: boolean;
 
   constructor(private ingestService: IngestService,
               private router: Router,
               private route: ActivatedRoute) {
+    this.alive = true;
+    this.interval = 4000;
+    this.currentPageInfo = {
+      size: 20,
+      number: 0,
+      totalPages:0,
+      totalElements: 0,
+      start: 0,
+      end:0
+    }
+
+    this.params ={'page': 0, 'size': 10, 'sort' : 'submissionDate,desc'};
   }
 
   ngOnInit() {
-    this.getSubmissions();
-    // this.submissionEnvelopeList$ = this.ingestService.pollSubmissionsHAL();
+    this.pollSubmissions()
+
   }
 
-  getSubmissions(){
-    this.submissionEnvelopes$ = this.pollSubmissions();
+  ngOnDestroy(){
+    this.alive = false; // switches your IntervalObservable off
   }
 
   getSubmitLink(submissionEnvelope){
     let links = submissionEnvelope['_links'];
     return links ? links['submit'] : null;
+  }
+
+  getSubmissionId(submissionEnvelope){
+    let links = submissionEnvelope['_links'];
+    return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
   completeSubmission(submissionEnvelope) {
@@ -41,16 +68,48 @@ export class SubmissionListComponent implements OnInit {
     console.log('completeSubmission');
   }
 
-  pollSubmissions():  Observable<SubmissionEnvelope[]> {
-    return this.ingestService.getAllSubmissions();
+  pollSubmissions() {
+    TimerObservable.create(0, this.interval)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        this.getSubmissions();
+      });
   }
 
-  viewSubmission(submissionEnvelope){
-    console.log('view submission');
+  getSubmissions(){
+    this.ingestService.getAllSubmissionsHAL(this.params)
+      .subscribe(data =>{
+        let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
+        this.submissionEnvelopes = submissions;
+        this.pagination = data.page;
+        this.links = data._links;
+        this.getCurrentPageInfo(this.pagination);
+        console.log(this.getCurrentPageInfo(this.pagination));
+      });
   }
 
-  redirect() {
-    this.router.navigate(['submission']);
+  getCurrentPageInfo(pagination){
+    this.currentPageInfo['totalPages'] = pagination.totalPages;
+    this.currentPageInfo['totalElements'] = pagination.totalElements;
+    this.currentPageInfo['number'] = pagination.number;
+    this.currentPageInfo['start'] = ((pagination.number) * pagination.size) + 1;
+    let numberTimesSize = (pagination.number+1) * pagination.size;
+    let lastPageTotalElements = (numberTimesSize % pagination.totalElements);
+    this.currentPageInfo['end'] = numberTimesSize - (lastPageTotalElements % pagination.size);
+    return this.currentPageInfo;
+  }
+
+  goToPage(pageNumber){
+    this.params['page'] = pageNumber;
+    this.getSubmissions();
+  }
+
+  createRange(number){
+    let items: number[] = [];
+    for(let i = 0; i < number; i++){
+      items.push(i);
+    }
+    return items;
   }
 }
 

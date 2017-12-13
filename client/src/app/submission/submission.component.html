@@ -3,7 +3,7 @@
   <tabs>
     <tab tabTitle="Overview"><app-project></app-project></tab>
     <tab tabTitle="Metadata">
-      <app-samples [samples]="samples"></app-samples>
+      <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
     </tab>
     <tab tabTitle="Data">
       <app-files [files]="files"
@@ -27,8 +27,8 @@
       <app-bundles [bundles]="bundles">
       </app-bundles>
     </tab>
-    <tab tabTitle="Team"><app-team></app-team></tab>
-    <tab tabTitle="Submit"><app-submit></app-submit></tab>
+    <tab tabTitle="Team" [disabled]="true"><app-team></app-team></tab>
+    <tab tabTitle="Submit" [disabled]="true"><app-submit></app-submit></tab>
   </tabs>
 </div>
 

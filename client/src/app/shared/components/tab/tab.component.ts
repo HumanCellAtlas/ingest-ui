@@ -8,7 +8,7 @@ import { Component, Input} from '@angular/core';
 export class TabComponent {
   @Input('tabTitle') title: string;
   @Input() active = false;
-
+  @Input() disabled = false;
 
   constructor() { }
 

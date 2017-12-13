@@ -37,7 +37,11 @@ import {FileListComponent} from './submission/files/file-list/file-list.componen
 import {TeamComponent} from './submission/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import { MetadataListComponent } from './submission/metadata-list/metadata-list.component'
-
+import {MatTabsModule} from '@angular/material/tabs';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { ProjectListComponent } from './projects/project-list/project-list.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { PaginationComponent } from './submission/pagination/pagination.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -67,7 +71,10 @@ export function tokenGetter(): string {
     FileListComponent,
     TeamComponent,
     SubmitComponent,
-    MetadataListComponent
+    MetadataListComponent,
+    ProjectListComponent,
+    ProjectsComponent,
+    PaginationComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -82,7 +89,9 @@ export function tokenGetter(): string {
       }
     }),
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule,
+    NoopAnimationsModule
   ],
   providers: [IngestService, AuthService, FormBuilder],
   bootstrap: [AppComponent]

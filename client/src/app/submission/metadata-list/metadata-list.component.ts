@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-metadata-list',
@@ -9,7 +9,9 @@ export class MetadataListComponent implements OnInit {
   @Input() metadataList;
   @Input() metadataType;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit() {
   }

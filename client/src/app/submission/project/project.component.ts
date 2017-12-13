@@ -45,22 +45,29 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  setContributors(contributors: Contact[]) {
-    const contributorFGs = contributors.map(contributor => this.fb.group(contributor));
-    const contributorFormArray = this.fb.array(contributorFGs);
-    this.projectForm.setControl('contributors', contributorFormArray);
-  }
+  // setContributors(contributors: Contact[]) {
+  //   const contributorFGs = contributors.map(contributor => this.fb.group(contributor));
+  //   const contributorFormArray = this.fb.array(contributorFGs);
+  //   this.projectForm.setControl('contributors', contributorFormArray);
+  // }
 
   get contributors(): FormArray {
     return this.projectForm.get('contributors') as FormArray;
   };
 
   addContributor() {
-    console.log(new Contact());
-    this.contributors.push(this.fb.group(new Contact()));
+    this.contributors.push(this.fb.group({
+      name:'',
+      city:'',
+      country:'',
+      institution:'',
+      address:'',
+      email:''
+    }));
   }
 
   removeContributor(i: number) {
+    console.log('remove contributor');
     const control = <FormArray> this.projectForm.controls['contributors'];
     control.removeAt(i);
   }

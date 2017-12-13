@@ -1,0 +1,44 @@
+<ng-template #noData>No Data Available</ng-template>
+<div class="card">
+  <div class="card-header">Dashboard</div>
+  <div>
+    <table class="table table-striped" *ngIf="projects;else noData">
+      <thead class="thead-light">
+      <tr>
+        <th>Created</th>
+        <th>Project Name</th>
+        <th>HCA ID</th>
+        <th>Accession</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let project of projects">
+        <td>{{project.submissionDate | date: "shortDate"}}</td>
+        <td>{{project?.content?.name}}</td>
+        <td>
+          <a routerLink="/projects/{{project?.uuid?.uuid}}" class="text-info" >{{project?.uuid?.uuid}}</a>
+        </td>
+        <td>ENA00789786</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+

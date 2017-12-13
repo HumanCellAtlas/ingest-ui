@@ -4,6 +4,7 @@ import { CallbackComponent } from './callback/callback.component';
 import {ProjectComponent} from "./submission/project/project.component";
 import {NewSubmissionFormComponent} from "./new-submission-form/new-submission-form.component";
 import {SubmissionComponent} from "./submission/submission.component";
+import {ProjectsComponent} from "./projects/projects.component";
 
 export const ROUTES: Routes = [
   { path: '', component: HomeComponent },
@@ -33,6 +34,9 @@ export const ROUTES: Routes = [
     //   }
     //
     // ]
+  },
+  { path: 'projects',
+    component: ProjectsComponent,
   },
   { path: '**', redirectTo: '' }
 

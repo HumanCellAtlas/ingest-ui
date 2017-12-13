@@ -1,7 +1,19 @@
-<app-metadata-list [metadataList]="samples" [metadataType]="'Samples'"> </app-metadata-list>
-<form>
-  <div class="form-group">
-    <label for="exampleFormControlFile1">Example file input</label>
-    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+<div class="card">
+  <div class="card-header">Upload Spreadsheet</div>
+  <div class="card-body">
+    <form (ngSubmit)="submit()">
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Please upload your spreadsheet</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+        <a href="assets/empty-spreadsheet-v3.xlsx" target="_self" download>
+          <i class="fa fa-download"></i>Example file input
+        </a>
+      </div>
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
   </div>
-</form>
+</div>
+<br/>
+<app-metadata-list [metadataList]="samples" [metadataType]="'Samples'"> </app-metadata-list>
+<app-pagination (pageNumberChange)="goToPage($event)" [currentPageInfo]="currentPageInfo"></app-pagination>
+

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -27,15 +27,10 @@ export class IngestService {
       .do(console.log);
   }
 
-  public getAllSubmissionsHAL(): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`)
-      .map((data: ListResult<SubmissionEnvelope>) => _.values(data))
+  public getAllSubmissionsHAL(params): Observable<ListResult<SubmissionEnvelope>> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params})
       .do(console.log);
   }
-
-  // public pollSubmissionsHAL():  Observable<ListResult<SubmissionEnvelope>> {
-  //   return Observable.interval(5000).switchMap(() => this.getAllSubmissionsHAL());
-  // }
 
   public getSummary(): Observable<Summary> {
     return this.http.get(`${this.API_URL}/user/summary`)
@@ -55,9 +50,8 @@ export class IngestService {
       .do(console.log);
   }
 
-  public getSamples(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/samples`)
-      .map((data: ListResult<Object>) => _.values(data._embedded.samples))
+  public getSamples(submissionEnvelopeId, params): Observable<Object> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
       .do(console.log);
   }
 
@@ -113,8 +107,6 @@ export class IngestService {
   }
 
   public postProject(newProject) {
-
-
     // newProject = {
     //   "name": "Single-cell RNA-seq analysis of human pancreas from healthy individuals and type 2 diabetes patients",
     //   "contributors": [{
@@ -165,14 +157,14 @@ export class IngestService {
     //   "description": "We used single-cell RNA-sequencing to generate transcriptional profiles of endocrine and exocrine cell types of the human pancreas. Pancreatic tissue and islets were obtained from six healthy and four T2D cadaveric donors. Islets were cultured and dissociated into single-cell suspension. Viable individual cells were distributed via fluorescence-activated cell sorted (FACS) into 384-well plates containing lysis buffer. Single-cell cDNA libraries were generated using the Smart-seq2 protocol. Gene expression was quantified as reads per kilobase transcript and per million mapped reads (RPKM) using rpkmforgenes. Bioinformatics analysis was used to classify cells into cell types without knowledge of cell types or prior purification of cell populations. We revealed subpopulations in endocrine and exocrine cell types, identified genes with interesting correlations to body mass index (BMI) in specific cell types and found transcriptional alterations in T2D.  Complementary whole-islet RNA-seq data have also been deposited at ArrayExpress under accession number E-MTAB-5060 (http://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-5060)."
     // };
 
-    var project = {
+    let project = {
       "core" : {
         "type": "project",
         "schema_url": "https://raw.githubusercontent.com/HumanCellAtlas/metadata-schema/4.1.0/json_schema/project.json"
       },
     }
 
-    for (var key in newProject){
+    for (let key in newProject){
       project[key] = newProject[key];
     }
 
