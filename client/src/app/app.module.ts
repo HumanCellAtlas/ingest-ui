@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, ViewChild} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
@@ -7,11 +7,10 @@ import {RouterModule} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
 import {SharedModule} from './shared/shared.module';
 
 import {IngestService} from './shared/ingest.service';
+import {BrokerService} from './shared/broker.service';
 import {AuthService} from './auth/auth.service';
 
 import {ROUTES} from './app.routes';
@@ -38,12 +37,14 @@ import {UploadInfoComponent} from './submission/files/upload-info/upload-info.co
 import {FileListComponent} from './submission/files/file-list/file-list.component';
 import {TeamComponent} from './submission/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
-import { MetadataListComponent } from './submission/metadata-list/metadata-list.component'
-import { ProjectListComponent } from './projects/project-list/project-list.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { PaginationComponent } from './submission/pagination/pagination.component';
-import { MetadataComponent } from './submission/metadata/metadata.component';
-
+import {MetadataListComponent} from './submission/metadata-list/metadata-list.component'
+import {MatTabsModule} from '@angular/material/tabs';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {ProjectListComponent} from './projects/project-list/project-list.component';
+import {ProjectsComponent} from './projects/projects.component';
+import {PaginationComponent} from './submission/pagination/pagination.component';
+import {UploadComponent} from './shared/components/upload/upload.component';
+import {FileUploadModule} from "ng2-file-upload";
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -77,6 +78,7 @@ export function tokenGetter(): string {
     ProjectListComponent,
     ProjectsComponent,
     PaginationComponent,
+    UploadComponent,
     MetadataComponent
   ],
   imports: [
@@ -88,12 +90,15 @@ export function tokenGetter(): string {
     RouterModule.forRoot(ROUTES),
     JwtModule.forRoot({
       config: {
-        tokenGetter, whitelistedDomains: ['localhost:8080', 'api.ingest.integration.data.humancellatlas.org']
+        tokenGetter,
+        whitelistedDomains: ['localhost:8080', 'localhost:5000', 'api.ingest.integration.data.humancellatlas.org', 'ingest.integration.data.humancellatlas.org']
       }
     }),
     SharedModule,
     ReactiveFormsModule,
-    NgxDatatableModule
+    MatTabsModule,
+    NoopAnimationsModule,
+    FileUploadModule
   ],
   providers: [IngestService, AuthService, FormBuilder],
   bootstrap: [AppComponent]
