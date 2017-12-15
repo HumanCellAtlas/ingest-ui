@@ -77,7 +77,7 @@ export class SubmissionListComponent implements OnInit {
   }
 
   getSubmissions(){
-    this.ingestService.getAllSubmissionsHAL(this.params)
+    this.ingestService.getUserSubmissions(this.params)
       .subscribe(data =>{
         let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
         this.submissionEnvelopes = submissions;

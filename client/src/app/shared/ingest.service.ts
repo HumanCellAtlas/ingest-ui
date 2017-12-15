@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import {SubmissionEnvelope} from "./models/submissionEnvelope";
 import {ListResult} from "./models/hateoas";
-import {Summary} from "../home/welcome/summary";
+import {Summary} from "./models/summary";
 import {Project} from "./models/project";
 import {Metadata} from "./models/metadata";
 
@@ -21,14 +21,13 @@ export class IngestService {
   constructor(private http: HttpClient) {
   }
 
-  public getAllSubmissions(): Observable<SubmissionEnvelope[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: {'sort':'submissionDate,desc'}})
-      .map((data: ListResult<SubmissionEnvelope>) => _.values(data._embedded.submissionEnvelopes))
+  public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params})
       .do(console.log);
   }
 
-  public getAllSubmissionsHAL(params): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params})
+  public getUserSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
+    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params})
       .do(console.log);
   }
 
@@ -36,6 +35,10 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/user/summary`)
       .map((data: Summary) => _.values(data))
       .do(console.log);
+  }
+
+  public getUserSummary(): Observable<Summary> {
+    return this.http.get<Summary>(`${this.API_URL}/user/summary`).do(console.log);
   }
 
   public getProjects(): Observable<Project[]> {
