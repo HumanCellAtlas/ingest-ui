@@ -17,7 +17,7 @@
         <td>{{project.submissionDate | date: "shortDate"}}</td>
         <td>{{project?.content?.name}}</td>
         <td>
-          <a routerLink="/projects/{{project?.uuid?.uuid}}" class="text-info" >{{project?.uuid?.uuid}}</a>
+          <a routerLink="/projects/{{getProjectId(project)}}" class="text-info" >{{getProjectId(project)}}</a>
         </td>
         <td>ENA00789786</td>
         <td></td>

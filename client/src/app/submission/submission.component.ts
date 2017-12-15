@@ -22,7 +22,6 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit() {
     this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
-    console.log('submission envelope id: '+ this.submissionEnvelopeId);
 
     this.ingestService.getSubmission(this.submissionEnvelopeId)
       .subscribe( (submission: SubmissionEnvelope) => {

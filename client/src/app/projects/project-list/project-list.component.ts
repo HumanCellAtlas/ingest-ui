@@ -13,4 +13,9 @@ export class ProjectListComponent implements OnInit {
   ngOnInit() {
   }
 
+  getProjectId(project){
+    let links = project['_links'];
+    return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
+  }
+
 }

@@ -52,7 +52,8 @@ export class MetadataListComponent implements OnInit {
         .filter(column => column.match('^(?!validationState).*'));
     } else { // display only fields inside the content object
       columns = Object.keys(metadataListRow)
-        .filter(column => column.match('^content.(?!core).*'));
+        // .filter(column => column.match('^content.(?!core).*'));
+        .filter(column => column.match('^content.*'));
     }
 
     if(this.config.displayState){

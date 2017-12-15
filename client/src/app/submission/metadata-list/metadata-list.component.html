@@ -49,16 +49,24 @@
 
   <ng-container *ngFor="let column of getColumns(metadataList[0])">
     <!--State Column-->
-    <ngx-datatable-column *ngIf="column == 'validationState';else textColumn" prop="validationState" name="state" [width]="'80'" [frozenLeft]="true">
+    <ngx-datatable-column *ngIf="column == 'validationState';else textColumn" prop="validationState" name="state" [width]="'130'" [frozenLeft]="true">
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
         <ng-container [ngSwitch]="value">
-          <span  *ngSwitchCase="'Draft'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>
-          <span  *ngSwitchCase="'Validating'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>
-          <span text-success *ngSwitchCase="'Valid'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>
-          <span text-danger *ngSwitchCase="'Invalid'" class="oi oi-x text-danger" title="{{value}}" aria-hidden="true" >
-          </span>
-          <span  *ngSwitchCase="'Processing'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>
-          <span  *ngSwitchCase="'Complete'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>
+          <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{value}}</span>
+          <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{value}}</span>
+          <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{value}}</span>
+          <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{value}}</span>
+          <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
+          <span *ngSwitchCase="'Complete'" class="badge badge-pill badge-secondary">{{value}}</span>
+
+          <!--<span  *ngSwitchCase="'Draft'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>-->
+          <!--<span  *ngSwitchCase="'Validating'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>-->
+          <!--<span text-success *ngSwitchCase="'Valid'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>-->
+          <!--<span text-danger *ngSwitchCase="'Invalid'" class="oi oi-x text-danger" title="{{value}}" aria-hidden="true" >-->
+          <!--</span>-->
+          <!--<span  *ngSwitchCase="'Processing'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>-->
+          <!--<span  *ngSwitchCase="'Complete'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>-->
+
         </ng-container>
       </ng-template>
     </ngx-datatable-column>

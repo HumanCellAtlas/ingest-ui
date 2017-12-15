@@ -22,7 +22,7 @@
             <span *ngSwitchCase="'Draft'" class="badge badge-warning">{{file.validationState}}</span>
             <span *ngSwitchCase="'Validating'" class="badge badge-info">{{file.validationState}}</span>
             <span *ngSwitchCase="'Valid'" class="badge badge-success">{{file.validationState}}</span>
-            <span *ngSwitchCase="'Invalid'" class="badge badge-error">{{file.validationState}}</span>
+            <span *ngSwitchCase="'Invalid'" class="badge badge-danger">{{file.validationState}}</span>
             <span *ngSwitchCase="'Processing'" class="badge border border-warning bg-light text-warning">{{file.validationState}}</span>
             <span *ngSwitchCase="'Complete'" class="badge badge-secondary">{{file.validationState}}</span>
           </div>

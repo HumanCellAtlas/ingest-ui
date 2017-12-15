@@ -9,38 +9,10 @@ import {ProjectsComponent} from "./projects/projects.component";
 export const ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'callback', component: CallbackComponent },
-  // { path: 'projects', component: NewSubmissionFormComponent },
-  { path: 'submissions',
-    component: NewSubmissionFormComponent,
-  },
-  { path: 'submissions/:id',
-    component: SubmissionComponent,
-    // children: [
-    //   {
-    //     path: '',
-    //     component: ProjectComponent
-    //   },
-    //   {
-    //     path: 'data',
-    //     component: SubmissionComponent
-    //   },
-    //   {
-    //     path: 'sample',
-    //     component: SubmissionComponent
-    //   },
-    //   {
-    //     path: 'team',
-    //     component: SubmissionComponent
-    //   }
-    //
-    // ]
-  },
-  { path: 'projects',
-    component: ProjectsComponent,
-  },
-  { path: 'new-project',
-    component: ProjectComponent,
-  },
+  { path: 'submissions/list', component: HomeComponent },
+  { path: 'submissions/:id', component: SubmissionComponent },
+  { path: 'projects/list', component: ProjectsComponent },
+  { path: 'projects/:id', component: ProjectComponent },
+  { path: 'projects', component: ProjectComponent },
   { path: '**', redirectTo: '' }
-
 ];

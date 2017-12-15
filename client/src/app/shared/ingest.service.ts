@@ -13,9 +13,9 @@ import {Metadata} from "./models/metadata";
 @Injectable()
 export class IngestService {
 
-  // API_URL: string = 'http://api.ingest.integration.data.humancellatlas.org/';
+  API_URL: string = 'http://api.ingest.integration.data.humancellatlas.org/';
   // API_URL: string = 'http://192.168.99.100:31763';
-  API_URL: string = 'http://api.ingest.dev.data.humancellatlas.org';
+  // API_URL: string = 'http://api.ingest.dev.data.humancellatlas.org';
   // API_URL: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {
@@ -113,6 +113,10 @@ export class IngestService {
 
   public getSubmission(id): Observable<SubmissionEnvelope>{
     return this.http.get<SubmissionEnvelope>(`${this.API_URL}/submissionEnvelopes/${id}`);
+  }
+
+  public getProject(id): Observable<Object> {
+    return this.http.get(`${this.API_URL}/projects/id`);
   }
 
   public postProject(newProject) {

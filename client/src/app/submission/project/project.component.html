@@ -1,5 +1,6 @@
 <div class="container"><br/>
-<form (ngSubmit)="createProject(projectForm.value)" [formGroup]="projectForm">
+<!--<form (ngSubmit)="createProject(projectForm.value)" [formGroup]="projectForm">-->
+<form [formGroup]="projectForm">
   <h2>Project</h2>
   <br/>
   <div class="form-group" >
@@ -42,15 +43,15 @@
     <!--<button type=button (click)="addContributor()" class="btn btn-info"> Add Contributor</button>-->
   <!--</div>-->
   <!--</div>-->
-  <!--<div class="form-group" *ngIf="projects$ | async as projects" >-->
-    <!--<label for="project">Or choose existing</label>-->
-    <!--<select class="form-control" id="project" >-->
-      <!--<option *ngFor="let project of projects"-->
-              <!--[value]="project.content.name">-->
-        <!--{{project.content.name}}-->
-      <!--</option>-->
-    <!--</select>-->
-  <!--</div>-->
+  <div class="form-group" *ngIf="projects$ | async as projects" >
+    <label for="project">Or choose existing</label>
+    <select class="form-control" id="project" (change)="loadProject($event)" formControlName="existingProjectId" >
+      <option *ngFor="let project of projects; let i = index"
+              [value]="getProjectId(project)">
+        {{project?.content?.name || 'Unknown Project'}}
+      </option>
+    </select>
+  </div>
 
   <!--<h2>Other public sources</h2>-->
   <!--<div class="form-group">-->
@@ -66,11 +67,12 @@
     <!--<input type="text" class="form-control" id="shortname">-->
   <!--</div>-->
 
-  <button type="submit" class="btn btn-success">Save and Exit</button>
-  <button type="submit" class="btn btn-success">Save and Continue</button>
+  <!--<button type="button" class="btn btn-success" click="saveAndExit(projectForm.value)">Save and Exit</button>-->
+  <!--<button type="button" class="btn btn-success" click="saveAndContinue(projectForm.value)">Save and Continue</button>-->
+  <!--<button type="button" class="btn btn-success" click="viewSubmissions(projectForm.value)">View Submissions</button>-->
 
 </form>
 
 </div>
 
-<!--{{projectForm.value | json}}-->
+{{projectForm.value | json}}

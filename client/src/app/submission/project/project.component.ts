@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {Contact, Project} from "../../shared/models/project";
 import {IngestService} from "../../shared/ingest.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Route, Router} from "@angular/router";
+import {ActivatedRoute, Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-project',
@@ -14,6 +14,8 @@ export class ProjectComponent implements OnInit {
 
   projects$ : Observable<Project[]>;
   projects: Project[];
+  project: Object;
+
   projectForm: FormGroup;
 
   placeholder: Object = {
@@ -27,27 +29,63 @@ export class ProjectComponent implements OnInit {
   };
 
   editMode: true;
+  projectId: string;
 
   constructor(private ingestService: IngestService,
               private fb: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.projects$ = this.ingestService.getProjects();
+    this.projectId = this.route.snapshot.paramMap.get('id');
+
     this.createProjectForm();
   }
 
-  createProject(newProject) {
-    var project = {
-      project_id: newProject.projectId,
-      name: newProject.name,
-      description: newProject.description
-    };
+  createOrGetProject(projectFormValue) {
+    let id = projectFormValue.existingProjectId;
 
-    this.ingestService.postProject(project);
+    if(id){
+      this.ingestService.getProject(id).subscribe(data => {
+        this.project = data;
+      });
+    }
+
+    // this.ingestService.postProject(project).subscribe(data => {
+    //   this.project = data;
+    // });
+  }
+
+  saveAndContinue(projectFormValue){
+    // render success
+    // createNewSubmission
+
+    let submissionId = '5a302bd75cf14c1feb0c6834'
+    this.router.navigate(['/submissions', submissionId ]);
+  }
+
+  saveAndExit(projectFormValue){
     console.log('submit');
     this.router.navigate(['/projects']);
+
+  }
+
+  getProjectId(project){
+    let links = project['_links'];
+    return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
+  }
+
+  viewSubmissions(projectFormValue){
+    let projectId = projectFormValue.existingProjectId;
+    console.log('viewSubmissions project:' + projectId);
+
+    this.router.navigate(['/submissions/list'], { queryParams: { projectId: projectId } });
+  }
+
+  loadProject(event){
+    console.log(event);
   }
 
   createProjectForm() {
@@ -56,7 +94,7 @@ export class ProjectComponent implements OnInit {
       description: [null, Validators.required],
       projectId: [null, Validators.required],
       contributors: this.fb.array([]),
-
+      existingProjectId:''
     });
   }
 

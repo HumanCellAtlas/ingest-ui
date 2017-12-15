@@ -20,7 +20,7 @@
         </td>
         <td>Tissue Stability</td>
         <td>
-          <div [ngSwitch]="submissionEnvelope.submissionState">
+          <div [ngSwitch]="submissionEnvelope.submissionState" >
             <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionEnvelope.submissionState}}</span>

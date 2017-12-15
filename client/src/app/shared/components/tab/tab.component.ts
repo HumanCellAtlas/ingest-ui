@@ -10,7 +10,7 @@ export class TabComponent {
   @Input() active = false;
   @Input() disabled;
 
-  constructor() { }
+  constructor() {}
 
 }
 
