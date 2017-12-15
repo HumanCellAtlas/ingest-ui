@@ -14,27 +14,27 @@
       </thead>
       <tbody>
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
-        <td>{{submissionEnvelope.updateDate | date: "shortDate"}}</td>
+        <td>{{submissionEnvelope.updateDate | date: "medium"}}</td>
         <td>
           <a routerLink="/submissions/{{getSubmissionId(submissionEnvelope)}}" class="text-info" >{{getSubmissionId(submissionEnvelope)}}</a>
         </td>
         <td>Tissue Stability</td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState">
-            <span *ngSwitchCase="'Pending'" class="badge badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Draft'" class="badge badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Validating'" class="badge badge-info">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Valid'" class="badge badge-success">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Invalid'" class="badge badge-error">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Submitted'" class="badge badge-secondary">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Processing'" class="badge border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Cleanup'" class="badge border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Complete'" class="badge border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Submitted'" class="badge badge-pill badge-secondary">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Cleanup'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Complete'" class="badge badge-pill border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
           </div>
         </td>
         <td>
           <form class="submission-form complete-form" action="submit" method="POST">
-              <button *ngIf="getSubmitLink(submissionEnvelope)" class="btn btn-success" (click)="completeSubmission(submissionEnvelope)">
+              <button *ngIf="getSubmitLink(submissionEnvelope)" class="btn btn-success btn-sm" (click)="completeSubmission(submissionEnvelope)">
                 Complete submission
               </button>
           </form>

@@ -38,6 +38,9 @@ export const ROUTES: Routes = [
   { path: 'projects',
     component: ProjectsComponent,
   },
+  { path: 'new-project',
+    component: ProjectComponent,
+  },
   { path: '**', redirectTo: '' }
 
 ];

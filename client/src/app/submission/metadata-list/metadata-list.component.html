@@ -1,35 +1,88 @@
-<!--<div class="card">-->
-  <!--<div class="card-body">-->
-    <div class="card">
-      <div class="card-header">
-        {{metadataType}}
-      </div>
-      <!--<div class="card-body">-->
-      <table class="table table-sm" *ngIf="metadataList">
-        <thead class="thead-light">
-        <tr>
-          <th>ID</th>
-          <th>Validation Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let metadata of metadataList">
-          <td>{{metadata?.uuid?.uuid}}</td>
-          <td>
-            <div [ngSwitch]="metadata.validationState">
-              <span *ngSwitchCase="'Draft'" class="badge badge-warning">{{metadata.validationState}}</span>
-              <span *ngSwitchCase="'Validating'" class="badge badge-info">{{metadata.validationState}}</span>
-              <span *ngSwitchCase="'Valid'" class="badge badge-success">{{metadata.validationState}}</span>
-              <span *ngSwitchCase="'Invalid'" class="badge badge-error">{{metadata.validationState}}</span>
-              <span *ngSwitchCase="'Processing'" class="badge border border-warning bg-light text-warning">{{metadata.validationState}}</span>
-              <span *ngSwitchCase="'Complete'" class="badge badge-secondary">{{metadata.validationState}}</span>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <!--</div>-->
+<a href="javascript:void(0)" (click)="table.rowDetail.expandAllRows()">Expand All</a> |
+<a href="javascript:void(0)" (click)="table.rowDetail.collapseAllRows()">Collapse All</a>
 
-    </div>
-  <!--</div>-->
-<!--</div>-->
+
+<ngx-datatable
+  #mydatatable
+
+  *ngIf="metadataList && metadataList.length > 0"
+
+  class="material fullscreen"
+  [limit]="5"
+  [columnMode]="'force'"
+  [rows]="metadataList"
+  [headerHeight]="50"
+  [footerHeight]="0"
+  [rowHeight]="50"
+  [scrollbarV]="true"
+  [scrollbarH]="true">
+
+  <!-- Row Detail Template -->
+  <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+      <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
+        <div><strong>Validation Report:</strong></div>
+        <span class="text-danger" title="{{getValidationErrors(row)}}">{{getValidationErrors(row)}}</span>
+      </div>
+    </ng-template>
+  </ngx-datatable-row-detail>
+
+  <!--Expand column-->
+  <ngx-datatable-column
+    [resizeable]="true"
+    [sortable]="false"
+    [draggable]="false"
+    [canAutoResize]="true"
+    [frozenLeft]="true"
+    [width]="'50'"
+  >
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template >
+      <a
+        href="javascript:void(0)"
+        [class.datatable-icon-right]="!expanded"
+        [class.datatable-icon-down]="expanded"
+        title="Expand/Collapse Row"
+        (click)="toggleExpandRow(row)">
+      </a>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ng-container *ngFor="let column of getColumns(metadataList[0])">
+    <!--State Column-->
+    <ngx-datatable-column *ngIf="column == 'validationState';else textColumn" prop="validationState" name="state" [width]="'80'" [frozenLeft]="true">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <ng-container [ngSwitch]="value">
+          <span  *ngSwitchCase="'Draft'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>
+          <span  *ngSwitchCase="'Validating'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>
+          <span text-success *ngSwitchCase="'Valid'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>
+          <span text-danger *ngSwitchCase="'Invalid'" class="oi oi-x text-danger" title="{{value}}" aria-hidden="true" >
+          </span>
+          <span  *ngSwitchCase="'Processing'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>
+          <span  *ngSwitchCase="'Complete'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>
+        </ng-container>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!--Other columns-->
+    <ng-template #textColumn>
+      <ngx-datatable-column prop="{{column}}" name="{{column.replace('content.','')}}">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <span
+            title="{{value}}"
+            (dblclick)="editing[rowIndex + '-' + column] = true"
+            *ngIf="!editing[rowIndex + '-' + column]">
+            {{value}}
+          </span>
+          <input
+            autofocus
+            (blur)="updateValue($event, column, rowIndex)"
+            *ngIf="editing[rowIndex+ '-' + column]"
+            type="text"
+            [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+    </ng-template>
+  </ng-container>
+</ngx-datatable>
+

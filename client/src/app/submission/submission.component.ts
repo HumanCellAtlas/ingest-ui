@@ -17,16 +17,12 @@ export class SubmissionComponent implements OnInit {
 
   files: Object[];
 
-  analyses: Object[];
-  assays: Object[];
-  bundles: Object[];
-  protocols: Object[];
-
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
+    console.log('submission envelope id: '+ this.submissionEnvelopeId);
 
     this.ingestService.getSubmission(this.submissionEnvelopeId)
       .subscribe( (submission: SubmissionEnvelope) => {
@@ -36,14 +32,6 @@ export class SubmissionComponent implements OnInit {
     this.ingestService.getFiles(this.submissionEnvelopeId)
       .subscribe( data => this.files = data);
 
-    this.ingestService.getAnalyses(this.submissionEnvelopeId)
-      .subscribe(data => this.analyses = data);
-    this.ingestService.getAssays(this.submissionEnvelopeId)
-      .subscribe(data => this.assays = data);
-    this.ingestService.getBundles(this.submissionEnvelopeId)
-      .subscribe(data => this.bundles = data);
-    this.ingestService.getProtocols(this.submissionEnvelopeId)
-      .subscribe(data => this.protocols = data);
 
   }
 

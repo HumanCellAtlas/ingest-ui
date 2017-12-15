@@ -1,31 +1,16 @@
-<div class="container">
+<div class="container-fluid">
+  <br/>
   <h1>Submission</h1>
   <tabs>
     <tab tabTitle="Overview"><app-project></app-project></tab>
     <tab tabTitle="Metadata">
-      <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
+      <app-metadata [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
     </tab>
     <tab tabTitle="Data">
-      <app-files [files]="files"
+      <app-files
         [submissionEnvelopeId]="submissionEnvelopeId"
         [submissionEnvelope]="submissionEnvelope" >
       </app-files>
-    </tab>
-    <tab tabTitle="Protocols">
-      <app-protocols [protocols]="protocols">
-      </app-protocols>
-    </tab>
-    <tab tabTitle="Assays">
-      <app-assays [assays]="assays">
-      </app-assays>
-    </tab>
-    <tab tabTitle="Analyses">
-      <app-analyses [analyses]="analyses">
-      </app-analyses>
-    </tab>
-    <tab tabTitle="Bundles">
-      <app-bundles [bundles]="bundles">
-      </app-bundles>
     </tab>
     <tab tabTitle="Team" [disabled]="true"><app-team></app-team></tab>
     <tab tabTitle="Submit" [disabled]="true"><app-submit></app-submit></tab>

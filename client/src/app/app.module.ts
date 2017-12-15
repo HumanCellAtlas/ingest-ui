@@ -1,11 +1,13 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, ViewChild} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
 
@@ -37,11 +39,11 @@ import {FileListComponent} from './submission/files/file-list/file-list.componen
 import {TeamComponent} from './submission/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import { MetadataListComponent } from './submission/metadata-list/metadata-list.component'
-import {MatTabsModule} from '@angular/material/tabs';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { ProjectListComponent } from './projects/project-list/project-list.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { PaginationComponent } from './submission/pagination/pagination.component';
+import { MetadataComponent } from './submission/metadata/metadata.component';
+
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -74,7 +76,8 @@ export function tokenGetter(): string {
     MetadataListComponent,
     ProjectListComponent,
     ProjectsComponent,
-    PaginationComponent
+    PaginationComponent,
+    MetadataComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -90,8 +93,7 @@ export function tokenGetter(): string {
     }),
     SharedModule,
     ReactiveFormsModule,
-    MatTabsModule,
-    NoopAnimationsModule
+    NgxDatatableModule
   ],
   providers: [IngestService, AuthService, FormBuilder],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
-<ul class="nav nav-pills nav-fill">
+<ul class="nav {{navClass}}">
   <li class="nav-item" *ngFor="let tab of tabs" (click)="selectTab(tab)" >
-    <a class="nav-link" [class.active]="tab.active" >{{tab.title}}</a>
+    <a class="nav-link" [class.active]="tab.active" [class.disabled]="tab.disabled">{{tab.title}}</a>
   </li>
 </ul>
 <div class="container">

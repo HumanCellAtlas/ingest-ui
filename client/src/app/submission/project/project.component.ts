@@ -3,6 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {Contact, Project} from "../../shared/models/project";
 import {IngestService} from "../../shared/ingest.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-project',
@@ -15,10 +16,22 @@ export class ProjectComponent implements OnInit {
   projects: Project[];
   projectForm: FormGroup;
 
+  placeholder: Object = {
+    projectId: "A project id for your research project e.g. HCA-DEMO-PROJECT_ID",
+    name: "A title for your research project e.g. reflecting your project grant" +
+           "e.g. \"Testing ischaemic sensitivity of human tissue at different time points, using single cell RNA sequencing.\"",
+    description: "A description of your research experiment,"+
+                 "e.g. \"Assessment of ischaemic sensitivity of three human tissues using 10x 3 single cell RNA sequencing." +
+                 "We aim to collect data from three tissues expected to have diffent sensitiy to ischaemia: spleen(expected least sensitive)," +
+                 " oesophagus (in the middle) and liver ( expected most sensitive).\""
+  };
+
   editMode: true;
 
   constructor(private ingestService: IngestService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.projects$ = this.ingestService.getProjects();
@@ -31,8 +44,10 @@ export class ProjectComponent implements OnInit {
       name: newProject.name,
       description: newProject.description
     };
+
     this.ingestService.postProject(project);
     console.log('submit');
+    this.router.navigate(['/projects']);
   }
 
   createProjectForm() {

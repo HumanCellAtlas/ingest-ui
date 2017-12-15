@@ -40,7 +40,7 @@ export class SubmissionListComponent implements OnInit {
       end:0
     }
 
-    this.params ={'page': 0, 'size': 10, 'sort' : 'submissionDate,desc'};
+    this.params ={'page': 0, 'size': 20, 'sort' : 'submissionDate,desc'};
   }
 
   ngOnInit() {
@@ -54,7 +54,7 @@ export class SubmissionListComponent implements OnInit {
 
   getSubmitLink(submissionEnvelope){
     let links = submissionEnvelope['_links'];
-    return links ? links['submit'] : null;
+    return links && links['submit']? links['submit']['href'] : null;
   }
 
   getSubmissionId(submissionEnvelope){

@@ -15,7 +15,6 @@ export class PaginationComponent implements OnInit {
     this.maxPageDisplayed = 15;
   }
 
-
   ngOnInit() {
   }
 

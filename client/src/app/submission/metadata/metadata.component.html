@@ -1,0 +1,57 @@
+<div class="container-fluid"><br/>
+  <h2>Metadata Template</h2><br/>
+  <div class="card">
+    <!--<div class="card-header">Upload Spreadsheet</div>-->
+    <div class="card-body">
+      <form (ngSubmit)="submit()">
+        <div class="form-group">
+          <label for="exampleFormControlFile1">Please upload your spreadsheet</label>
+          <input type="file" class="form-control-file" id="exampleFormControlFile1">
+          <a href="{{downloadFile}}" target="_self" download>
+            <span>Download Empty Spreadsheet</span>
+            <span class="oi oi-data-transfer-download"></span>
+          </a>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
+  <br/>
+
+  <div class="card">
+    <!--<div class="card-header">Track submission</div>-->
+    <div class="card-body">
+      <tabs [navClass]="'nav-tabs'">
+        <tab tabTitle="Samples">
+          <div class="pane">
+            <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
+          </div>
+        </tab>
+        <tab tabTitle="Protocols">
+          <app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>
+        </tab>
+        <tab tabTitle="Assays">
+          <app-assays *ngIf="assays && assays.length > 0" [assays]="assays"></app-assays>
+        </tab>
+        <tab tabTitle="Analyses">
+          <app-analyses *ngIf="analyses && analyses.length > 0" [analyses]="analyses.map(flatten)" ></app-analyses>
+        </tab>
+      </tabs>
+    </div>
+  </div>
+  <br/>
+
+  <div class="card">
+    <div class="card-body" >
+      <tabs [navClass]="'nav-tabs'">
+        <tab tabTitle="Bundles">
+          <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
+        </tab>
+      </tabs>
+    </div>
+  </div>
+
+
+</div>
+
+

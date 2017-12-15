@@ -7,7 +7,12 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class BundlesComponent implements OnInit {
   @Input() bundles;
-  s
+  config = {
+    displayContent: false,
+    displayState: false,
+    displayAll: true
+  };
+
   constructor() { }
 
   ngOnInit() {

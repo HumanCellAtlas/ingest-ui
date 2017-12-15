@@ -1,4 +1,4 @@
-import { Component, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import {Component, ContentChildren, QueryList, AfterContentInit, Input} from '@angular/core';
 import {TabComponent} from "../tab/tab.component";
 
 
@@ -9,7 +9,7 @@ import {TabComponent} from "../tab/tab.component";
 })
 
 export class TabsComponent implements AfterContentInit {
-
+  @Input() navClass = 'nav-pills nav-fill';
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
   // contentChildren are set
