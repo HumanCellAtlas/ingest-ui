@@ -114,10 +114,11 @@ export class MetadataListComponent implements OnInit {
   }
 
   getValidationErrors(row){
-    // return row['validationErrors[0].user_friendly_message'];
-    let userFriendlyErrors = Object.keys(row)
-      .filter(column => column.match('^validationErrors\[\d\]\.user_friendly_message.*'));
-    return userFriendlyErrors.join(',');
+    return row['validationErrors[0].user_friendly_message'];
+    //TODO retrieve all validation errors, fix the filtering below
+    // let userFriendlyErrors = Object.keys(row)
+    //   .filter(column => column.match('^validationErrors\[\d\]\.user_friendly_message.*'));
+    // return userFriendlyErrors.join(',');
   }
 
   toggleExpandRow(row) {
