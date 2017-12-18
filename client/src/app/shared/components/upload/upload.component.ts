@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Output, EventEmitter, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {BrokerService} from "../../broker.service";
 import {Observable} from "rxjs/Observable";
 import {UploadResults} from "../../models/uploadResults";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-upload',
@@ -17,9 +18,15 @@ export class UploadComponent implements OnInit {
 
   uploadResults$: Observable<UploadResults>;
 
-  downloadFile:string = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xls'
-  
-  constructor(private brokerService: BrokerService) {
+  downloadFile:string;
+
+  @Input() projectId;
+
+  @Output() fileUpload = new EventEmitter();
+
+  constructor(private brokerService: BrokerService,
+              private router: Router,) {
+    this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
   }
 
   ngOnInit() {
@@ -37,9 +44,17 @@ export class UploadComponent implements OnInit {
       formData.append("file", fileBrowser.files[0]);
       this.brokerService.uploadSpreadsheet(formData)
         .subscribe(
-          data => this.uploadResults$ = <any>data,
-          err => this.error$ = <any>err
-        );
+        data => {
+          this.uploadResults$ = <any>data;
+          let submissionId = this.uploadResults$.details.submission_id;
+          let submissionsPath = `/submissions/detail/${submissionId}/overview`;
+          console.log('navigating to submissionsPath' + submissionsPath);
+          this.router.navigate([submissionsPath]);
+        },
+        err => {
+          this.error$ = <any>err
+        });
     }
+
   }
 }

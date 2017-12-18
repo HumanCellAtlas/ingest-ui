@@ -49,7 +49,12 @@ export class IngestService {
 
   public getFiles(id): Observable<Object[]> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`)
-      .map((data: ListResult<Object>) => _.values(data._embedded.files))
+      .map((data: ListResult<Object>) => {
+        if(data._embedded && data._embedded.files)
+          return _.values(data._embedded.files);
+        else
+          return [];
+      })
       .do(console.log);
   }
 
@@ -131,7 +136,15 @@ export class IngestService {
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`);
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
+      .map((data: ListResult<Object>) => {
+        if(data._embedded && data._embedded.projects)
+          return _.values(data._embedded.projects)[0]; // there should only be one project linked to the submission env
+        else
+          return {};
+      })
+      .do(console.log);
+
   }
 
 

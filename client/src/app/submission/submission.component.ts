@@ -15,6 +15,8 @@ export class SubmissionComponent implements OnInit {
 
   submissionEnvelope: SubmissionEnvelope;
 
+  selectedProjectId: string;
+
   files: Object[];
 
   activeTab: string;
@@ -25,7 +27,7 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit() {
     this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
-    let tab = this.route.snapshot.paramMap.get('tab').toLowerCase();
+    let tab = this.route.snapshot.paramMap.get('tab');
     this.activeTab = tab ? tab.toLowerCase() : '';
 
 
@@ -38,6 +40,12 @@ export class SubmissionComponent implements OnInit {
       this.ingestService.getFiles(this.submissionEnvelopeId)
         .subscribe( data => this.files = data);
     }
+  }
+
+  setSubmissionProjectId(event){
+    this.selectedProjectId = event;
+    console.log('selected project' + this.selectedProjectId);
+    this.activeTab = 'metadata';
   }
 
 }

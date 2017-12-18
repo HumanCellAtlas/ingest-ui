@@ -24,7 +24,7 @@ import {WelcomeComponent} from './home/welcome/welcome.component';
 import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
 import {CallbackComponent} from './callback/callback.component';
 import {HomeComponent} from './home/home.component';
-import {ProjectComponent} from './projects/project/project.component';
+import {ProjectComponent} from './shared/components/project/project.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';

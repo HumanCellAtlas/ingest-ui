@@ -1,10 +1,10 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {Contact, Project} from "../../shared/models/project";
-import {IngestService} from "../../shared/ingest.service";
+import {Contact, Project} from "../../models/project";
+import {IngestService} from "../../ingest.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Route, Router} from "@angular/router";
-import {AuthService} from "../../auth/auth.service";
+import {AuthService} from "../../../auth/auth.service";
 
 @Component({
   selector: 'app-project',
@@ -45,7 +45,9 @@ export class ProjectComponent implements OnInit {
 
   @Input() inSubmissionMode:boolean;
 
-  @Input() submissionEnvelopeId:boolean;
+  @Input() submissionEnvelopeId:string;
+
+  @Output() onProjectSelect = new EventEmitter();
 
   constructor(private ingestService: IngestService,
               private fb: FormBuilder,
@@ -57,7 +59,20 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit() {
     this.projects$ = this.ingestService.getProjects();
-    this.projectId = this.route.snapshot.paramMap.get('id');
+
+    if(this.inSubmissionMode){
+      this.projectId = this.route.snapshot.paramMap.get('projectid');
+      console.log('projectid:' + this.projectId);
+      this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
+      this.editMode = false;
+
+
+    } else {
+      this.projectId = this.route.snapshot.paramMap.get('id');
+
+
+    }
+
     this.createProjectForm();
 
     this.auth.getProfile((err, profile) => {
@@ -73,7 +88,7 @@ export class ProjectComponent implements OnInit {
       description: [{value:'', disabled: !this.editMode}, Validators.required],
       projectId: [{value:'', disabled: !this.editMode},  Validators.required],
       contributors: this.fb.array([]),
-      existingProjectId:[ {value:'', disabled: this.editMode}]
+      existingProjectId:[ {value:'', disabled:this.submissionEnvelopeId}]
     });
 
     if(this.projectId){
@@ -107,6 +122,7 @@ export class ProjectComponent implements OnInit {
         this.successMessage = 'Success';
         console.log(data);
         this.projectId = this.getProjectId(this.project);
+        // this.router.navigate([`/projects/detail/${this.projectId}/submissions`]);
     },
       err => {
       this.errorMessage = 'Error';
@@ -163,15 +179,19 @@ export class ProjectComponent implements OnInit {
     };
   }
 
-  saveAndContinue(formValue){
-    console.log('saveAndContinue');
+  save(formValue){
+    console.log('save');
     this.createOrUpdateProject(formValue)
   }
 
-  saveAndExit(projectFormValue){
+  cancel(projectFormValue){
     console.log('saveAndExit');
     this.router.navigate(['/projects/list']);
+  }
 
+  continue(projectFormValue){
+    console.log('continue' + projectFormValue.existingProjectId);
+    this.onProjectSelect.emit(projectFormValue.existingProjectId);
   }
 
   getProjectId(project){
