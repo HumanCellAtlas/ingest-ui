@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'tab',
@@ -10,7 +10,9 @@ export class TabComponent {
   @Input() active = false;
   @Input() disabled;
 
-  constructor() {}
+  constructor() {
+
+  }
 
 }
 

@@ -16,7 +16,7 @@ export class NewSubmissionComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['projects']);
+    this.router.navigate(['submissions/new/overview']);
   }
 
 }

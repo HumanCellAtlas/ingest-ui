@@ -24,8 +24,7 @@ import {WelcomeComponent} from './home/welcome/welcome.component';
 import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
 import {CallbackComponent} from './callback/callback.component';
 import {HomeComponent} from './home/home.component';
-import {ProjectComponent} from './submission/project/project.component';
-import {NewSubmissionFormComponent} from './new-submission-form/new-submission-form.component';
+import {ProjectComponent} from './projects/project/project.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
@@ -41,12 +40,12 @@ import {TeamComponent} from './submission/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component'
-import {MatTabsModule} from '@angular/material/tabs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ProjectListComponent} from './projects/project-list/project-list.component';
 import {ProjectsComponent} from './projects/projects.component';
 import {PaginationComponent} from './submission/pagination/pagination.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
+import { ProjectSubmissionComponent } from './submission/project-submission/project-submission.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -62,7 +61,6 @@ export function tokenGetter(): string {
     CallbackComponent,
     HomeComponent,
     ProjectComponent,
-    NewSubmissionFormComponent,
     SubmissionComponent,
     TabComponent,
     TabsComponent,
@@ -81,7 +79,8 @@ export function tokenGetter(): string {
     ProjectsComponent,
     PaginationComponent,
     UploadComponent,
-    MetadataComponent
+    MetadataComponent,
+    ProjectSubmissionComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -98,7 +97,6 @@ export function tokenGetter(): string {
     }),
     SharedModule,
     ReactiveFormsModule,
-    MatTabsModule,
     NoopAnimationsModule,
     NgxDatatableModule
   ],

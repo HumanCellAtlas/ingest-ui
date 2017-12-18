@@ -1,25 +1,9 @@
 <div class="container-fluid"><br/>
   <h2>Metadata Template</h2><br/>
-  <div class="card">
-    <!--<div class="card-header">Upload Spreadsheet</div>-->
-    <div class="card-body">
-      <form (ngSubmit)="submit()">
-        <div class="form-group">
-          <label for="exampleFormControlFile1">Please upload your spreadsheet</label>
-          <input type="file" class="form-control-file" id="exampleFormControlFile1">
-          <a href="{{downloadFile}}" target="_self" download>
-            <span>Download Empty Spreadsheet</span>
-            <span class="oi oi-data-transfer-download"></span>
-          </a>
-        </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-      </form>
-    </div>
-  </div>
+  <app-upload></app-upload>
   <br/>
 
-  <div class="card">
-    <!--<div class="card-header">Track submission</div>-->
+  <div class="card" *ngIf="submissionEnvelopeId">
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
         <tab tabTitle="Samples">
@@ -41,7 +25,7 @@
   </div>
   <br/>
 
-  <div class="card">
+  <div class="card" *ngIf="submissionEnvelopeId">
     <div class="card-body" >
       <tabs [navClass]="'nav-tabs'">
         <tab tabTitle="Bundles">

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {IngestService} from "../shared/ingest.service";
 import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
@@ -17,21 +17,27 @@ export class SubmissionComponent implements OnInit {
 
   files: Object[];
 
+  activeTab: string;
+
   constructor(private ingestService: IngestService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
-
-    this.ingestService.getSubmission(this.submissionEnvelopeId)
-      .subscribe( (submission: SubmissionEnvelope) => {
-        this.submissionEnvelope = submission;
-      })
-
-    this.ingestService.getFiles(this.submissionEnvelopeId)
-      .subscribe( data => this.files = data);
+    let tab = this.route.snapshot.paramMap.get('tab').toLowerCase();
+    this.activeTab = tab ? tab.toLowerCase() : '';
 
 
+    if(this.submissionEnvelopeId){
+      this.ingestService.getSubmission(this.submissionEnvelopeId)
+        .subscribe( (submission: SubmissionEnvelope) => {
+          this.submissionEnvelope = submission;
+        })
+
+      this.ingestService.getFiles(this.submissionEnvelopeId)
+        .subscribe( data => this.files = data);
+    }
   }
 
 }

@@ -17,6 +17,8 @@ export class UploadComponent implements OnInit {
 
   uploadResults$: Observable<UploadResults>;
 
+  downloadFile:string = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xls'
+  
   constructor(private brokerService: BrokerService) {
   }
 

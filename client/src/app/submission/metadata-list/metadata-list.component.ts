@@ -8,6 +8,18 @@ import {
   ViewChild
 } from '@angular/core';
 
+export class Page {
+  //The number of elements in the page
+  size: number = 0;
+  //The total number of elements
+  totalElements: number = 10;
+  //The total number of pages
+  totalPages: number = 0;
+  //The current page number
+  pageNumber: number = 0;
+
+}
+
 @Component({
   selector: 'app-metadata-list',
   templateUrl: './metadata-list.component.html',
@@ -19,12 +31,15 @@ export class MetadataListComponent implements OnInit {
 
   @Input() metadataList;
   @Input() metadataType;
+  @Output() pageNumberChange: EventEmitter<number> = new EventEmitter<number>();
 
   @Input() config = {
     displayContent: true,
     displayState: true,
     displayAll: false
   };
+
+  private isLoading: boolean = false;
 
   editing = {};
 
@@ -36,16 +51,22 @@ export class MetadataListComponent implements OnInit {
 
   iconsDir:string;
 
+  page = new Page();
+
+  rows: any[];
+
   constructor() {
     this.iconsDir = 'assets/open-iconic/svg';
-
+    this.setPage({ offset: 0 });
   }
 
   ngOnInit() {
+    this.setPage({ offset: 0 });
+
   }
 
   getColumns(metadataListRow){
-    let columns = []
+    let columns = [];
 
     if (this.config.displayAll){
       columns = Object.keys(metadataListRow)
@@ -129,5 +150,12 @@ export class MetadataListComponent implements OnInit {
 
   onDetailToggle(event) {
     console.log('Detail Toggled', event);
+  }
+
+  setPage(pageInfo){
+    this.page.pageNumber = pageInfo.offset;
+    this.pageNumberChange.emit(pageInfo.offset);
+    this.rows = this.metadataList;
+    console.log('pageInfo.offset' + pageInfo.offset)
   }
 }

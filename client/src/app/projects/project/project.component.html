@@ -1,0 +1,45 @@
+<div class="container">
+  <br/>
+  <div  class="alert alert-success" role="alert" *ngIf="successMessage">
+    <p><b>{{successMessage}}</b></p>
+  </div>
+  <div  class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    <p><b>{{errorMessage}}</b></p>
+  </div>
+
+  <h2>Project</h2>
+  <br/>
+
+  <form [formGroup]="projectForm">
+    <div class="form-group" >
+      <label for="projectId">Project ID</label>
+      <input class="form-control" id="projectId" formControlName="projectId" placeholder="{{placeholder['projectId']}}">
+      <label for="title">Title</label>
+      <textarea type="text" class="form-control" id="title" formControlName="name" rows="3" placeholder="{{placeholder['name']}}"></textarea>
+      <label for="description">Description</label>
+      <textarea type="text"
+                class="form-control"
+                id="description" rows="20"
+                formControlName="description"
+                placeholder="{{placeholder['description']}}">
+      </textarea>
+    </div>
+    <ng-container *ngIf="inSubmissionMode">
+    <div class="form-group" *ngIf="projects$ | async as projects">
+      <label for="project">Or choose existing</label>
+
+      <select class="form-control" id="project" (change)="onSelectExistingProject($event)" formControlName="existingProjectId" >
+        <option *ngFor="let project of projects; let i = index"
+                [value]="getProjectId(project)">
+          {{project?.content?.name}}
+        </option>
+      </select>
+    </div>
+  </ng-container>
+  <button type="button" class="btn btn-success" (click)="saveAndExit(projectForm.value)">Save and Exit</button>
+  <button type="button" class="btn btn-success" (click)="saveAndContinue(projectForm.value)">Save and Continue</button>
+  </form>
+
+</div>
+
+{{projectForm.value | json}}

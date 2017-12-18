@@ -1,4 +1,5 @@
 <ng-template #noData>No Data Available</ng-template>
+<br/>
 <div class="card">
   <div class="card-header">Dashboard</div>
   <div>
@@ -16,7 +17,7 @@
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>{{submissionEnvelope.updateDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/submissions/{{getSubmissionId(submissionEnvelope)}}" class="text-info" >{{getSubmissionId(submissionEnvelope)}}</a>
+          <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info" >{{getSubmissionId(submissionEnvelope)}}</a>
         </td>
         <td>Tissue Stability</td>
         <td>

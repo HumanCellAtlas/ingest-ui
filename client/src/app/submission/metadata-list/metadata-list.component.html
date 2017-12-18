@@ -5,18 +5,25 @@
 <ngx-datatable
   #mydatatable
 
-  *ngIf="metadataList && metadataList.length > 0"
+  *ngIf="rows && rows.length > 0"
 
   class="material fullscreen"
-  [limit]="5"
+
   [columnMode]="'force'"
-  [rows]="metadataList"
+  [rows]="rows"
   [headerHeight]="50"
-  [footerHeight]="0"
+  [footerHeight]="10"
   [rowHeight]="50"
   [scrollbarV]="true"
-  [scrollbarH]="true">
+  [scrollbarH]="true"
+  [count]="page.totalElements"
+  [offset]="page.pageNumber"
+  [limit]="page.size"
+  [loadingIndicator]="isLoading"
 
+  (page)='setPage($event)'
+
+>
   <!-- Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -33,9 +40,7 @@
     [sortable]="false"
     [draggable]="false"
     [canAutoResize]="true"
-    [frozenLeft]="true"
-    [width]="'50'"
-  >
+    [width]="'50'">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template >
       <a
         href="javascript:void(0)"
@@ -47,9 +52,12 @@
     </ng-template>
   </ngx-datatable-column>
 
-  <ng-container *ngFor="let column of getColumns(metadataList[0])">
+  <!--add the following binding if pinning column-->
+<!--[frozenLeft]="true"-->
+
+  <ng-container *ngFor="let column of getColumns(rows[0])">
     <!--State Column-->
-    <ngx-datatable-column *ngIf="column == 'validationState';else textColumn" prop="validationState" name="state" [width]="'130'" [frozenLeft]="true">
+    <ngx-datatable-column *ngIf="column == 'validationState';else textColumn" prop="validationState" name="state" [width]="'130'" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
         <ng-container [ngSwitch]="value">
           <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{value}}</span>
@@ -58,15 +66,6 @@
           <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{value}}</span>
           <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
           <span *ngSwitchCase="'Complete'" class="badge badge-pill badge-secondary">{{value}}</span>
-
-          <!--<span  *ngSwitchCase="'Draft'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>-->
-          <!--<span  *ngSwitchCase="'Validating'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>-->
-          <!--<span text-success *ngSwitchCase="'Valid'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>-->
-          <!--<span text-danger *ngSwitchCase="'Invalid'" class="oi oi-x text-danger" title="{{value}}" aria-hidden="true" >-->
-          <!--</span>-->
-          <!--<span  *ngSwitchCase="'Processing'" class="oi oi-ellipses" title="{{value}}" aria-hidden="true"></span>-->
-          <!--<span  *ngSwitchCase="'Complete'" class="oi oi-check text-success" title="{{value}}" aria-hidden="true"></span>-->
-
         </ng-container>
       </ng-template>
     </ngx-datatable-column>
@@ -92,5 +91,31 @@
       </ngx-datatable-column>
     </ng-template>
   </ng-container>
+  <ngx-datatable-footer>
+    <ng-template
+      ngx-datatable-footer-template
+      let-rowCount="rowCount"
+      let-pageSize="pageSize"
+      let-selectedCount="selectedCount"
+      let-curPage="curPage"
+      let-offset="offset"
+      let-isVisible="isVisible">
+      <datatable-pager
+        [pagerLeftArrowIcon]="'datatable-icon-left'"
+        [pagerRightArrowIcon]="'datatable-icon-right'"
+        [pagerPreviousIcon]="'datatable-icon-prev'"
+        [pagerNextIcon]="'datatable-icon-skip'"
+        [page]="curPage"
+        [size]="pageSize"
+        [count]="rowCount"
+        [hidden]="!((rowCount / pageSize) > 1)"
+        (change)="table.onFooterPage($event)">
+      </datatable-pager>
+      <div class="page-count">
+        {{rowCount.toLocaleString()}} {{totalMessage}}
+      </div>
+    </ng-template>
+  </ngx-datatable-footer>
 </ngx-datatable>
+
 

@@ -14,13 +14,7 @@ export class TabsComponent implements AfterContentInit {
 
   // contentChildren are set
   ngAfterContentInit() {
-    // get all active tabs
-    let activeTabs = this.tabs.filter((tab)=>tab.active);
-
-    // if there is no active tab set, activate the first
-    if(activeTabs.length === 0) {
-      this.selectTab(this.tabs.first);
-    }
+    this.initTabs();
   }
 
   selectTab(tab: TabComponent){
@@ -31,4 +25,13 @@ export class TabsComponent implements AfterContentInit {
     tab.active = true;
   }
 
+  initTabs(){
+    // get all active tabs
+    let activeTabs = this.tabs.filter((tab)=>tab.active);
+
+    // if there is no active tab set, activate the first
+    if(activeTabs.length === 0) {
+      this.selectTab(this.tabs.first);
+    }
+  }
 }

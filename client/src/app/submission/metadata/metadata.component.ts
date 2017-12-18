@@ -14,7 +14,7 @@ export class MetadataComponent implements OnInit {
   bundles: Object[];
   protocols: Object[];
 
-  downloadFile:string = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xls'
+  // downloadFile:string = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xls'
 
 
   constructor(private ingestService: IngestService) {
@@ -22,14 +22,16 @@ export class MetadataComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ingestService.getAnalyses(this.submissionEnvelopeId)
-      .subscribe(data => this.analyses = data);
-    this.ingestService.getAssays(this.submissionEnvelopeId)
-      .subscribe(data => this.assays = data.map(this.flatten));
-    this.ingestService.getBundles(this.submissionEnvelopeId)
-      .subscribe(data => this.bundles = data);
-    this.ingestService.getProtocols(this.submissionEnvelopeId)
-      .subscribe(data => this.protocols = data.map(this.flatten));
+    if(this.submissionEnvelopeId){
+      this.ingestService.getAnalyses(this.submissionEnvelopeId)
+        .subscribe(data => this.analyses = data);
+      this.ingestService.getAssays(this.submissionEnvelopeId)
+        .subscribe(data => this.assays = data.map(this.flatten));
+      this.ingestService.getBundles(this.submissionEnvelopeId)
+        .subscribe(data => this.bundles = data);
+      this.ingestService.getProtocols(this.submissionEnvelopeId)
+        .subscribe(data => this.protocols = data.map(this.flatten));
+    }
   }
 
   flatten(data) {

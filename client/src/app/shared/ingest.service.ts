@@ -119,28 +119,20 @@ export class IngestService {
   }
 
   public getProject(id): Observable<Object> {
-    return this.http.get(`${this.API_URL}/projects/id`);
+    return this.http.get(`${this.API_URL}/projects/${id}`);
   }
 
-  public postProject(newProject) {
-    let project = {
-      "core" : {
-        "type": "project",
-        "schema_url": "https://raw.githubusercontent.com/HumanCellAtlas/metadata-schema/4.1.0/json_schema/project.json"
-      },
-    }
-
-    for (let key in newProject){
-      project[key] = newProject[key];
-    }
-
-    this.http.post(`${this.API_URL}/projects`, project).subscribe(
-      res=> {
-         console.log(res)
-      },
-      err => {
-         console.log(err)
-      }
-    )
+  public postProject(project): Observable<Object>{
+    return this.http.post(`${this.API_URL}/projects`, project);
   }
+
+  public putProject(id, project): Observable<Object>{
+    return this.http.put(`${this.API_URL}/projects/${id}`, project);
+  }
+
+  public getSubmissionProject(submissionId): Observable<Object> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`);
+  }
+
+
 }

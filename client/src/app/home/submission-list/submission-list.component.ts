@@ -30,7 +30,7 @@ export class SubmissionListComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute) {
     this.alive = true;
-    this.interval = 4000;
+    this.interval = 10000;
     this.currentPageInfo = {
       size: 20,
       number: 0,
@@ -77,7 +77,7 @@ export class SubmissionListComponent implements OnInit {
   }
 
   getSubmissions(){
-    this.ingestService.getUserSubmissions(this.params)
+    this.ingestService.getAllSubmissions(this.params)
       .subscribe(data =>{
         let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
         this.submissionEnvelopes = submissions;

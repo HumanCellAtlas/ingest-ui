@@ -1,19 +1,20 @@
+<script src="../projects/project/project.component.ts"></script>
 <div class="container-fluid">
   <br/>
   <h1>Submission</h1>
   <tabs>
-    <tab tabTitle="Overview"><app-project></app-project></tab>
-    <tab tabTitle="Metadata">
+    <tab tabTitle="Overview" [active]="activeTab == 'overview'" ><app-project [inSubmissionMode]="true"></app-project></tab>
+    <tab tabTitle="Metadata" [active]="activeTab == 'metadata'">
       <app-metadata [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
     </tab>
-    <tab tabTitle="Data">
+    <tab tabTitle="Data" [active]="activeTab == 'data'" [disabled]="!submissionEnvelopeId">
       <app-files
         [submissionEnvelopeId]="submissionEnvelopeId"
         [submissionEnvelope]="submissionEnvelope" >
       </app-files>
     </tab>
-    <tab tabTitle="Team" [disabled]="true"><app-team></app-team></tab>
-    <tab tabTitle="Submit" [disabled]="true"><app-submit></app-submit></tab>
+    <tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>
+    <tab tabTitle="Submit" [disabled]="true" [active]="activeTab == 'submit'"><app-submit></app-submit></tab>
   </tabs>
 </div>
 

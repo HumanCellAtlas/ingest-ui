@@ -30,8 +30,10 @@ export class FilesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pollInterval = 4000; //4s
-    this.pollFiles();
+    if(this.submissionEnvelopeId){
+      this.pollInterval = 4000; //4s
+      this.pollFiles();
+    }
   }
 
   ngOnDestroy(){

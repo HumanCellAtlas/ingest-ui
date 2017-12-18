@@ -36,6 +36,7 @@ export class ProjectsComponent implements OnInit {
       });
 
   }
+
   getProjects(){
     this.ingestService.getProjects()
       .subscribe(data =>{
