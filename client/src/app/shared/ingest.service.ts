@@ -81,7 +81,12 @@ export class IngestService {
 
   public getAssays(id): Observable<Object[]> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/assays`)
-      .map((data: ListResult<Object>) => _.values(data._embedded.assays))
+      .map((data: ListResult<Object>) => {
+        if(data._embedded && data._embedded.assays)
+          return _.values(data._embedded.assays);
+        else
+          return [];
+      })
       .do(console.log);
   }
 
