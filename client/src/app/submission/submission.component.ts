@@ -15,7 +15,7 @@ export class SubmissionComponent implements OnInit {
 
   submissionEnvelope: SubmissionEnvelope;
 
-  selectedProjectId: string;
+  projectId: string;
 
   files: Object[];
 
@@ -31,6 +31,8 @@ export class SubmissionComponent implements OnInit {
     this.activeTab = tab ? tab.toLowerCase() : '';
 
 
+
+
     if(this.submissionEnvelopeId){
       this.ingestService.getSubmission(this.submissionEnvelopeId)
         .subscribe( (submission: SubmissionEnvelope) => {
@@ -39,13 +41,15 @@ export class SubmissionComponent implements OnInit {
 
       this.ingestService.getFiles(this.submissionEnvelopeId)
         .subscribe( data => this.files = data);
+    }else{
+      this.projectId = this.route.snapshot.paramMap.get('projectId');
     }
   }
 
-  setSubmissionProjectId(event){
-    this.selectedProjectId = event;
-    console.log('selected project' + this.selectedProjectId);
-    this.activeTab = 'metadata';
-  }
+  // setSubmissionProjectId(event){
+  //   this.selectedProjectId = event;
+  //   console.log('selected project' + this.selectedProjectId);
+  //   this.activeTab = 'metadata';
+  // }
 
 }

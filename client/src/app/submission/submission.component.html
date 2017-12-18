@@ -3,9 +3,9 @@
   <br/>
   <h1>Submission</h1>
   <tabs>
-    <tab tabTitle="Overview" [active]="activeTab == 'overview'" ><app-project (onProjectSelect)="setSubmissionProjectId($event)" [inSubmissionMode]="true"></app-project></tab>
+    <tab tabTitle="Overview" [active]="activeTab == 'overview'" ><app-project [inSubmissionMode]="true" ></app-project></tab>
     <tab tabTitle="Metadata" [active]="activeTab == 'metadata'">
-      <app-metadata [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
+      <app-metadata [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
     </tab>
     <tab tabTitle="Data" [active]="activeTab == 'data'" [disabled]="!submissionEnvelopeId">
       <app-files

@@ -149,7 +149,7 @@ export class ProjectComponent implements OnInit {
   createOrUpdateProject(formValue) {
     let projectData = this.extractProject(formValue)
 
-    let id = formValue.existingProjectId;
+    let id = this.projectId
 
     if(id){
       console.log('patch');
@@ -189,21 +189,16 @@ export class ProjectComponent implements OnInit {
     this.router.navigate(['/projects/list']);
   }
 
-  continue(projectFormValue){
-    console.log('continue' + projectFormValue.existingProjectId);
-    this.onProjectSelect.emit(projectFormValue.existingProjectId);
-  }
-
   getProjectId(project){
     let links = project['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
-  onSelectExistingProject(event){
-    console.log(event);
-    this.projectId = event.target.value;
-    this.initProjectForm();
-  }
+  // onSelectExistingProject(event){
+  //   console.log(event);
+  //   this.projectId = event.target.value;
+  //   this.initProjectForm();
+  // }
 
   initProjectForm(){
     this.ingestService.getProject(this.projectId)
@@ -211,7 +206,7 @@ export class ProjectComponent implements OnInit {
         this.project = data;
         this.projectForm.patchValue(this.project['content']);
         this.projectForm.patchValue({projectId: this.project['content']['project_id']});
-        this.projectForm.patchValue({existingProjectId: this.projectId});
+        // this.projectForm.patchValue({existingProjectId: this.projectId});
       });
   }
 

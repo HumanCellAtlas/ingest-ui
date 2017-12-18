@@ -26,7 +26,11 @@ export class UploadComponent implements OnInit {
 
   constructor(private brokerService: BrokerService,
               private router: Router,) {
-    this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
+    if(this.projectId){
+      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
+    } else {
+      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_NOPROJECTTAB.xlsx';
+    }
   }
 
   ngOnInit() {
@@ -46,7 +50,7 @@ export class UploadComponent implements OnInit {
         .subscribe(
         data => {
           this.uploadResults$ = <any>data;
-          let submissionId = this.uploadResults$.details.submission_id;
+          let submissionId = this.uploadResults$['details']['submission_id'];
           let submissionsPath = `/submissions/detail/${submissionId}/overview`;
           console.log('navigating to submissionsPath' + submissionsPath);
           this.router.navigate([submissionsPath]);

@@ -45,7 +45,7 @@ import {ProjectListComponent} from './projects/project-list/project-list.compone
 import {ProjectsComponent} from './projects/projects.component';
 import {PaginationComponent} from './submission/pagination/pagination.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
-import { ProjectSubmissionComponent } from './submission/project-submission/project-submission.component';
+
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -79,8 +79,7 @@ export function tokenGetter(): string {
     ProjectsComponent,
     PaginationComponent,
     UploadComponent,
-    MetadataComponent,
-    ProjectSubmissionComponent
+    MetadataComponent
   ],
   imports: [
     NgbModule.forRoot(),

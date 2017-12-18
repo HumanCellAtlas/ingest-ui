@@ -25,20 +25,18 @@
       </textarea>
     </div>
 
-    <ng-container *ngIf="inSubmissionMode">
-      <div class="form-group" *ngIf="projects$ | async as projects">
-        <label for="project">Or choose existing</label>
+    <!--<ng-container *ngIf="inSubmissionMode">-->
+      <!--<div class="form-group" *ngIf="projects$ | async as projects">-->
+        <!--<label for="project">Or choose existing</label>-->
 
-        <select class="form-control" id="project" (change)="onSelectExistingProject($event)" formControlName="existingProjectId" *ngIf="inSubmissionMode">
-          <option *ngFor="let project of projects; let i = index"
-                  [value]="getProjectId(project)">
-            {{project?.content?.name}}
-          </option>
-        </select>
-      </div>
-
-      <button type="button" class="btn btn-success" (click)="continue(projectForm.value)">Continue</button>
-    </ng-container>
+        <!--<select class="form-control" id="project" (change)="onSelectExistingProject($event)" formControlName="existingProjectId" *ngIf="inSubmissionMode">-->
+          <!--<option *ngFor="let project of projects; let i = index"-->
+                  <!--[value]="getProjectId(project)">-->
+            <!--{{project?.content?.name}}-->
+          <!--</option>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</ng-container>-->
     <ng-container *ngIf="!inSubmissionMode">
       <button type="button" class="btn btn-success" (click)="cancel(projectForm.value)">Cancel</button>
       <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Save</button>
