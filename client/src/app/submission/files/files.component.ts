@@ -11,7 +11,6 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 })
 export class FilesComponent implements OnInit {
   @Input() submissionEnvelopeId;
-  @Input() submissionEnvelope;
 
   files : Object[];
 

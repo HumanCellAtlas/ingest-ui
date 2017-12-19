@@ -8,6 +8,7 @@ import {IngestService} from "../../shared/ingest.service";
 })
 export class MetadataComponent implements OnInit {
   @Input() submissionEnvelopeId: number;
+  @Input() projectId: number;
 
   analyses: Object[];
   assays: Object[];

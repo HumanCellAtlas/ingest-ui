@@ -112,7 +112,6 @@ export class IngestService {
       })
   }
 
-
   public submit(submitLink){
     this.http.put(submitLink, null).subscribe(
       res=> {

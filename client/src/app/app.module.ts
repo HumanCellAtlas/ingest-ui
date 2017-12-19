@@ -7,7 +7,7 @@ import {RouterModule} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
 
