@@ -12,14 +12,15 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class SubmissionComponent implements OnInit {
   submissionEnvelopeId: string;
-
-  submissionEnvelope: SubmissionEnvelope;
-
   projectId: string;
 
-  files: Object[];
+  submissionEnvelope$: Observable<any>;
+  submissionEnvelope;
+  submissionState: string;
 
   activeTab: string;
+
+  isSubmittable: boolean;
 
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute) {
@@ -30,17 +31,28 @@ export class SubmissionComponent implements OnInit {
     let tab = this.route.snapshot.paramMap.get('tab');
     this.activeTab = tab ? tab.toLowerCase() : '';
 
-    if(this.submissionEnvelopeId){
-      this.ingestService.getSubmission(this.submissionEnvelopeId)
-        .subscribe( (submission: SubmissionEnvelope) => {
-          this.submissionEnvelope = submission;
-        })
-
-      this.ingestService.getFiles(this.submissionEnvelopeId)
-        .subscribe( data => this.files = data);
-
-    }else{
+    if(!this.submissionEnvelopeId){
       this.projectId = this.route.snapshot.paramMap.get('projectid');
+    } else {
+      this.submissionEnvelope$ = this.ingestService.getSubmission(this.submissionEnvelopeId);
+      this.submissionEnvelope$
+        .subscribe(data => {
+          this.submissionEnvelope = data;
+          this.isSubmittable = this.checkIfValid(data);
+          this.submissionState = data['submissionState'];
+        });
     }
+  }
+
+  getSubmitLink(submissionEnvelope){
+    let links = submissionEnvelope['_links'];
+    return links && links['submit']? links['submit']['href'] : null;
+  }
+
+  checkIfValid(submission){
+    let status = submission['submissionState'];
+    let validStates = ["Valid", "Submitted", "Cleanup", "Complete"];
+    console.log(validStates.indexOf(status) >= 0);
+    return (validStates.indexOf(status) >= 0);
   }
 }
