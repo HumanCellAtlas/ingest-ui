@@ -25,11 +25,11 @@ export class UploadComponent implements OnInit {
   @Output() fileUpload = new EventEmitter();
 
   constructor(private brokerService: BrokerService,
-              private router: Router,) {
+              private router: Router) {
     if(this.projectId){
-      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
-    } else {
       this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_NOPROJECTTAB.xlsx';
+    } else {
+      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
     }
   }
 

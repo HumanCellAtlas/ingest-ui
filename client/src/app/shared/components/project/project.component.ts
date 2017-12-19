@@ -44,7 +44,7 @@ export class ProjectComponent implements OnInit {
   profile: any;
 
   @Input() inSubmissionMode:boolean;
-
+  @Input() submissionProjectId:string;
   @Input() submissionEnvelopeId:string;
 
   @Output() onProjectSelect = new EventEmitter();
@@ -62,12 +62,18 @@ export class ProjectComponent implements OnInit {
 
     if(this.inSubmissionMode){
       this.projectId = this.route.snapshot.paramMap.get('projectid');
-      console.log('projectid:' + this.projectId);
       this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
       this.editMode = false;
 
-
+      if(this.submissionEnvelopeId){
+        this.ingestService.getSubmissionProject(this.submissionEnvelopeId)
+          .subscribe(project => {
+            this.projectId = this.getProjectId(project);
+            this.initProjectForm();
+          })
+      }
     } else {
+
       this.projectId = this.route.snapshot.paramMap.get('id');
 
 
@@ -96,15 +102,6 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-
-  // getSubmissionProject(submissionId){
-  //   this.ingestService.getProject(this.submissionEnvelopeId).subscribe(data => {
-  //     if(data.length){
-  //       this.project = data[0];
-  //     }
-  //   });
-  // }
-
   getProject(id){
     this.ingestService.getProject(id).subscribe(data => {
       this.project = data;
@@ -122,7 +119,6 @@ export class ProjectComponent implements OnInit {
         this.successMessage = 'Success';
         console.log(data);
         this.projectId = this.getProjectId(this.project);
-        // this.router.navigate([`/projects/detail/${this.projectId}/submissions`]);
     },
       err => {
       this.errorMessage = 'Error';
@@ -194,19 +190,12 @@ export class ProjectComponent implements OnInit {
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
-  // onSelectExistingProject(event){
-  //   console.log(event);
-  //   this.projectId = event.target.value;
-  //   this.initProjectForm();
-  // }
-
   initProjectForm(){
     this.ingestService.getProject(this.projectId)
       .subscribe(data => {
         this.project = data;
         this.projectForm.patchValue(this.project['content']);
         this.projectForm.patchValue({projectId: this.project['content']['project_id']});
-        // this.projectForm.patchValue({existingProjectId: this.projectId});
       });
   }
 

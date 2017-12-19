@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container"  *ngIf="projectId || submissionProjectId || !inSubmissionMode">
   <br/>
   <div  class="alert alert-success" role="alert" *ngIf="successMessage">
     <p><b>{{successMessage}}</b></p>
@@ -25,18 +25,6 @@
       </textarea>
     </div>
 
-    <!--<ng-container *ngIf="inSubmissionMode">-->
-      <!--<div class="form-group" *ngIf="projects$ | async as projects">-->
-        <!--<label for="project">Or choose existing</label>-->
-
-        <!--<select class="form-control" id="project" (change)="onSelectExistingProject($event)" formControlName="existingProjectId" *ngIf="inSubmissionMode">-->
-          <!--<option *ngFor="let project of projects; let i = index"-->
-                  <!--[value]="getProjectId(project)">-->
-            <!--{{project?.content?.name}}-->
-          <!--</option>-->
-        <!--</select>-->
-      <!--</div>-->
-    <!--</ng-container>-->
     <ng-container *ngIf="!inSubmissionMode">
       <button type="button" class="btn btn-success" (click)="cancel(projectForm.value)">Cancel</button>
       <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Save</button>
