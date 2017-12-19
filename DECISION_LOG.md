@@ -1,0 +1,1 @@
+Use Sign in / Sign out instead of login / logout [justification](https://ux.stackexchange.com/questions/1080/using-sign-in-vs-using-log-in)

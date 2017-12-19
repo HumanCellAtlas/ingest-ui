@@ -46,10 +46,10 @@ export class UploadComponent implements OnInit {
         .subscribe(
         data => {
           this.uploadResults$ = <any>data;
-          let submissionId = this.uploadResults$.details.submission_id;
-          let submissionsPath = `/submissions/detail/${submissionId}/overview`;
-          console.log('navigating to submissionsPath' + submissionsPath);
-          this.router.navigate([submissionsPath]);
+          //let submissionId = this.uploadResults$.details.submission_id;
+          //let submissionsPath = `/submissions/detail/${submissionId}/overview`;
+          //console.log('navigating to submissionsPath' + submissionsPath);
+          //this.router.navigate([submissionsPath]);
         },
         err => {
           this.error$ = <any>err

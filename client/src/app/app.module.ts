@@ -7,7 +7,7 @@ import {RouterModule} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
 
@@ -45,7 +45,8 @@ import {ProjectListComponent} from './projects/project-list/project-list.compone
 import {ProjectsComponent} from './projects/projects.component';
 import {PaginationComponent} from './submission/pagination/pagination.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
-import { ProjectSubmissionComponent } from './submission/project-submission/project-submission.component';
+import {ProjectSubmissionComponent} from './project-submission/project-submission.component';
+import {LoginComponent} from './login/login.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -80,7 +81,8 @@ export function tokenGetter(): string {
     PaginationComponent,
     UploadComponent,
     MetadataComponent,
-    ProjectSubmissionComponent
+    ProjectSubmissionComponent,
+    LoginComponent
   ],
   imports: [
     NgbModule.forRoot(),
