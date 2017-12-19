@@ -26,14 +26,14 @@ export class UploadComponent implements OnInit {
 
   constructor(private brokerService: BrokerService,
               private router: Router) {
+  }
+
+  ngOnInit() {
     if(this.projectId){
       this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_NOPROJECTTAB.xlsx';
     } else {
       this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
     }
-  }
-
-  ngOnInit() {
   }
 
   resetMessages() {
