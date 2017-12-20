@@ -162,7 +162,7 @@ export class ProjectComponent implements OnInit {
     return {
       core : {
         type: "project",
-          schema_url: "https://raw.githubusercontent.com/HumanCellAtlas/metadata-schema/4.1.0/json_schema/project.json"
+          schema_url: "https://raw.githubusercontent.com/HumanCellAtlas/metadata-schema/4.6.1/json_schema/project.json"
       },
 
       name: formValue['name'],
