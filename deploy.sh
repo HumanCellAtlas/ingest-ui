@@ -2,7 +2,7 @@
 # Build the client
 cd client
 npm install
-ng build --prod
+npm run build-prod
 # Build and run the install script
 cd ..
 npm install
