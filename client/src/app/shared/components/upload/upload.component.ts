@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 export class UploadComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput;
+  @ViewChild('projectIdInput') projectIdInput;
 
   error$: Observable<String>;
 
@@ -46,13 +47,13 @@ export class UploadComponent implements OnInit {
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();
       formData.append("file", fileBrowser.files[0]);
+      formData.append("project_id", this.projectIdInput.nativeElement.value);
       this.brokerService.uploadSpreadsheet(formData)
         .subscribe(
         data => {
           this.uploadResults$ = <any>data;
           let submissionId = this.uploadResults$['details']['submission_id'];
           let submissionsPath = `/submissions/detail/${submissionId}/overview`;
-          console.log('navigating to submissionsPath' + submissionsPath);
           this.router.navigate([submissionsPath]);
         },
         err => {
