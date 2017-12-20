@@ -115,7 +115,7 @@ export class IngestService {
   public submit(submitLink){
     this.http.put(submitLink, null).subscribe(
       res=> {
-        console.log(res)
+        location.reload();
       },
       err => {
         console.log(err)

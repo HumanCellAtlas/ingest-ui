@@ -1,7 +1,3 @@
-/*.metadata-table{*/
-  /*overflow-y: scroll;*/
-/*}*/
-
 /*override material theme*/
 .ngx-datatable.material {
   box-shadow: none;
@@ -19,8 +15,3 @@
 .icon-ellipses {
   fill: #ffc107;
 }
-
-/*.badge{*/
-  /*display:inline-block;*/
-  /*width:80px*/
-/*}*/

@@ -36,7 +36,7 @@ import {AnalysesComponent} from './submission/analyses/analyses.component';
 import {BundlesComponent} from './submission/bundles/bundles.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
 import {FileListComponent} from './submission/files/file-list/file-list.component';
-import {TeamComponent} from './submission/team/team.component';
+import {TeamComponent} from './shared/components/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component'
@@ -45,8 +45,8 @@ import {ProjectListComponent} from './projects/project-list/project-list.compone
 import {ProjectsComponent} from './projects/projects.component';
 import {PaginationComponent} from './submission/pagination/pagination.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
-import {ProjectSubmissionComponent} from './project-submission/project-submission.component';
 import {LoginComponent} from './login/login.component';
+import {OverviewComponent } from './submission/overview/overview.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -81,8 +81,8 @@ export function tokenGetter(): string {
     PaginationComponent,
     UploadComponent,
     MetadataComponent,
-    ProjectSubmissionComponent,
-    LoginComponent
+    LoginComponent,
+    OverviewComponent
   ],
   imports: [
     NgbModule.forRoot(),

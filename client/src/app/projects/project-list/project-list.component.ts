@@ -18,4 +18,12 @@ export class ProjectListComponent implements OnInit {
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
+  truncate(string, length){
+    if(string.length > length){
+      return string.substring(0, length) + '...'
+    }
+    return string;
+
+  }
+
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {IngestService} from "../../shared/ingest.service";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
@@ -9,8 +9,9 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent implements OnInit, OnDestroy {
   @Input() submissionEnvelopeId;
+  @Input() files$;
 
   files : Object[];
 
@@ -52,6 +53,8 @@ export class FilesComponent implements OnInit {
     this.ingestService.getFiles(this.submissionEnvelopeId)
       .subscribe( data => {
         this.files = data.map(this.flatten)
+        console.log('files');
+        console.log(this.files);
       });
   }
 

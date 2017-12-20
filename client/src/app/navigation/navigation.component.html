@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+
   <a class="navbar-brand" href="/home">Human Cell Atlas</a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -9,7 +10,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul *ngIf="auth.isAuthenticated()" class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/">Submissions <span class="sr-only">(current)</span></a>
+        <a class="nav-link" routerLink="/submissions/list">Submissions <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/projects/list">Projects</a>

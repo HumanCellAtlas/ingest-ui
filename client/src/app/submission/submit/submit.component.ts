@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IngestService} from "../../shared/ingest.service";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
 import {Observable} from "rxjs/Observable";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-submit',
@@ -18,7 +19,8 @@ export class SubmitComponent implements OnInit {
   error;
   success;
 
-  constructor(private ingestService: IngestService) {
+  constructor(private ingestService: IngestService,
+              private router: Router) {
     this.error = {
       message: '',
       details: ''
@@ -40,16 +42,19 @@ export class SubmitComponent implements OnInit {
   }
 
   completeSubmission(submission) {
+    console.log('completeSubmission');
     let submitLink = this.getSubmitLink(submission);
     this.ingestService.submit(submitLink);
-    console.log('completeSubmission');
+
+    let submissionsPath = `/submissions/detail/${this.submissionEnvelopeId}/overview`;
+    console.log('navigating to submissionsPath' + submissionsPath);
+
   }
 
   getSubmitLink(submissionEnvelope){
     let links = submissionEnvelope['_links'];
     return links && links['submit']? links['submit']['href'] : null;
   }
-
 
 
 }

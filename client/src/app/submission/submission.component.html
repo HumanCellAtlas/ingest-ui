@@ -23,7 +23,8 @@
   <div class="row">
     <div class="col-lg-12">
       <tabs>
-        <tab tabTitle="Overview"  [active]="activeTab == 'overview'" ><app-project [submissionEnvelopeId]="submissionEnvelopeId" [inSubmissionMode]="true" ></app-project></tab>
+        <!--<tab tabTitle="Overview"  [active]="activeTab == 'overview'" ><app-project [submissionEnvelopeId]="submissionEnvelopeId" [inSubmissionMode]="true" ></app-project></tab>-->
+        <tab tabTitle="Overview"  [active]="activeTab == 'overview'" ><app-overview [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-overview></tab>
         <tab tabTitle="Metadata" [active]="activeTab == 'metadata'">
           <app-metadata [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
         </tab>

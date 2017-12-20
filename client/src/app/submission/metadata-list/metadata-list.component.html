@@ -53,22 +53,31 @@
   </ngx-datatable-column>
 
   <!--add the following binding if pinning column-->
-<!--[frozenLeft]="true"-->
+  <!--[frozenLeft]="true"-->
+
+
+  <!--State Column-->
+  <ngx-datatable-column *ngIf="config.displayState" prop="validationState" name="state" [width]="'130'" >
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <ng-container [ngSwitch]="value">
+        <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
+        <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
+        <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
+        <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
+        <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
+        <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
+      </ng-container>
+    </ng-template>
+  </ngx-datatable-column>
 
   <ng-container *ngFor="let column of getColumns(rows[0])">
-    <!--State Column-->
-    <ngx-datatable-column *ngIf="column == 'validationState';else textColumn" prop="validationState" name="state" [width]="'130'" >
+    <!--Core.type column-->
+    <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <ng-container [ngSwitch]="value">
-          <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
-          <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
-          <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
-          <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
-          <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
-          <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
-        </ng-container>
+        <a href="{{row['content.core.schema_url']}}"> {{value}}</a>
       </ng-template>
     </ngx-datatable-column>
+
     <!--Other columns-->
     <ng-template #textColumn>
       <ngx-datatable-column prop="{{column}}" name="{{column.replace('content.','')}}">
