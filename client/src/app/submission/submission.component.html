@@ -30,6 +30,7 @@
         </tab>
         <tab tabTitle="Data" [active]="activeTab == 'data'" [disabled]="!submissionEnvelopeId">
           <app-files
+            [submissionEnvelope]="submissionEnvelope"
             [submissionEnvelopeId]="submissionEnvelopeId" >
           </app-files>
         </tab>

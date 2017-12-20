@@ -13,6 +13,7 @@
       <p>
         Upload your completed spreadsheet:<br/>
         <input type="file" (change)="resetMessages()" #fileInput placeholder="Upload file..."/><br/><br/>
+        <input type="hidden" #projectIdInput name="project_id" value="{{projectId}}" /><br/><br/>
         <button type="button" (click)="upload()" class="btn btn-success">Upload spreadsheet</button>
       </p>
     </div>
