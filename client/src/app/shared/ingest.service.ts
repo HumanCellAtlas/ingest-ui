@@ -47,6 +47,12 @@ export class IngestService {
       .do(console.log);
   }
 
+  public getUserProjects(): Observable<Project[]> {
+    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'submissionDate,desc'}})
+      .map((data: ListResult<Project>) => _.values(data._embedded.projects))
+      .do(console.log);
+  }
+
   public getFiles(id): Observable<Object[]> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`)
       .map((data: ListResult<Object>) => {
