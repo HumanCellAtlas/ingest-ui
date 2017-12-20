@@ -10,4 +10,4 @@ serverless client deploy -v
 # Configure CloudFront support in aws-cli
 aws configure set preview.cloudfront true
 # Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id E1GC8ZIY6A9571 --paths /*
+aws cloudfront create-invalidation --distribution-id E1GC8ZIY6A9571 --paths '/*'
