@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Build the client
+git pull
 cd client
 npm install
 npm run build-prod
