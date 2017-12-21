@@ -55,7 +55,7 @@ export class UploadComponent implements OnInit {
       if(projectId){
         formData.append("project_id", projectId );
       }
-
+      
       this.brokerService.uploadSpreadsheet(formData)
         .subscribe(
         data => {
