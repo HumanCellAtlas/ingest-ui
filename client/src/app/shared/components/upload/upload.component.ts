@@ -47,7 +47,12 @@ export class UploadComponent implements OnInit {
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();
       formData.append("file", fileBrowser.files[0]);
-      formData.append("project_id", this.projectIdInput.nativeElement.value);
+
+      let projectId = this.projectIdInput.nativeElement.value;
+
+      if(projectId){
+        formData.append("project_id", projectId );
+      }
       
       this.brokerService.uploadSpreadsheet(formData)
         .subscribe(
