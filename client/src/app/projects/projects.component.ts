@@ -38,7 +38,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects(){
-    this.ingestService.getProjects()
+    this.ingestService.getUserProjects()
       .subscribe(data =>{
         this.projects = data;
       });
