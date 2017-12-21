@@ -22,6 +22,8 @@ export class SubmissionComponent implements OnInit {
 
   isSubmittable: boolean;
 
+  project: any;
+
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute) {
   }
@@ -33,14 +35,21 @@ export class SubmissionComponent implements OnInit {
 
     if(!this.submissionEnvelopeId){
       this.projectId = this.route.snapshot.paramMap.get('projectid');
+      if(this.projectId){
+        this.getProject(this.projectId)
+      }
     } else {
       this.submissionEnvelope$ = this.ingestService.getSubmission(this.submissionEnvelopeId);
+
       this.submissionEnvelope$
         .subscribe(data => {
           this.submissionEnvelope = data;
           this.isSubmittable = this.checkIfValid(data);
           this.submissionState = data['submissionState'];
         });
+
+      this.getSubmissionProject(this.submissionEnvelopeId)
+
     }
   }
 
@@ -54,5 +63,19 @@ export class SubmissionComponent implements OnInit {
     let validStates = ["Valid", "Submitted", "Cleanup", "Complete"];
     console.log(validStates.indexOf(status) >= 0);
     return (validStates.indexOf(status) >= 0);
+  }
+
+  getProject(id){
+    this.ingestService.getProject(id)
+      .subscribe(project => {
+        this.project = project;
+      });
+  }
+
+  getSubmissionProject(id){
+    this.ingestService.getSubmissionProject(id)
+      .subscribe(project => {
+        this.project = project;
+      })
   }
 }
