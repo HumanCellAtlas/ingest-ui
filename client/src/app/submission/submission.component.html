@@ -2,21 +2,23 @@
 <script src="../shared/components/project/project.component.ts"></script>
 <div class="container-fluid">
   <br/>
-    <div class="row">
-        <div class="col-sm-10"><h1>Submission</h1></div>
-        <div class="col-sm-2">
-          <h3><span [ngSwitch]="submissionState">
-              <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionState}}</span>
-              <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionState}}</span>
-              <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionState}}</span>
-              <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{submissionState}}</span>
-              <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{submissionState}}</span>
-              <span *ngSwitchCase="'Submitted'" class="badge badge-pill badge-secondary">{{submissionState}}</span>
-              <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
-              <span *ngSwitchCase="'Cleanup'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
-              <span *ngSwitchCase="'Complete'" class="badge badge-pill border border-success bg-light text-success">{{submissionState}}</span>
-          </span></h3>
-    </div>
+  <div class="row">
+    <div class="col-sm-10"><h1>Submission</h1></div>
+    <div class="col-sm-2">
+      <h3>
+        <span [ngSwitch]="submissionState">
+          <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionState}}</span>
+          <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionState}}</span>
+          <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionState}}</span>
+          <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{submissionState}}</span>
+          <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{submissionState}}</span>
+          <span *ngSwitchCase="'Submitted'" class="badge badge-pill badge-secondary">{{submissionState}}</span>
+          <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
+          <span *ngSwitchCase="'Cleanup'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
+          <span *ngSwitchCase="'Complete'" class="badge badge-pill border border-success bg-light text-success">{{submissionState}}</span>
+        </span>
+      </h3>
+  </div>
   </div>
   <br/>
   <br/>
@@ -36,7 +38,7 @@
           </app-files>
         </tab>
 
-        <tab [href]="'submit'" tabTitle="Submit" [active]="activeTab == 'submit'">
+        <tab [href]="'submit'" [disabled]="!isSubmittable" tabTitle="Submit" [active]="activeTab == 'submit'">
           <app-submit [submissionEnvelopeId]="submissionEnvelopeId" [submissionEnvelope$]="submissionEnvelope$" >
           </app-submit>
         </tab>

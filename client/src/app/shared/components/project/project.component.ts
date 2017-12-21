@@ -116,13 +116,11 @@ export class ProjectComponent implements OnInit {
     this.ingestService.putProject(id, patch).subscribe(
       data => {
         this.project = data;
-        this.successMessage = 'Success';
         console.log(data);
         this.projectId = this.getProjectId(this.project);
         this.alertService.success("Project was successfully updated.");
     },
       err => {
-      this.errorMessage = 'Error';
     });
   }
 
@@ -130,9 +128,8 @@ export class ProjectComponent implements OnInit {
     this.ingestService.postProject(projectData)
       .subscribe(data => {
         this.project = data;
-        console.log(this.project);
         let projectId = this.getProjectId(data);
-        this.router.navigate(['/projects/detail/'+projectId]);
+        this.router.navigate(['/projects/detail/' + projectId]);
         this.alertService.success("Project was successfully created.");
       },
 
