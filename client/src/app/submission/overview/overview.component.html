@@ -8,13 +8,13 @@
         <tab tabTitle="Project" [active]="activeTab == 'project'" [disabled]="true">
           <br/>
           <span><strong>Project ID</strong></span><br/>
-          <span><p>{{project['content']['project_id']}}</p></span><br/>
+          <span *ngIf="project['content']"><p>{{project['content']['project_id']}}</p></span><br/>
 
           <span><strong>Title</strong></span><br/><br/>
-          <span><p>{{project['content']['name']}}</p></span><br/>
+          <span *ngIf="project['content']"><p>{{project['content']['name']}}</p></span><br/>
 
           <span><strong>Description</strong></span><br/><br/>
-          <span><p class="text-justify">{{project['content']['description']}}</p></span>
+          <span *ngIf="project['content']"><p class="text-justify">{{project['content']['description']}}</p></span>
         </tab>
 
         <tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>
@@ -22,7 +22,3 @@
     </div>
   </div>
 </div>
-
-
-
-<!--{{projectForm.value | json}}-->

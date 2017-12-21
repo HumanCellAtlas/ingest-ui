@@ -1,11 +1,21 @@
 <nav class="nav {{navClass}}"  >
-  <a *ngFor="let tab of tabs"
-     (click)="selectTab(tab)"
-     class="nav-item nav-link"
-     [class.disabled]="tab.disabled"
-     [class.active]="tab.active" >
-     {{tab.title}}
-  </a>
+  <ng-container *ngFor="let tab of tabs">
+    <a *ngIf="tab.href"
+       (click)="selectTab(tab)"
+       class="nav-item nav-link"
+       routerLink="{{tab.href ? '../' + tab.href : '.' }}"
+       [class.disabled]="tab.disabled"
+       [class.active]="tab.active" >
+       {{tab.title}}
+    </a>
+    <a *ngIf="!tab.href"
+       (click)="selectTab(tab)"
+       class="nav-item nav-link"
+       [class.disabled]="tab.disabled"
+       [class.active]="tab.active" >
+      {{tab.title}}
+    </a>
+  </ng-container>
 </nav>
 <div class="container">
   <ng-content></ng-content>

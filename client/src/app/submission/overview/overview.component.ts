@@ -10,28 +10,13 @@ import {ActivatedRoute} from "@angular/router";
 export class OverviewComponent implements OnInit {
   @Input() projectId;
   @Input() submissionEnvelopeId;
-
-
-  project:any;
+  @Input() project;
 
   constructor(private ingestService: IngestService, private route: ActivatedRoute) { }
 
   ngOnInit(){
-    if(this.projectId){
-      this.getProject(this.projectId)
-    }
-    if(this.submissionEnvelopeId){
-      this.ingestService.getSubmissionProject(this.submissionEnvelopeId)
-        .subscribe(project => {
-          this.project = project;
-        })
-    }
   }
 
-  getProject(id){
-    this.ingestService.getProject(id).subscribe(data => {
-      this.project = data;
-    });
-  }
+
 
 }

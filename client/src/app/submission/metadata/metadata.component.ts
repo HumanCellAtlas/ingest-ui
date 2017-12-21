@@ -28,8 +28,6 @@ export class MetadataComponent implements OnInit {
         .subscribe(data => this.analyses = data);
       this.ingestService.getAssays(this.submissionEnvelopeId)
         .subscribe(data => this.assays = data.map(this.flatten));
-      this.ingestService.getBundles(this.submissionEnvelopeId)
-        .subscribe(data => this.bundles = data);
       this.ingestService.getProtocols(this.submissionEnvelopeId)
         .subscribe(data => this.protocols = data.map(this.flatten));
     }
