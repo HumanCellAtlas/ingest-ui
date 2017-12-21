@@ -1,12 +1,3 @@
-<div  class="alert alert-success" role="alert" *ngIf="success['message']">
-  <p><b>{{success['message']}}</b></p>
-  <p>{{success['details']}}</p>
-</div>
-<div  class="alert alert-danger" role="alert" *ngIf="error['message']">
-  <p><b>{{error['message']}}</b></p>
-  <p>{{error['details']}}</p>
-</div>
-
 <div class="container-fluid">
 <br/>
 <ul class="list-group">
@@ -41,15 +32,3 @@ your data is going to make its way to the Human Cell Atlas pipelines for immedia
     Submit data for immediate release
   </button>
 </form>
-
-  <div class="card" *ngIf="bundles && bundles.length > 0">
-    <div class="card-body" >
-      <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Bundles">
-          <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
-        </tab>
-      </tabs>
-    </div>
-  </div>
-
-

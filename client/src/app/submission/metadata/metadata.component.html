@@ -25,4 +25,12 @@
   <br/>
 </div>
 
-
+<div class="card" *ngIf="bundles && bundles.length > 0">
+  <div class="card-body" >
+    <tabs [navClass]="'nav-tabs'">
+      <tab tabTitle="Bundles">
+        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
+      </tab>
+    </tabs>
+  </div>
+</div>
