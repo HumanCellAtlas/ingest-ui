@@ -1,0 +1,17 @@
+/*override material theme*/
+.ngx-datatable.material {
+  box-shadow: none;
+  font-size: 13px;
+}
+
+.icon-check {
+  fill: #28a745;
+}
+
+.icon-x {
+  fill: #dc3545;
+}
+
+.icon-ellipses {
+  fill: #ffc107;
+}

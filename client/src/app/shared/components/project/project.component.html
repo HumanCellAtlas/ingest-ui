@@ -1,0 +1,52 @@
+<div class="container"  *ngIf="projectId || submissionProjectId || !inSubmissionMode">
+  <br/>
+  <h2>Project</h2>
+  <br/>
+  <div class="card">
+  <div class="card-body">
+  <tabs [navClass]="'nav-tabs'">
+  <tab tabTitle="Project" [active]="activeTab == 'team'" [disabled]="true">
+
+
+    <div  class="alert alert-success" role="alert" *ngIf="successMessage">
+      <p><b>{{successMessage}}</b></p>
+    </div>
+    <div  class="alert alert-danger" role="alert" *ngIf="errorMessage">
+      <p><b>{{errorMessage}}</b></p>
+    </div>
+
+    <br/>
+
+    <form [formGroup]="projectForm">
+      <div class="form-group" >
+        <label for="projectId">Project ID</label>
+        <input class="form-control" id="projectId" formControlName="projectId" placeholder="{{placeholder['projectId']}}">
+        <label for="title">Title</label>
+        <textarea type="text" class="form-control" id="title" formControlName="name" rows="3" placeholder="{{placeholder['name']}}"></textarea>
+        <label for="description">Description</label>
+        <textarea type="text"
+                  class="form-control"
+                  id="description" rows="20"
+                  formControlName="description"
+                  placeholder="{{placeholder['description']}}">
+        </textarea>
+      </div>
+
+      <ng-container *ngIf="!inSubmissionMode">
+        <button type="button" class="btn btn-success" (click)="cancel(projectForm.value)">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Save</button>
+      </ng-container>
+    </form>
+
+  </tab>
+
+    <tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>
+  </tabs>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!--{{projectForm.value | json}}-->

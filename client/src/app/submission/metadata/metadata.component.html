@@ -1,0 +1,42 @@
+<script src="../../shared/components/upload/upload.component.ts"></script>
+<div class="container-fluid"><br/>
+  <h2>Metadata Template</h2><br/>
+  <app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
+  <br/>
+
+  <div class="card" *ngIf="submissionEnvelopeId">
+    <div class="card-body">
+      <tabs [navClass]="'nav-tabs'">
+        <tab tabTitle="Samples">
+          <div class="pane">
+            <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
+          </div>
+        </tab>
+        <tab tabTitle="Protocols">
+          <app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>
+        </tab>
+        <tab tabTitle="Assays">
+          <app-assays *ngIf="assays && assays.length > 0" [assays]="assays"></app-assays>
+        </tab>
+        <tab tabTitle="Analyses">
+          <app-analyses *ngIf="analyses && analyses.length > 0" [analyses]="analyses.map(flatten)" ></app-analyses>
+        </tab>
+      </tabs>
+    </div>
+  </div>
+  <br/>
+
+  <div class="card" *ngIf="submissionEnvelopeId">
+    <div class="card-body" >
+      <tabs [navClass]="'nav-tabs'">
+        <tab tabTitle="Bundles">
+          <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
+        </tab>
+      </tabs>
+    </div>
+  </div>
+
+
+</div>
+
+

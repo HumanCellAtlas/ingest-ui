@@ -1,37 +1,46 @@
-<ng-template #noData>No Data Available</ng-template>
-<div class="card">
-  <div class="card-header">Dashboard</div>
-  <div>
-    <table id="submissions" class="table table-striped" *ngIf="submissionEnvelopes$ | async as submissionEnvelopes else noData">
-      <thead class="thead-light">
-      <tr>
-        <th>Updated</th>
-        <th>Submission</th>
-        <th>Project</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
-        <td>{{submissionEnvelope.updateDate | date: "shortDate"}}</td>
-        <td>{{submissionEnvelope.uuid.uuid}}</td>
-        <td>Tissue Stability</td>
-        <td>
-          <div [ngSwitch]="submissionEnvelope.submissionState">
-            <span *ngSwitchCase="'Draft'" class="badge badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Submitted'" class="badge badge-secondary">{{submissionEnvelopem.submissionState}}</span>
-          </div>
-        </td>
-        <td>
-          <form class="submission-form complete-form" action="submit" method="POST">
-            <button type="button" class="btn btn-default disabled" onclick="return false;">
-              Complete submission
-            </button>
-          </form>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+<script src="submission.component.ts"></script>
+<script src="../shared/components/project/project.component.ts"></script>
+<div class="container">
+  <br/>
+    <div class="row">
+        <div class="col-sm-10"><h1>Submission</h1></div>
+        <div class="col-sm-2">
+          <h3><span [ngSwitch]="submissionState">
+              <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionState}}</span>
+              <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionState}}</span>
+              <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionState}}</span>
+              <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{submissionState}}</span>
+              <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{submissionState}}</span>
+              <span *ngSwitchCase="'Submitted'" class="badge badge-pill badge-secondary">{{submissionState}}</span>
+              <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
+              <span *ngSwitchCase="'Cleanup'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
+              <span *ngSwitchCase="'Complete'" class="badge badge-pill border border-success bg-light text-success">{{submissionState}}</span>
+          </span></h3>
+    </div>
+  </div>
+  <br/>
+  <br/>
+  <div class="row">
+    <div class="col-lg-12">
+      <tabs>
+        <!--<tab tabTitle="Overview"  [active]="activeTab == 'overview'" ><app-project [submissionEnvelopeId]="submissionEnvelopeId" [inSubmissionMode]="true" ></app-project></tab>-->
+        <tab tabTitle="Overview"  [active]="activeTab == 'overview'" ><app-overview [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-overview></tab>
+        <tab tabTitle="Metadata" [active]="activeTab == 'metadata'">
+          <app-metadata [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
+        </tab>
+        <tab tabTitle="Data" [active]="activeTab == 'data'" [disabled]="!submissionEnvelopeId">
+          <app-files
+            [submissionEnvelope]="submissionEnvelope"
+            [submissionEnvelopeId]="submissionEnvelopeId" >
+          </app-files>
+        </tab>
+
+        <tab tabTitle="Submit" [disabled]="!isSubmittable" [active]="activeTab == 'submit'">
+          <app-submit [submissionEnvelopeId]="submissionEnvelopeId" [submissionEnvelope$]="submissionEnvelope$" >
+          </app-submit>
+        </tab>
+      </tabs>
+    </div>
   </div>
 </div>
+

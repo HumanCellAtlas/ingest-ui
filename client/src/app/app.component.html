@@ -1,4 +1,7 @@
-<app-navigation></app-navigation>
-<main class="container">
+<app-navigation *ngIf="auth.isAuthenticated()"></app-navigation>
+<nav *ngIf="!auth.isAuthenticated()" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">Human Cell Atlas</a>
+</nav>
+<main class="container-fluid">
   <router-outlet></router-outlet>
 </main>

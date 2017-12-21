@@ -1,0 +1,16 @@
+ <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center" >
+    <li class="page-item" [class.disabled]="currentPageInfo['number'] == 0">
+      <a class="page-link" href="#" tabindex="-1" (click)="goToPage(currentPageInfo['number']-1)">Previous</a>
+    </li>
+    <li  *ngFor="let pageItem of createRange(currentPageInfo['totalPages'])" class="page-item">
+      <a (click)="goToPage(pageItem)" class="page-link" href="#">{{pageItem + 1}}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPageInfo['number'] == (currentPageInfo['totalPages'] - 1)">
+      <a (click)="goToPage(currentPageInfo['number']+1)" class="page-link" href="#" >Next</a>
+    </li>
+  </ul>
+</nav>
+<p>
+  Showing {{currentPageInfo['start']}} - {{currentPageInfo['end']}} of {{currentPageInfo['totalElements']}} total records
+</p>

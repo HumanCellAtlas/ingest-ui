@@ -1,0 +1,5 @@
+<ng-container *ngIf="flattenedSamples && flattenedSamples.length > 0" >
+  <app-metadata-list [metadataList]="flattenedSamples" [metadataType]="'Samples'"> </app-metadata-list>
+  <br/>
+  <!--<app-pagination (pageNumberChange)="goToPage($event)" [currentPageInfo]="currentPageInfo"></app-pagination>-->
+</ng-container>

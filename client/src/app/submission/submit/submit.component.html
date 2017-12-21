@@ -1,0 +1,45 @@
+<div  class="alert alert-success" role="alert" *ngIf="success['message']">
+  <p><b>{{success['message']}}</b></p>
+  <p>{{success['details']}}</p>
+</div>
+<div  class="alert alert-danger" role="alert" *ngIf="error['message']">
+  <p><b>{{error['message']}}</b></p>
+  <p>{{error['details']}}</p>
+</div>
+
+<div class="container-fluid">
+<br/>
+<ul class="list-group">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Project Overview
+    <span text-success class="oi oi-check text-success" aria-hidden="true"></span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Metadata Template
+    <span text-success class="oi oi-check text-success" aria-hidden="true"></span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Data Upload
+    <span text-success class="oi oi-check text-success" aria-hidden="true"></span>
+  </li>
+</ul>
+
+<br/>
+<h3>What's next?</h3>
+<br/>
+
+<p>You have entered all necessary information per Human Cell Atlas standards.
+That’s awesome!</p>
+
+<p>If everything correct, feel free to Submit your project data. Once you hit “Submit”,
+your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
+
+<br/><br/>
+
+<form action="submit" method="POST">
+  <button *ngIf="hasSubmitLink" class="btn btn-success btn-lg" (click)="completeSubmission(submissionEnvelope)">
+    Submit data for immediate release
+  </button>
+</form>
+
+

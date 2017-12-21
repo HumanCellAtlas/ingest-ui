@@ -1,0 +1,25 @@
+<div  class="alert alert-success" role="alert" *ngIf="uploadResults$">
+  <p><b>{{uploadResults$.message}}</b></p>
+  <p>The submission id  <a routerLink="/submissions/detail/{{uploadResults$.details.submission_id}}/overview" class="text-info" >{{uploadResults$.details.submission_uuid}}</a> has been assigned.</p>
+</div>
+<div  class="alert alert-danger" role="alert" *ngIf="error$">
+  <p><b>{{error$.message}}</b></p>
+  <p>{{error$.details}}</p>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="form-group">
+      <h4 class="card-title">Upload a Spreadsheet</h4>
+      <p>
+        Upload your completed spreadsheet:<br/>
+        <input type="file" (change)="resetMessages()" #fileInput placeholder="Upload file..."/><br/><br/>
+        <input type="hidden" #projectIdInput name="project_id" value="{{projectId}}" /><br/><br/>
+        <button type="button" (click)="upload()" class="btn btn-success">Upload spreadsheet</button>
+      </p>
+    </div>
+    <a href="{{downloadFile}}" target="_self" download>
+      <span>Download Empty Spreadsheet</span>
+      <span class="oi oi-data-transfer-download"></span>
+    </a>
+  </div>
+</div>
