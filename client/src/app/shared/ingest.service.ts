@@ -15,7 +15,7 @@ export class IngestService {
 
   // API_URL: string = 'http://api.ingest.integration.data.humancellatlas.org/';
   // API_URL: string = 'http://192.168.99.100:31763';
-  API_URL: string = 'http://api.ingest.dev.data.humancellatlas.org';
+  API_URL: string = 'http://api.ingest.staging.data.humancellatlas.org';
   // API_URL: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {

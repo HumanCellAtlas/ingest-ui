@@ -10,7 +10,7 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class BrokerService {
 
-  API_URL: string = 'http://ingest.dev.data.humancellatlas.org';
+  API_URL: string = 'http://ingest.staging.data.humancellatlas.org';
 
   constructor(private http: HttpClient) {
   }
