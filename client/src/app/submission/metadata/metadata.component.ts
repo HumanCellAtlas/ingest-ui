@@ -15,9 +15,6 @@ export class MetadataComponent implements OnInit {
   bundles: Object[];
   protocols: Object[];
 
-  // downloadFile:string = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xls'
-
-
   constructor(private ingestService: IngestService) {
 
   }
@@ -28,10 +25,10 @@ export class MetadataComponent implements OnInit {
         .subscribe(data => this.analyses = data);
       this.ingestService.getAssays(this.submissionEnvelopeId)
         .subscribe(data => this.assays = data.map(this.flatten));
-      this.ingestService.getBundles(this.submissionEnvelopeId)
-        .subscribe(data => this.bundles = data);
       this.ingestService.getProtocols(this.submissionEnvelopeId)
         .subscribe(data => this.protocols = data.map(this.flatten));
+      this.ingestService.getBundles(this.submissionEnvelopeId)
+        .subscribe(data => this.bundles = data.map(this.flatten));
     }
   }
 

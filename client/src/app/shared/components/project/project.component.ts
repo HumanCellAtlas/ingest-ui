@@ -5,6 +5,7 @@ import {IngestService} from "../../ingest.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import {AuthService} from "../../../auth/auth.service";
+import {AlertService} from "../../alert.service";
 
 @Component({
   selector: 'app-project',
@@ -21,25 +22,22 @@ export class ProjectComponent implements OnInit {
 
   placeholder: any = {
 
-    projectId:  'A project id for your research project e.g. HCA-DEMO-PROJECT_ID',
+    projectId:  'A project id for your research project',
+                // 'e.g. HCA-DEMO-PROJECT_ID',
 
-    name:       'A title for your research project e.g. reflecting your project grant ' +
-                'e.g. "Testing ischaemic sensitivity of human tissue at different time points, ' +
-                'using single cell RNA sequencing."',
+    name:       'A title for your research project e.g. reflecting your project grant' ,
+                // 'e.g. "Testing ischaemic sensitivity of human tissue at different time points, ' +
+                // 'using single cell RNA sequencing."',
 
-    description: 'A description of your research experiment, ' +
-                 'e.g. "Assessment of ischaemic sensitivity of three human tissues using 10x 3 single cell RNA sequencing ' +
-                 'We aim to collect data from three tissues expected to have different sensitivity to ischaemia: ' +
-                 'spleen(expected least sensitive), oesophagus (in the middle) and liver (expected most sensitive).'
+    description: 'A description of your research experiment'
+                 // 'e.g. "Assessment of ischaemic sensitivity of three human tissues using 10x 3 single cell RNA sequencing ' +
+                 // 'We aim to collect data from three tissues expected to have different sensitivity to ischaemia: ' +
+                 // 'spleen(expected least sensitive), oesophagus (in the middle) and liver (expected most sensitive).'
   };
 
   editMode: boolean;
 
   projectId: string;
-
-  errorMessage: string;
-
-  successMessage: string;
 
   profile: any;
 
@@ -53,7 +51,9 @@ export class ProjectComponent implements OnInit {
               private fb: FormBuilder,
               private router: Router,
               private route: ActivatedRoute,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private alertService: AlertService
+              ) {
     this.editMode = !this.inSubmissionMode;
   }
 
@@ -116,12 +116,11 @@ export class ProjectComponent implements OnInit {
     this.ingestService.putProject(id, patch).subscribe(
       data => {
         this.project = data;
-        this.successMessage = 'Success';
         console.log(data);
         this.projectId = this.getProjectId(this.project);
+        this.alertService.success("Project was successfully updated.");
     },
       err => {
-      this.errorMessage = 'Error';
     });
   }
 
@@ -129,14 +128,13 @@ export class ProjectComponent implements OnInit {
     this.ingestService.postProject(projectData)
       .subscribe(data => {
         this.project = data;
-        console.log(this.project);
-        this.successMessage = 'Success';
         let projectId = this.getProjectId(data);
-        this.router.navigate(['/projects/detail/'+projectId]);
+        this.router.navigate(['/projects/detail/' + projectId]);
+        this.alertService.success("Project was successfully created.");
       },
 
       err => {
-        this.errorMessage = 'Error';
+        this.alertService.error("An error had occurred while creating the project.");
         console.log(err);
       });
 

@@ -8,9 +8,7 @@
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
         <tab tabTitle="Samples">
-          <div class="pane">
-            <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
-          </div>
+          <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
         </tab>
         <tab tabTitle="Protocols">
           <app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>
@@ -25,18 +23,14 @@
     </div>
   </div>
   <br/>
-
-  <div class="card" *ngIf="submissionEnvelopeId">
-    <div class="card-body" >
-      <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Bundles">
-          <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
-        </tab>
-      </tabs>
-    </div>
-  </div>
-
-
 </div>
 
-
+<div class="card" *ngIf="bundles && bundles.length > 0">
+  <div class="card-body" >
+    <tabs [navClass]="'nav-tabs'">
+      <tab tabTitle="Bundles">
+        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
+      </tab>
+    </tabs>
+  </div>
+</div>
