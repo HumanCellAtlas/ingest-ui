@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IngestService} from "../../shared/ingest.service";
+import {IngestService} from "../../shared/services/ingest.service";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({

@@ -1,9 +1,10 @@
 import {Component, Output, EventEmitter, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {BrokerService} from "../../broker.service";
+import {BrokerService} from "../../services/broker.service";
 import {Observable} from "rxjs/Observable";
 import {UploadResults} from "../../models/uploadResults";
 import {Router} from "@angular/router";
-import {AlertService} from "../../alert.service";
+import {AlertService} from "../../services/alert.service";
+import {LoaderService} from "../../services/loader.service";
 
 @Component({
   selector: 'app-upload',
@@ -28,7 +29,8 @@ export class UploadComponent implements OnInit {
 
   constructor(private brokerService: BrokerService,
               private router: Router,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private loaderService: LoaderService) {
   }
 
   ngOnInit() {
@@ -45,6 +47,7 @@ export class UploadComponent implements OnInit {
   }
 
   upload() {
+    this.loaderService.display(true);
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();
@@ -55,7 +58,7 @@ export class UploadComponent implements OnInit {
       if(projectId){
         formData.append("project_id", projectId );
       }
-      
+
       this.brokerService.uploadSpreadsheet(formData)
         .subscribe(
         data => {
@@ -65,10 +68,12 @@ export class UploadComponent implements OnInit {
 
           this.router.navigate([submissionsPath]);
           this.alertService.success(this.uploadResults$['message']);
+          this.loaderService.display(false);
         },
         err => {
           this.error$ = <any>err
           this.alertService.error(this.error$['message']);
+          this.loaderService.display(false);
         });
     }
 

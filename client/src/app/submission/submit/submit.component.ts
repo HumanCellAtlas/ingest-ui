@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IngestService} from "../../shared/ingest.service";
+import {IngestService} from "../../shared/services/ingest.service";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
 import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
@@ -23,7 +23,6 @@ export class SubmitComponent implements OnInit {
   ngOnInit() {
     if(this.submissionEnvelope$){
       this.submissionEnvelope$.subscribe( (submission: SubmissionEnvelope) => {
-        console.log('submission envelope');
         this.submissionEnvelope = submission;
         this.hasSubmitLink = this.getSubmitLink(submission)
       })
@@ -34,10 +33,6 @@ export class SubmitComponent implements OnInit {
     console.log('completeSubmission');
     let submitLink = this.getSubmitLink(submission);
     this.ingestService.submit(submitLink);
-
-    let submissionsPath = `/submissions/detail/${this.submissionEnvelopeId}/overview`;
-    console.log('navigating to submissionsPath' + submissionsPath);
-
   }
 
   getSubmitLink(submissionEnvelope){

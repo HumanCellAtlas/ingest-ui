@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
-import { ClipboardDirective } from './clipboard.directive';
-import {ClipboardService} from "./clipboard.service";
+import { ClipboardDirective } from './directives/clipboard.directive';
+import {ClipboardService} from "./services/clipboard.service";
 
 
 @NgModule({

@@ -1,11 +1,11 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Contact, Project} from "../../models/project";
-import {IngestService} from "../../ingest.service";
+import {IngestService} from "../../services/ingest.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import {AuthService} from "../../../auth/auth.service";
-import {AlertService} from "../../alert.service";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-project',
@@ -37,7 +37,7 @@ export class ProjectComponent implements OnInit {
 
   editMode: boolean;
 
-  projectId: string;
+  projectId: any;
 
   profile: any;
 
@@ -54,38 +54,28 @@ export class ProjectComponent implements OnInit {
               public auth: AuthService,
               private alertService: AlertService
               ) {
-    this.editMode = !this.inSubmissionMode;
   }
 
   ngOnInit() {
     this.projects$ = this.ingestService.getProjects();
+    this.projectId = this.route.snapshot.paramMap.get('id');
 
-    if(this.inSubmissionMode){
-      this.projectId = this.route.snapshot.paramMap.get('projectid');
-      this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
+    if(this.projectId){
       this.editMode = false;
+      this.getProject(this.projectId);
 
-      if(this.submissionEnvelopeId){
-        this.ingestService.getSubmissionProject(this.submissionEnvelopeId)
-          .subscribe(project => {
-            this.projectId = this.getProjectId(project);
-            this.initProjectForm();
-          })
-      }
     } else {
-
-      this.projectId = this.route.snapshot.paramMap.get('id');
-
-
+      this.setToEditMode();
     }
+  }
 
+  setToEditMode(){
+    this.editMode = true;
     this.createProjectForm();
-
     this.auth.getProfile((err, profile) => {
       this.profile = profile;
-      console.log(this.profile);
+      console.log('user profile', profile);
     })
-
   }
 
   createProjectForm() {
@@ -93,8 +83,7 @@ export class ProjectComponent implements OnInit {
       name: [ {value:'', disabled: !this.editMode}, Validators.required],
       description: [{value:'', disabled: !this.editMode}, Validators.required],
       projectId: [{value:'', disabled: !this.editMode},  Validators.required],
-      contributors: this.fb.array([]),
-      existingProjectId:[ {value:'', disabled:this.submissionEnvelopeId}]
+      contributors: this.fb.array([])
     });
 
     if(this.projectId){
@@ -118,10 +107,12 @@ export class ProjectComponent implements OnInit {
         this.project = data;
         console.log(data);
         this.projectId = this.getProjectId(this.project);
+        this.editMode = false;
         this.alertService.success("Project was successfully updated.");
-    },
+      },
       err => {
-    });
+        this.alertService.error("An error has occurred while saving your updates to this project.");
+      });
   }
 
   createProject(projectData){
@@ -129,28 +120,32 @@ export class ProjectComponent implements OnInit {
       .subscribe(data => {
         this.project = data;
         let projectId = this.getProjectId(data);
-        this.router.navigate(['/projects/detail/' + projectId]);
+          this.router.navigate(['/projects/detail/' + projectId]);
         this.alertService.success("Project was successfully created.");
       },
 
       err => {
-        this.alertService.error("An error had occurred while creating the project.");
+        this.alertService.error("An error has occurred while creating the project.");
         console.log(err);
       });
-
   }
 
+
   createOrUpdateProject(formValue) {
-    let projectData = this.extractProject(formValue)
+    if(formValue['name'] && formValue['description'] && formValue['projectId']){
+      let projectData = this.extractProject(formValue);
 
-    let id = this.projectId
+      if(this.projectId){
+        console.log('patch');
+        this.updateProject(this.projectId, projectData);
+      }else{
+        console.log('create')
+        this.createProject(projectData);
+      }
+    } else {
 
-    if(id){
-      console.log('patch');
-      this.updateProject(id, projectData);
-    }else{
-      console.log('create')
-      this.createProject(projectData);
+      this.alertService.error("All fields are required!");
+
     }
 
 
@@ -178,9 +173,21 @@ export class ProjectComponent implements OnInit {
     this.createOrUpdateProject(formValue)
   }
 
-  cancel(projectFormValue){
+  cancel(){
     console.log('saveAndExit');
     this.router.navigate(['/projects/list']);
+  }
+
+  edit(){
+    this.setToEditMode();
+  }
+
+  newSubmission(){
+    this.router.navigate([`/projects/detail/${this.projectId}/submissions/overview`]);
+  }
+
+  newProject(){
+    this.router.navigate([`/projects/new`]);
   }
 
   getProjectId(project){

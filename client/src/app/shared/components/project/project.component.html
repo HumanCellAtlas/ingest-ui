@@ -1,4 +1,4 @@
-<div class="container"  *ngIf="projectId || submissionProjectId || !inSubmissionMode">
+<div class="container"  *ngIf="!projectId || (editMode && projectId)">
   <br/>
   <h2>Project</h2>
   <br/>
@@ -25,7 +25,7 @@
       </div>
 
       <ng-container *ngIf="!inSubmissionMode">
-        <button type="button" class="btn btn-success" (click)="cancel(projectForm.value)">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="cancel()">Cancel</button>
         <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Save</button>
       </ng-container>
     </form>
@@ -39,6 +39,13 @@
 
 </div>
 
+<ng-container *ngIf="!editMode && projectId">
+  <app-overview [project]="project" [projectId]="projectId" >
 
+  <button type="button" class="btn btn-success" (click)="edit()">Edit Project</button>
+  <button type="button" class="btn btn-success" (click)="newProject()">New Project</button>
+  <button type="button" class="btn btn-success" (click)="newSubmission()">Create Project from Spreadsheet</button>
 
-<!--{{projectForm.value | json}}-->
+  </app-overview>
+</ng-container>
+

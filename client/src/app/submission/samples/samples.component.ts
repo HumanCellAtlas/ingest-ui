@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IngestService} from "../../shared/ingest.service";
+import {IngestService} from "../../shared/services/ingest.service";
 import {ListResult} from "../../shared/models/hateoas";
 import {Metadata} from "../../shared/models/metadata";
 
@@ -39,16 +39,11 @@ export class SamplesComponent implements OnInit {
     this.getSamples();
   }
 
-  submit(){
-    console.log('submit xls file.')
-  }
-
   getSamples(){
     this.ingestService.getSamples(this.submissionEnvelopeId, this.params)
       .subscribe(data =>{
         this.samples = data["_embedded"] ? data["_embedded"].samples : [];
         this.flattenedSamples = this.samples.map(this.flatten);
-        console.log(this.flattenedSamples);
         this.pagination = data["page"];
         let p = this.getCurrentPageInfo(this.pagination)
         console.log(p);

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {IngestService} from "../shared/ingest.service";
+import {IngestService} from "../shared/services/ingest.service";
 import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
 import {ActivatedRoute} from "@angular/router";
 
@@ -23,6 +23,8 @@ export class SubmissionComponent implements OnInit {
   isSubmittable: boolean;
 
   project: any;
+
+  projectName: string;
 
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute) {
@@ -61,7 +63,6 @@ export class SubmissionComponent implements OnInit {
   checkIfValid(submission){
     let status = submission['submissionState'];
     let validStates = ["Valid", "Submitted", "Cleanup", "Complete"];
-    console.log(validStates.indexOf(status) >= 0);
     return (validStates.indexOf(status) >= 0);
   }
 
@@ -69,6 +70,7 @@ export class SubmissionComponent implements OnInit {
     this.ingestService.getProject(id)
       .subscribe(project => {
         this.project = project;
+        this.projectName = this.project['content']['name'];
       });
   }
 
@@ -76,6 +78,7 @@ export class SubmissionComponent implements OnInit {
     this.ingestService.getSubmissionProject(id)
       .subscribe(project => {
         this.project = project;
+        this.projectName = this.project['content']['name'];
       })
   }
 }

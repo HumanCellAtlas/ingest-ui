@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
   ViewEncapsulation,
-  ViewChild
+  ViewChild, AfterViewInit
 } from '@angular/core';
 
 export class Page {
@@ -26,7 +26,7 @@ export class Page {
   styleUrls: ['./metadata-list.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class MetadataListComponent implements OnInit {
+export class MetadataListComponent implements OnInit, AfterViewInit {
   @ViewChild('mydatatable') table: any;
 
   @Input() metadataList;
@@ -36,7 +36,8 @@ export class MetadataListComponent implements OnInit {
   @Input() config = {
     displayContent: true,
     displayState: true,
-    displayAll: false
+    displayAll: false,
+    displayColumns: []
   };
 
   private isLoading: boolean = false;
@@ -65,10 +66,26 @@ export class MetadataListComponent implements OnInit {
 
   }
 
+  ngAfterViewInit() {
+    // this.table.bodyComponent.style.height = null;
+  }
+
+  getAllColumns(metadataList){
+    let columns = {};
+
+    metadataList.map(function(row) {
+      Object.keys(row).map(function(col){
+        columns[col] = '';
+      })
+    });
+
+    return this.getColumns(columns);
+  }
+
   getColumns(metadataListRow){
     let columns = [];
 
-    if (this.config.displayAll){
+    if (this.config && this.config.displayAll){
       columns = Object.keys(metadataListRow)
         .filter(column => column.match('^(?!validationState).*'));
     } else { // display only fields inside the content object
@@ -78,6 +95,10 @@ export class MetadataListComponent implements OnInit {
 
     columns.unshift('content.core.type');
 
+    if(this.config && this.config.displayColumns){
+      columns = columns.concat(this.config.displayColumns);
+    }
+
     // if(this.config.displayState){
     //   columns.unshift('validationState');
     // }
@@ -85,8 +106,12 @@ export class MetadataListComponent implements OnInit {
     return columns;
   }
 
+  getMetadataType(row){
+    return row['content.donor.is_living'] != undefined ? 'donor' : row['content.core.type'];
+  }
+
   updateValue(event, cell, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex)
+    console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
     this.metadataList[rowIndex][cell] = event.target.value;
     this.metadataList = [...this.metadataList];
@@ -146,7 +171,10 @@ export class MetadataListComponent implements OnInit {
 
   toggleExpandRow(row) {
     console.log('Toggled Expand Row!', row);
+    console.log(this.table);
     this.table.rowDetail.toggleExpandRow(row);
+    this.table.bodyComponent.bodyHeight = '800px';
+    this.table.bodyComponent.recalcLayout();
   }
 
   onDetailToggle(event) {
@@ -157,6 +185,5 @@ export class MetadataListComponent implements OnInit {
     this.page.pageNumber = pageInfo.offset;
     this.pageNumberChange.emit(pageInfo.offset);
     this.rows = this.metadataList;
-    console.log('pageInfo.offset' + pageInfo.offset)
   }
 }

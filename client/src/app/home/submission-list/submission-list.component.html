@@ -6,20 +6,20 @@
     <table id="submissions" class="table table-striped" *ngIf="submissionEnvelopes;else noData">
       <thead class="thead-light">
       <tr>
-        <th>Updated</th>
+        <th>Created</th>
         <th>Submission ID</th>
-        <th>Project</th>
+        <th>Project ID</th>
         <th>Status</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
-        <td>{{submissionEnvelope.updateDate | date: "medium"}}</td>
+        <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
         <td>
           <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info" >{{getSubmissionId(submissionEnvelope)}}</a>
         </td>
-        <td>Tissue Stability</td>
+        <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState" >
             <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>

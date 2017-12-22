@@ -17,6 +17,7 @@ export const ROUTES: Routes = [
   { path: 'projects/detail/:projectid/submissions/:tab', component: SubmissionComponent },
 
   { path: 'projects/list', component: ProjectsComponent },
+
   { path: 'projects/new', component: ProjectComponent },
   { path: 'projects/detail/:id', component: ProjectComponent },
 

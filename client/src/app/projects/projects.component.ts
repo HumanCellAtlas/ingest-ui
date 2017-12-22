@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Project} from "../shared/models/project";
-import {IngestService} from "../shared/ingest.service";
+import {IngestService} from "../shared/services/ingest.service";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 @Component({

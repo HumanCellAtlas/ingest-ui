@@ -57,7 +57,7 @@
 
 
   <!--State Column-->
-  <ngx-datatable-column *ngIf="config.displayState" prop="validationState" name="state" [width]="'130'" >
+  <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'" >
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <ng-container [ngSwitch]="value">
         <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
@@ -70,11 +70,11 @@
     </ng-template>
   </ngx-datatable-column>
 
-  <ng-container *ngFor="let column of getColumns(rows[0])">
+  <ng-container *ngFor="let column of getAllColumns(rows)">
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{value}}</a>
+        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(row) }}</a>
       </ng-template>
     </ngx-datatable-column>
 
@@ -99,6 +99,13 @@
       </ngx-datatable-column>
     </ng-template>
   </ng-container>
+
+  <ngx-datatable-column prop="_links.self.href" name="ingest api" [width]="'130'" >
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+    </ng-template>
+  </ngx-datatable-column>
+
   <ngx-datatable-footer>
     <ng-template
       ngx-datatable-footer-template

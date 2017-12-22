@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IngestService} from "../../shared/ingest.service";
+import {IngestService} from "../../shared/services/ingest.service";
 
 @Component({
   selector: 'app-metadata',
@@ -14,6 +14,7 @@ export class MetadataComponent implements OnInit {
   assays: Object[];
   bundles: Object[];
   protocols: Object[];
+  samples: Object[];
 
   constructor(private ingestService: IngestService) {
 
@@ -29,6 +30,7 @@ export class MetadataComponent implements OnInit {
         .subscribe(data => this.protocols = data.map(this.flatten));
       this.ingestService.getBundles(this.submissionEnvelopeId)
         .subscribe(data => this.bundles = data.map(this.flatten));
+
     }
   }
 
