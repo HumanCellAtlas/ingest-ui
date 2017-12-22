@@ -4,11 +4,11 @@ import {Observable} from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import {SubmissionEnvelope} from "./models/submissionEnvelope";
-import {ListResult} from "./models/hateoas";
-import {Summary} from "./models/summary";
-import {Project} from "./models/project";
-import {Metadata} from "./models/metadata";
+import {SubmissionEnvelope} from "../models/submissionEnvelope";
+import {ListResult} from "../models/hateoas";
+import {Summary} from "../models/summary";
+import {Project} from "../models/project";
+import {Metadata} from "../models/metadata";
 import {AlertService} from "./alert.service";
 
 @Injectable()
@@ -16,8 +16,8 @@ export class IngestService {
 
   // API_URL: string = 'http://api.ingest.integration.data.humancellatlas.org/';
   // API_URL: string = 'http://192.168.99.100:31763';
-  // API_URL: string = 'http://api.ingest.dev.data.humancellatlas.org';
-  API_URL: string = 'http://localhost:8080';
+  API_URL: string = 'http://api.ingest.dev.data.humancellatlas.org';
+  // API_URL: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient, private alertService: AlertService) {
   }

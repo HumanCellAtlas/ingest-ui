@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {catchError, tap} from 'rxjs/operators';
-import {UploadResults} from "./models/uploadResults";
+import {UploadResults} from "../models/uploadResults";
 import 'rxjs/add/observable/throw';
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
@@ -10,8 +10,8 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class BrokerService {
 
-  // API_URL: string = 'http://ingest.dev.data.humancellatlas.org';
-  API_URL: string = 'http://localhost:5000';
+  API_URL: string = 'http://ingest.dev.data.humancellatlas.org';
+  // API_URL: string = 'http://localhost:5000';
 
   constructor(private http: HttpClient) {
   }
