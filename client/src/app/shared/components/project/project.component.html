@@ -7,14 +7,6 @@
   <tabs [navClass]="'nav-tabs'">
   <tab tabTitle="Project" [active]="activeTab == 'team'" [disabled]="true">
 
-
-    <div  class="alert alert-success" role="alert" *ngIf="successMessage">
-      <p><b>{{successMessage}}</b></p>
-    </div>
-    <div  class="alert alert-danger" role="alert" *ngIf="errorMessage">
-      <p><b>{{errorMessage}}</b></p>
-    </div>
-
     <br/>
 
     <form [formGroup]="projectForm">

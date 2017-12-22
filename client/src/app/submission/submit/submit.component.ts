@@ -16,19 +16,8 @@ export class SubmitComponent implements OnInit {
   hasSubmitLink: boolean;
   submissionEnvelope: any;
 
-  error;
-  success;
-
   constructor(private ingestService: IngestService,
               private router: Router) {
-    this.error = {
-      message: '',
-      details: ''
-    }
-    this.success = {
-      message: '',
-      details: ''
-    }
   }
 
   ngOnInit() {

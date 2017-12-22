@@ -6,6 +6,7 @@ import {ListResult} from "../../shared/models/hateoas";
 import {ActivatedRoute, Router} from "@angular/router";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
+import {AlertService} from "../../shared/alert.service";
 
 @Component({
   selector: 'app-submission-list',
@@ -28,7 +29,9 @@ export class SubmissionListComponent implements OnInit {
 
   constructor(private ingestService: IngestService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private alertService: AlertService
+  ) {
     this.alive = true;
     this.interval = 10000;
     this.currentPageInfo = {
@@ -65,6 +68,7 @@ export class SubmissionListComponent implements OnInit {
   completeSubmission(submissionEnvelope) {
     let submitLink = this.getSubmitLink(submissionEnvelope);
     this.ingestService.submit(submitLink);
+    this.alertService.success('You have successfully submitted your submission envelope.');
     console.log('completeSubmission');
   }
 

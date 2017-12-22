@@ -3,6 +3,7 @@ import {BrokerService} from "../../broker.service";
 import {Observable} from "rxjs/Observable";
 import {UploadResults} from "../../models/uploadResults";
 import {Router} from "@angular/router";
+import {AlertService} from "../../alert.service";
 
 @Component({
   selector: 'app-upload',
@@ -26,7 +27,8 @@ export class UploadComponent implements OnInit {
   @Output() fileUpload = new EventEmitter();
 
   constructor(private brokerService: BrokerService,
-              private router: Router) {
+              private router: Router,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -60,10 +62,13 @@ export class UploadComponent implements OnInit {
           this.uploadResults$ = <any>data;
           let submissionId = this.uploadResults$['details']['submission_id'];
           let submissionsPath = `/submissions/detail/${submissionId}/overview`;
+
           this.router.navigate([submissionsPath]);
+          this.alertService.success(this.uploadResults$['message']);
         },
         err => {
           this.error$ = <any>err
+          this.alertService.error(this.error$['message']);
         });
     }
 

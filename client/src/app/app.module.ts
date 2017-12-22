@@ -47,6 +47,8 @@ import {PaginationComponent} from './submission/pagination/pagination.component'
 import {UploadComponent} from './shared/components/upload/upload.component';
 import {LoginComponent} from './login/login.component';
 import {OverviewComponent } from './submission/overview/overview.component';
+import {AlertService} from "./shared/alert.service";
+import {AlertComponent} from "./shared/alert.component";
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -82,7 +84,8 @@ export function tokenGetter(): string {
     UploadComponent,
     MetadataComponent,
     LoginComponent,
-    OverviewComponent
+    OverviewComponent,
+    AlertComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -107,7 +110,7 @@ export function tokenGetter(): string {
     NoopAnimationsModule,
     NgxDatatableModule
   ],
-  providers: [IngestService, BrokerService, AuthService, FormBuilder],
+  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService],
   bootstrap: [AppComponent]
 })
 
