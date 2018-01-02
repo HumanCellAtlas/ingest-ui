@@ -4,11 +4,12 @@ import {Observable} from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import {SubmissionEnvelope} from "./models/submissionEnvelope";
-import {ListResult} from "./models/hateoas";
-import {Summary} from "./models/summary";
-import {Project} from "./models/project";
-import {Metadata} from "./models/metadata";
+import {SubmissionEnvelope} from "../models/submissionEnvelope";
+import {ListResult} from "../models/hateoas";
+import {Summary} from "../models/summary";
+import {Project} from "../models/project";
+import {Metadata} from "../models/metadata";
+import {AlertService} from "./alert.service";
 
 @Injectable()
 export class IngestService {
@@ -18,7 +19,7 @@ export class IngestService {
   API_URL: string = 'http://api.ingest.staging.data.humancellatlas.org';
   // API_URL: string = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private alertService: AlertService) {
   }
 
   public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
@@ -28,12 +29,6 @@ export class IngestService {
 
   public getUserSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
     return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params})
-      .do(console.log);
-  }
-
-  public getSummary(): Observable<Summary> {
-    return this.http.get(`${this.API_URL}/user/summary`)
-      .map((data: Summary) => _.values(data))
       .do(console.log);
   }
 
@@ -64,13 +59,19 @@ export class IngestService {
       .do(console.log);
   }
 
-  public getSamples(submissionEnvelopeId, params): Observable<Object> {
+  public getPaginatedSamples(submissionEnvelopeId, params): Observable<Object> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
       .do(console.log);
   }
 
-  public getSamples2(submissionEnvelopeId, params): Observable<ListResult<Metadata>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
+  public getSamples(submissionEnvelopeId): Observable<Object[]> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`)
+      .map((data: ListResult<Object>) => {
+        if(data._embedded && data._embedded.samples)
+          return _.values(data._embedded.samples);
+        else
+          return [];
+      })
       .do(console.log);
   }
 
@@ -121,6 +122,7 @@ export class IngestService {
   public submit(submitLink){
     this.http.put(submitLink, null).subscribe(
       res=> {
+        this.alertService.success('You have successfully submitted your submission envelope.');
         location.reload();
       },
       err => {

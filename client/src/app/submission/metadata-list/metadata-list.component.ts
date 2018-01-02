@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
   ViewEncapsulation,
-  ViewChild
+  ViewChild, AfterViewChecked
 } from '@angular/core';
 
 export class Page {
@@ -26,7 +26,8 @@ export class Page {
   styleUrls: ['./metadata-list.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class MetadataListComponent implements OnInit {
+
+export class MetadataListComponent implements OnInit, AfterViewChecked{
   @ViewChild('mydatatable') table: any;
 
   @Input() metadataList;
@@ -36,7 +37,8 @@ export class MetadataListComponent implements OnInit {
   @Input() config = {
     displayContent: true,
     displayState: true,
-    displayAll: false
+    displayAll: false,
+    displayColumns: []
   };
 
   private isLoading: boolean = false;
@@ -55,6 +57,8 @@ export class MetadataListComponent implements OnInit {
 
   rows: any[];
 
+  expandAll: boolean;
+
   constructor() {
     this.iconsDir = 'assets/open-iconic/svg';
     this.setPage({ offset: 0 });
@@ -62,13 +66,31 @@ export class MetadataListComponent implements OnInit {
 
   ngOnInit() {
     this.setPage({ offset: 0 });
+  }
 
+  ngAfterViewChecked() {
+    // added a flag to keep the rows expanded even after polling refreshes the rows
+    if(this.expandAll){
+      this.table.rowDetail.expandAllRows();
+    }
+  }
+
+  getAllColumns(metadataList){
+    let columns = {};
+
+    metadataList.map(function(row) {
+      Object.keys(row).map(function(col){
+        columns[col] = '';
+      })
+    });
+
+    return this.getColumns(columns);
   }
 
   getColumns(metadataListRow){
     let columns = [];
 
-    if (this.config.displayAll){
+    if (this.config && this.config.displayAll){
       columns = Object.keys(metadataListRow)
         .filter(column => column.match('^(?!validationState).*'));
     } else { // display only fields inside the content object
@@ -76,7 +98,13 @@ export class MetadataListComponent implements OnInit {
         .filter(column => column.match('^content.(?!core).*'));
     }
 
-    columns.unshift('content.core.type');
+    if (this.config && this.config.displayContent) {
+      columns.unshift('content.core.type');
+    }
+
+    if(this.config && this.config.displayColumns){
+      columns = columns.concat(this.config.displayColumns);
+    }
 
     // if(this.config.displayState){
     //   columns.unshift('validationState');
@@ -85,55 +113,17 @@ export class MetadataListComponent implements OnInit {
     return columns;
   }
 
+  getMetadataType(row){
+    return row['content.donor.is_living'] != undefined ? 'donor' : row['content.core.type'];
+  }
+
   updateValue(event, cell, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex)
+    console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
     this.metadataList[rowIndex][cell] = event.target.value;
     this.metadataList = [...this.metadataList];
     console.log('UPDATED!', this.metadataList[rowIndex][cell]);
     console.log(this.metadataList[rowIndex]);
-  }
-
-  //TODO create a service
-  flatten(data) {
-    let result = {};
-
-    function recurse(cur, prop) {
-      if (Object(cur) !== cur) {
-        result[prop] = cur;
-      } else if (Array.isArray(cur)) {
-        for (var i = 0, l = cur.length; i < l; i++)
-          recurse(cur[i], prop + "[" + i + "]");
-        if (l == 0) result[prop] = [];
-      } else {
-        var isEmpty = true;
-        for (var p in cur) {
-          isEmpty = false;
-          recurse(cur[p], prop ? prop + "." + p : p);
-        }
-        if (isEmpty && prop) result[prop] = {};
-      }
-    }
-    recurse(data, "");
-    return result;
-  }
-
-  unflatten(data) {
-    "use strict";
-    if (Object(data) !== data || Array.isArray(data)) return data;
-    var regex = /\.?([^.\[\]]+)|\[(\d+)\]/g,
-      resultholder = {};
-    for (var p in data) {
-      var cur = resultholder,
-        prop = "",
-        m;
-      while (m = regex.exec(p)) {
-        cur = cur[prop] || (cur[prop] = (m[2] ? [] : {}));
-        prop = m[2] || m[1];
-      }
-      cur[prop] = data[p];
-    }
-    return resultholder[""] || resultholder;
   }
 
   getValidationErrors(row){
@@ -146,17 +136,49 @@ export class MetadataListComponent implements OnInit {
 
   toggleExpandRow(row) {
     console.log('Toggled Expand Row!', row);
+    console.log(this.table);
     this.table.rowDetail.toggleExpandRow(row);
+    this.table.bodyComponent.bodyHeight = '800px';
+    this.table.bodyComponent.recalcLayout();
   }
 
-  onDetailToggle(event) {
-    console.log('Detail Toggled', event);
+  expandAllRows(){
+    this.table.rowDetail.expandAllRows();
+    this.expandAll = true;
+  }
+
+  collapseAllRows(){
+    this.table.rowDetail.collapseAllRows();
+    this.expandAll = false;
   }
 
   setPage(pageInfo){
     this.page.pageNumber = pageInfo.offset;
     this.pageNumberChange.emit(pageInfo.offset);
     this.rows = this.metadataList;
-    console.log('pageInfo.offset' + pageInfo.offset)
   }
+
+  flatten(data) {
+    let result = {};
+
+    function recurse(cur, prop) {
+      if (Object(cur) !== cur) {
+        result[prop] = cur;
+      } else if (Array.isArray(cur)) {
+        for (var i = 0, l = cur.length; i < l; i++)
+          recurse(cur[i], prop + "[" + i + "]");
+        if (l == 0) result[prop] = [];
+      } else {
+        let isEmpty = true;
+        for (let p in cur) {
+          isEmpty = false;
+          recurse(cur[p], prop ? prop + "." + p : p);
+        }
+        if (isEmpty && prop) result[prop] = {};
+      }
+    }
+    recurse(data, "");
+    return result;
+  };
+
 }

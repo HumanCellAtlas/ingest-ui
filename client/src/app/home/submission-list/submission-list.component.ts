@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {IngestService} from '../../shared/ingest.service';
+import {IngestService} from '../../shared/services/ingest.service';
 import {Observable} from "rxjs/Observable";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
 import {ListResult} from "../../shared/models/hateoas";
 import {ActivatedRoute, Router} from "@angular/router";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
-import {AlertService} from "../../shared/alert.service";
+import {AlertService} from "../../shared/services/alert.service";
 
 @Component({
   selector: 'app-submission-list',
@@ -17,6 +17,9 @@ import {AlertService} from "../../shared/alert.service";
 export class SubmissionListComponent implements OnInit {
 
   submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
+
+  submissionProjects: Object;
+
   submissionEnvelopes: SubmissionEnvelope[];
   pagination: Object;
   links: Object;
@@ -41,7 +44,9 @@ export class SubmissionListComponent implements OnInit {
       totalElements: 0,
       start: 0,
       end:0
-    }
+    };
+
+    this.submissionProjects = {};
 
     this.params ={'page': 0, 'size': 20, 'sort' : 'submissionDate,desc'};
   }
@@ -69,7 +74,7 @@ export class SubmissionListComponent implements OnInit {
     let submitLink = this.getSubmitLink(submissionEnvelope);
     this.ingestService.submit(submitLink);
     this.alertService.success('You have successfully submitted your submission envelope.');
-    console.log('completeSubmission');
+
   }
 
   pollSubmissions() {
@@ -89,8 +94,31 @@ export class SubmissionListComponent implements OnInit {
         this.pagination = data.page;
         this.links = data._links;
         this.getCurrentPageInfo(this.pagination);
-        console.log(this.getCurrentPageInfo(this.pagination));
+        this.initSubmissionProjects(submissions);
       });
+  }
+
+  initSubmissionProjects(submissions){
+    for(let submission of submissions){
+      let submissionId = this.getSubmissionId(submission);
+
+      if(this.submissionProjects[submissionId] == undefined){
+        this.submissionProjects[submissionId] = '';
+        this.ingestService.getSubmissionProject(submissionId)
+          .subscribe(data => {
+            this.submissionProjects[submissionId] = this.extractProjectName(data);
+          })
+      }
+    }
+  }
+
+  getProjectName(submission){
+    return this.submissionProjects[this.getSubmissionId(submission)];
+  }
+
+  extractProjectName(project){
+    let content = project['content'];
+    return content ? project['content']['project_id'] : '';
   }
 
   getCurrentPageInfo(pagination){

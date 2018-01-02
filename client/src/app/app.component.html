@@ -5,5 +5,5 @@
 <main class="container-fluid">
   <br/>
   <alert></alert>
-  <router-outlet></router-outlet>
+  <router-outlet><span  *ngIf="showLoader" class="loading"></span></router-outlet>
 </main>

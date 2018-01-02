@@ -15,3 +15,8 @@
 .icon-ellipses {
   fill: #ffc107;
 }
+
+/*default body height*/
+datatable-body.datatable-body{
+  height: 300px;
+}
