@@ -7,9 +7,8 @@
   <div class="row">
     <div class="col-8"
          *ngIf="(summary$ | async) || {draftSubmissions:0, pendingSubmissions:0, completedSubmissions:0}; let summary">
-      <p>This is your dashboard, You currently have {{summary.draftSubmissions}} active draft submissions and
-        {{summary.pendingSubmissions}} pending
-        submissions. You have successfully completed {{summary.completedSubmissions}} submissions to the Human Cell
+      <p>This is your dashboard.</p><p>You currently have {{summary.draftSubmissions == 0 ? "no" : summary.draftSubmissions}} active draft submissions and {{summary.pendingSubmissions == 0 ? "no" : summary.pendingSubmissions}} pending
+      submissions. You have successfully completed {{summary.completedSubmissions == 0 ? "no" : summary.completedSubmissions}} submissions to the Human Cell
         Atlas. Thanks for
         contributing to the
         future of science.</p>
