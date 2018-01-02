@@ -65,13 +65,19 @@ export class IngestService {
       .do(console.log);
   }
 
-  public getSamples(submissionEnvelopeId, params): Observable<Object> {
+  public getPaginatedSamples(submissionEnvelopeId, params): Observable<Object> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
       .do(console.log);
   }
 
-  public getSamples2(submissionEnvelopeId, params): Observable<ListResult<Metadata>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
+  public getSamples(submissionEnvelopeId): Observable<Object[]> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`)
+      .map((data: ListResult<Object>) => {
+        if(data._embedded && data._embedded.samples)
+          return _.values(data._embedded.samples);
+        else
+          return [];
+      })
       .do(console.log);
   }
 
