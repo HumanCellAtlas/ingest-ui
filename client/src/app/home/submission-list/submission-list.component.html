@@ -1,9 +1,6 @@
-<ng-template #noData>No Data Available</ng-template>
-<br/>
-<div class="card">
-  <!--<div class="card-header">Dashboard</div>-->
+<div class="card" *ngIf="submissionEnvelopes || {}">
   <div>
-    <table id="submissions" class="table" *ngIf="submissionEnvelopes;else noData">
+    <table id="submissions" class="table">
       <thead class="thead-light">
       <tr>
         <th>Created</th>
@@ -17,49 +14,59 @@
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info" >{{getSubmissionId(submissionEnvelope)}}</a>
+          <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{getSubmissionId(submissionEnvelope)}}</a>
         </td>
         <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>
-          <div [ngSwitch]="submissionEnvelope.submissionState" >
+          <div [ngSwitch]="submissionEnvelope.submissionState">
             <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Submitted'" class="badge-in-list badge badge-pill badge-secondary">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Cleanup'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Processing'"
+                  class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Cleanup'"
+                  class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Complete'"
+                  class="badge-in-list badge badge-pill border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
           </div>
         </td>
         <td>
           <form class="submission-form complete-form" action="submit" method="POST">
-              <button *ngIf="getSubmitLink(submissionEnvelope)" class="btn btn-success btn-sm" (click)="completeSubmission(submissionEnvelope)">
-                Submit
-              </button>
+            <button *ngIf="getSubmitLink(submissionEnvelope)" class="btn btn-success btn-sm"
+                    (click)="completeSubmission(submissionEnvelope)">
+              Submit
+            </button>
           </form>
         </td>
+      </tr>
+      <tr *ngIf="!submissionEnvelopes">
+        <td>Loading your submissions...</td>
+      </tr>
+      <tr *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0">
+        <td>You do currently have any submissions</td>
       </tr>
       </tbody>
     </table>
   </div>
   <!--<div class="card-footer text-muted">-->
-    <!--<nav aria-label="Page navigation example">-->
-      <!--<ul class="pagination justify-content-center" >-->
-        <!--<li class="page-item" [class.disabled]="currentPageInfo['number'] == 0">-->
-          <!--<a class="page-link" href="#" tabindex="-1" (click)="goToPage(currentPageInfo['number']-1)">Previous</a>-->
-        <!--</li>-->
-        <!--<li  *ngFor="let pageItem of createRange(currentPageInfo['totalPages'])" class="page-item"><a (click)="goToPage(pageItem)" class="page-link" href="#">{{pageItem + 1}}</a></li>-->
-        <!--<li class="page-item" [class.disabled]="currentPageInfo['number'] == (currentPageInfo['totalPages'] - 1)">-->
-          <!--<a (click)="goToPage(currentPageInfo['number']+1)" class="page-link" href="#" >Next</a>-->
-        <!--</li>-->
+  <!--<nav aria-label="Page navigation example">-->
+  <!--<ul class="pagination justify-content-center" >-->
+  <!--<li class="page-item" [class.disabled]="currentPageInfo['number'] == 0">-->
+  <!--<a class="page-link" href="#" tabindex="-1" (click)="goToPage(currentPageInfo['number']-1)">Previous</a>-->
+  <!--</li>-->
+  <!--<li  *ngFor="let pageItem of createRange(currentPageInfo['totalPages'])" class="page-item"><a (click)="goToPage(pageItem)" class="page-link" href="#">{{pageItem + 1}}</a></li>-->
+  <!--<li class="page-item" [class.disabled]="currentPageInfo['number'] == (currentPageInfo['totalPages'] - 1)">-->
+  <!--<a (click)="goToPage(currentPageInfo['number']+1)" class="page-link" href="#" >Next</a>-->
+  <!--</li>-->
 
-      <!--</ul>-->
-    <!--</nav>-->
-    <!--<p>-->
-      <!--Showing {{currentPageInfo['start']}} - {{currentPageInfo['end']}} of {{currentPageInfo['totalElements']}} total records-->
-    <!--</p>-->
+  <!--</ul>-->
+  <!--</nav>-->
+  <!--<p>-->
+  <!--Showing {{currentPageInfo['start']}} - {{currentPageInfo['end']}} of {{currentPageInfo['totalElements']}} total records-->
+  <!--</p>-->
   <!--</div>-->
 </div>
 
