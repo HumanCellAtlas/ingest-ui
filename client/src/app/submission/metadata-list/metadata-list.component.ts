@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
   ViewEncapsulation,
-  ViewChild
+  ViewChild, AfterViewChecked
 } from '@angular/core';
 
 export class Page {
@@ -27,7 +27,7 @@ export class Page {
   encapsulation: ViewEncapsulation.None
 })
 
-export class MetadataListComponent implements OnInit {
+export class MetadataListComponent implements OnInit, AfterViewChecked{
   @ViewChild('mydatatable') table: any;
 
   @Input() metadataList;
@@ -150,13 +150,33 @@ export class MetadataListComponent implements OnInit {
     this.expandAll = false;
   }
 
-  onDetailToggle(event) {
-    console.log('Detail Toggled', event);
-  }
-
   setPage(pageInfo){
     this.page.pageNumber = pageInfo.offset;
     this.pageNumberChange.emit(pageInfo.offset);
     this.rows = this.metadataList;
   }
+
+  flatten(data) {
+    let result = {};
+
+    function recurse(cur, prop) {
+      if (Object(cur) !== cur) {
+        result[prop] = cur;
+      } else if (Array.isArray(cur)) {
+        for (var i = 0, l = cur.length; i < l; i++)
+          recurse(cur[i], prop + "[" + i + "]");
+        if (l == 0) result[prop] = [];
+      } else {
+        let isEmpty = true;
+        for (let p in cur) {
+          isEmpty = false;
+          recurse(cur[p], prop ? prop + "." + p : p);
+        }
+        if (isEmpty && prop) result[prop] = {};
+      }
+    }
+    recurse(data, "");
+    return result;
+  };
+
 }

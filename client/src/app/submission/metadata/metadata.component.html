@@ -8,7 +8,7 @@
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
         <tab tabTitle="Samples">
-          <app-samples [submissionEnvelopeId]="submissionEnvelopeId"></app-samples>
+          <app-samples [samples]="samples"></app-samples>
         </tab>
         <tab tabTitle="Protocols">
           <app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>
@@ -17,7 +17,7 @@
           <app-assays *ngIf="assays && assays.length > 0" [assays]="assays"></app-assays>
         </tab>
         <tab tabTitle="Analyses">
-          <app-analyses *ngIf="analyses && analyses.length > 0" [analyses]="analyses.map(flatten)" ></app-analyses>
+          <app-analyses *ngIf="analyses && analyses.length > 0" [analyses]="analyses" ></app-analyses>
         </tab>
       </tabs>
     </div>
@@ -29,7 +29,7 @@
   <div class="card-body" >
     <tabs [navClass]="'nav-tabs'">
       <tab tabTitle="Bundles">
-        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles.map(flatten)" ></app-bundles>
+        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles" ></app-bundles>
       </tab>
     </tabs>
   </div>

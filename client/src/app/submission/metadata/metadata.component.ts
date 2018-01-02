@@ -38,8 +38,10 @@ export class MetadataComponent implements OnInit {
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
         if(this.submissionEnvelopeId){
+          this.ingestService.getSamples(this.submissionEnvelopeId)
+            .subscribe(data => this.samples = data.map(this.flatten));
           this.ingestService.getAnalyses(this.submissionEnvelopeId)
-            .subscribe(data => this.analyses = data);
+            .subscribe(data => this.analyses = data.map(this.flatten));
           this.ingestService.getAssays(this.submissionEnvelopeId)
             .subscribe(data => this.assays = data.map(this.flatten));
           this.ingestService.getProtocols(this.submissionEnvelopeId)
@@ -47,7 +49,6 @@ export class MetadataComponent implements OnInit {
           this.ingestService.getBundles(this.submissionEnvelopeId)
             .subscribe(data => this.bundles = data.map(this.flatten));
         }
-        console.log('polling')
       });
   }
 

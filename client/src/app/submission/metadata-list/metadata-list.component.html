@@ -25,7 +25,7 @@
 
 >
    <!--Row Detail Template -->
-  <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow (toggle)="onDetailToggle($event)">
+  <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
         <div><strong>Validation Report:</strong></div>

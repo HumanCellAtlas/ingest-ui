@@ -68,7 +68,6 @@ export class SubmissionComponent implements OnInit {
             this.isSubmittable = this.checkIfValid(data);
             this.submissionState = data['submissionState'];
           });
-        console.log('polling sub env')
       });
   }
 
