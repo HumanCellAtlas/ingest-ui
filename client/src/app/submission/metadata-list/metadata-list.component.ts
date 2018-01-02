@@ -98,7 +98,9 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
         .filter(column => column.match('^content.(?!core).*'));
     }
 
-    columns.unshift('content.core.type');
+    if (this.config && this.config.displayContent) {
+      columns.unshift('content.core.type');
+    }
 
     if(this.config && this.config.displayColumns){
       columns = columns.concat(this.config.displayColumns);
