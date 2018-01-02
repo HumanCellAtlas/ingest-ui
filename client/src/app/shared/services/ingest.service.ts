@@ -32,12 +32,6 @@ export class IngestService {
       .do(console.log);
   }
 
-  public getSummary(): Observable<Summary> {
-    return this.http.get(`${this.API_URL}/user/summary`)
-      .map((data: Summary) => _.values(data))
-      .do(console.log);
-  }
-
   public getUserSummary(): Observable<Summary> {
     return this.http.get<Summary>(`${this.API_URL}/user/summary`).do(console.log);
   }

@@ -27,6 +27,6 @@ export class WelcomeComponent implements OnInit {
         this.profile = profile;
       });
     }
-    this.summary$ = this.ingestService.getSummary();
+    this.summary$ = this.ingestService.getUserSummary();
   }
 }
