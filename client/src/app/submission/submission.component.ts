@@ -3,6 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {IngestService} from "../shared/services/ingest.service";
 import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
 import {ActivatedRoute} from "@angular/router";
+import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 
 @Component({
@@ -26,8 +27,13 @@ export class SubmissionComponent implements OnInit {
 
   projectName: string;
 
+  private alive: boolean;
+  private pollInterval : number;
+
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute) {
+    this.pollInterval = 4000; //4s
+    this.alive = true;
   }
 
   ngOnInit() {
@@ -41,18 +47,29 @@ export class SubmissionComponent implements OnInit {
         this.getProject(this.projectId)
       }
     } else {
-      this.submissionEnvelope$ = this.ingestService.getSubmission(this.submissionEnvelopeId);
-
-      this.submissionEnvelope$
-        .subscribe(data => {
-          this.submissionEnvelope = data;
-          this.isSubmittable = this.checkIfValid(data);
-          this.submissionState = data['submissionState'];
-        });
-
+      this.pollSubmissionEnvelope(this.submissionEnvelopeId);
       this.getSubmissionProject(this.submissionEnvelopeId)
 
     }
+  }
+
+  ngOnDestroy(){
+    this.alive = false; // switches your IntervalObservable off
+  }
+
+  pollSubmissionEnvelope(id){
+    TimerObservable.create(0, this.pollInterval)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        this.submissionEnvelope$ = this.ingestService.getSubmission(id);
+        this.submissionEnvelope$
+          .subscribe(data => {
+            this.submissionEnvelope = data;
+            this.isSubmittable = this.checkIfValid(data);
+            this.submissionState = data['submissionState'];
+          });
+        console.log('polling sub env')
+      });
   }
 
   getSubmitLink(submissionEnvelope){

@@ -50,6 +50,7 @@ import {OverviewComponent } from './submission/overview/overview.component';
 import {AlertService} from "./shared/services/alert.service";
 import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
+import { ConsentComponent } from './submission/consent/consent.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -86,7 +87,8 @@ export function tokenGetter(): string {
     MetadataComponent,
     LoginComponent,
     OverviewComponent,
-    AlertComponent
+    AlertComponent,
+    ConsentComponent
   ],
   imports: [
     NgbModule.forRoot(),

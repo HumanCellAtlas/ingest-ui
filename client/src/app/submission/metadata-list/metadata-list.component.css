@@ -16,7 +16,7 @@
   fill: #ffc107;
 }
 
-
-.datatable-body {
-
+/*default body height*/
+datatable-body.datatable-body{
+  height: 300px;
 }

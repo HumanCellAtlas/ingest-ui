@@ -183,7 +183,7 @@ export class ProjectComponent implements OnInit {
   }
 
   newSubmission(){
-    this.router.navigate([`/projects/detail/${this.projectId}/submissions/overview`]);
+    this.router.navigate(['submissions/new/metadata']);
   }
 
   newProject(){
