@@ -8,7 +8,7 @@
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
         <tab tabTitle="Samples">
-          <app-samples [samples]="samples"></app-samples>
+          <app-samples  *ngIf="samples && samples.length > 0" [samples]="samples"></app-samples>
         </tab>
         <tab tabTitle="Protocols">
           <app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>
@@ -23,14 +23,4 @@
     </div>
   </div>
   <br/>
-</div>
-
-<div class="card" *ngIf="bundles && bundles.length > 0">
-  <div class="card-body" >
-    <tabs [navClass]="'nav-tabs'">
-      <tab tabTitle="Bundles">
-        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles" ></app-bundles>
-      </tab>
-    </tabs>
-  </div>
 </div>

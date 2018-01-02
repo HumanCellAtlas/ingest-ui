@@ -31,7 +31,15 @@
          <app-overview [project]="project" [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-overview>
        </tab>
         <tab [href]="'metadata'" tabTitle="Metadata" [active]="activeTab == 'metadata'">
-          <app-metadata [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-metadata>
+          <app-metadata
+            [projectId]="projectId"
+            [submissionEnvelopeId]="submissionEnvelopeId"
+            [samples]="samples"
+            [assays]="assays"
+            [protocols]="protocols"
+            [analyses]="analyses"
+            >
+          </app-metadata>
         </tab>
         <tab [href]="'data'" tabTitle="Data" [active]="activeTab == 'data'" [disabled]="!submissionEnvelopeId">
           <app-files
@@ -41,7 +49,7 @@
         </tab>
 
         <tab [href]="'submit'" [disabled]="!isSubmittable" tabTitle="Submit" [active]="activeTab == 'submit'">
-          <app-submit [submissionEnvelopeId]="submissionEnvelopeId" [submissionEnvelope$]="submissionEnvelope$" >
+          <app-submit [submitLink]="submitLink" [bundles]="bundles">
           </app-submit>
         </tab>
       </tabs>

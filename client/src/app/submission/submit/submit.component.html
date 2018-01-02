@@ -14,21 +14,32 @@
     <span text-success class="oi oi-check text-success" aria-hidden="true"></span>
   </li>
 </ul>
-
-<br/>
-<h3>What's next?</h3>
 <br/>
 
-<p>You have entered all necessary information per Human Cell Atlas standards.
-That’s awesome!</p>
-
-<p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
-your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
-
-<br/><br/>
-
-<form action="submit" method="POST">
-  <button *ngIf="hasSubmitLink" class="btn btn-success btn-lg" (click)="completeSubmission(submissionEnvelope)">
+<form action="submit" method="POST" *ngIf="submitLink">
+  <br/>
+  <h3>What's next?</h3>
+  <p>You have entered all necessary information per Human Cell Atlas standards.
+    That’s awesome!</p>
+  <br/>
+  <p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
+    your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
+  <br/><br/>
+  <button class="btn btn-success btn-lg" (click)="completeSubmission(submissionEnvelope)">
     Submit data for immediate release
   </button>
 </form>
+
+<br/>
+<div class="card" *ngIf="bundles && bundles.length > 0">
+  <div class="card-body" >
+    <tabs [navClass]="'nav-tabs'">
+      <tab tabTitle="Bundles">
+        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles" ></app-bundles>
+      </tab>
+    </tabs>
+  </div>
+</div>
+
+
+</div>

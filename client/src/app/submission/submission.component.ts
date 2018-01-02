@@ -18,6 +18,14 @@ export class SubmissionComponent implements OnInit {
   submissionEnvelope$: Observable<any>;
   submissionEnvelope;
   submissionState: string;
+  submitLink: string;
+
+  analyses: Object[];
+  assays: Object[];
+  bundles: Object[];
+  protocols: Object[];
+  samples: Object[];
+
 
   activeTab: string;
 
@@ -48,8 +56,8 @@ export class SubmissionComponent implements OnInit {
       }
     } else {
       this.pollSubmissionEnvelope(this.submissionEnvelopeId);
-      this.getSubmissionProject(this.submissionEnvelopeId)
-
+      this.pollMetadata();
+      this.getSubmissionProject(this.submissionEnvelopeId);
     }
   }
 
@@ -67,7 +75,27 @@ export class SubmissionComponent implements OnInit {
             this.submissionEnvelope = data;
             this.isSubmittable = this.checkIfValid(data);
             this.submissionState = data['submissionState'];
+            this.submitLink = this.getSubmitLink(data);
           });
+      });
+  }
+
+  pollMetadata(){
+    TimerObservable.create(500, this.pollInterval)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        if(this.submissionEnvelopeId){
+          this.ingestService.getSamples(this.submissionEnvelopeId)
+            .subscribe(data => this.samples = data.map(this.flatten));
+          this.ingestService.getAnalyses(this.submissionEnvelopeId)
+            .subscribe(data => this.analyses = data.map(this.flatten));
+          this.ingestService.getAssays(this.submissionEnvelopeId)
+            .subscribe(data => this.assays = data.map(this.flatten));
+          this.ingestService.getProtocols(this.submissionEnvelopeId)
+            .subscribe(data => this.protocols = data.map(this.flatten));
+          this.ingestService.getBundles(this.submissionEnvelopeId)
+            .subscribe(data => this.bundles = data.map(this.flatten));
+        }
       });
   }
 
@@ -86,7 +114,7 @@ export class SubmissionComponent implements OnInit {
     this.ingestService.getProject(id)
       .subscribe(project => {
         this.project = project;
-        this.projectName = this.project['content']['name'];
+        this.projectName = this.getProjectName();
       });
   }
 
@@ -94,7 +122,34 @@ export class SubmissionComponent implements OnInit {
     this.ingestService.getSubmissionProject(id)
       .subscribe(project => {
         this.project = project;
-        this.projectName = this.project['content']['name'];
+        this.projectName = this.getProjectName();
       })
   }
+
+  getProjectName(){
+    return this.project && this.project['content'] ? this.project['content']['name'] : '';
+  }
+
+  flatten(data) {
+    let result = {};
+
+    function recurse(cur, prop) {
+      if (Object(cur) !== cur) {
+        result[prop] = cur;
+      } else if (Array.isArray(cur)) {
+        for (var i = 0, l = cur.length; i < l; i++)
+          recurse(cur[i], prop + "[" + i + "]");
+        if (l == 0) result[prop] = [];
+      } else {
+        let isEmpty = true;
+        for (let p in cur) {
+          isEmpty = false;
+          recurse(cur[p], prop ? prop + "." + p : p);
+        }
+        if (isEmpty && prop) result[prop] = {};
+      }
+    }
+    recurse(data, "");
+    return result;
+  };
 }
