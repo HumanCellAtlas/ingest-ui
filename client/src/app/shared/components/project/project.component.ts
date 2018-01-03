@@ -108,10 +108,10 @@ export class ProjectComponent implements OnInit {
         console.log(data);
         this.projectId = this.getProjectId(this.project);
         this.editMode = false;
-        this.alertService.success("Project was successfully updated.");
+        this.alertService.success("","Project was successfully updated.");
       },
       err => {
-        this.alertService.error("An error has occurred while saving your updates to this project.");
+        this.alertService.error("","An error has occurred while saving your updates to this project.");
       });
   }
 
@@ -121,11 +121,11 @@ export class ProjectComponent implements OnInit {
         this.project = data;
         let projectId = this.getProjectId(data);
           this.router.navigate(['/projects/detail/' + projectId]);
-        this.alertService.success("Project was successfully created.");
+        this.alertService.success("","Project was successfully created.");
       },
 
       err => {
-        this.alertService.error("An error has occurred while creating the project.");
+        this.alertService.error("", "An error has occurred while creating the project.");
         console.log(err);
       });
   }
@@ -144,7 +144,7 @@ export class ProjectComponent implements OnInit {
       }
     } else {
 
-      this.alertService.error("All fields are required!");
+      this.alertService.error("","All fields are required!");
 
     }
 

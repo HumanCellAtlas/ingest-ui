@@ -14,20 +14,20 @@
       <tbody>
       <tr *ngFor="let project of projects">
         <td>{{project.submissionDate | date: "medium"}}</td>
-        <td><span title="{{project?.content?.name}}"> {{ truncate(project?.content?.name, 20) }}</span></td>
+        <td><span title="{{project?.content?.name}}"> {{ project?.content?.name }}</span></td>
         <td>
           <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{getProjectId(project)}}</a>
         </td>
-        <td><span title="{{project?.content?.project_id}}">{{truncate(project?.content?.project_id, 20)}}</span></td>
+        <td><span title="{{project?.content?.project_id}}">{{ project?.content?.project_id }}</span></td>
         <td>
-          <a class="btn btn-primary" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/overview" class="text-info" >Create Submission</a>
+          <a class="btn btn-success" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/metadata" >Create submission</a>
         </td>
       </tr>
       <tr *ngIf="!projects">
         <td>Loading your projects...</td>
       </tr>
       <tr *ngIf="projects && projects.length === 0">
-        <td>You do currently have any projects</td>
+        <td>You do not currently have any projects</td>
       </tr>
       </tbody>
     </table>

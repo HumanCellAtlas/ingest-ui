@@ -4,6 +4,7 @@ import {IngestService} from "../shared/services/ingest.service";
 import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
 import {ActivatedRoute} from "@angular/router";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
+import {FlattenService} from "../shared/services/flatten.service";
 
 
 @Component({
@@ -26,7 +27,6 @@ export class SubmissionComponent implements OnInit {
   protocols: Object[];
   samples: Object[];
 
-
   activeTab: string;
 
   isSubmittable: boolean;
@@ -39,7 +39,8 @@ export class SubmissionComponent implements OnInit {
   private pollInterval : number;
 
   constructor(private ingestService: IngestService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private flattenService: FlattenService) {
     this.pollInterval = 4000; //4s
     this.alive = true;
   }
@@ -56,8 +57,7 @@ export class SubmissionComponent implements OnInit {
       }
     } else {
       this.pollSubmissionEnvelope(this.submissionEnvelopeId);
-      this.pollMetadata();
-      this.getSubmissionProject(this.submissionEnvelopeId);
+      this.pollEntities();
     }
   }
 
@@ -80,21 +80,14 @@ export class SubmissionComponent implements OnInit {
       });
   }
 
-  pollMetadata(){
+  pollEntities(){
     TimerObservable.create(500, this.pollInterval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
         if(this.submissionEnvelopeId){
-          this.ingestService.getSamples(this.submissionEnvelopeId)
-            .subscribe(data => this.samples = data.map(this.flatten));
-          this.ingestService.getAnalyses(this.submissionEnvelopeId)
-            .subscribe(data => this.analyses = data.map(this.flatten));
-          this.ingestService.getAssays(this.submissionEnvelopeId)
-            .subscribe(data => this.assays = data.map(this.flatten));
-          this.ingestService.getProtocols(this.submissionEnvelopeId)
-            .subscribe(data => this.protocols = data.map(this.flatten));
           this.ingestService.getBundles(this.submissionEnvelopeId)
-            .subscribe(data => this.bundles = data.map(this.flatten));
+            .subscribe(data => this.bundles = data.map(this.flattenService.flatten));
+          this.getSubmissionProject(this.submissionEnvelopeId);
         }
       });
   }
@@ -129,27 +122,4 @@ export class SubmissionComponent implements OnInit {
   getProjectName(){
     return this.project && this.project['content'] ? this.project['content']['name'] : '';
   }
-
-  flatten(data) {
-    let result = {};
-
-    function recurse(cur, prop) {
-      if (Object(cur) !== cur) {
-        result[prop] = cur;
-      } else if (Array.isArray(cur)) {
-        for (var i = 0, l = cur.length; i < l; i++)
-          recurse(cur[i], prop + "[" + i + "]");
-        if (l == 0) result[prop] = [];
-      } else {
-        let isEmpty = true;
-        for (let p in cur) {
-          isEmpty = false;
-          recurse(cur[p], prop ? prop + "." + p : p);
-        }
-        if (isEmpty && prop) result[prop] = {};
-      }
-    }
-    recurse(data, "");
-    return result;
-  };
 }

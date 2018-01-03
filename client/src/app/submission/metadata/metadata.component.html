@@ -1,6 +1,6 @@
 <script src="../../shared/components/upload/upload.component.ts"></script>
 <div class="container-fluid"><br/>
-  <h2>Metadata Template</h2><br/>
+  <br/>
   <app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
   <br/>
 
@@ -8,17 +8,30 @@
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
         <tab tabTitle="Samples">
-          <app-samples  *ngIf="samples && samples.length > 0" [samples]="samples"></app-samples>
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
         </tab>
         <tab tabTitle="Protocols">
-          <app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
         </tab>
         <tab tabTitle="Assays">
-          <app-assays *ngIf="assays && assays.length > 0" [assays]="assays"></app-assays>
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
         </tab>
         <tab tabTitle="Analyses">
-          <app-analyses *ngIf="analyses && analyses.length > 0" [analyses]="analyses" ></app-analyses>
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
         </tab>
+        <!--<tab tabTitle="Samples">-->
+          <!--<app-samples  *ngIf="samples && samples.length > 0" [samples]="samples"></app-samples>-->
+        <!--</tab>-->
+        <!--<tab tabTitle="Protocols">-->
+          <!--<app-protocols *ngIf="protocols && protocols.length > 0" [protocols]="protocols"></app-protocols>-->
+        <!--</tab>-->
+        <!--<tab tabTitle="Assays">-->
+          <!--<app-assays *ngIf="assays && assays.length > 0" [assays]="assays"></app-assays>-->
+        <!--</tab>-->
+        <!--<tab tabTitle="Analyses">-->
+          <!--<app-analyses *ngIf="analyses && analyses.length > 0" [analyses]="analyses" ></app-analyses>-->
+        <!--</tab>-->
+
       </tabs>
     </div>
   </div>

@@ -52,7 +52,8 @@ export class SubmissionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pollSubmissions()
+    let showAll = this.route.snapshot.paramMap.get('all');
+    this.pollSubmissions(showAll)
 
   }
 
@@ -73,29 +74,43 @@ export class SubmissionListComponent implements OnInit {
   completeSubmission(submissionEnvelope) {
     let submitLink = this.getSubmitLink(submissionEnvelope);
     this.ingestService.submit(submitLink);
-    this.alertService.success('You have successfully submitted your submission envelope.');
+    this.alertService.success("",'You have successfully submitted your submission envelope.');
 
   }
 
-  pollSubmissions() {
+  pollSubmissions(showAll) {
     TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
-        this.getSubmissions();
+        this.getSubmissions(showAll);
       });
   }
 
-  getSubmissions(){
-    this.ingestService.getUserSubmissions(this.params)
-    // this.ingestService.getAllSubmissions(this.params)
-      .subscribe(data =>{
-        let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
-        this.submissionEnvelopes = submissions;
-        this.pagination = data.page;
-        this.links = data._links;
-        this.getCurrentPageInfo(this.pagination);
-        this.initSubmissionProjects(submissions);
-      });
+  getSubmissions(showAll){
+    if(showAll){
+      this.ingestService.getAllSubmissions(this.params)
+        .subscribe(data =>{
+          let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
+          this.submissionEnvelopes = submissions;
+          this.pagination = data.page;
+          this.links = data._links;
+          this.getCurrentPageInfo(this.pagination);
+          this.initSubmissionProjects(submissions);
+        });
+
+    }
+    else{
+      this.ingestService.getUserSubmissions(this.params)
+        .subscribe(data =>{
+          let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
+          this.submissionEnvelopes = submissions;
+          this.pagination = data.page;
+          this.links = data._links;
+          this.getCurrentPageInfo(this.pagination);
+          this.initSubmissionProjects(submissions);
+        });
+
+    }
   }
 
   initSubmissionProjects(submissions){
@@ -134,7 +149,7 @@ export class SubmissionListComponent implements OnInit {
 
   goToPage(pageNumber){
     this.params['page'] = pageNumber;
-    this.getSubmissions();
+    this.getSubmissions(false);
   }
 
   createRange(number){

@@ -56,12 +56,14 @@ export class IngestService {
         else
           return [];
       })
-      .do(console.log);
+  }
+
+  public getPaginatedFiles(id, params): Observable<Object> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`, {params: params});
   }
 
   public getPaginatedSamples(submissionEnvelopeId, params): Observable<Object> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
-      .do(console.log);
   }
 
   public getSamples(submissionEnvelopeId): Observable<Object[]> {
@@ -72,7 +74,6 @@ export class IngestService {
         else
           return [];
       })
-      .do(console.log);
   }
 
   public getAnalyses(id): Observable<Object[]> {
@@ -83,7 +84,6 @@ export class IngestService {
         else
           return [];
       })
-      .do(console.log);
   }
 
   public getAssays(id): Observable<Object[]> {
@@ -94,10 +94,9 @@ export class IngestService {
         else
           return [];
       })
-      .do(console.log);
   }
 
-  //there was no pagination, check core code
+  //there's no pagination, check core code
   public getBundles(id): Observable<Object[]> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/bundleManifests`)
       .map((data: ListResult<Object>) => {
@@ -106,7 +105,6 @@ export class IngestService {
         else
           return [];
       })
-      .do(console.log);
   }
 
   public getProtocols(id): Observable<Object[]> {
@@ -122,7 +120,7 @@ export class IngestService {
   public submit(submitLink){
     this.http.put(submitLink, null).subscribe(
       res=> {
-        this.alertService.success('You have successfully submitted your submission envelope.');
+        this.alertService.success("",'You have successfully submitted your submission envelope.');
         location.reload();
       },
       err => {
@@ -155,9 +153,29 @@ export class IngestService {
         else
           return {};
       })
-      .do(console.log);
-
   }
 
+  public fetchData(entityType, submissionId){
+    switch(entityType) {
+      case 'samples': {
+        return this.getSamples(submissionId)
+      }
+      case 'protocols': {
+        return this.getProtocols(submissionId)
+      }
+      case 'assays': {
+        return this.getAssays(submissionId)
+      }
+      case 'analyses': {
+        return this.getAnalyses(submissionId)
+      }
+      case 'bundles': {
+        return this.getBundles(submissionId)
+      }
+      case 'files': {
+        return this.getFiles(submissionId)
+      }
+    }
+  }
 
 }

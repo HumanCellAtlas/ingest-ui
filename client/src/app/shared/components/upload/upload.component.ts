@@ -41,15 +41,10 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  resetMessages() {
-    this.uploadResults$ = null;
-    this.error$ = null;
-  }
-
   upload() {
-    this.loaderService.display(true);
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
+      this.loaderService.display(true);
       const formData = new FormData();
       formData.append("file", fileBrowser.files[0]);
 
@@ -67,12 +62,12 @@ export class UploadComponent implements OnInit {
           let submissionsPath = `/submissions/detail/${submissionId}/overview`;
 
           this.router.navigate([submissionsPath]);
-          this.alertService.success(this.uploadResults$['message']);
+          this.alertService.success("", this.uploadResults$['message']);
           this.loaderService.display(false);
         },
         err => {
           this.error$ = <any>err
-          this.alertService.error(this.error$['message']);
+          this.alertService.error(this.error$['message'], this.error$['details']);
           this.loaderService.display(false);
         });
     }

@@ -1,18 +1,20 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   ViewEncapsulation,
   ViewChild, AfterViewChecked
 } from '@angular/core';
+import {IngestService} from "../../shared/services/ingest.service";
+import {Observable} from "rxjs/Observable";
+import {FlattenService} from "../../shared/services/flatten.service";
+import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 export class Page {
   //The number of elements in the page
   size: number = 0;
   //The total number of elements
-  totalElements: number = 10;
+  totalElements: number = 0;
   //The total number of pages
   totalPages: number = 0;
   //The current page number
@@ -32,7 +34,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
 
   @Input() metadataList;
   @Input() metadataType;
-  @Output() pageNumberChange: EventEmitter<number> = new EventEmitter<number>();
 
   @Input() config = {
     displayContent: true,
@@ -41,15 +42,15 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     displayColumns: []
   };
 
+  private alive: boolean;
+  private pollInterval : number;
+
+  metadataList$: Observable<Object[]>;
+  @Input() submissionEnvelopeId: string;
+
   private isLoading: boolean = false;
 
-  editing = {};
-
-  loadingIndicator: boolean = true;
-  reorderable: boolean = true;
-
-  expanded: any = {};
-  timeout: any;
+  editing = {};s
 
   iconsDir:string;
 
@@ -59,13 +60,20 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
 
   expandAll: boolean;
 
-  constructor() {
+  constructor(private ingestService: IngestService,
+              private flattenService: FlattenService) {
     this.iconsDir = 'assets/open-iconic/svg';
-    this.setPage({ offset: 0 });
+    this.pollInterval = 4000; //4s
+    this.alive = true;
+  }
+
+  ngOnDestroy(){
+    this.alive = false; // switches your IntervalObservable off
   }
 
   ngOnInit() {
     this.setPage({ offset: 0 });
+    this.fetchData();
   }
 
   ngAfterViewChecked() {
@@ -130,13 +138,11 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     return row['validationErrors[0].user_friendly_message'];
     //TODO retrieve all validation errors, fix the filtering below
     // let userFriendlyErrors = Object.keys(row)
-    //   .filter(column => column.match('^validationErrors\[\d\]\.user_friendly_message.*'));
+    //   .filter(column => column.match('^validationErrors\[%d\]\.user\_friendly\_message.*'));
     // return userFriendlyErrors.join(',');
   }
 
   toggleExpandRow(row) {
-    console.log('Toggled Expand Row!', row);
-    console.log(this.table);
     this.table.rowDetail.toggleExpandRow(row);
     this.table.bodyComponent.bodyHeight = '800px';
     this.table.bodyComponent.recalcLayout();
@@ -154,31 +160,21 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
 
   setPage(pageInfo){
     this.page.pageNumber = pageInfo.offset;
-    this.pageNumberChange.emit(pageInfo.offset);
     this.rows = this.metadataList;
   }
 
-  flatten(data) {
-    let result = {};
-
-    function recurse(cur, prop) {
-      if (Object(cur) !== cur) {
-        result[prop] = cur;
-      } else if (Array.isArray(cur)) {
-        for (var i = 0, l = cur.length; i < l; i++)
-          recurse(cur[i], prop + "[" + i + "]");
-        if (l == 0) result[prop] = [];
-      } else {
-        let isEmpty = true;
-        for (let p in cur) {
-          isEmpty = false;
-          recurse(cur[p], prop ? prop + "." + p : p);
+  fetchData(){
+    TimerObservable.create(500, this.pollInterval)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        if(this.submissionEnvelopeId){
+          this.metadataList$ = this.ingestService.fetchData(this.metadataType, this.submissionEnvelopeId);
+          this.metadataList$.subscribe(data => {
+            this.metadataList = data.map(this.flattenService.flatten)
+          })
+          // console.log('polling ' + this.metadataType, this.metadataList);
         }
-        if (isEmpty && prop) result[prop] = {};
-      }
-    }
-    recurse(data, "");
-    return result;
-  };
+    });
+  }
 
 }
