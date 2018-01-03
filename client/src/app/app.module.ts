@@ -50,7 +50,8 @@ import {OverviewComponent } from './submission/overview/overview.component';
 import {AlertService} from "./shared/services/alert.service";
 import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
-import { ConsentComponent } from './submission/consent/consent.component';
+import {ConsentComponent} from './submission/consent/consent.component';
+import {FlattenService} from "./shared/services/flatten.service";
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -113,7 +114,7 @@ export function tokenGetter(): string {
     NoopAnimationsModule,
     NgxDatatableModule
   ],
-  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService],
+  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
   bootstrap: [AppComponent]
 })
 

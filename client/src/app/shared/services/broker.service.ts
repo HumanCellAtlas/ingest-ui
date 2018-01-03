@@ -19,8 +19,15 @@ export class BrokerService {
   private handleError(operation: any) {
     return (err: any) => {
       let errMsg = `error in ${operation}()`;
-      console.log(`${errMsg}:`, err.error)
-      return Observable.throw(err.error);
+      console.log(`${errMsg}:`, err);
+
+      let httpError = {
+        message: "An error occurred in uploading spreadsheet",
+        details: `${err.name}: ${err.message}`
+      };
+
+      let error = err.error && err.error.message && err.error.details ? err.error : httpError;
+      return Observable.throw(error);
     }
   }
 

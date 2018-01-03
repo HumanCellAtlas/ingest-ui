@@ -1,7 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IngestService} from "../../shared/services/ingest.service";
-import {ListResult} from "../../shared/models/hateoas";
-import {Metadata} from "../../shared/models/metadata";
 
 @Component({
   selector: 'app-samples',
@@ -12,7 +9,7 @@ import {Metadata} from "../../shared/models/metadata";
 export class SamplesComponent implements OnInit {
   @Input() samples : Object[];
 
-  constructor(private ingestService: IngestService) {
+  constructor() {
 
   }
   ngOnInit() {

@@ -1,11 +1,12 @@
-<a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
-<a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
-
+<ng-container *ngIf="metadataList && metadataList.length > 0">
+  <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
+  <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
+</ng-container>
 
 <ngx-datatable
   #mydatatable
 
-  *ngIf="metadataList && metadataList.length > 0"
+  *ngIf="metadataList && metadataList.length >= 0"
 
   class="material expandable"
 
@@ -22,115 +23,114 @@
   [loadingIndicator]="isLoading"
 
   (page)='setPage($event)'
-
 >
-   <!--Row Detail Template -->
-  <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
-    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
-        <div><strong>Validation Report:</strong></div>
-        <span class="text-danger" title="{{getValidationErrors(row)}}">{{getValidationErrors(row)}}</span>
-      </div>
-    </ng-template>
-  </ngx-datatable-row-detail>
 
-  <!--Expand column-->
-  <ngx-datatable-column
-    [resizeable]="true"
-    [sortable]="false"
-    [draggable]="false"
-    [canAutoResize]="true"
-    [width]="'50'">
-    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template >
-      <a
-        href="javascript:void(0)"
-        [class.datatable-icon-right]="!expanded"
-        [class.datatable-icon-down]="expanded"
-        title="Expand/Collapse Row"
-        (click)="toggleExpandRow(row)">
-      </a>
-    </ng-template>
-  </ngx-datatable-column>
+  <ng-container *ngIf="metadataList && metadataList.length > 0">
+     <!--Row Detail Template -->
+    <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+        <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
+          <div><strong>Validation Report:</strong></div>
+          <span class="text-danger" title="{{getValidationErrors(row)}}">{{getValidationErrors(row)}}</span>
+        </div>
+      </ng-template>
+    </ngx-datatable-row-detail>
 
-  <!--add the following binding if pinning column-->
-  <!--[frozenLeft]="true"-->
-
-  <!--State Column-->
-  <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'" >
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <ng-container [ngSwitch]="value">
-        <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
-        <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
-        <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
-        <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
-        <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
-        <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
-      </ng-container>
-    </ng-template>
-  </ngx-datatable-column>
-
-  <ng-container *ngFor="let column of getAllColumns(metadataList)">
-    <!--Core.type column-->
-    <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(row) }}</a>
+    <!--Expand column-->
+    <ngx-datatable-column
+      [resizeable]="true"
+      [sortable]="false"
+      [draggable]="false"
+      [canAutoResize]="true"
+      [width]="'50'">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template >
+        <a
+          href="javascript:void(0)"
+          [class.datatable-icon-right]="!expanded"
+          [class.datatable-icon-down]="expanded"
+          title="Expand/Collapse Row"
+          (click)="toggleExpandRow(row)">
+        </a>
       </ng-template>
     </ngx-datatable-column>
 
-    <!--Other columns-->
-    <ng-template #textColumn>
-      <ngx-datatable-column prop="{{column}}" name="{{column.replace('content.','')}}">
+    <!--State Column-->
+    <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'" >
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <ng-container [ngSwitch]="value">
+          <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
+          <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
+          <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
+          <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
+          <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
+          <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
+        </ng-container>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ng-container *ngFor="let column of getAllColumns(metadataList)">
+      <!--Core.type column-->
+      <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <span
-            title="{{value}}"
-            (dblclick)="editing[rowIndex + '-' + column] = true"
-            *ngIf="!editing[rowIndex + '-' + column]">
-            {{value}}
-          </span>
-          <input
-            autofocus
-            (blur)="updateValue($event, column, rowIndex)"
-            *ngIf="editing[rowIndex+ '-' + column]"
-            type="text"
-            [value]="value"
-          />
+          <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(row) }}</a>
         </ng-template>
       </ngx-datatable-column>
-    </ng-template>
+
+      <!--Other columns-->
+      <ng-template #textColumn>
+        <ngx-datatable-column prop="{{column}}" name="{{column.replace('content.','')}}">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <span
+              title="{{value}}"
+              (dblclick)="editing[rowIndex + '-' + column] = true"
+              *ngIf="!editing[rowIndex + '-' + column]">
+              {{value}}
+            </span>
+            <input
+              autofocus
+              (blur)="updateValue($event, column, rowIndex)"
+              *ngIf="editing[rowIndex+ '-' + column]"
+              type="text"
+              [value]="value"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+      </ng-template>
+    </ng-container>
+
+    <ngx-datatable-column prop="_links.self.href" name="ingest api" [width]="'130'" >
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+      </ng-template>
+    </ngx-datatable-column>
+
   </ng-container>
 
-  <ngx-datatable-column prop="_links.self.href" name="ingest api" [width]="'130'" >
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <a href="{{value}}"><span class="oi oi-external-link"></span></a>
-    </ng-template>
-  </ngx-datatable-column>
-
-
-  <ngx-datatable-footer>
-    <ng-template
-      ngx-datatable-footer-template
-      let-rowCount="rowCount"
-      let-pageSize="pageSize"
-      let-selectedCount="selectedCount"
-      let-curPage="curPage"
-      let-offset="offset"
-      let-isVisible="isVisible">
-      <datatable-pager
-        [pagerLeftArrowIcon]="'datatable-icon-left'"
-        [pagerRightArrowIcon]="'datatable-icon-right'"
-        [pagerPreviousIcon]="'datatable-icon-prev'"
-        [pagerNextIcon]="'datatable-icon-skip'"
-        [page]="curPage"
-        [size]="pageSize"
-        [count]="rowCount"
-        [hidden]="!((rowCount / pageSize) > 1)"
-        (change)="table.onFooterPage($event)">
-      </datatable-pager>
-      <div class="page-count">
-        {{rowCount.toLocaleString()}} {{totalMessage}}
-      </div>
-    </ng-template>
-  </ngx-datatable-footer>
+  <!--<ngx-datatable-footer>-->
+    <!--<ng-template-->
+      <!--ngx-datatable-footer-template-->
+      <!--let-rowCount="rowCount"-->
+      <!--let-pageSize="pageSize"-->
+      <!--let-selectedCount="selectedCount"-->
+      <!--let-curPage="curPage"-->
+      <!--let-offset="offset"-->
+      <!--let-isVisible="isVisible">-->
+      <!--<datatable-pager-->
+        <!--[pagerLeftArrowIcon]="'datatable-icon-left'"-->
+        <!--[pagerRightArrowIcon]="'datatable-icon-right'"-->
+        <!--[pagerPreviousIcon]="'datatable-icon-prev'"-->
+        <!--[pagerNextIcon]="'datatable-icon-skip'"-->
+        <!--[page]="curPage"-->
+        <!--[size]="pageSize"-->
+        <!--[count]="rowCount"-->
+        <!--[hidden]="!((rowCount / pageSize) > 1)"-->
+        <!--(change)="table.onFooterPage($event)">-->
+      <!--</datatable-pager>-->
+      <!--<div class="page-count">-->
+        <!--{{rowCount.toLocaleString()}} {{totalMessage}}-->
+      <!--</div>-->
+    <!--</ng-template>-->
+  <!--</ngx-datatable-footer>-->
 </ngx-datatable>
 
 
