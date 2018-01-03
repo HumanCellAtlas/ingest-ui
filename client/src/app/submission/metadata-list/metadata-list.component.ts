@@ -67,6 +67,10 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     this.alive = true;
   }
 
+  ngOnDestroy(){
+    this.alive = false; // switches your IntervalObservable off
+  }
+
   ngOnInit() {
     this.setPage({ offset: 0 });
     this.fetchData();

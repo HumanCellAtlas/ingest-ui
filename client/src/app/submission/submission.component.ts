@@ -58,7 +58,6 @@ export class SubmissionComponent implements OnInit {
     } else {
       this.pollSubmissionEnvelope(this.submissionEnvelopeId);
       this.pollEntities();
-      this.getSubmissionProject(this.submissionEnvelopeId);
     }
   }
 
@@ -88,6 +87,7 @@ export class SubmissionComponent implements OnInit {
         if(this.submissionEnvelopeId){
           this.ingestService.getBundles(this.submissionEnvelopeId)
             .subscribe(data => this.bundles = data.map(this.flattenService.flatten));
+          this.getSubmissionProject(this.submissionEnvelopeId);
         }
       });
   }
