@@ -20,7 +20,7 @@
         </td>
         <td><span title="{{project?.content?.project_id}}">{{ project?.content?.project_id }}</span></td>
         <td>
-          <a class="btn btn-primary" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/overview" class="text-info" >Create Submission</a>
+          <a class="btn btn-primary" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/metadata" class="text-info" >Create submission</a>
         </td>
       </tr>
       <tr *ngIf="!projects">
