@@ -31,6 +31,10 @@
         <div><strong>Validation Report:</strong></div>
         <span class="text-danger" title="{{getValidationErrors(row)}}">{{getValidationErrors(row)}}</span>
       </div>
+      <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
+        <div><strong>Validation Report:</strong></div>
+        <span class="text-success" title="Metadata is valid.">Metadata is valid.</span>
+      </div>
     </ng-template>
   </ngx-datatable-row-detail>
 
@@ -70,7 +74,7 @@
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(row) }}</a>
+        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(rowIndex) }}</a>
       </ng-template>
     </ngx-datatable-column>
 

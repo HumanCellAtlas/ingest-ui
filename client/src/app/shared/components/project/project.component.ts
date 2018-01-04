@@ -120,7 +120,7 @@ export class ProjectComponent implements OnInit {
       .subscribe(data => {
         this.project = data;
         let projectId = this.getProjectId(data);
-          this.router.navigate(['/projects/detail/' + projectId]);
+        this.router.navigate(['/projects/list']);
         this.alertService.success("","Project was successfully created.");
       },
 

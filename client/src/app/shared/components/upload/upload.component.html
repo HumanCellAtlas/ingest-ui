@@ -2,16 +2,23 @@
   <div class="card-body">
     <div class="form-group">
       <h4 class="card-title">Upload a Spreadsheet</h4>
+      <br/><p>All your sample, donor and assay information should be supplied in the metadata spreadsheet.</p>
       <p>
-        Upload your completed spreadsheet:<br/>
-        <input type="file" #fileInput placeholder="Upload file..."/><br/><br/>
-        <input type="hidden" #projectIdInput name="project_id" value="{{projectId}}" /><br/><br/>
-        <button type="button" (click)="upload()" class="btn btn-success">Upload spreadsheet</button>
+        <a class="btn btn-primary" href="{{downloadFile}}" target="_self" download>
+          <span>Download empty spreadsheet</span>
+          <span class="oi oi-data-transfer-download"></span>
+        </a>
       </p>
+      <br/>
+      <p>
+        Upload your completed spreadsheet:
+      </p>
+      <p>
+        <input type="file" #fileInput placeholder="Upload file..."/>
+        <input type="hidden" #projectIdInput name="project_id" value="{{projectId}}" />
+      </p>
+      <button type="button" (click)="upload()" class="btn btn-success">Upload</button>
+
     </div>
-    <a href="{{downloadFile}}" target="_self" download>
-      <span>Download Empty Spreadsheet</span>
-      <span class="oi oi-data-transfer-download"></span>
-    </a>
   </div>
 </div>
