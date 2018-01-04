@@ -9,7 +9,7 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
-  projects: Project[];
+  projects: Project[] = [];
 
   interval: number;
 
