@@ -74,7 +74,7 @@
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(row) }}</a>
+        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(rowIndex) }}</a>
       </ng-template>
     </ngx-datatable-column>
 

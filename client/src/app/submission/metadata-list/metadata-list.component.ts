@@ -48,6 +48,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
   metadataList$: Observable<Object[]>;
   @Input() submissionEnvelopeId: string;
 
+  unflattenedMetadataList: Object[];
+
   private isLoading: boolean = false;
 
   editing = {};s
@@ -121,8 +123,21 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     return columns;
   }
 
-  getMetadataType(row){
-    return row['content.donor.is_living'] != undefined ? 'donor' : row['content.core.type'];
+  getMetadataType(rowIndex){
+    let row = this.unflattenedMetadataList[rowIndex];
+    let content = row['content'];
+    let type = content && content['core'] ? content['core']['type'] : '';
+
+    if (type == 'sample' && content){
+      type = 'donor' in content ? 'donor': type;
+      type = 'immortalized_cell_line' in content ? 'immortalized_cell_line': type;
+      type = 'cell_suspension' in content ? 'cell_suspension': type;
+      type = 'organoid' in content ? 'organoid': type;
+      type = 'primary_cell_line' in content ? 'primary_cell_line': type;
+      type = 'specimen_from_organism' in content ? 'specimen_from_organism': type;
+    }
+    return type;
+
   }
 
   updateValue(event, cell, rowIndex) {
@@ -171,6 +186,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
           this.metadataList$ = this.ingestService.fetchData(this.metadataType, this.submissionEnvelopeId);
           this.metadataList$.subscribe(data => {
             this.metadataList = data.map(this.flattenService.flatten)
+            this.unflattenedMetadataList = data;
           })
           // console.log('polling ' + this.metadataType, this.metadataList);
         }

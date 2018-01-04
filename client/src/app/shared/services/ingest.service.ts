@@ -38,14 +38,22 @@ export class IngestService {
 
   public getProjects(): Observable<Project[]> {
     return this.http.get(`${this.API_URL}/projects`, {params: {'sort':'submissionDate,desc'}})
-      .map((data: ListResult<Project>) => _.values(data._embedded.projects))
-      .do(console.log);
+      .map((data: ListResult<Project>) => {
+        if(data._embedded && data._embedded.projects)
+          return _.values(data._embedded.projects);
+        else
+          return [];
+      });
   }
 
   public getUserProjects(): Observable<Project[]> {
     return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'submissionDate,desc'}})
-      .map((data: ListResult<Project>) => _.values(data._embedded.projects))
-      .do(console.log);
+      .map((data: ListResult<Project>) => {
+        if(data._embedded && data._embedded.projects)
+          return _.values(data._embedded.projects);
+        else
+          return [];
+      });
   }
 
   public getFiles(id): Observable<Object[]> {
