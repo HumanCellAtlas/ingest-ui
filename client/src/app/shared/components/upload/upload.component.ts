@@ -35,9 +35,9 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {
     if(this.projectId){
-      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_NOPROJECTTAB.xlsx';
+      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.6.1_spreadsheet_NOPROJECTTAB.xlsx';
     } else {
-      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.4.0_spreadsheet_PROJECTTAB.xlsx';
+      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.6.1_spreadsheet_PROJECTTAB.xlsx';
     }
   }
 
