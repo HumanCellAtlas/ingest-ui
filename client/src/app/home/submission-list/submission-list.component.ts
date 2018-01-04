@@ -121,17 +121,27 @@ export class SubmissionListComponent implements OnInit {
         this.submissionProjects[submissionId] = '';
         this.ingestService.getSubmissionProject(submissionId)
           .subscribe(data => {
-            this.submissionProjects[submissionId] = this.extractProjectName(data);
+            this.submissionProjects[submissionId] = {};
+            this.submissionProjects[submissionId]['name'] = this.extractProjectName(data);
+            this.submissionProjects[submissionId]['id'] = this.extractProjectId(data);
           })
       }
     }
   }
 
   getProjectName(submission){
-    return this.submissionProjects[this.getSubmissionId(submission)];
+    return this.submissionProjects[this.getSubmissionId(submission)]['name'];
+  }
+  getProjectId(submission){
+    return this.submissionProjects[this.getSubmissionId(submission)]['id'];
   }
 
   extractProjectName(project){
+    let content = project['content'];
+    return content ? project['content']['name'] : '';
+  }
+
+  extractProjectId(project){
     let content = project['content'];
     return content ? project['content']['project_id'] : '';
   }

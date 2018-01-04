@@ -4,6 +4,7 @@
       <thead class="thead-light">
       <tr>
         <th>Created</th>
+        <th>Project Name</th>
         <th>Submission ID</th>
         <th>Project ID</th>
         <th>Status</th>
@@ -13,10 +14,11 @@
       <tbody>
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
+        <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>
           <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{getSubmissionId(submissionEnvelope)}}</a>
         </td>
-        <td>{{getProjectName(submissionEnvelope)}}</td>
+        <td>{{getProjectId(submissionEnvelope)}}</td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState">
             <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
