@@ -7,7 +7,7 @@
     <div class="col-sm-10"><h1> Submission</h1></div>
     <div class="col-sm-2">
       <h3>
-        <span [ngSwitch]="submissionState">
+        <span class="float-right" [ngSwitch]="submissionState">
           <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionState}}</span>
           <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionState}}</span>
           <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionState}}</span>

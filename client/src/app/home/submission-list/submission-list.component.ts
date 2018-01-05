@@ -30,6 +30,8 @@ export class SubmissionListComponent implements OnInit {
 
   private alive: boolean;
 
+  private showAll;
+
   constructor(private ingestService: IngestService,
               private router: Router,
               private route: ActivatedRoute,
@@ -49,12 +51,14 @@ export class SubmissionListComponent implements OnInit {
     this.submissionProjects = {};
 
     this.params ={'page': 0, 'size': 20, 'sort' : 'submissionDate,desc'};
+
+    route.params.subscribe(val => {
+      this.showAll = this.route.snapshot.paramMap.get('all');
+    });
   }
 
   ngOnInit() {
-    let showAll = this.route.snapshot.paramMap.get('all');
-    this.pollSubmissions(showAll)
-
+    this.pollSubmissions()
   }
 
   ngOnDestroy(){
@@ -78,16 +82,16 @@ export class SubmissionListComponent implements OnInit {
 
   }
 
-  pollSubmissions(showAll) {
+  pollSubmissions() {
     TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
-        this.getSubmissions(showAll);
+        this.getSubmissions();
       });
   }
 
-  getSubmissions(showAll){
-    if(showAll){
+  getSubmissions(){
+    if(this.showAll){
       this.ingestService.getAllSubmissions(this.params)
         .subscribe(data =>{
           let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
@@ -159,7 +163,7 @@ export class SubmissionListComponent implements OnInit {
 
   goToPage(pageNumber){
     this.params['page'] = pageNumber;
-    this.getSubmissions(false);
+    this.getSubmissions();
   }
 
   createRange(number){
@@ -168,6 +172,11 @@ export class SubmissionListComponent implements OnInit {
       items.push(i);
     }
     return items;
+  }
+
+  toggleShowAll(value){
+    console.log(value)
+    this.showAll = value;
   }
 }
 
