@@ -5,9 +5,11 @@
       <tr>
         <th>Created</th>
         <th>Submission ID</th>
+        <th>Project Name</th>
         <th>Project ID</th>
         <th>Status</th>
-        <th></th>
+        <th>
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -17,6 +19,7 @@
           <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{getSubmissionId(submissionEnvelope)}}</a>
         </td>
         <td>{{getProjectName(submissionEnvelope)}}</td>
+        <td>{{getProjectId(submissionEnvelope)}}</td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState">
             <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>

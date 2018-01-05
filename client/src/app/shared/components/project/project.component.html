@@ -4,8 +4,8 @@
   <br/>
   <div class="card">
     <div class="card-body">
-      <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Project" [active]="activeTab == 'team'" [disabled]="true">
+      <!--<tabs [navClass]="'nav-tabs'">-->
+        <!--<tab tabTitle="Project" [active]="activeTab == 'team'" [disabled]="true">-->
           <br/>
           <form [formGroup]="projectForm">
             <div class="form-group" >
@@ -24,13 +24,13 @@
 
             <ng-container *ngIf="!inSubmissionMode">
               <button type="button" class="btn btn-success" (click)="cancel()">Cancel</button>
-              <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Save</button>
+              <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Create project</button>
             </ng-container>
           </form>
 
-        </tab>
-        <tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>
-      </tabs>
+        <!--</tab>-->
+        <!--<tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>-->
+      <!--</tabs>-->
     </div>
   </div>
 
@@ -40,7 +40,7 @@
   <app-overview [project]="project" [projectId]="projectId" >
 
   <button type="button" class="btn btn-success" (click)="edit()">Edit Project</button>
-  <button type="button" class="btn btn-success" (click)="newProject()">Create a new project</button>
+  <!--<button type="button" class="btn btn-success" (click)="newProject()">Create a new project</button>-->
   <button type="button" class="btn btn-success" (click)="newSubmission()">Create project from spreadsheet</button>
 
   </app-overview>

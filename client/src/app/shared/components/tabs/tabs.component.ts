@@ -9,7 +9,7 @@ import {TabComponent} from "../tab/tab.component";
 })
 
 export class TabsComponent implements AfterContentInit {
-  @Input() navClass = 'nav-pills nav-fill';
+  @Input() navClass = 'nav-pills';
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
   // contentChildren are set

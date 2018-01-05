@@ -4,19 +4,23 @@
       <thead class="thead-light">
       <tr>
         <th>Created</th>
-        <th>Project Name</th>
         <th>ID</th>
+        <th>Project Name</th>
         <th>Project ID</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let project of projects">
+
         <td>{{project.submissionDate | date: "medium"}}</td>
-        <td><span title="{{project?.content?.name}}"> {{ project?.content?.name }}</span></td>
+
         <td>
           <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{getProjectId(project)}}</a>
         </td>
+
+        <td><span title="{{project?.content?.name}}"> {{ project?.content?.name }}</span></td>
+
         <td><span title="{{project?.content?.project_id}}">{{ project?.content?.project_id }}</span></td>
         <td>
           <a class="btn btn-success" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/metadata" >Create submission</a>

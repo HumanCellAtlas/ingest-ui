@@ -33,7 +33,7 @@
       </div>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
         <div><strong>Validation Report:</strong></div>
-        <span class="text-success" title="Metadata is valid.">Metadata is valid.</span>
+        <span class="text-success" title="{{getDefaultValidMessage()}}">{{getDefaultValidMessage()}}</span>
       </div>
     </ng-template>
   </ngx-datatable-row-detail>
