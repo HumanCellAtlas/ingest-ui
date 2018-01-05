@@ -137,7 +137,16 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
       type = 'specimen_from_organism' in content ? 'specimen_from_organism': type;
     }
     return type;
+  }
 
+  getDefaultValidMessage(){
+    let validMessage = 'Metadata is valid.';
+
+    if(this.metadataType == 'files'){
+      validMessage = 'Data is valid.';
+    }
+
+    return validMessage;
   }
 
   updateValue(event, cell, rowIndex) {
