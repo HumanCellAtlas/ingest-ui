@@ -1,13 +1,15 @@
-<div class="container">
+<div>
   <div class="row">
-    <div class="col-12">
+    <div class="col-11">
       <h1>Hi {{profile?.given_name}},</h1>
     </div>
+    <div class="col-1"></div>
   </div>
   <div class="row">
     <div class="col-8"
          *ngIf="(summary$ | async) || {draftSubmissions:0, pendingSubmissions:0, completedSubmissions:0}; let summary">
-      <p>This is your dashboard.</p><p>You currently have {{summary.draftSubmissions == 0 ? "no" : summary.draftSubmissions}} active draft submissions and {{summary.pendingSubmissions == 0 ? "no" : summary.pendingSubmissions}} pending
+      <p>This is your dashboard</p>
+      <p>You currently have {{summary.draftSubmissions == 0 ? "no" : summary.draftSubmissions}} active draft submissions and {{summary.pendingSubmissions == 0 ? "no" : summary.pendingSubmissions}} pending
       submissions. You have successfully completed {{summary.completedSubmissions == 0 ? "no" : summary.completedSubmissions}} submissions to the Human Cell
         Atlas. Thanks for
         contributing to the
