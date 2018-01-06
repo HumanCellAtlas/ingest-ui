@@ -8,7 +8,8 @@ import {LoginComponent} from "./login/login.component";
 import {ConsentComponent} from "./submission/consent/consent.component";
 
 export const ROUTES: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'callback', component: CallbackComponent },
 
   { path: 'submissions/consent', component: ConsentComponent },

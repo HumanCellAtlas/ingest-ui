@@ -24,15 +24,19 @@ export class AuthService {
   }
 
   public handleAuthentication(): void {
+
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/home']);
       } else if (err) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/login']);
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
+      } else if(!this.isAuthenticated())
+      {
+        this.router.navigate(['/login']);
       }
     });
   }
@@ -66,7 +70,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     // Go back to the home route
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   public isAuthenticated(): boolean {
