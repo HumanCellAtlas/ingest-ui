@@ -5,5 +5,9 @@
 <main class="container-fluid">
   <br/>
   <alert></alert>
-  <router-outlet><div  *ngIf="showLoader" class="loading"></div></router-outlet>
+  <router-outlet>
+    <div  *ngIf="showLoader" class="loading">
+        <img style="position:relative;z-index: 1000;" src="assets/loading.svg" alt="loading">
+    </div>
+  </router-outlet>
 </main>
