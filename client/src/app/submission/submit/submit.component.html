@@ -25,17 +25,17 @@
   <p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
     your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
   <br/><br/>
-  <button class="btn btn-success btn-lg" (click)="completeSubmission(submissionEnvelope)">
+  <button class="btn btn-success btn-lg" (click)="completeSubmission()">
     Submit
   </button>
 </form>
 
 <br/>
-<div class="card" *ngIf="bundles && bundles.length > 0">
+<div class="card" *ngIf="isSubmitted">
   <div class="card-body" >
     <tabs [navClass]="'nav-tabs'">
       <tab tabTitle="Bundles">
-        <app-bundles *ngIf="bundles && bundles.length > 0" [bundles]="bundles" ></app-bundles>
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'bundleManifests'" [config]="{displayAll: true, hideWhenEmptyRows: true}" > </app-metadata-list>
       </tab>
     </tabs>
   </div>

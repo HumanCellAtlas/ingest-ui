@@ -3,24 +3,14 @@ import {
   Input,
   OnInit,
   ViewEncapsulation,
-  ViewChild, AfterViewChecked
+  ViewChild, AfterViewChecked, OnDestroy
 } from '@angular/core';
 import {IngestService} from "../../shared/services/ingest.service";
 import {Observable} from "rxjs/Observable";
 import {FlattenService} from "../../shared/services/flatten.service";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
-
-export class Page {
-  //The number of elements in the page
-  size: number = 0;
-  //The total number of elements
-  totalElements: number = 0;
-  //The total number of pages
-  totalPages: number = 0;
-  //The current page number
-  pageNumber: number = 0;
-
-}
+import {Page, PagedData} from "../../shared/models/page";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-metadata-list',
@@ -29,8 +19,11 @@ export class Page {
   encapsulation: ViewEncapsulation.None
 })
 
-export class MetadataListComponent implements OnInit, AfterViewChecked{
-  @ViewChild('mydatatable') table: any;
+export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestroy{
+  pollingSubscription: Subscription;
+  pollingTimer: Observable<number>;
+
+  @ViewChild('datatable') table: any;
 
   @Input() metadataList;
   @Input() metadataType;
@@ -39,16 +32,15 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     displayContent: true,
     displayState: true,
     displayAll: false,
-    displayColumns: []
+    displayColumns: [],
+    hideWhenEmptyRows: false
   };
 
   private alive: boolean;
   private pollInterval : number;
 
-  metadataList$: Observable<Object[]>;
+  metadataList$: Observable<PagedData>;
   @Input() submissionEnvelopeId: string;
-
-  unflattenedMetadataList: Object[];
 
   private isLoading: boolean = false;
 
@@ -62,11 +54,17 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
 
   expandAll: boolean;
 
+  isPaginated: boolean;
+
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
     this.iconsDir = 'assets/open-iconic/svg';
     this.pollInterval = 4000; //4s
     this.alive = true;
+    this.page.page = 0;
+    this.page.size = 20;
+    this.pollingTimer = TimerObservable.create( 0, this.pollInterval)
+      .takeWhile(() => this.alive); // only fires when component is alive
   }
 
   ngOnDestroy(){
@@ -74,8 +72,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
   }
 
   ngOnInit() {
-    this.setPage({ offset: 0 });
-    this.fetchData();
+    this.setPage({offset: 0});
   }
 
   ngAfterViewChecked() {
@@ -124,7 +121,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
   }
 
   getMetadataType(rowIndex){
-    let row = this.unflattenedMetadataList[rowIndex];
+    let row = this.metadataList[rowIndex];
     let content = row['content'];
     let type = content && content['core'] ? content['core']['type'] : '';
 
@@ -160,10 +157,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
 
   getValidationErrors(row){
     return row['validationErrors[0].user_friendly_message'];
-    //TODO retrieve all validation errors, fix the filtering below
-    // let userFriendlyErrors = Object.keys(row)
-    //   .filter(column => column.match('^validationErrors\[%d\]\.user\_friendly\_message.*'));
-    // return userFriendlyErrors.join(',');
+    //TODO retrieve all validation errors
   }
 
   toggleExpandRow(row) {
@@ -183,23 +177,44 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
   }
 
   setPage(pageInfo){
-    this.page.pageNumber = pageInfo.offset;
-    this.rows = this.metadataList;
+    this.stopPolling();
+    this.page.page = pageInfo.offset;
+    this.startPolling(pageInfo);
+    this.alive = true;
   }
 
-  fetchData(){
-    TimerObservable.create(500, this.pollInterval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        if(this.submissionEnvelopeId){
-          this.metadataList$ = this.ingestService.fetchData(this.metadataType, this.submissionEnvelopeId);
-          this.metadataList$.subscribe(data => {
-            this.metadataList = data.map(this.flattenService.flatten)
-            this.unflattenedMetadataList = data;
-          })
-          // console.log('polling ' + this.metadataType, this.metadataList);
+  fetchData(pageInfo){
+    if(this.submissionEnvelopeId){
+      let newPage = new Page();
+      newPage['page'] = pageInfo['offset'];
+      newPage['size'] = pageInfo['size'];
+
+      this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, newPage);
+
+      this.metadataList$.subscribe(data => {
+        this.rows = data.data.map(this.flattenService.flatten);
+        this.metadataList = data.data;
+        if(data.page){
+          this.isPaginated = true;
+          this.page = data.page;
+        } else {
+          this.isPaginated = false;
         }
+      })
+    }
+  }
+
+  startPolling(pageInfo){
+    this.pollingSubscription = this.pollingTimer.subscribe(() => {
+      this.fetchData(pageInfo);
     });
+
+  }
+
+  stopPolling(){
+    if(this.pollingSubscription){
+      this.pollingSubscription.unsubscribe();
+    }
   }
 
 }

@@ -10,6 +10,7 @@ import {Summary} from "../models/summary";
 import {Project} from "../models/project";
 import {Metadata} from "../models/metadata";
 import {AlertService} from "./alert.service";
+import {PagedData} from "../models/page";
 
 @Injectable()
 export class IngestService {
@@ -64,14 +65,6 @@ export class IngestService {
         else
           return [];
       })
-  }
-
-  public getPaginatedFiles(id, params): Observable<Object> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`, {params: params});
-  }
-
-  public getPaginatedSamples(submissionEnvelopeId, params): Observable<Object> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
   }
 
   public getSamples(submissionEnvelopeId): Observable<Object[]> {
@@ -163,27 +156,20 @@ export class IngestService {
       })
   }
 
-  public fetchData(entityType, submissionId){
-    switch(entityType) {
-      case 'samples': {
-        return this.getSamples(submissionId)
-      }
-      case 'protocols': {
-        return this.getProtocols(submissionId)
-      }
-      case 'assays': {
-        return this.getAssays(submissionId)
-      }
-      case 'analyses': {
-        return this.getAnalyses(submissionId)
-      }
-      case 'bundles': {
-        return this.getBundles(submissionId)
-      }
-      case 'files': {
-        return this.getFiles(submissionId)
-      }
-    }
-  }
+  public fetchSubmissionData(submissionId, entityType, params): Observable<PagedData> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`, {params: params})
+      .map((data: ListResult<Object>) => {
+        let pagedData = new PagedData();
 
+        if(data._embedded && data._embedded[entityType]){
+          pagedData.data = _.values(data._embedded[entityType]);
+        }
+        else{
+          pagedData.data = [];
+        }
+        pagedData.page = data.page;
+
+        return pagedData;
+      });
+  }
 }

@@ -1,26 +1,29 @@
-<ng-container *ngIf="metadataList && metadataList.length > 0">
+<script src="../../shared/services/ingest.service.spec.ts"></script>
+<script src="../../shared/services/ingest.service.ts"></script>
+<ng-container *ngIf="rows && rows.length > 0">
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
   <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
 </ng-container>
-
+<!--[scrollbarV]="true"-->
 <ngx-datatable
-  #mydatatable
+  #datatable
 
-  *ngIf="metadataList && metadataList.length >= 0"
+  *ngIf="rows && ( rows.length > 0 || !config.hideWhenEmptyRows)"
 
   class="material expandable"
 
   [columnMode]="'force'"
-  [rows]="metadataList"
+  [rows]="rows"
   [headerHeight]="50"
   [footerHeight]="50"
   [rowHeight]="40"
-  [scrollbarV]="true"
+
   [scrollbarH]="true"
+
   [count]="page.totalElements"
-  [offset]="page.pageNumber"
   [limit]="page.size"
   [loadingIndicator]="isLoading"
+  [externalPaging]="isPaginated"
 
   (page)='setPage($event)'
 >
@@ -70,7 +73,7 @@
     </ng-template>
   </ngx-datatable-column>
 
-  <ng-container *ngFor="let column of getAllColumns(metadataList)">
+  <ng-container *ngFor="let column of getAllColumns(rows)">
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
@@ -106,31 +109,7 @@
     </ng-template>
   </ngx-datatable-column>
 
-  <!--<ngx-datatable-footer>-->
-    <!--<ng-template-->
-      <!--ngx-datatable-footer-template-->
-      <!--let-rowCount="rowCount"-->
-      <!--let-pageSize="pageSize"-->
-      <!--let-selectedCount="selectedCount"-->
-      <!--let-curPage="curPage"-->
-      <!--let-offset="offset"-->
-      <!--let-isVisible="isVisible">-->
-      <!--<datatable-pager-->
-        <!--[pagerLeftArrowIcon]="'datatable-icon-left'"-->
-        <!--[pagerRightArrowIcon]="'datatable-icon-right'"-->
-        <!--[pagerPreviousIcon]="'datatable-icon-prev'"-->
-        <!--[pagerNextIcon]="'datatable-icon-skip'"-->
-        <!--[page]="curPage"-->
-        <!--[size]="pageSize"-->
-        <!--[count]="rowCount"-->
-        <!--[hidden]="!((rowCount / pageSize) > 1)"-->
-        <!--(change)="table.onFooterPage($event)">-->
-      <!--</datatable-pager>-->
-      <!--<div class="page-count">-->
-        <!--{{rowCount.toLocaleString()}} {{totalMessage}}-->
-      <!--</div>-->
-    <!--</ng-template>-->
-  <!--</ngx-datatable-footer>-->
+
 </ngx-datatable>
 
 

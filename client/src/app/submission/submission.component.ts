@@ -19,7 +19,6 @@ export class SubmissionComponent implements OnInit {
   submissionEnvelope$: Observable<any>;
   submissionEnvelope;
   submissionState: string;
-  submitLink: string;
 
   analyses: Object[];
   assays: Object[];
@@ -30,6 +29,8 @@ export class SubmissionComponent implements OnInit {
   activeTab: string;
 
   isSubmittable: boolean;
+  isSubmitted:boolean;
+  submitLink: string;
 
   project: any;
 
@@ -75,7 +76,9 @@ export class SubmissionComponent implements OnInit {
             this.submissionEnvelope = data;
             this.isSubmittable = this.checkIfValid(data);
             this.submissionState = data['submissionState'];
+            this.isSubmitted = this.isStateSubmitted(data.submissionState)
             this.submitLink = this.getSubmitLink(data);
+
           });
       });
   }
@@ -85,16 +88,9 @@ export class SubmissionComponent implements OnInit {
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
         if(this.submissionEnvelopeId){
-          this.ingestService.getBundles(this.submissionEnvelopeId)
-            .subscribe(data => this.bundles = data.map(this.flattenService.flatten));
           this.getSubmissionProject(this.submissionEnvelopeId);
         }
       });
-  }
-
-  getSubmitLink(submissionEnvelope){
-    let links = submissionEnvelope['_links'];
-    return links && links['submit']? links['submit']['href'] : null;
   }
 
   checkIfValid(submission){
@@ -122,4 +118,16 @@ export class SubmissionComponent implements OnInit {
   getProjectName(){
     return this.project && this.project['content'] ? this.project['content']['name'] : '';
   }
+
+
+  isStateSubmitted(state){
+    let submittedStates = [ "Submitted", "Cleanup", "Complete"];
+    return (submittedStates.indexOf(state) >= 0);
+  }
+
+  getSubmitLink(submissionEnvelope){
+    let links = submissionEnvelope['_links'];
+    return links && links['submit']? links['submit']['href'] : null;
+  }
+
 }

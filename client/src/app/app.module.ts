@@ -29,13 +29,7 @@ import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
 import {FilesComponent} from './submission/files/files.component';
-import {SamplesComponent} from './submission/samples/samples.component';
-import {AssaysComponent} from './submission/assays/assays.component';
-import {ProtocolsComponent} from './submission/protocols/protocols.component';
-import {AnalysesComponent} from './submission/analyses/analyses.component';
-import {BundlesComponent} from './submission/bundles/bundles.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
-import {FileListComponent} from './submission/files/file-list/file-list.component';
 import {TeamComponent} from './shared/components/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
@@ -43,7 +37,6 @@ import {MetadataListComponent} from './submission/metadata-list/metadata-list.co
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ProjectListComponent} from './projects/project-list/project-list.component';
 import {ProjectsComponent} from './projects/projects.component';
-import {PaginationComponent} from './submission/pagination/pagination.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
 import {LoginComponent} from './login/login.component';
 import {OverviewComponent } from './submission/overview/overview.component';
@@ -71,19 +64,12 @@ export function tokenGetter(): string {
     TabComponent,
     TabsComponent,
     FilesComponent,
-    SamplesComponent,
-    AssaysComponent,
-    ProtocolsComponent,
-    AnalysesComponent,
-    BundlesComponent,
     UploadInfoComponent,
-    FileListComponent,
     TeamComponent,
     SubmitComponent,
     MetadataListComponent,
     ProjectListComponent,
     ProjectsComponent,
-    PaginationComponent,
     UploadComponent,
     MetadataComponent,
     LoginComponent,

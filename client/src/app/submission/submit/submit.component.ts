@@ -10,21 +10,21 @@ import {Router} from "@angular/router";
   styleUrls: ['./submit.component.css']
 })
 export class SubmitComponent implements OnInit {
-  @Input() submitLink;
-  @Input() bundles: Object[];
+  @Input() submissionEnvelopeId;
+  @Input() submissionEnvelope$;
+  @Input() submitLink: string;
+  @Input() isSubmitted: boolean;
 
-  constructor(private ingestService: IngestService,
-              private router: Router) {
+  constructor(private ingestService: IngestService) {
   }
 
   ngOnInit() {
   }
 
-  completeSubmission(submission) {
+  completeSubmission() {
     console.log('completeSubmission');
     this.ingestService.submit(this.submitLink);
   }
-
 
 
 }
