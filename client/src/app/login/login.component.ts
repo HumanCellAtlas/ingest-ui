@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import {Router} from "@angular/router";
 
 @Component({

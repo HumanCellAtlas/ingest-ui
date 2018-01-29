@@ -1,15 +1,22 @@
 var replace = require('replace-in-file');
 var package = require("./package.json");
 var buildVersion = package.version;
+
+var env = 'dev';
+
+if(process.argv.length >=3){
+  env = process.argv[2];
+}
+
 const options = {
-  files: './src/environments/environment.prod.ts',
+  files: './src/environments/environment.' + env + '.ts',
   from: /version: '(.*)'/g,
-  to: "version: '"+ buildVersion + "'",
+  to: "version: '" + buildVersion + "'",
   allowEmptyPaths: false,
 };
 
 try {
-  let changedFiles = replace.sync(options);
+  var changedFiles = replace.sync(options);
   if (changedFiles == 0) {
     throw "Please make sure that file '" + options.files + "' has \"version: ''\"";
   }

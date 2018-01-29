@@ -4,5 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  INGEST_API_URL: 'http://localhost:8080',
+  BROKER_API_URL: 'http://localhost:5000'
 };

@@ -11,16 +11,16 @@ import {Project} from "../models/project";
 import {Metadata} from "../models/metadata";
 import {AlertService} from "./alert.service";
 import {PagedData} from "../models/page";
+import { environment } from '../../../environments/environment';
+
 
 @Injectable()
 export class IngestService {
 
-  // API_URL: string = 'http://api.ingest.integration.data.humancellatlas.org/';
-  // API_URL: string = 'http://192.168.99.100:31763';
-  API_URL: string = 'http://api.ingest.dev.data.humancellatlas.org';
-  // API_URL: string = 'http://localhost:8080';
+  API_URL: string = environment.INGEST_API_URL;
 
   constructor(private http: HttpClient, private alertService: AlertService) {
+    console.log('api url', this.API_URL);
   }
 
   public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {

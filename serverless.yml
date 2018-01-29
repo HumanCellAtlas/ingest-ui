@@ -1,4 +1,4 @@
-service: ${self:custom.ingest-api.name}
+service: ${self:custom.ingest-ui.name}
 
 frameworkVersion: ">=1.0.0 <2.0.0"
 
