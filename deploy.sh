@@ -19,7 +19,7 @@ git pull
 
 cd client
 npm install
-npm version patch && node ./replace.build.js ${ENV} && ng build --env=${ENV}
+node ./replace.build.js ${ENV} && ng build --env=${ENV}
 
 cd ..
 npm install
