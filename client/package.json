@@ -1,15 +1,15 @@
 {
   "name": "ingest-ui",
-  "version": "0.0.14",
+  "version": "0.2.10",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "local": "ng serve --env=local",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "build-prod": "npm version patch && node ./replace.build.js && ng build --prod"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

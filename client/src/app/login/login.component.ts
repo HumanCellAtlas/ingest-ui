@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
-import { environment } from '../../environments/environment.prod';
+import {environment} from '../../environments/environment';
 import {Router} from "@angular/router";
 
 @Component({
@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  version = environment.version;
+  buildTimestamp = environment.buildTimestamp;
 
   constructor(public auth: AuthService, public router: Router) {
     if(auth.isAuthenticated()){
