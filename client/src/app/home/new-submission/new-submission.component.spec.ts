@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewSubmissionComponent } from './new-submission.component';
+import {ActivatedRoute, Router} from "@angular/router";
 
 describe('NewSubmissionComponent', () => {
   let component: NewSubmissionComponent;
@@ -8,7 +9,11 @@ describe('NewSubmissionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewSubmissionComponent ]
+      declarations: [ NewSubmissionComponent ],
+      providers: [
+        { provide: Router, useClass: class { navigate = jasmine.createSpy("navigate"); }},
+        { provide: ActivatedRoute},
+      ]
     })
     .compileComponents();
   }));
