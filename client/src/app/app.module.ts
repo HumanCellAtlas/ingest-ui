@@ -47,6 +47,7 @@ import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
 import {ConsentComponent} from './submission/consent/consent.component';
 import {FlattenService} from "./shared/services/flatten.service";
+import {SchemaService} from "./shared/services/schema.service";
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -110,7 +111,8 @@ export function tokenGetter(): string {
     FormBuilder,
     AlertService,
     LoaderService,
-    FlattenService
+    FlattenService,
+    SchemaService
   ],
   bootstrap: [AppComponent]
 })
