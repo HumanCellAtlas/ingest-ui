@@ -11,6 +11,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
 
+
 import {IngestService} from './shared/services/ingest.service';
 import {BrokerService} from './shared/services/broker.service';
 import {AuthService} from './auth/auth.service';
@@ -18,6 +19,7 @@ import {AuthService} from './auth/auth.service';
 import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './home/submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
@@ -98,9 +100,18 @@ export function tokenGetter(): string {
     SharedModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    BrowserAnimationsModule
   ],
-  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
+  providers: [
+    IngestService,
+    BrokerService,
+    AuthService,
+    FormBuilder,
+    AlertService,
+    LoaderService,
+    FlattenService
+  ],
   bootstrap: [AppComponent]
 })
 
