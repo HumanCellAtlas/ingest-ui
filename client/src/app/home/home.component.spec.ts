@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
+import {WelcomeComponent} from "./welcome/welcome.component";
+import {SubmissionListComponent} from "./submission-list/submission-list.component";
+import {NewSubmissionComponent} from "./new-submission/new-submission.component";
+import {RouterModule} from "@angular/router";
+import {APP_BASE_HREF} from "@angular/common";
+import {AuthService} from "../auth/auth.service";
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -8,7 +14,19 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      imports: [
+        RouterModule.forRoot([]),
+      ],
+      providers:[
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: AuthService, useValue: { handleAuthentication: () => {}, isAuthenticated: () => {} } },
+      ],
+      declarations: [
+        HomeComponent,
+        WelcomeComponent,
+        SubmissionListComponent,
+        NewSubmissionComponent,
+      ]
     })
     .compileComponents();
   }));

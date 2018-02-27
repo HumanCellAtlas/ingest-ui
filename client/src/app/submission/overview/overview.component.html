@@ -1,6 +1,7 @@
 <div *ngIf="project">
   <br/>
   <h2>Project</h2>
+
   <br/>
   <div class="card">
     <div class="card-body">
@@ -14,7 +15,13 @@
           <span *ngIf="project['content']"><p>{{project['content']['name']}}</p></span><br/>
 
           <span><strong>Description</strong></span><br/><br/>
-          <span *ngIf="project['content']"><p class="text-justify">{{project['content']['description']}}</p></span>
+          <span *ngIf="project['content']"><p class="text-justify">{{project['content']['description']}}</p></span><br/>
+
+          <span><strong>Validation State</strong></span><span *ngIf="project"><p>{{project['validationState']}}</p></span><br/>
+
+          <span><strong>Ingest Link</strong></span><span *ngIf="project['_links']">
+            <p><a href="{{project['_links']['self']['href']}}"><span class="oi oi-external-link"></span></a></p>
+          </span><br/>
         <!--</tab>-->
 
         <!--<tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>-->

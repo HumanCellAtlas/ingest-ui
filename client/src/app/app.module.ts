@@ -11,6 +11,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
 
+
 import {IngestService} from './shared/services/ingest.service';
 import {BrokerService} from './shared/services/broker.service';
 import {AuthService} from './auth/auth.service';
@@ -18,6 +19,7 @@ import {AuthService} from './auth/auth.service';
 import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './home/submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
@@ -45,6 +47,7 @@ import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
 import {ConsentComponent} from './submission/consent/consent.component';
 import {FlattenService} from "./shared/services/flatten.service";
+import {SchemaService} from "./shared/services/schema.service";
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -98,9 +101,19 @@ export function tokenGetter(): string {
     SharedModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    BrowserAnimationsModule
   ],
-  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
+  providers: [
+    IngestService,
+    BrokerService,
+    AuthService,
+    FormBuilder,
+    AlertService,
+    LoaderService,
+    FlattenService,
+    SchemaService
+  ],
   bootstrap: [AppComponent]
 })
 
