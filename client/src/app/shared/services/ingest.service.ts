@@ -172,4 +172,13 @@ export class IngestService {
         return pagedData;
       });
   }
+
+  public put(ingestLink, content){
+    return this.http.put(ingestLink, content);
+  }
+
+  public patch(ingestLink, patchData){
+    return this.http.patch(ingestLink, patchData);
+  }
+
 }

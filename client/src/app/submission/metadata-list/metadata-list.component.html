@@ -27,6 +27,7 @@
 
   (page)='setPage($event)'
 >
+
    <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -66,7 +67,7 @@
         <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
         <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
         <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
-        <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
+        <button (click)="revalidate(rowIndex)" title="Revalidate" *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</button>
         <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
         <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
       </ng-container>
