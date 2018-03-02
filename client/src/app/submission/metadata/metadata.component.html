@@ -1,20 +1,18 @@
 <script src="../../shared/components/upload/upload.component.ts"></script>
 <app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
-<div class="card" *ngIf="submissionEnvelopeId">
-  <div class="card-body">
-    <mat-tab-group>
-      <mat-tab label="Samples">
-        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
-      </mat-tab>
-      <mat-tab label="Protocols">
-        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
-      </mat-tab>
-      <mat-tab label="Assays">
-        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
-      </mat-tab>
-      <mat-tab label="Analyses">
-        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-</div>
+<mat-card *ngIf="submissionEnvelopeId">
+  <mat-tab-group>
+    <mat-tab label="Samples">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
+    </mat-tab>
+    <mat-tab label="Protocols">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
+    </mat-tab>
+    <mat-tab label="Assays">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
+    </mat-tab>
+    <mat-tab label="Analyses">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
