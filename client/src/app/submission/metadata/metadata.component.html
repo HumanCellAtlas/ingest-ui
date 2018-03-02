@@ -1,26 +1,20 @@
 <script src="../../shared/components/upload/upload.component.ts"></script>
-<div class="container-fluid"><br/>
-  <br/>
-  <app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
-  <br/>
-
-  <div class="card" *ngIf="submissionEnvelopeId">
-    <div class="card-body">
-      <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Samples">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Protocols">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Assays">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Analyses">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
-        </tab>
-      </tabs>
-    </div>
+<app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
+<div class="card" *ngIf="submissionEnvelopeId">
+  <div class="card-body">
+    <tabs [navClass]="'nav-tabs'">
+      <tab tabTitle="Samples">
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
+      </tab>
+      <tab tabTitle="Protocols">
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
+      </tab>
+      <tab tabTitle="Assays">
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
+      </tab>
+      <tab tabTitle="Analyses">
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
+      </tab>
+    </tabs>
   </div>
-  <br/>
 </div>

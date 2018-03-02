@@ -5,6 +5,7 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatChipsModule} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -101,6 +102,7 @@ export function tokenGetter(): string {
     ReactiveFormsModule,
     NoopAnimationsModule,
     NgxDatatableModule,
+    FlexLayoutModule,
     MatChipsModule
   ],
   providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
