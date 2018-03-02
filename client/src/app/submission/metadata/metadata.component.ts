@@ -5,7 +5,7 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 @Component({
   selector: 'app-metadata',
   templateUrl: './metadata.component.html',
-  styleUrls: ['./metadata.component.css']
+  styleUrls: ['./metadata.component.scss']
 })
 export class MetadataComponent implements OnInit {
   @Input() submissionEnvelopeId: number;

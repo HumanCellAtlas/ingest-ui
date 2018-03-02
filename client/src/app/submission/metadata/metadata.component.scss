@@ -1,0 +1,12 @@
+/**
+ * Human Cell Atlas - Ingest UI
+ * http://ui.ingest.dev.data.humancellatlas.org
+ *
+ * Styles specific to app metadata component.
+ */
+
+/* Add margin to top of component if contained inside a tab */
+:host-context(.mat-tab-body-content) {
+  display: block;
+  margin-top: 24px;
+}

@@ -6,7 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatChipsModule} from '@angular/material';
+import {MatChipsModule, MatTabsModule} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -103,7 +103,8 @@ export function tokenGetter(): string {
     NoopAnimationsModule,
     NgxDatatableModule,
     FlexLayoutModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTabsModule
   ],
   providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
   bootstrap: [AppComponent]

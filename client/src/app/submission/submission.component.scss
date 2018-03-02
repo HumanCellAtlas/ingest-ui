@@ -15,7 +15,7 @@
   color: #ffffff;
   cursor: default;
   display: inline-flex;
-  transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
   padding: 7px 12px;
   /* TODO applying BS naming convention for coloring chips, revisit once ingest-UI UI design is complete. Also revisit use of CSS variables. */
   &.danger {
