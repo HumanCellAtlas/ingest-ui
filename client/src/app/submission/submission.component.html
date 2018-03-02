@@ -1,28 +1,19 @@
 <script src="submission.component.ts"></script>
 <script src="../shared/components/project/project.component.ts"></script>
-<div class="container-fluid">
+<div class="container-fluid mat-typography">
   <br/>
-
   <div class="row">
-    <div class="col-sm-10"><h1> Submission</h1></div>
-    <div class="col-sm-2">
-      <h3>
-        <span class="float-right" [ngSwitch]="submissionState">
-          <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionState}}</span>
-          <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{submissionState}}</span>
-          <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{submissionState}}</span>
-          <span *ngSwitchCase="'Submitted'" class="badge badge-pill badge-secondary">{{submissionState}}</span>
-          <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Cleanup'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Complete'" class="badge badge-pill border border-success bg-light text-success">{{submissionState}}</span>
-        </span>
-      </h3>
+    <div class="col-lg-12">
+      <div class="d-flex justify-content-between">
+        <h1 class="mat-headline">Submission</h1>
+        <mat-chip-list selectable="false">
+          <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
+        </mat-chip-list>
+      </div>
     </div>
   </div>
   <br/>
-  <h3>{{projectName}}</h3>
+  <h3 class="subheading-2">{{projectName}}</h3>
   <br/>
   <div class="row">
     <div class="col-lg-12">

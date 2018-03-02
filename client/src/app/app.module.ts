@@ -5,6 +5,8 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
+import {MatChipsModule} from '@angular/material';
+
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -98,7 +100,8 @@ export function tokenGetter(): string {
     SharedModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    MatChipsModule
   ],
   providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
   bootstrap: [AppComponent]
