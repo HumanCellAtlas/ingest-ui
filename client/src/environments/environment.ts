@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   buildTimestamp:'',
   INGEST_API_URL: 'http://localhost:8080',
-  BROKER_API_URL: 'http://localhost:5000'
+  BROKER_API_URL: 'http://localhost:5000',
+  SCHEMA_API_URL: 'https://schema.humancellatlas.org'
 };
