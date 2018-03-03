@@ -1,5 +1,4 @@
 <div class="card" *ngIf="projects || {}">
-  <!--<div class="card-header">Dashboard</div>-->
   <div>
     <table class="table">
       <thead class="thead-light">
@@ -14,17 +13,12 @@
       </thead>
       <tbody>
       <tr *ngFor="let project of projects">
-
         <td>{{project.submissionDate | date: "medium"}}</td>
-
         <td>
           <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{getProjectId(project)}}</a>
         </td>
-
-        <td><span title="{{project?.content?.name}}"> {{ project?.content?.name }}</span></td>
-
-        <td><span title="{{project?.content?.project_id}}">{{ project?.content?.project_id }}</span></td>
-
+        <td><span title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></td>
+        <td><span title="{{project?.content?.project_core?.project_shortname}}">{{ project?.content?.project_core?.project_shortname }}</span></td>
         <td>
           <div [ngSwitch]="project?.validationState">
             <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{project?.validationState}}</span>
@@ -34,38 +28,18 @@
             <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{project?.validationState}}</span>
           </div>
         </td>
-
-
         <td>
           <a class="btn btn-success" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/metadata" >Create submission</a>
         </td>
-
       </tr>
       <tr *ngIf="!projects">
         <td>Loading your projects...</td>
       </tr>
-
       <tr *ngIf="projects && projects.length === 0">
         <td>You do not currently have any projects</td>
       </tr>
-
       </tbody>
     </table>
   </div>
-  <!--<div class="card-footer text-muted">-->
-    <!--<nav aria-label="Page navigation example">-->
-      <!--<ul class="pagination justify-content-center">-->
-        <!--<li class="page-item disabled">-->
-          <!--<a class="page-link" href="#" tabindex="-1">Previous</a>-->
-        <!--</li>-->
-        <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
-        <!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
-        <!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
-        <!--<li class="page-item">-->
-          <!--<a class="page-link" href="#">Next</a>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</nav>-->
-  <!--</div>-->
 </div>
 
