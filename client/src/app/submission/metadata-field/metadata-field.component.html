@@ -1,0 +1,52 @@
+<div
+  title="{{value}}"
+  (dblclick)="editMode = true"
+  *ngIf="!editMode">
+
+  <span style="visibility: hidden" *ngIf="!value && !columnDefinition['isRequired']">invisible</span>
+  <span class="missing-field" *ngIf="!value && columnDefinition['isRequired']">ERROR</span>
+  <span *ngIf="value">{{stringify(value)}}</span>
+</div>
+
+<ng-container *ngIf="editMode" [ngSwitch]="columnDefinition['type'] ">
+  <!--<input-->
+  <!--autofocus-->
+  <!--(blur)="updateValue($event)"-->
+  <!--type="text"-->
+  <!--value="{{value}}"-->
+  <!--/>-->
+  <!---->
+  <span *ngSwitchCase="'string'">
+    <!--<input autofocus matInput type="text" placeholder="Clearable input"/>-->
+    <input autofocus type="text" matInput (blur)="updateValue($event)" [(ngModel)]="value" >
+  </span>
+
+  <input
+    *ngSwitchCase="'boolean'"
+    autofocus
+    (blur)="updateValue($event)"
+    type="checkbox"
+    checked="value"
+  />
+  <input
+    *ngSwitchCase="'number'"
+    autofocus
+    (blur)="updateValue($event)"
+    type="text"
+    value="{{value}}"
+  />
+  <input
+    *ngSwitchCase="'integer'"
+    autofocus
+    (blur)="updateValue($event)"
+    type="text"
+    value="{{value}}"
+  />
+  <input
+    *ngSwitchCase="'null'"
+    autofocus
+    (blur)="updateValue($event)"
+    type="text"
+    value="{{value}}"
+  />
+</ng-container>
