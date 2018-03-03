@@ -24,7 +24,7 @@ export class SchemaService {
     "/type/process/imaging/5.0.0/imaging_process",
     "/type/process/sequencing/5.0.0/library_preparation_process",
     "/type/process/sequencing/5.0.0/sequencing_process",
-    "/type/project/5.0.0/project",
+    "/type/project/5.0.1/project",
     "/type/protocol/5.0.0/protocol",
     "/type/protocol/analysis/5.0.0/analysis_protocol",
     "/type/protocol/biomaterial/5.0.0/biomaterial_collection_protocol",
@@ -103,5 +103,7 @@ export class SchemaService {
     return this.fields[fieldName];
   }
 
-
+  getSchemaUrl(path, version, name){
+    return `$API_URL/$path/$version/$name`;
+  }
 }
