@@ -7,17 +7,14 @@
   <div class="card" *ngIf="submissionEnvelopeId">
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Samples">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
+        <tab tabTitle="Biomaterials">
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'biomaterials'"> </app-metadata-list>
         </tab>
         <tab tabTitle="Protocols">
           <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
         </tab>
-        <tab tabTitle="Assays">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Analyses">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
+        <tab tabTitle="Processes">
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'processes'"> </app-metadata-list>
         </tab>
       </tabs>
     </div>

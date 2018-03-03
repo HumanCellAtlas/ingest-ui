@@ -34,10 +34,6 @@
           <app-metadata
             [projectId]="projectId"
             [submissionEnvelopeId]="submissionEnvelopeId"
-            [samples]="samples"
-            [assays]="assays"
-            [protocols]="protocols"
-            [analyses]="analyses"
             >
           </app-metadata>
         </tab>
@@ -47,19 +43,15 @@
             [submissionEnvelopeId]="submissionEnvelopeId" >
           </app-files>
         </tab>
-
         <tab [href]="'submit'" [disabled]="!isSubmittable" tabTitle="Submit" [active]="activeTab == 'submit'">
           <app-submit
             [submissionEnvelope$]="submissionEnvelope$"
             [submitLink]="submitLink"
             [isSubmitted]="isSubmitted"
-
             [submissionEnvelopeId]="submissionEnvelopeId">
-
           </app-submit>
         </tab>
       </tabs>
-
     </div>
   </div>
 </div>
