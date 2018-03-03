@@ -18,7 +18,6 @@ import {SchemaService} from '../../services/schema.service';
 
 
 export class ProjectComponent implements OnInit {
-  @Input() inSubmissionMode: boolean;
   @Input() submissionProjectId: string;
   @Input() submissionEnvelopeId: string;
 
