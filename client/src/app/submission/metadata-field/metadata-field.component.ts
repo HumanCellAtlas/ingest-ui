@@ -57,7 +57,7 @@ export class MetadataFieldComponent implements OnInit {
       newValue = value ? value.join(',') : '';
     }
 
-    if (!(value instanceof Array) && typeof value === 'object'){
+    if (value instanceof Array&& value.length > 0 && typeof value[0] ==='object'){
       newValue = JSON.stringify(value); //TODO list a column of that obj
     }
 

@@ -135,17 +135,17 @@ export class ProjectComponent implements OnInit {
 
   extractProject(formValue){
     return {
-      describedBy: this.schemaService.getSchemaUrl('type/project', '5.0.1', 'project'),
+      describedBy: 'https://schema.humancellatlas.org/type/project/5.0.1/project',
       schema_version: '5.0.0',
       schema_type: 'project',
       project_core: {
-        describedBy: this.schemaService.getSchemaUrl('core/project', '5.0.0', 'project_core'),
+        describedBy: 'https://schema.humancellatlas.org/core/project/5.0.0/project_core',
         project_shortname: formValue['projectId'],
         project_title: formValue['name'],
         project_description: formValue['description']
       },
       contributors: [{
-        describedBy: this.schemaService.getSchemaUrl('module/project', '5.0.0', 'contact'),
+        describedBy: 'https://schema.humancellatlas.org/module/project/5.0.0/contact',
         email: this.profile['email'],
         contact_name: this.profile['name']
       }]

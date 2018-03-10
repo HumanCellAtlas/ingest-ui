@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 
 import {of} from "rxjs/observable/of";
@@ -6,7 +6,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
-import {catchError, finalize, tap} from "rxjs/operators";
+import {catchError, debounceTime, distinctUntilChanged, finalize, tap} from "rxjs/operators";
 
 import {MatPaginator} from "@angular/material/paginator";
 
@@ -15,6 +15,7 @@ import {Page, PagedData} from "../../shared/models/page";
 import {IngestService} from "../../shared/services/ingest.service";
 import {SchemaService} from "../../shared/services/schema.service";
 import {FlattenService} from "../../shared/services/flatten.service";
+import {fromEvent} from "rxjs/observable/fromEvent";
 
 
 @Component({
@@ -41,7 +42,7 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
 
   dataSource: MetadataDataSource;
 
-  contentColumnMap: object[];
+  contentColumnMap: object = {};
   contentColumns: string[];
   ingestColumns: string[];
   displayedColumns: string[];
@@ -53,6 +54,7 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
   ) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('input') input: ElementRef;
 
   ngOnInit() {
     // this.alive = true;
@@ -75,18 +77,17 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
 
     this.rows$.subscribe(
       rows => {
-        let columns = {};
-
-        rows.map(function(row) {
-          Object.keys(row).map(function(col){
-            columns[col] = '';
-          })
-        });
-
-        this.displayedColumns = Object.keys(columns);
+        for(let row of rows){
+          for(let col of Object.keys(row)){
+            if(!col.match('describedBy') && !col.match('schema')){
+              this.contentColumnMap[col] = this.schemaService.getColumnDefinition(this.metadataEntity, row['entityType'], col);
+            }
+          }
+        }
+        console.log('contentColumnMap', this.contentColumnMap);
+        this.displayedColumns = Object.keys(this.contentColumnMap);
       }
     )
-
   }
 
   ngAfterViewInit() {
@@ -95,7 +96,6 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
         tap(() => this.loadMetadataPage())
       )
       .subscribe();
-
   }
 
   ngOnDestroy(){
@@ -113,19 +113,43 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
       this.paginator.pageSize);
   }
 
-  // template helpers
-  getMetadataSubType(row){
-    return row['content.describedBy'].split('/').pop();
+  getUserFriendlyName(column){
+    let colDef = this.contentColumnMap[column]
+    let userFriendlyName = colDef['user_friendly'];
+    return userFriendlyName || column;
   }
 
-  getUserFriendlyName(column){
-    let userFriendlyName = 'todo';
-    return userFriendlyName;
+  getDescription(column){
+    let colDef = this.contentColumnMap[column];
+    return colDef['description'];
   }
 
   // event handlers
-  onValueChange(event){
-    console.log('onValueChange', event);
+  onValueChange(row, column, event){
+    console.log('onValueChange', {row: row, column:column, event:event});
+    row[column] = event;
+    this.updateContent(row);
+
+  }
+
+  updateContent(row){
+
+    let unflattenedRow = this.flattenService.unflatten(row);
+    console.log(unflattenedRow);
+
+    let entityType = row['entityType'];
+    let content = unflattenedRow[entityType];
+    console.log('content', content);
+
+    let metadataLink = row['ingestLink'];
+
+    this.ingestService.put(metadataLink, content).subscribe((response) => {
+        console.log('patching metadata')
+        console.log("Response is: ", response);
+      },
+      (error) => {
+        console.error("An error occurred, ", error);
+      });
   }
 }
 
@@ -172,25 +196,23 @@ export class MetadataDataSource implements DataSource<object> {
       let pagedData = <PagedData> data;
 
       for(let m of pagedData.data || []){
+        let entityType = m['content']['describedBy'].split('/').pop();
 
-        // let row = this.flattenService.flatten(m['content']);
-        //
-        // row['validationState'] = m['validationState'];
-        // let rowEntityType = row['describedBy'].split('/').pop();
-        //
-        // if(metadataEntityType && (metadataEntityType == rowEntityType)){ //if has same schema
-        //   rows.push(row);
-        // }
+        let row = {};
+        row['_validationState'] = m['validationState'];
+        row['entityType'] = entityType;
+        row[entityType] = m['content'];
+        row['ingestLink'] = m['_links']['self']['href'];
 
-        let row = this.flattenService.flatten(m);
+        row = this.flattenService.flattenExceptArray(row);
+
+
         rows.push(row);
-
-
       }
 
       this.metadataCountSubject.next(pagedData.page.totalElements);
       this.metadataSubject.next(rows);
-      // console.log('rows', rows);
+
     });
   }
 

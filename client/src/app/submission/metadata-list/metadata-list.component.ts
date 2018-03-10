@@ -166,7 +166,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.editing[rowIndex + '-' + cell] = false;
 
     let oldValue = this.rows[rowIndex][cell];
-    let newValue = event;
+    let newValue = event.target.value;
 
     console.log('newValue', newValue);
 
@@ -177,6 +177,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     console.log('ROWS!', this.rows);
 
   }
+
+
 
   getValidationErrors(row){
     return row['validationErrors[0].user_friendly_message'];
