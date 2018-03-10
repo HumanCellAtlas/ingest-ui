@@ -13,8 +13,28 @@ To deploy, run the ff:
  source deploy.sh <dev|integration|staging|prod>
  ```
  
-The auth0 config file ./client/src/app/auth/auth0-variables.ts must also be setup
+The auth0 config file ./client/src/app/auth/auth0-variables.ts must also be setup. Should contain the ff contents
+```
+interface AuthConfig {
+  clientID: string;
+  domain: string;
+  callbackURL: string;
+  apiUrl: string;
+}
 
+export const AUTH_CONFIG: AuthConfig = {
+  clientID: '', // insert client id
+  domain: 'danielvaughan.eu.auth0.com',
+  
+  // calllbackURL depends on where the app is being deployed
+  callbackURL: 'http://ui.ingest.dev.data.humancellatlas.org/callback',
+  // callbackURL: 'http://ui.ingest.staging.data.humancellatlas.org/callback',
+  // callbackURL: 'http://localhost:4200/callback',
+  
+  apiUrl: 'http://localhost:8080'
+};
+
+```
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
