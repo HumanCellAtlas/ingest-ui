@@ -142,12 +142,12 @@ export class SubmissionListComponent implements OnInit {
 
   extractProjectName(project){
     let content = project['content'];
-    return content ? project['content']['name'] : '';
+    return content ? project['content']['project_core']['project_title'] : '';
   }
 
   extractProjectId(project){
     let content = project['content'];
-    return content ? project['content']['project_id'] : '';
+    return content ? project['content']['project_core']['project_shortname'] : '';
   }
 
   getCurrentPageInfo(pagination){
