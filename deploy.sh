@@ -11,9 +11,9 @@ DIST_ID_STAGING="E2D5GGR57ZBWOQ"
 
 if [ "$ENV" == 'prod' ]; then
     CLOUDFRONT_ID=${DIST_ID_STAGING}
-elif [ "$ENV" == 'staging' ]; then
-    CLOUDFRONT_ID=${DIST_ID_INTEGRATION}
 elif [ "$ENV" == 'integration' ]; then
+    CLOUDFRONT_ID=${DIST_ID_INTEGRATION}
+elif [ "$ENV" == 'staging' ]; then
     CLOUDFRONT_ID=${DIST_ID_STAGING}
 else
     ENV='dev'

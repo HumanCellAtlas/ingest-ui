@@ -115,7 +115,7 @@ export class SubmissionComponent implements OnInit {
 
 
   isStateSubmitted(state){
-    let submittedStates = [ "Submitted", "Cleanup", "Complete"];
+    let submittedStates = [ "Submitted", "Processing" , "Cleanup", "Complete"];
     return (submittedStates.indexOf(state) >= 0);
   }
 
