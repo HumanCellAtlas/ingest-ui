@@ -104,6 +104,7 @@ export class IngestService {
 
         if(data._embedded && data._embedded[entityType]){
           pagedData.data = _.values(data._embedded[entityType]);
+          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data)
         }
         else{
           pagedData.data = [];
@@ -120,6 +121,22 @@ export class IngestService {
 
   public patch(ingestLink, patchData){
     return this.http.patch(ingestLink, patchData);
+  }
+
+  private reduceColumnsForBundleManifests(entityType, data){
+    if(entityType == 'bundleManifests'){
+      return data.map(function(row){
+        let newRow = {
+          'bundleUuid' : row['bundleUuid'],
+          'envelopeUuid' : row['envelopeUuid'],
+          '_links': row['_links']
+        };
+        return newRow;
+      })
+    }
+    return data;
+    
+
   }
 
 }
