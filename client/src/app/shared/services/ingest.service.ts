@@ -129,13 +129,14 @@ export class IngestService {
         let newRow = {
           'bundleUuid' : row['bundleUuid'],
           'envelopeUuid' : row['envelopeUuid'],
-          '_links': row['_links']
+          '_links': row['_links'],
+          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws`
         };
         return newRow;
       })
     }
     return data;
-    
+
 
   }
 
