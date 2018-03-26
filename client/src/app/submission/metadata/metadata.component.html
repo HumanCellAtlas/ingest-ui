@@ -7,20 +7,27 @@
   <div class="card" *ngIf="submissionEnvelopeId">
     <div class="card-body">
       <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Samples">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
+        <tab tabTitle="Biomaterials">
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'biomaterials'"> </app-metadata-list>
         </tab>
         <tab tabTitle="Protocols">
           <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
         </tab>
-        <tab tabTitle="Assays">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
+        <tab tabTitle="Processes">
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'processes'"> </app-metadata-list>
         </tab>
-        <tab tabTitle="Analyses">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
-        </tab>
+
+        <!--<tab tabTitle="Biomaterials">-->
+          <!--<app-metadata-table [submissionEnvelopeId]="submissionEnvelopeId" [metadataEntity]="'biomaterials'"> </app-metadata-table>-->
+        <!--</tab>-->
+        <!--<tab tabTitle="Protocols">-->
+          <!--<app-metadata-table [submissionEnvelopeId]="submissionEnvelopeId" [metadataEntity]="'protocols'"> </app-metadata-table>-->
+        <!--</tab>-->
+        <!--<tab tabTitle="Processes">-->
+          <!--<app-metadata-table [submissionEnvelopeId]="submissionEnvelopeId" [metadataEntity]="'processes'"> </app-metadata-table>-->
+        <!--</tab>-->
       </tabs>
     </div>
-  </div>
+    </div>
   <br/>
 </div>

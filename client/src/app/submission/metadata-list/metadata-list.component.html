@@ -1,5 +1,6 @@
 <script src="../../shared/services/ingest.service.spec.ts"></script>
 <script src="../../shared/services/ingest.service.ts"></script>
+
 <ng-container *ngIf="rows && rows.length > 0">
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
   <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
@@ -78,7 +79,7 @@
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(rowIndex) }}</a>
+        <a href="{{row['content.describedBy']}}"> {{ getMetadataType(rowIndex) }}</a>
       </ng-template>
     </ngx-datatable-column>
 
@@ -109,6 +110,14 @@
       <a href="{{value}}"><span class="oi oi-external-link"></span></a>
     </ng-template>
   </ngx-datatable-column>
+
+  <ng-container *ngIf="metadataType == 'bundleManifests'">
+    <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+      </ng-template>
+    </ngx-datatable-column>
+  </ng-container>
 
 
 </ngx-datatable>

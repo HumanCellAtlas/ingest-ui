@@ -1,60 +1,53 @@
+import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {Contact, Project} from "../../models/project";
-import {IngestService} from "../../services/ingest.service";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Route, Router} from "@angular/router";
-import {AuthService} from "../../../auth/auth.service";
-import {AlertService} from "../../services/alert.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
+
+import {AlertService} from '../../services/alert.service';
+import {AuthService} from '../../../auth/auth.service';
+import {IngestService} from '../../services/ingest.service';
+
+import {Project} from '../../models/project';
+import {SchemaService} from '../../services/schema.service';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
+
+
 export class ProjectComponent implements OnInit {
-
-  projects$ : Observable<Project[]>;
-  projects: Project[];
-  project: Object;
-
-  projectForm: FormGroup;
-
-  placeholder: any = {
-
-    projectId:  'A project id for your research project',
-                // 'e.g. HCA-DEMO-PROJECT_ID',
-
-    name:       'A title for your research project e.g. reflecting your project grant' ,
-                // 'e.g. "Testing ischaemic sensitivity of human tissue at different time points, ' +
-                // 'using single cell RNA sequencing."',
-
-    description: 'A description of your research experiment'
-                 // 'e.g. "Assessment of ischaemic sensitivity of three human tissues using 10x 3 single cell RNA sequencing ' +
-                 // 'We aim to collect data from three tissues expected to have different sensitivity to ischaemia: ' +
-                 // 'spleen(expected least sensitive), oesophagus (in the middle) and liver (expected most sensitive).'
-  };
+  @Input() submissionProjectId: string;
+  @Input() submissionEnvelopeId: string;
 
   editMode: boolean;
 
-  projectId: any;
+  profile: object;
 
-  profile: any;
+  project: object;
 
-  @Input() inSubmissionMode:boolean;
-  @Input() submissionProjectId:string;
-  @Input() submissionEnvelopeId:string;
+  projectId: string;
+  projects: Project[] = <Project[]> [];
+  projects$ : Observable<Project[]>;
 
-  @Output() onProjectSelect = new EventEmitter();
+  projectForm: FormGroup;
 
-  constructor(private ingestService: IngestService,
-              private fb: FormBuilder,
-              private router: Router,
-              private route: ActivatedRoute,
-              public auth: AuthService,
-              private alertService: AlertService
-              ) {
-  }
+  placeholder: object = {
+    projectId: 'A short name for your research project',
+    name: 'A title for your research project e.g. reflecting your project grant' ,
+    description: 'A description of your research experiment'
+  };
+
+  constructor(
+    private alertService: AlertService,
+    private auth: AuthService,
+    private fb: FormBuilder,
+    private ingestService: IngestService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private schemaService: SchemaService
+  ) {}
 
   ngOnInit() {
     this.projects$ = this.ingestService.getProjects();
@@ -63,7 +56,6 @@ export class ProjectComponent implements OnInit {
     if(this.projectId){
       this.editMode = false;
       this.getProject(this.projectId);
-
     } else {
       this.setToEditMode();
     }
@@ -74,7 +66,6 @@ export class ProjectComponent implements OnInit {
     this.createProjectForm();
     this.auth.getProfile((err, profile) => {
       this.profile = profile;
-      console.log('user profile', profile);
     })
   }
 
@@ -103,91 +94,74 @@ export class ProjectComponent implements OnInit {
     let patch = Object.assign(content, projectData);
 
     this.ingestService.putProject(id, patch).subscribe(
-      data => {
-        this.project = data;
-        console.log(data);
-        this.projectId = this.getProjectId(this.project);
-        this.editMode = false;
-        this.alertService.success("","Project was successfully updated.");
-      },
-      err => {
-        this.alertService.error("","An error has occurred while saving your updates to this project.");
-      });
+    data => {
+      this.project = data;
+      console.log(data);
+      this.projectId = this.getProjectId(this.project);
+      this.editMode = false;
+      this.alertService.success('','Project was successfully updated.');
+    },
+    err => {
+      this.alertService.error('','An error has occurred while saving your updates to this project.');
+    });
   }
 
   createProject(projectData){
-    this.ingestService.postProject(projectData)
-      .subscribe(data => {
-        this.project = data;
-        let projectId = this.getProjectId(data);
-        this.router.navigate(['/projects/list']);
-        this.alertService.success("","Project was successfully created.");
-      },
+    this.ingestService.postProject(projectData).subscribe(data => {
+      this.project = data;
+      this.router.navigate(['/projects/list']);
+      this.alertService.success('','Project was successfully created.');
+    },
 
-      err => {
-        this.alertService.error("", "An error has occurred while creating the project.");
-        console.log(err);
-      });
+    err => {
+      this.alertService.error('', 'An error has occurred while creating the project.');
+      console.log(err);
+    });
   }
-
 
   createOrUpdateProject(formValue) {
     if(formValue['name'] && formValue['description'] && formValue['projectId']){
       let projectData = this.extractProject(formValue);
 
       if(this.projectId){
-        console.log('patch');
         this.updateProject(this.projectId, projectData);
       }else{
-        console.log('create')
         this.createProject(projectData);
       }
     } else {
-
-      this.alertService.error("","All fields are required!");
-
+      this.alertService.error('','All fields are required!');
     }
-
-
   }
 
   extractProject(formValue){
     return {
-      core : {
-        type: "project",
-          schema_url: "https://raw.githubusercontent.com/HumanCellAtlas/metadata-schema/4.6.1/json_schema/project.json"
+      describedBy: 'https://schema.humancellatlas.org/type/project/5.0.1/project',
+      schema_version: '5.0.0',
+      schema_type: 'project',
+      project_core: {
+        describedBy: 'https://schema.humancellatlas.org/core/project/5.0.0/project_core',
+        project_shortname: formValue['projectId'],
+        project_title: formValue['name'],
+        project_description: formValue['description']
       },
-
-      name: formValue['name'],
-      description: formValue['description'],
-      project_id: formValue['projectId'],
       contributors: [{
-        email:this.profile.email,
-        name: this.profile.name
+        describedBy: 'https://schema.humancellatlas.org/module/project/5.0.0/contact',
+        email: this.profile['email'],
+        contact_name: this.profile['name']
       }]
     };
   }
 
   save(formValue){
-    console.log('save');
     this.createOrUpdateProject(formValue)
   }
 
   cancel(){
-    console.log('saveAndExit');
     this.router.navigate(['/projects/list']);
-  }
-
-  edit(){
-    this.setToEditMode();
   }
 
   newSubmission(){
     this.router.navigate(['submissions/new/metadata']);
-  }
-
-  newProject(){
-    this.router.navigate([`/projects/new`]);
   }
 
   getProjectId(project){
@@ -199,8 +173,11 @@ export class ProjectComponent implements OnInit {
     this.ingestService.getProject(this.projectId)
       .subscribe(data => {
         this.project = data;
-        this.projectForm.patchValue(this.project['content']);
-        this.projectForm.patchValue({projectId: this.project['content']['project_id']});
+        this.projectForm.patchValue({
+          projectId: this.project['content']['project_core']['project_shortname'],
+          name: this.project['content']['project_core']['project_title'],
+          description: this.project['content']['project_core']['project_description']
+        });
       });
   }
 

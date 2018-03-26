@@ -1,0 +1,43 @@
+<div class="metadata-table-container">
+
+  <!--<div>-->
+    <!--<p>Samples successfully uploaded: <span></span> <a> review ></a></p>-->
+    <!--<p>Samples which failed to validate: <span></span> <a> review ></a></p>-->
+    <!--<p>Samples to review: <span></span> </p>-->
+  <!--</div>-->
+
+  <!--<mat-input-container>-->
+    <!--<input matInput placeholder="Search" #input>-->
+  <!--</mat-input-container>-->
+
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-table [dataSource]="dataSource">
+
+    <ng-container *ngFor="let column of displayedColumns" >
+      <ng-container matColumnDef="{{column}}">
+        <mat-header-cell *matHeaderCellDef>
+          <div class="example-tooltip-host" matTooltip="{{getDescription(column)}}" [matTooltipPosition]="'above'">
+            {{getUserFriendlyName(column)}}
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <app-metadata-field (onValueChange)="onValueChange(row, column, $event)"
+                              [value]="row[column]"
+                              [columnName]="column"
+                              [metadataType]="row['entityType']"
+                              [columnDefinition]="contentColumnMap[column]">
+          </app-metadata-field>
+          <!--{{row[column]}}-->
+        </mat-cell>
+      </ng-container>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
+<mat-paginator [length]="metadataCount$ | async" [pageSize]="DEFAULT_PAGE_SIZE"
+               [pageSizeOptions]="PAGE_OPTIONS"></mat-paginator>
+

@@ -7,7 +7,7 @@ import {RouterModule} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
 
@@ -49,6 +49,15 @@ import {ConsentComponent} from './submission/consent/consent.component';
 import {FlattenService} from "./shared/services/flatten.service";
 import {SchemaService} from "./shared/services/schema.service";
 
+import {MetadataTableComponent} from './submission/metadata-table/metadata-table.component';
+
+import {
+  MatIconModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatSortModule, MatTableModule, MatTooltipModule
+} from "@angular/material";
+
+import { MetadataFieldComponent } from './submission/metadata-field/metadata-field.component';
+
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
 }
@@ -78,7 +87,9 @@ export function tokenGetter(): string {
     LoginComponent,
     OverviewComponent,
     AlertComponent,
-    ConsentComponent
+    ConsentComponent,
+    MetadataTableComponent,
+    MetadataFieldComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -103,7 +114,14 @@ export function tokenGetter(): string {
     ReactiveFormsModule,
     NoopAnimationsModule,
     NgxDatatableModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   providers: [
     IngestService,
