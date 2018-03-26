@@ -92,6 +92,7 @@ export function tokenGetter(): string {
         tokenGetter,
         whitelistedDomains: [
           "localhost:8080", "localhost:5000",
+          "api.ingest.data.humancellatlas.org", "ingest.data.humancellatlas.org",
           "api.ingest.dev.data.humancellatlas.org", "ingest.dev.data.humancellatlas.org",
           "api.ingest.integration.data.humancellatlas.org", "ingest.integration.data.humancellatlas.org",
           "api.ingest.staging.data.humancellatlas.org", "ingest.staging.data.humancellatlas.org"
