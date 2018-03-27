@@ -2,7 +2,6 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../../shared/services/ingest.service';
 import {Observable} from "rxjs/Observable";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
-import {ListResult} from "../../shared/models/hateoas";
 import {ActivatedRoute, Router} from "@angular/router";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
@@ -151,13 +150,14 @@ export class SubmissionListComponent implements OnInit {
   }
 
   getCurrentPageInfo(pagination){
-    this.currentPageInfo['totalPages'] = pagination.totalPages;
-    this.currentPageInfo['totalElements'] = pagination.totalElements;
-    this.currentPageInfo['number'] = pagination.number;
-    this.currentPageInfo['start'] = ((pagination.number) * pagination.size) + 1;
-    let numberTimesSize = (pagination.number+1) * pagination.size;
-    let lastPageTotalElements = (numberTimesSize % pagination.totalElements);
-    this.currentPageInfo['end'] = numberTimesSize - (lastPageTotalElements % pagination.size);
+      this.currentPageInfo['totalPages'] = pagination.totalPages;
+      this.currentPageInfo['totalElements'] = pagination.totalElements;
+      this.currentPageInfo['number'] = pagination.number;
+      this.currentPageInfo['start'] = ((pagination.number) * (pagination.size)) + 1;
+      let numberTimesSize = (pagination.number+1) * pagination.size;
+      let lastPageTotalElements = (numberTimesSize % pagination.totalElements);
+      this.currentPageInfo['end'] = numberTimesSize - (lastPageTotalElements % pagination.size);
+
     return this.currentPageInfo;
   }
 
