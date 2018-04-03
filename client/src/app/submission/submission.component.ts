@@ -110,7 +110,7 @@ export class SubmissionComponent implements OnInit {
   }
 
   getProjectName(){
-    return this.project && this.project['content'] ? this.project['content']['name'] : '';
+    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
   }
 
 
