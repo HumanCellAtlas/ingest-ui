@@ -8,7 +8,6 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 COPY ./client/package.json /usr/src/app/package.json
 RUN npm install
-RUN npm install -g @angular/cli@1.7.1 --unsafe
 
 COPY ./client /usr/src/app
 
