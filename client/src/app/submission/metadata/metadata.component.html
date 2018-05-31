@@ -2,16 +2,13 @@
 <mat-card *ngIf="submissionEnvelopeId">
   <mat-tab-group>
     <mat-tab label="Samples">
-      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'biomaterials'"> </app-metadata-list>
     </mat-tab>
     <mat-tab label="Protocols">
       <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
     </mat-tab>
-    <mat-tab label="Assays">
-      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
-    </mat-tab>
-    <mat-tab label="Analyses">
-      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
+    <mat-tab label="Processes">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'processes'"> </app-metadata-list>
     </mat-tab>
   </mat-tab-group>
 </mat-card>

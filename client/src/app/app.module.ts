@@ -119,7 +119,7 @@ export function tokenGetter(): string {
     FlexLayoutModule,
     MatCardModule,
     MatChipsModule,
-    MatTabsModule
+    MatTabsModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatTableModule,
