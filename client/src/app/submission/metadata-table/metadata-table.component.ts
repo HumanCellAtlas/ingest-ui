@@ -188,7 +188,7 @@ export class MetadataDataSource implements DataSource<object> {
     pageParams['page'] = pageIndex;
     pageParams['size'] = pageSize;
 
-    this.ingestService.fetchSubmissionData(submissionId, metadataEntity, pageParams).pipe(
+    this.ingestService.fetchSubmissionData(submissionId, metadataEntity, null, pageParams).pipe(
       catchError(() => of([])),
       finalize(() => this.loadingSubject.next(false))
     ).subscribe(data => {
