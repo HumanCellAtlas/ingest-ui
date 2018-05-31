@@ -97,8 +97,15 @@ export class IngestService {
       })
   }
 
-  public fetchSubmissionData(submissionId, entityType, params): Observable<PagedData> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`, {params: params})
+  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
+
+    let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`
+
+    if(filterState){
+      url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}/${filterState}`
+    }
+
+    return this.http.get(url, {params: params})
       .map((data: ListResult<Object>) => {
         let pagedData = new PagedData();
 

@@ -11,6 +11,7 @@ import {FlattenService} from "../../shared/services/flatten.service";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {Page, PagedData} from "../../shared/models/page";
 import {Subscription} from "rxjs/Subscription";
+import {MatSelectChange} from "@angular/material";
 
 @Component({
   selector: 'app-metadata-list',
@@ -56,6 +57,10 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   isPaginated: boolean;
 
+  validationStates: string[];
+
+  filterState;
+
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
     this.iconsDir = 'assets/open-iconic/svg';
@@ -65,6 +70,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.page.size = 20;
     this.pollingTimer = TimerObservable.create( 0, this.pollInterval)
       .takeWhile(() => this.alive); // only fires when component is alive
+
+    this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid']
   }
 
   ngOnDestroy(){
@@ -214,7 +221,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
       newPage['page'] = pageInfo['offset'];
       newPage['size'] = pageInfo['size'];
 
-      this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, newPage);
+      this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, this.filterState, newPage);
 
       this.metadataList$.subscribe(data => {
         this.rows = data.data.map(this.flattenService.flatten);
@@ -242,4 +249,14 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     }
   }
 
+  filterByState(event) {
+    let filterState = event.value;
+
+    this.filterState = filterState;
+    console.log(filterState);
+  }
+
+  showFilterState(){
+    return this.metadataType != 'bundleManifests'
+  }
 }

@@ -6,7 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatCardModule, MatChipsModule, MatTabsModule} from '@angular/material';
+import {MatCardModule, MatChipsModule, MatSelectModule, MatTabsModule} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -127,7 +127,8 @@ export function tokenGetter(): string {
     MatSortModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule
   ],
   providers: [
     IngestService,
