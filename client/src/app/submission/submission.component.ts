@@ -10,7 +10,7 @@ import {FlattenService} from "../shared/services/flatten.service";
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
-  styleUrls: ['./submission.component.css']
+  styleUrls: ['./submission.component.scss']
 })
 export class SubmissionComponent implements OnInit {
   submissionEnvelopeId: string;
@@ -23,7 +23,7 @@ export class SubmissionComponent implements OnInit {
   activeTab: string;
 
   isSubmittable: boolean;
-  isSubmitted:boolean;
+  isSubmitted: boolean;
   submitLink: string;
 
   project: any;
@@ -31,7 +31,7 @@ export class SubmissionComponent implements OnInit {
   projectName: string;
 
   private alive: boolean;
-  private pollInterval : number;
+  private pollInterval: number;
 
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute,
@@ -124,4 +124,43 @@ export class SubmissionComponent implements OnInit {
     return links && links['submit']? links['submit']['href'] : null;
   }
 
+  /**
+   * Return the CSS class name corresponding to the current submission state value, for styling the submission state
+   * chip.
+   *
+   * @param submissionState {string}
+   * @returns {string}
+   */
+  getSubmissionStateChipClassName(submissionState: string): string {
+
+    if ( submissionState === 'Pending' || submissionState === 'Draft' ) {
+      return 'warning';
+    }
+
+    if ( submissionState === 'Valid' ) {
+      return 'success';
+    }
+
+    if ( submissionState === 'Validating' ) {
+      return 'info';
+    }
+
+    if ( submissionState === 'Invalid' ) {
+      return 'danger';
+    }
+
+    if ( submissionState === 'Submitted' ) {
+      return 'secondary';
+    }
+
+    if ( submissionState === 'Processing' || submissionState === 'Cleanup' ) {
+      return 'warning-invert';
+    }
+
+    if ( submissionState === 'Complete' ) {
+      return 'success-invert';
+    }
+
+    return '';
+  }
 }

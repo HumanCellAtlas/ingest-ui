@@ -20,3 +20,9 @@
 datatable-body.datatable-body{
   height: 500px;
 }
+
+/* TODO revisit ViewEncapsulation.None on component, use :host-context instead  */
+app-metadata-list {
+  display: block;
+  margin-top: 24px;
+}

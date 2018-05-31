@@ -1,56 +1,45 @@
-<div class="container-fluid">
-  <br/>
-
-  <div class="row">
-    <div class="col-sm-10"><h1> Submission</h1></div>
-    <div class="col-sm-2">
-      <h3>
-        <span class="float-right" [ngSwitch]="submissionState">
-          <span *ngSwitchCase="'Pending'" class="badge badge-pill badge-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Draft'" class="badge badge-pill badge-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Validating'" class="badge badge-pill badge-info">{{submissionState}}</span>
-          <span *ngSwitchCase="'Valid'" class="badge badge-pill badge-success">{{submissionState}}</span>
-          <span *ngSwitchCase="'Invalid'" class="badge badge-pill badge-danger">{{submissionState}}</span>
-          <span *ngSwitchCase="'Submitted'" class="badge badge-pill badge-secondary">{{submissionState}}</span>
-          <span *ngSwitchCase="'Processing'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Cleanup'" class="badge badge-pill border border-warning bg-light text-warning">{{submissionState}}</span>
-          <span *ngSwitchCase="'Complete'" class="badge badge-pill border border-success bg-light text-success">{{submissionState}}</span>
-        </span>
-      </h3>
-    </div>
+<div fxLayout="column" class="mat-typography">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <h1 class="mat-headline">Submission</h1>
+    <mat-chip-list selectable="false">
+      <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
+    </mat-chip-list>
   </div>
-  <br/>
-  <h3>{{projectName}}</h3>
-  <br/>
-  <div class="row">
-    <div class="col-lg-12">
-      <tabs>
-       <tab [href]="'overview'" tabTitle="Overview"  [active]="activeTab == 'overview'" >
-         <app-overview [project]="project" [projectId]="projectId" [submissionEnvelopeId]="submissionEnvelopeId"></app-overview>
-       </tab>
-        <tab [href]="'metadata'" tabTitle="Metadata" [active]="activeTab == 'metadata'">
-          <app-metadata
-            [projectId]="projectId"
-            [submissionEnvelopeId]="submissionEnvelopeId"
-            >
-          </app-metadata>
-        </tab>
-        <tab [href]="'data'" tabTitle="Data" [active]="activeTab == 'data'" [disabled]="!submissionEnvelopeId">
-          <app-files
-            [submissionEnvelope]="submissionEnvelope"
-            [submissionEnvelopeId]="submissionEnvelopeId" >
-          </app-files>
-        </tab>
-        <tab [href]="'submit'" [disabled]="!isSubmittable" tabTitle="Submit" [active]="activeTab == 'submit'">
-          <app-submit
-            [submissionEnvelope$]="submissionEnvelope$"
-            [submitLink]="submitLink"
-            [isSubmitted]="isSubmitted"
-            [submissionEnvelopeId]="submissionEnvelopeId">
-          </app-submit>
-        </tab>
-      </tabs>
-    </div>
+  <div>
+  <h3 class="subheading-2">{{projectName}}</h3>
+    <mat-tab-group>
+      <mat-tab label="Overview">
+        <app-overview [project]="project" 
+                      [projectId]="projectId" 
+                      [submissionEnvelopeId]="submissionEnvelopeId">
+        </app-overview>
+      </mat-tab>
+      <mat-tab label="Metadata">
+        <app-metadata
+                [projectId]="projectId"
+                [submissionEnvelopeId]="submissionEnvelopeId"
+                [samples]="samples"
+                [assays]="assays"
+                [protocols]="protocols"
+                [analyses]="analyses"
+        >
+        </app-metadata>
+      </mat-tab>
+      <mat-tab label="Data" [disabled]="!submissionEnvelopeId">
+        <app-files
+                [submissionEnvelope]="submissionEnvelope"
+                [submissionEnvelopeId]="submissionEnvelopeId" >
+        </app-files>
+      </mat-tab>
+      <mat-tab label="Submit" [disabled]="!isSubmittable">
+        <app-submit
+                [submissionEnvelope$]="submissionEnvelope$"
+                [submitLink]="submitLink"
+                [isSubmitted]="isSubmitted"
+              
+                [submissionEnvelopeId]="submissionEnvelopeId">
+        </app-submit>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>
-

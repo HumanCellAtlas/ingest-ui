@@ -15,7 +15,7 @@ import {Subscription} from "rxjs/Subscription";
 @Component({
   selector: 'app-metadata-list',
   templateUrl: './metadata-list.component.html',
-  styleUrls: ['./metadata-list.component.css'],
+  styleUrls: ['./metadata-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
