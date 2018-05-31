@@ -1,17 +1,19 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from 'rxjs/Observable';
-import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import {SubmissionEnvelope} from "../models/submissionEnvelope";
+
+import * as _ from 'lodash';
+
+import {AlertService} from "./alert.service";
 import {ListResult} from "../models/hateoas";
 import {Summary} from "../models/summary";
 import {Project} from "../models/project";
-import {Metadata} from "../models/metadata";
-import {AlertService} from "./alert.service";
 import {PagedData} from "../models/page";
-import { environment } from '../../../environments/environment';
+import {SubmissionEnvelope} from "../models/submissionEnvelope";
+
+import {environment} from '../../../environments/environment';
 
 
 @Injectable()
@@ -55,67 +57,6 @@ export class IngestService {
         else
           return [];
       });
-  }
-
-  public getFiles(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.files)
-          return _.values(data._embedded.files);
-        else
-          return [];
-      })
-  }
-
-  public getSamples(submissionEnvelopeId): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.samples)
-          return _.values(data._embedded.samples);
-        else
-          return [];
-      })
-  }
-
-  public getAnalyses(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/analyses`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.analyses)
-          return _.values(data._embedded.analyses);
-        else
-          return [];
-      })
-  }
-
-  public getAssays(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/assays`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.assays)
-          return _.values(data._embedded.assays);
-        else
-          return [];
-      })
-  }
-
-  //there's no pagination, check core code
-  public getBundles(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/bundleManifests`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.bundleManifests)
-          return _.values(data._embedded.bundleManifests);
-        else
-          return [];
-      })
-  }
-
-  public getProtocols(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/protocols`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.protocols)
-          return _.values(data._embedded.protocols);
-        else
-          return [];
-      })
   }
 
   public submit(submitLink){
@@ -163,6 +104,7 @@ export class IngestService {
 
         if(data._embedded && data._embedded[entityType]){
           pagedData.data = _.values(data._embedded[entityType]);
+          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data)
         }
         else{
           pagedData.data = [];
@@ -172,4 +114,30 @@ export class IngestService {
         return pagedData;
       });
   }
+
+  public put(ingestLink, content){
+    return this.http.put(ingestLink, content);
+  }
+
+  public patch(ingestLink, patchData){
+    return this.http.patch(ingestLink, patchData);
+  }
+
+  private reduceColumnsForBundleManifests(entityType, data){
+    if(entityType == 'bundleManifests'){
+      return data.map(function(row){
+        let newRow = {
+          'bundleUuid' : row['bundleUuid'],
+          'envelopeUuid' : row['envelopeUuid'],
+          '_links': row['_links'],
+          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws`
+        };
+        return newRow;
+      })
+    }
+    return data;
+
+
+  }
+
 }

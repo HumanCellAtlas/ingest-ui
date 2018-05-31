@@ -10,9 +10,10 @@ import {MatCardModule, MatChipsModule, MatTabsModule} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
+
 
 import {IngestService} from './shared/services/ingest.service';
 import {BrokerService} from './shared/services/broker.service';
@@ -21,6 +22,7 @@ import {AuthService} from './auth/auth.service';
 import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './home/submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
@@ -48,6 +50,16 @@ import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
 import {ConsentComponent} from './submission/consent/consent.component';
 import {FlattenService} from "./shared/services/flatten.service";
+import {SchemaService} from "./shared/services/schema.service";
+
+import {MetadataTableComponent} from './submission/metadata-table/metadata-table.component';
+
+import {
+  MatIconModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatSortModule, MatTableModule, MatTooltipModule
+} from "@angular/material";
+
+import { MetadataFieldComponent } from './submission/metadata-field/metadata-field.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -78,7 +90,9 @@ export function tokenGetter(): string {
     LoginComponent,
     OverviewComponent,
     AlertComponent,
-    ConsentComponent
+    ConsentComponent,
+    MetadataTableComponent,
+    MetadataFieldComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -106,8 +120,25 @@ export function tokenGetter(): string {
     MatCardModule,
     MatChipsModule,
     MatTabsModule
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTooltipModule
   ],
-  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
+  providers: [
+    IngestService,
+    BrokerService,
+    AuthService,
+    FormBuilder,
+    AlertService,
+    LoaderService,
+    FlattenService,
+    SchemaService
+  ],
   bootstrap: [AppComponent]
 })
 

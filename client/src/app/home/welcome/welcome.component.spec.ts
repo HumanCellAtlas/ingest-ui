@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WelcomeComponent } from './welcome.component';
+import {NewSubmissionComponent} from "../new-submission/new-submission.component";
+import {IngestService} from "../../shared/services/ingest.service";
+import {AuthService} from "../../auth/auth.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {RouterTestingModule} from "@angular/router/testing";
+
 
 describe('WelcomeComponent', () => {
   let component: WelcomeComponent;
@@ -8,7 +14,18 @@ describe('WelcomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WelcomeComponent ]
+      imports: [ RouterTestingModule ],
+      declarations: [
+        WelcomeComponent,
+        NewSubmissionComponent,
+
+      ],
+      providers: [
+        { provide: AuthService, useValue: { handleAuthentication: () => {}, isAuthenticated: () => {} } },
+        { provide: IngestService, useValue: { getUserSummary: () => {} } },
+        { provide: Router, useClass: class { navigate = jasmine.createSpy("navigate"); }},
+
+      ],
     })
     .compileComponents();
   }));

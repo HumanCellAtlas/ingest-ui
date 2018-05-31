@@ -82,11 +82,12 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     }
   }
 
-  getAllColumns(metadataList){
+  getAllColumns(rows){
     let columns = {};
 
-    metadataList.map(function(row) {
+    rows.map(function(row) {
       Object.keys(row).map(function(col){
+
         columns[col] = '';
       })
     });
@@ -94,15 +95,21 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     return this.getColumns(columns);
   }
 
-  getColumns(metadataListRow){
+  getColumns(row){
     let columns = [];
 
     if (this.config && this.config.displayAll){
-      columns = Object.keys(metadataListRow)
+      columns = Object.keys(row)
         .filter(column => column.match('^(?!validationState).*'));
+
     } else { // display only fields inside the content object
-      columns = Object.keys(metadataListRow)
-        .filter(column => column.match('^content.(?!core).*'));
+      columns = Object.keys(row)
+        .filter(column => {
+          return column.match('^content.(?!core).*') &&
+            !column.match('describedBy') &&
+            !column.match('schema_version')
+
+        });
     }
 
     if (this.config && this.config.displayContent) {
@@ -113,26 +120,20 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
       columns = columns.concat(this.config.displayColumns);
     }
 
-    // if(this.config.displayState){
-    //   columns.unshift('validationState');
-    // }
-
     return columns;
   }
 
   getMetadataType(rowIndex){
     let row = this.metadataList[rowIndex];
-    let content = row['content'];
-    let type = content && content['core'] ? content['core']['type'] : '';
+    let schemaId = row['content'] ? row['content']['describedBy'] : '';
 
-    if (type == 'sample' && content){
-      type = 'donor' in content ? 'donor': type;
-      type = 'immortalized_cell_line' in content ? 'immortalized_cell_line': type;
-      type = 'cell_suspension' in content ? 'cell_suspension': type;
-      type = 'organoid' in content ? 'organoid': type;
-      type = 'primary_cell_line' in content ? 'primary_cell_line': type;
-      type = 'specimen_from_organism' in content ? 'specimen_from_organism': type;
+    if(!schemaId){
+      return 'unknown';
     }
+
+    let type = schemaId.split('/').pop();
+    this.metadataList[rowIndex]['metadataType'] = type;
+
     return type;
   }
 
@@ -146,14 +147,38 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     return validMessage;
   }
 
+  revalidate(rowIndex){
+    let metadataLink = this.metadataList[rowIndex]['_links']['self']['href'];
+
+    this.ingestService.patch(metadataLink, {validationState: "Draft"}).subscribe(
+      (response) => {
+        console.log('patched metadata')
+        console.log("Response is: ", response);
+      },
+      (error) => {
+        console.error("An error occurred, ", error);
+      });
+
+  }
+
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
-    this.metadataList[rowIndex][cell] = event.target.value;
-    this.metadataList = [...this.metadataList];
-    console.log('UPDATED!', this.metadataList[rowIndex][cell]);
-    console.log(this.metadataList[rowIndex]);
+
+    let oldValue = this.rows[rowIndex][cell];
+    let newValue = event.target.value;
+
+    console.log('newValue', newValue);
+
+    this.rows[rowIndex][cell] = newValue;
+    this.rows = [...this.rows];
+
+    console.log('METADATA LIST ROW!', this.metadataList[rowIndex]);
+    console.log('ROWS!', this.rows);
+
   }
+
+
 
   getValidationErrors(row){
     return row['validationErrors[0].user_friendly_message'];

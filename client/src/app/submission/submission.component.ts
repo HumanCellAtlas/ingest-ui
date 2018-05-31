@@ -20,12 +20,6 @@ export class SubmissionComponent implements OnInit {
   submissionEnvelope;
   submissionState: string;
 
-  analyses: Object[];
-  assays: Object[];
-  bundles: Object[];
-  protocols: Object[];
-  samples: Object[];
-
   activeTab: string;
 
   isSubmittable: boolean;
@@ -95,7 +89,7 @@ export class SubmissionComponent implements OnInit {
 
   checkIfValid(submission){
     let status = submission['submissionState'];
-    let validStates = ["Valid", "Submitted", "Cleanup", "Complete"];
+    let validStates = ["Valid", "Submitted", "Processing", "Cleanup", "Complete"];
     return (validStates.indexOf(status) >= 0);
   }
 
@@ -116,12 +110,12 @@ export class SubmissionComponent implements OnInit {
   }
 
   getProjectName(){
-    return this.project && this.project['content'] ? this.project['content']['name'] : '';
+    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
   }
 
 
   isStateSubmitted(state){
-    let submittedStates = [ "Submitted", "Cleanup", "Complete"];
+    let submittedStates = [ "Submitted", "Processing" , "Cleanup", "Complete"];
     return (submittedStates.indexOf(state) >= 0);
   }
 
