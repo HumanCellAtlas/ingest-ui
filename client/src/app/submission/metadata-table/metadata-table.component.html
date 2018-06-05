@@ -1,3 +1,14 @@
+<ng-container *ngIf="showFilterState()">
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Filter by state" (selectionChange)="filterByState($event)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let state of validationStates" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-container>
+
 <div class="metadata-table-container">
 
   <!--<div>-->
@@ -24,13 +35,13 @@
           </div>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <app-metadata-field (onValueChange)="onValueChange(row, column, $event)"
-                              [value]="row[column]"
-                              [columnName]="column"
-                              [metadataType]="row['entityType']"
-                              [columnDefinition]="contentColumnMap[column]">
-          </app-metadata-field>
-          <!--{{row[column]}}-->
+          <!--<app-metadata-field (onValueChange)="onValueChange(row, column, $event)"-->
+                              <!--[value]="row[column]"-->
+                              <!--[columnName]="column"-->
+                              <!--[metadataType]="row['entityType']"-->
+                              <!--[columnDefinition]="contentColumnMap[column]">-->
+          <!--</app-metadata-field>-->
+          {{row[column]}}
         </mat-cell>
       </ng-container>
     </ng-container>
