@@ -16,6 +16,8 @@ export class MetadataComponent implements OnInit {
   @Input() protocols: Object[];
   @Input() samples: Object[];
 
+  @Input() manifest: Object;
+
   private alive: boolean;
   private pollInterval : number;
 

@@ -33,11 +33,14 @@ export class SubmissionComponent implements OnInit {
   private alive: boolean;
   private pollInterval: number;
 
+  manifest: Object;
+
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute,
               private flattenService: FlattenService) {
     this.pollInterval = 4000; //4s
     this.alive = true;
+    this.manifest = {};
   }
 
   ngOnInit() {
@@ -53,6 +56,7 @@ export class SubmissionComponent implements OnInit {
     } else {
       this.pollSubmissionEnvelope(this.submissionEnvelopeId);
       this.pollEntities();
+
     }
   }
 
@@ -73,6 +77,10 @@ export class SubmissionComponent implements OnInit {
             this.isSubmitted = this.isStateSubmitted(data.submissionState)
             this.submitLink = this.getSubmitLink(data);
 
+          });
+        this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
+          .subscribe(data => {
+            this.manifest = data;
           });
       });
   }

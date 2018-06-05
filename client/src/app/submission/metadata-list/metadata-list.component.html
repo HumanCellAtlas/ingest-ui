@@ -37,6 +37,8 @@
   (page)='setPage($event)'
 
   (sort)="onSort($event)"
+
+  [messages]="{totalMessage: expectedCount ? '/ ' + expectedCount : ''}"
 >
 
    <!--Row Detail Template -->

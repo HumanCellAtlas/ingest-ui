@@ -9,8 +9,8 @@
   <h3 class="subheading-2">{{projectName}}</h3>
     <mat-tab-group>
       <mat-tab label="Overview">
-        <app-overview [project]="project" 
-                      [projectId]="projectId" 
+        <app-overview [project]="project"
+                      [projectId]="projectId"
                       [submissionEnvelopeId]="submissionEnvelopeId">
         </app-overview>
       </mat-tab>
@@ -22,13 +22,15 @@
                 [assays]="assays"
                 [protocols]="protocols"
                 [analyses]="analyses"
+                [manifest]="manifest"
         >
         </app-metadata>
       </mat-tab>
       <mat-tab label="Data" [disabled]="!submissionEnvelopeId">
         <app-files
                 [submissionEnvelope]="submissionEnvelope"
-                [submissionEnvelopeId]="submissionEnvelopeId" >
+                [submissionEnvelopeId]="submissionEnvelopeId"
+                [manifest]="manifest">
         </app-files>
       </mat-tab>
       <mat-tab label="Submit" [disabled]="!isSubmittable">
@@ -36,7 +38,7 @@
                 [submissionEnvelope$]="submissionEnvelope$"
                 [submitLink]="submitLink"
                 [isSubmitted]="isSubmitted"
-              
+
                 [submissionEnvelopeId]="submissionEnvelopeId">
         </app-submit>
       </mat-tab>

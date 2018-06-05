@@ -27,6 +27,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   @Input() metadataList;
   @Input() metadataType;
+  @Input() expectedCount;
 
   @Input() config = {
     displayContent: true,

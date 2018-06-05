@@ -79,6 +79,10 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/projects/${id}`);
   }
 
+  public getSubmissionManifest(submissionId): Observable<Object>{
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/submissionManifest`);
+  }
+
   public postProject(project): Observable<Object>{
     return this.http.post(`${this.API_URL}/projects`, project);
   }
