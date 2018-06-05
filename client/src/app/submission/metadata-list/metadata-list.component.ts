@@ -11,7 +11,6 @@ import {FlattenService} from "../../shared/services/flatten.service";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {Page, PagedData} from "../../shared/models/page";
 import {Subscription} from "rxjs/Subscription";
-import {MatSelectChange} from "@angular/material";
 
 @Component({
   selector: 'app-metadata-list',
@@ -45,7 +44,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   private isLoading: boolean = false;
 
-  editing = {};s
+  editing = {};
 
   iconsDir:string;
 
@@ -59,7 +58,9 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   validationStates: string[];
 
-  filterState;
+  filterState: string;
+
+  currentPageInfo: {};
 
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
@@ -185,8 +186,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   }
 
-
-
   getValidationErrors(row){
     return row['validationErrors[0].user_friendly_message'];
     //TODO retrieve all validation errors
@@ -209,17 +208,21 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   setPage(pageInfo){
+    this.currentPageInfo = pageInfo;
     this.stopPolling();
     this.page.page = pageInfo.offset;
-    this.startPolling(pageInfo);
+    this.startPolling(this.currentPageInfo);
     this.alive = true;
   }
 
+
   fetchData(pageInfo){
+
     if(this.submissionEnvelopeId){
       let newPage = new Page();
       newPage['page'] = pageInfo['offset'];
       newPage['size'] = pageInfo['size'];
+      newPage['sort'] = pageInfo['sort'];
 
       this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, this.filterState, newPage);
 
@@ -251,12 +254,24 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   filterByState(event) {
     let filterState = event.value;
-
     this.filterState = filterState;
-    console.log(filterState);
+    this.setPage(this.currentPageInfo);
   }
 
   showFilterState(){
     return this.metadataType != 'bundleManifests'
+  }
+
+  onSort(event){
+    let sorts = event.sorts
+
+    let column = sorts[0]['prop']; // only one column sorting is supported for now
+    let dir = sorts[0]['dir'];
+
+    if(this.metadataType === 'files' ) { // only sorting in files are supported for now
+      this.currentPageInfo['sort'] = {column: column, dir:dir}
+      this.setPage(this.currentPageInfo);
+    }
+
   }
 }
