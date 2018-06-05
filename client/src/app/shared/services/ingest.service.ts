@@ -98,11 +98,22 @@ export class IngestService {
   }
 
   public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
-
     let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`
+    let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
 
-    if(filterState){
-      url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}/${filterState}`
+    let sort = params['sort']
+    if(sort){
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContaining`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['sort'] = `${sort['column']},${sort['dir']}`
+    }
+
+    if(filterState) {
+      let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContainingAndValidationState`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['state'] = filterState.toUpperCase();
+
     }
 
     return this.http.get(url, {params: params})
