@@ -47,17 +47,23 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
   ingestColumns: string[];
   displayedColumns: string[];
 
+  filterState: string;
+
+  validationStates: string[];
+
   constructor(
     private ingestService: IngestService,
     private schemaService: SchemaService,
     private flattenService: FlattenService
-  ) {}
+  ) {
+    this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid'];
+  }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('input') input: ElementRef;
 
   ngOnInit() {
-    // this.alive = true;
+    this.alive = true;
     this.dataSource = new MetadataDataSource(this.ingestService, this.flattenService, this.schemaService);
 
     this.metadataCount$ = this.dataSource.getMetadataCount();
@@ -107,7 +113,7 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
       this.submissionEnvelopeId,
       this.metadataEntity,
       this.metadataEntityType,
-      '',
+      this.filterState,
       'asc',
       this.paginator.pageIndex,
       this.paginator.pageSize);
@@ -151,6 +157,17 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
         console.error("An error occurred, ", error);
       });
   }
+
+  filterByState(event) {
+    let filterState = event.value;
+
+    this.filterState = filterState;
+    this.loadMetadataPage();
+  }
+
+  showFilterState(){
+    return this.metadataEntity != 'bundleManifests'
+  }
 }
 
 export class MetadataDataSource implements DataSource<object> {
@@ -176,7 +193,7 @@ export class MetadataDataSource implements DataSource<object> {
   loadMetadata(submissionId: string,
                metadataEntity: string,
                metadataEntityType: string,
-               filter = '',
+               filterState = '',
                sortDirection = 'asc',
                pageIndex = 0,
                pageSize = this.DEFAULT_PAGE_SIZE) {
@@ -188,7 +205,7 @@ export class MetadataDataSource implements DataSource<object> {
     pageParams['page'] = pageIndex;
     pageParams['size'] = pageSize;
 
-    this.ingestService.fetchSubmissionData(submissionId, metadataEntity, pageParams).pipe(
+    this.ingestService.fetchSubmissionData(submissionId, metadataEntity, filterState, pageParams).pipe(
       catchError(() => of([])),
       finalize(() => this.loadingSubject.next(false))
     ).subscribe(data => {

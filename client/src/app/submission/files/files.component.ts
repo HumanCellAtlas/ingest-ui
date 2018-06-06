@@ -14,6 +14,7 @@ export class FilesComponent implements OnInit {
   @Input() submissionEnvelopeId;
   @Input() submissionEnvelope;
   @Input() files$;
+  @Input() manifest;
 
   files : Object[];
 

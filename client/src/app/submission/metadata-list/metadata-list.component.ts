@@ -15,7 +15,7 @@ import {Subscription} from "rxjs/Subscription";
 @Component({
   selector: 'app-metadata-list',
   templateUrl: './metadata-list.component.html',
-  styleUrls: ['./metadata-list.component.css'],
+  styleUrls: ['./metadata-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -27,6 +27,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   @Input() metadataList;
   @Input() metadataType;
+  @Input() expectedCount;
 
   @Input() config = {
     displayContent: true,
@@ -44,7 +45,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   private isLoading: boolean = false;
 
-  editing = {};s
+  editing = {};
 
   iconsDir:string;
 
@@ -56,6 +57,12 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   isPaginated: boolean;
 
+  validationStates: string[];
+
+  filterState: string;
+
+  currentPageInfo: {};
+
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
     this.iconsDir = 'assets/open-iconic/svg';
@@ -65,6 +72,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.page.size = 20;
     this.pollingTimer = TimerObservable.create( 0, this.pollInterval)
       .takeWhile(() => this.alive); // only fires when component is alive
+
+    this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid']
   }
 
   ngOnDestroy(){
@@ -178,8 +187,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   }
 
-
-
   getValidationErrors(row){
     return row['validationErrors[0].user_friendly_message'];
     //TODO retrieve all validation errors
@@ -202,19 +209,23 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   setPage(pageInfo){
+    this.currentPageInfo = pageInfo;
     this.stopPolling();
     this.page.page = pageInfo.offset;
-    this.startPolling(pageInfo);
+    this.startPolling(this.currentPageInfo);
     this.alive = true;
   }
 
+
   fetchData(pageInfo){
+
     if(this.submissionEnvelopeId){
       let newPage = new Page();
       newPage['page'] = pageInfo['offset'];
       newPage['size'] = pageInfo['size'];
+      newPage['sort'] = pageInfo['sort'];
 
-      this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, newPage);
+      this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, this.filterState, newPage);
 
       this.metadataList$.subscribe(data => {
         this.rows = data.data.map(this.flattenService.flatten);
@@ -242,4 +253,26 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     }
   }
 
+  filterByState(event) {
+    let filterState = event.value;
+    this.filterState = filterState;
+    this.setPage(this.currentPageInfo);
+  }
+
+  showFilterState(){
+    return this.metadataType != 'bundleManifests'
+  }
+
+  onSort(event){
+    let sorts = event.sorts
+
+    let column = sorts[0]['prop']; // only one column sorting is supported for now
+    let dir = sorts[0]['dir'];
+
+    if(this.metadataType === 'files' ) { // only sorting in files are supported for now
+      this.currentPageInfo['sort'] = {column: column, dir:dir}
+      this.setPage(this.currentPageInfo);
+    }
+
+  }
 }

@@ -79,6 +79,10 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/projects/${id}`);
   }
 
+  public getSubmissionManifest(submissionId): Observable<Object>{
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/submissionManifest`);
+  }
+
   public postProject(project): Observable<Object>{
     return this.http.post(`${this.API_URL}/projects`, project);
   }
@@ -97,8 +101,26 @@ export class IngestService {
       })
   }
 
-  public fetchSubmissionData(submissionId, entityType, params): Observable<PagedData> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`, {params: params})
+  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
+    let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`
+    let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+
+    let sort = params['sort']
+    if(sort){
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContaining`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['sort'] = `${sort['column']},${sort['dir']}`
+    }
+
+    if(filterState) {
+      let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContainingAndValidationState`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['state'] = filterState.toUpperCase();
+
+    }
+
+    return this.http.get(url, {params: params})
       .map((data: ListResult<Object>) => {
         let pagedData = new PagedData();
 

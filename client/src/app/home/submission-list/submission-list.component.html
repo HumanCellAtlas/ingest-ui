@@ -60,13 +60,13 @@
     <ul class="pagination justify-content-center" >
 
     <li class="bg-primary page-item" [class.disabled]="currentPageInfo['number'] == 0">
-      <a class="bg-primary page-link" tabindex="-1" (click)="goToPage(currentPageInfo['number']-1)">Previous</a>
+      <a class="bg-primary page-link" tabindex="-1" [routerLink]="['/submissions/list', addAndGetPageParams(currentPageInfo['number'])]">Previous</a>
     </li>
     <li class="bg-primary page-item {{currentPageInfo['number'] == pageItem ? 'active' : ''}}" *ngFor="let pageItem of createRange(currentPageInfo['totalPages'])">
-      <a class="bg-primary page-link" (click)="goToPage(pageItem)"  >{{pageItem + 1}}</a>
+      <a class="bg-primary page-link" [routerLink]="['/submissions/list', addAndGetPageParams(pageItem+1)]"   >{{pageItem + 1}}</a>
     </li>
     <li class="bg-primary page-item" [class.disabled]="currentPageInfo['number'] == (currentPageInfo['totalPages'] - 1)">
-    <a class="bg-primary page-link" (click)="goToPage(currentPageInfo['number']+1)" >Next</a>
+    <a class="bg-primary page-link" [routerLink]="['/submissions/list', addAndGetPageParams(currentPageInfo['number']+2)]"  >Next</a>
     </li>
     </ul>
     </nav>
