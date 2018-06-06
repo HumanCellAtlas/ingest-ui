@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
 import {AlertService} from "../../shared/services/alert.service";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-submission-list',
@@ -14,9 +15,6 @@ import {AlertService} from "../../shared/services/alert.service";
   encapsulation: ViewEncapsulation.None
 })
 export class SubmissionListComponent implements OnInit {
-
-  submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
-
   submissionProjects: Object;
 
   submissionEnvelopes: SubmissionEnvelope[];
@@ -30,6 +28,10 @@ export class SubmissionListComponent implements OnInit {
   private alive: boolean;
 
   private showAll;
+
+  pageFromUrl;
+
+  pollingSubscription: Subscription;
 
   constructor(private ingestService: IngestService,
               private router: Router,
@@ -53,6 +55,8 @@ export class SubmissionListComponent implements OnInit {
 
     route.params.subscribe(val => {
       this.showAll = this.route.snapshot.paramMap.get('all');
+      this.pageFromUrl = this.route.snapshot.paramMap.get('page');
+      this.resetPolling()
     });
   }
 
@@ -81,8 +85,19 @@ export class SubmissionListComponent implements OnInit {
 
   }
 
+  resetPolling(){
+    this.stopPolling();
+    this.pollSubmissions()
+  }
+
+  stopPolling(){
+    if(this.pollingSubscription){
+      this.pollingSubscription.unsubscribe();
+    }
+  }
+
   pollSubmissions() {
-    TimerObservable.create(0, this.interval)
+    this.pollingSubscription = TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
         this.getSubmissions();
@@ -90,6 +105,10 @@ export class SubmissionListComponent implements OnInit {
   }
 
   getSubmissions(){
+    if(this.pageFromUrl){
+      this.params['page'] = parseInt(this.pageFromUrl) - 1;
+    }
+
     if(this.showAll){
       this.ingestService.getAllSubmissions(this.params)
         .subscribe(data =>{
@@ -161,11 +180,6 @@ export class SubmissionListComponent implements OnInit {
     return this.currentPageInfo;
   }
 
-  goToPage(pageNumber){
-    this.params['page'] = pageNumber;
-    this.getSubmissions();
-  }
-
   createRange(number){
     let items: number[] = [];
     for(let i = 0; i < number; i++){
@@ -174,9 +188,15 @@ export class SubmissionListComponent implements OnInit {
     return items;
   }
 
-  toggleShowAll(value){
-    console.log(value)
-    this.showAll = value;
+  addAndGetPageParams(pageNumber: Number) {
+    let params = {}
+
+    if(this.showAll){
+      params['all'] = 1;
+    }
+
+    params['page'] = pageNumber;
+    return params
   }
 }
 
