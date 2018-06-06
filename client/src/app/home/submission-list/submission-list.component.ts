@@ -105,9 +105,7 @@ export class SubmissionListComponent implements OnInit {
   }
 
   getSubmissions(){
-    if(this.pageFromUrl){
-      this.params['page'] = parseInt(this.pageFromUrl) - 1;
-    }
+    this.params['page'] = this.pageFromUrl ? parseInt(this.pageFromUrl) - 1 : 0;
 
     if(this.showAll){
       this.ingestService.getAllSubmissions(this.params)
