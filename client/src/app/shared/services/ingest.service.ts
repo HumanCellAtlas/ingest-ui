@@ -50,7 +50,7 @@ export class IngestService {
   }
 
   public getUserProjects(): Observable<Project[]> {
-    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'submissionDate,desc'}})
+    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'updateDate,desc'}})
       .map((data: ListResult<Project>) => {
         if(data._embedded && data._embedded.projects)
           return _.values(data._embedded.projects);
