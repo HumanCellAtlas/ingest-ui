@@ -93,7 +93,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   getAllColumns(rows){
     let columns = {};
-
     rows.map(function(row) {
       Object.keys(row).map(function(col){
 
@@ -114,9 +113,10 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     } else { // display only fields inside the content object
       columns = Object.keys(row)
         .filter(column => {
-          return column.match('^content.(?!core).*') &&
+          return (column.match('^content.(?!core).*') &&
             !column.match('describedBy') &&
-            !column.match('schema_version')
+            !column.match('schema_version') ) ||
+            column.match('uuid.uuid')
 
         });
     }
@@ -184,7 +184,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
     console.log('METADATA LIST ROW!', this.metadataList[rowIndex]);
     console.log('ROWS!', this.rows);
-
   }
 
   getValidationErrors(row){
