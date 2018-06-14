@@ -115,7 +115,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
         .filter(column => {
           return (column.match('^content.(?!core).*') &&
             !column.match('describedBy') &&
-            !column.match('schema_version') ) ||
+            !column.match('schema_version') &&
+            !column.match('[\[]') ) || // exclude metadata attributes which are of list type
             column.match('uuid.uuid')
 
         });
