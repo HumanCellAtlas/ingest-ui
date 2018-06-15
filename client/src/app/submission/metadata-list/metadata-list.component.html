@@ -87,6 +87,24 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <span
+        title="{{value}}"
+        (dblclick)="editing[rowIndex + '-' + column] = true"
+        *ngIf="!editing[rowIndex + '-' + column]">
+            {{value}}
+          </span>
+      <input
+        autofocus
+        (blur)="updateValue($event, column, rowIndex)"
+        *ngIf="editing[rowIndex+ '-' + column]"
+        type="text"
+        [value]="value"
+      />
+    </ng-template>
+  </ngx-datatable-column>
+
   <ng-container *ngFor="let column of getAllColumns(rows)">
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
