@@ -10,4 +10,5 @@ body {
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// Default MD theme TODO revisit - customize once ingest-ui UI design is completed 
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';

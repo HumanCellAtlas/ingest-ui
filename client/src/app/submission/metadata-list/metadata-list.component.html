@@ -1,5 +1,13 @@
-<script src="../../shared/services/ingest.service.spec.ts"></script>
-<script src="../../shared/services/ingest.service.ts"></script>
+<ng-container *ngIf="showFilterState()">
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Filter by state" (selectionChange)="filterByState($event)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let state of validationStates" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-container>
 
 <ng-container *ngIf="rows && rows.length > 0">
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
@@ -27,6 +35,10 @@
   [externalPaging]="isPaginated"
 
   (page)='setPage($event)'
+
+  (sort)="onSort($event)"
+
+  [messages]="{totalMessage: expectedCount ? '/ ' + expectedCount : ''}"
 >
 
    <!--Row Detail Template -->
@@ -72,6 +84,24 @@
         <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
         <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
       </ng-container>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <span
+        title="{{value}}"
+        (dblclick)="editing[rowIndex + '-' + column] = true"
+        *ngIf="!editing[rowIndex + '-' + column]">
+            {{value}}
+          </span>
+      <input
+        autofocus
+        (blur)="updateValue($event, column, rowIndex)"
+        *ngIf="editing[rowIndex+ '-' + column]"
+        type="text"
+        [value]="value"
+      />
     </ng-template>
   </ngx-datatable-column>
 

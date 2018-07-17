@@ -20,7 +20,12 @@ export class AuthService {
   constructor(public router: Router) {}
 
   public login(): void {
-    this.auth0.authorize();
+    if(this.isAuthenticated()){
+      alert('You are already logged in. Redirecting to homepage...')
+      this.router.navigate(['/home']);
+    } else {
+      this.auth0.authorize();
+    }
   }
 
   public handleAuthentication(): void {
@@ -34,8 +39,7 @@ export class AuthService {
         this.router.navigate(['/login']);
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
-      } else if(!this.isAuthenticated())
-      {
+      } else if(!this.isAuthenticated()) {
         this.router.navigate(['/login']);
       }
     });
@@ -79,5 +83,6 @@ export class AuthService {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   }
+
 
 }

@@ -10,7 +10,7 @@ import {FlattenService} from "../shared/services/flatten.service";
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
-  styleUrls: ['./submission.component.css']
+  styleUrls: ['./submission.component.scss']
 })
 export class SubmissionComponent implements OnInit {
   submissionEnvelopeId: string;
@@ -23,7 +23,7 @@ export class SubmissionComponent implements OnInit {
   activeTab: string;
 
   isSubmittable: boolean;
-  isSubmitted:boolean;
+  isSubmitted: boolean;
   submitLink: string;
 
   project: any;
@@ -31,13 +31,16 @@ export class SubmissionComponent implements OnInit {
   projectName: string;
 
   private alive: boolean;
-  private pollInterval : number;
+  private pollInterval: number;
+
+  manifest: Object;
 
   constructor(private ingestService: IngestService,
               private route: ActivatedRoute,
               private flattenService: FlattenService) {
     this.pollInterval = 4000; //4s
     this.alive = true;
+    this.manifest = {};
   }
 
   ngOnInit() {
@@ -53,6 +56,7 @@ export class SubmissionComponent implements OnInit {
     } else {
       this.pollSubmissionEnvelope(this.submissionEnvelopeId);
       this.pollEntities();
+
     }
   }
 
@@ -73,6 +77,10 @@ export class SubmissionComponent implements OnInit {
             this.isSubmitted = this.isStateSubmitted(data.submissionState)
             this.submitLink = this.getSubmitLink(data);
 
+          });
+        this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
+          .subscribe(data => {
+            this.manifest = data;
           });
       });
   }
@@ -110,7 +118,7 @@ export class SubmissionComponent implements OnInit {
   }
 
   getProjectName(){
-    return this.project && this.project['content'] ? this.project['content']['name'] : '';
+    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
   }
 
 
@@ -124,4 +132,43 @@ export class SubmissionComponent implements OnInit {
     return links && links['submit']? links['submit']['href'] : null;
   }
 
+  /**
+   * Return the CSS class name corresponding to the current submission state value, for styling the submission state
+   * chip.
+   *
+   * @param submissionState {string}
+   * @returns {string}
+   */
+  getSubmissionStateChipClassName(submissionState: string): string {
+
+    if ( submissionState === 'Pending' || submissionState === 'Draft' ) {
+      return 'warning';
+    }
+
+    if ( submissionState === 'Valid' ) {
+      return 'success';
+    }
+
+    if ( submissionState === 'Validating' ) {
+      return 'info';
+    }
+
+    if ( submissionState === 'Invalid' ) {
+      return 'danger';
+    }
+
+    if ( submissionState === 'Submitted' ) {
+      return 'secondary';
+    }
+
+    if ( submissionState === 'Processing' || submissionState === 'Cleanup' ) {
+      return 'warning-invert';
+    }
+
+    if ( submissionState === 'Complete' ) {
+      return 'success-invert';
+    }
+
+    return '';
+  }
 }

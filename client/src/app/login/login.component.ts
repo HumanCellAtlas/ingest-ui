@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   buildTimestamp = environment.buildTimestamp;
 
@@ -17,9 +17,6 @@ export class LoginComponent implements OnInit {
     if(auth.isAuthenticated()){
       router.navigate(['/home'])
     }
-  }
-
-  ngOnInit() {
   }
 
 }

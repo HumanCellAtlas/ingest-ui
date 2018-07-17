@@ -5,6 +5,9 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatCardModule, MatChipsModule, MatSelectModule, MatTabsModule} from '@angular/material';
+
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
@@ -114,6 +117,10 @@ export function tokenGetter(): string {
     ReactiveFormsModule,
     NoopAnimationsModule,
     NgxDatatableModule,
+    FlexLayoutModule,
+    MatCardModule,
+    MatChipsModule,
+    MatTabsModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatTableModule,
@@ -121,7 +128,8 @@ export function tokenGetter(): string {
     MatSortModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule
   ],
   providers: [
     IngestService,
