@@ -7,10 +7,15 @@
     We're building a Human Cell Atlas reference map!<br/>
     Sign in below in order to submit your single-cell sequencing data to the Human Cell Atlas.
   </p>
+  <p class="center"> This website requires cookies, and the limited processing of your personal data in order to function. By using the site you are agreeing to this as outlined in our <a href="http://www.ebi.ac.uk/data-protection/privacy-notice/human-cell-atlas-ingest-submission" target="_blank">Privacy Notice</a>.
+  </p>
+  <br/>
+  <br/>
   <button
     class="btn btn-success btn-margin" (click)="auth.login()">
     Sign in
   </button>
-  <p><br/><small>v{{version}}</small></p>
-</div>
 
+  <p><br/><small>build timestamp: {{buildTimestamp}}</small></p>
+</div>
+ 

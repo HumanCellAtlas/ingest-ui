@@ -1,2 +1,2 @@
 name: ingest-ui
-bucket-name: ui.ingest.staging.data.humancellatlas.org
+bucket-name: ui.ingest.${opt:env}.data.humancellatlas.org

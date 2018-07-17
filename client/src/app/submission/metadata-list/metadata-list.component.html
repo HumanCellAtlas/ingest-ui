@@ -1,29 +1,46 @@
-<ng-container *ngIf="metadataList && metadataList.length > 0">
+<ng-container *ngIf="showFilterState()">
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Filter by state" (selectionChange)="filterByState($event)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let state of validationStates" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="rows && rows.length > 0">
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
   <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
 </ng-container>
-
+<!--[scrollbarV]="true"-->
 <ngx-datatable
-  #mydatatable
+  #datatable
 
-  *ngIf="metadataList && metadataList.length >= 0"
+  *ngIf="rows && ( rows.length > 0 || !config.hideWhenEmptyRows)"
 
   class="material expandable"
 
   [columnMode]="'force'"
-  [rows]="metadataList"
+  [rows]="rows"
   [headerHeight]="50"
   [footerHeight]="50"
   [rowHeight]="40"
-  [scrollbarV]="true"
+
   [scrollbarH]="true"
+
   [count]="page.totalElements"
-  [offset]="page.pageNumber"
   [limit]="page.size"
   [loadingIndicator]="isLoading"
+  [externalPaging]="isPaginated"
 
   (page)='setPage($event)'
+
+  (sort)="onSort($event)"
+
+  [messages]="{totalMessage: expectedCount ? '/ ' + expectedCount : ''}"
 >
+
    <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -63,18 +80,36 @@
         <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
         <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
         <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
-        <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
+        <button (click)="revalidate(rowIndex)" title="Click to revalidate." *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</button>
         <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
         <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
       </ng-container>
     </ng-template>
   </ngx-datatable-column>
 
-  <ng-container *ngFor="let column of getAllColumns(metadataList)">
+  <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <span
+        title="{{value}}"
+        (dblclick)="editing[rowIndex + '-' + column] = true"
+        *ngIf="!editing[rowIndex + '-' + column]">
+            {{value}}
+          </span>
+      <input
+        autofocus
+        (blur)="updateValue($event, column, rowIndex)"
+        *ngIf="editing[rowIndex+ '-' + column]"
+        type="text"
+        [value]="value"
+      />
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ng-container *ngFor="let column of getAllColumns(rows)">
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(rowIndex) }}</a>
+        <a href="{{row['content.describedBy']}}"> {{ getMetadataType(rowIndex) }}</a>
       </ng-template>
     </ngx-datatable-column>
 
@@ -106,31 +141,15 @@
     </ng-template>
   </ngx-datatable-column>
 
-  <!--<ngx-datatable-footer>-->
-    <!--<ng-template-->
-      <!--ngx-datatable-footer-template-->
-      <!--let-rowCount="rowCount"-->
-      <!--let-pageSize="pageSize"-->
-      <!--let-selectedCount="selectedCount"-->
-      <!--let-curPage="curPage"-->
-      <!--let-offset="offset"-->
-      <!--let-isVisible="isVisible">-->
-      <!--<datatable-pager-->
-        <!--[pagerLeftArrowIcon]="'datatable-icon-left'"-->
-        <!--[pagerRightArrowIcon]="'datatable-icon-right'"-->
-        <!--[pagerPreviousIcon]="'datatable-icon-prev'"-->
-        <!--[pagerNextIcon]="'datatable-icon-skip'"-->
-        <!--[page]="curPage"-->
-        <!--[size]="pageSize"-->
-        <!--[count]="rowCount"-->
-        <!--[hidden]="!((rowCount / pageSize) > 1)"-->
-        <!--(change)="table.onFooterPage($event)">-->
-      <!--</datatable-pager>-->
-      <!--<div class="page-count">-->
-        <!--{{rowCount.toLocaleString()}} {{totalMessage}}-->
-      <!--</div>-->
-    <!--</ng-template>-->
-  <!--</ngx-datatable-footer>-->
+  <ng-container *ngIf="metadataType == 'bundleManifests'">
+    <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+      </ng-template>
+    </ngx-datatable-column>
+  </ng-container>
+
+
 </ngx-datatable>
 
 

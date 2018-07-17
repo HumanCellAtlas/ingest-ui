@@ -4,13 +4,14 @@ import {Observable} from "rxjs/Observable";
 import {catchError, tap} from 'rxjs/operators';
 import {UploadResults} from "../models/uploadResults";
 import 'rxjs/add/observable/throw';
+import { environment } from '../../../environments/environment';
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
 
 @Injectable()
 export class BrokerService {
 
-  API_URL: string = 'http://ingest.staging.data.humancellatlas.org';
+  API_URL: string = environment.BROKER_API_URL;
 
   constructor(private http: HttpClient) {
   }

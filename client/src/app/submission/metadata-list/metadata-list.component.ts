@@ -3,56 +3,49 @@ import {
   Input,
   OnInit,
   ViewEncapsulation,
-  ViewChild, AfterViewChecked
+  ViewChild, AfterViewChecked, OnDestroy
 } from '@angular/core';
 import {IngestService} from "../../shared/services/ingest.service";
 import {Observable} from "rxjs/Observable";
 import {FlattenService} from "../../shared/services/flatten.service";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
-
-export class Page {
-  //The number of elements in the page
-  size: number = 0;
-  //The total number of elements
-  totalElements: number = 0;
-  //The total number of pages
-  totalPages: number = 0;
-  //The current page number
-  pageNumber: number = 0;
-
-}
+import {Page, PagedData} from "../../shared/models/page";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-metadata-list',
   templateUrl: './metadata-list.component.html',
-  styleUrls: ['./metadata-list.component.css'],
+  styleUrls: ['./metadata-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class MetadataListComponent implements OnInit, AfterViewChecked{
-  @ViewChild('mydatatable') table: any;
+export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestroy{
+  pollingSubscription: Subscription;
+  pollingTimer: Observable<number>;
+
+  @ViewChild('datatable') table: any;
 
   @Input() metadataList;
   @Input() metadataType;
+  @Input() expectedCount;
 
   @Input() config = {
     displayContent: true,
     displayState: true,
     displayAll: false,
-    displayColumns: []
+    displayColumns: [],
+    hideWhenEmptyRows: false
   };
 
   private alive: boolean;
   private pollInterval : number;
 
-  metadataList$: Observable<Object[]>;
+  metadataList$: Observable<PagedData>;
   @Input() submissionEnvelopeId: string;
-
-  unflattenedMetadataList: Object[];
 
   private isLoading: boolean = false;
 
-  editing = {};s
+  editing = {};
 
   iconsDir:string;
 
@@ -62,11 +55,25 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
 
   expandAll: boolean;
 
+  isPaginated: boolean;
+
+  validationStates: string[];
+
+  filterState: string;
+
+  currentPageInfo: {};
+
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
     this.iconsDir = 'assets/open-iconic/svg';
     this.pollInterval = 4000; //4s
     this.alive = true;
+    this.page.page = 0;
+    this.page.size = 20;
+    this.pollingTimer = TimerObservable.create( 0, this.pollInterval)
+      .takeWhile(() => this.alive); // only fires when component is alive
+
+    this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid']
   }
 
   ngOnDestroy(){
@@ -74,8 +81,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
   }
 
   ngOnInit() {
-    this.setPage({ offset: 0 });
-    this.fetchData();
+    this.setPage({offset: 0});
   }
 
   ngAfterViewChecked() {
@@ -85,11 +91,11 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     }
   }
 
-  getAllColumns(metadataList){
+  getAllColumns(rows){
     let columns = {};
-
-    metadataList.map(function(row) {
+    rows.map(function(row) {
       Object.keys(row).map(function(col){
+
         columns[col] = '';
       })
     });
@@ -97,15 +103,21 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     return this.getColumns(columns);
   }
 
-  getColumns(metadataListRow){
+  getColumns(row){
     let columns = [];
 
     if (this.config && this.config.displayAll){
-      columns = Object.keys(metadataListRow)
+      columns = Object.keys(row)
         .filter(column => column.match('^(?!validationState).*'));
+
     } else { // display only fields inside the content object
-      columns = Object.keys(metadataListRow)
-        .filter(column => column.match('^content.(?!core).*'));
+      columns = Object.keys(row)
+        .filter(column => {
+          return (column.match('^content.(?!core).*') &&
+            !column.match('describedBy') &&
+            !column.match('schema_version') &&
+            !column.match('[\[]') ) // exclude metadata attributes which are of list type
+        });
     }
 
     if (this.config && this.config.displayContent) {
@@ -116,26 +128,20 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
       columns = columns.concat(this.config.displayColumns);
     }
 
-    // if(this.config.displayState){
-    //   columns.unshift('validationState');
-    // }
-
     return columns;
   }
 
   getMetadataType(rowIndex){
-    let row = this.unflattenedMetadataList[rowIndex];
-    let content = row['content'];
-    let type = content && content['core'] ? content['core']['type'] : '';
+    let row = this.metadataList[rowIndex];
+    let schemaId = row['content'] ? row['content']['describedBy'] : '';
 
-    if (type == 'sample' && content){
-      type = 'donor' in content ? 'donor': type;
-      type = 'immortalized_cell_line' in content ? 'immortalized_cell_line': type;
-      type = 'cell_suspension' in content ? 'cell_suspension': type;
-      type = 'organoid' in content ? 'organoid': type;
-      type = 'primary_cell_line' in content ? 'primary_cell_line': type;
-      type = 'specimen_from_organism' in content ? 'specimen_from_organism': type;
+    if(!schemaId){
+      return 'unknown';
     }
+
+    let type = schemaId.split('/').pop();
+    this.metadataList[rowIndex]['metadataType'] = type;
+
     return type;
   }
 
@@ -149,21 +155,39 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
     return validMessage;
   }
 
+  revalidate(rowIndex){
+    let metadataLink = this.metadataList[rowIndex]['_links']['self']['href'];
+
+    this.ingestService.patch(metadataLink, {validationState: "Draft"}).subscribe(
+      (response) => {
+        console.log('patched metadata')
+        console.log("Response is: ", response);
+      },
+      (error) => {
+        console.error("An error occurred, ", error);
+      });
+
+  }
+
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
-    this.metadataList[rowIndex][cell] = event.target.value;
-    this.metadataList = [...this.metadataList];
-    console.log('UPDATED!', this.metadataList[rowIndex][cell]);
-    console.log(this.metadataList[rowIndex]);
+
+    let oldValue = this.rows[rowIndex][cell];
+    let newValue = event.target.value;
+
+    console.log('newValue', newValue);
+
+    this.rows[rowIndex][cell] = newValue;
+    this.rows = [...this.rows];
+
+    console.log('METADATA LIST ROW!', this.metadataList[rowIndex]);
+    console.log('ROWS!', this.rows);
   }
 
   getValidationErrors(row){
     return row['validationErrors[0].user_friendly_message'];
-    //TODO retrieve all validation errors, fix the filtering below
-    // let userFriendlyErrors = Object.keys(row)
-    //   .filter(column => column.match('^validationErrors\[%d\]\.user\_friendly\_message.*'));
-    // return userFriendlyErrors.join(',');
+    //TODO retrieve all validation errors
   }
 
   toggleExpandRow(row) {
@@ -183,23 +207,70 @@ export class MetadataListComponent implements OnInit, AfterViewChecked{
   }
 
   setPage(pageInfo){
-    this.page.pageNumber = pageInfo.offset;
-    this.rows = this.metadataList;
+    this.currentPageInfo = pageInfo;
+    this.stopPolling();
+    this.page.page = pageInfo.offset;
+    this.startPolling(this.currentPageInfo);
+    this.alive = true;
   }
 
-  fetchData(){
-    TimerObservable.create(500, this.pollInterval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        if(this.submissionEnvelopeId){
-          this.metadataList$ = this.ingestService.fetchData(this.metadataType, this.submissionEnvelopeId);
-          this.metadataList$.subscribe(data => {
-            this.metadataList = data.map(this.flattenService.flatten)
-            this.unflattenedMetadataList = data;
-          })
-          // console.log('polling ' + this.metadataType, this.metadataList);
+
+  fetchData(pageInfo){
+
+    if(this.submissionEnvelopeId){
+      let newPage = new Page();
+      newPage['page'] = pageInfo['offset'];
+      newPage['size'] = pageInfo['size'];
+      newPage['sort'] = pageInfo['sort'];
+
+      this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, this.filterState, newPage);
+
+      this.metadataList$.subscribe(data => {
+        this.rows = data.data.map(this.flattenService.flatten);
+        this.metadataList = data.data;
+        if(data.page){
+          this.isPaginated = true;
+          this.page = data.page;
+        } else {
+          this.isPaginated = false;
         }
-    });
+      })
+    }
   }
 
+  startPolling(pageInfo){
+    this.pollingSubscription = this.pollingTimer.subscribe(() => {
+      this.fetchData(pageInfo);
+    });
+
+  }
+
+  stopPolling(){
+    if(this.pollingSubscription){
+      this.pollingSubscription.unsubscribe();
+    }
+  }
+
+  filterByState(event) {
+    let filterState = event.value;
+    this.filterState = filterState;
+    this.setPage(this.currentPageInfo);
+  }
+
+  showFilterState(){
+    return this.metadataType != 'bundleManifests'
+  }
+
+  onSort(event){
+    let sorts = event.sorts
+
+    let column = sorts[0]['prop']; // only one column sorting is supported for now
+    let dir = sorts[0]['dir'];
+
+    if(this.metadataType === 'files' ) { // only sorting in files are supported for now
+      this.currentPageInfo['sort'] = {column: column, dir:dir}
+      this.setPage(this.currentPageInfo);
+    }
+
+  }
 }

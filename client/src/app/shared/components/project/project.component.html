@@ -4,45 +4,32 @@
   <br/>
   <div class="card">
     <div class="card-body">
-      <!--<tabs [navClass]="'nav-tabs'">-->
-        <!--<tab tabTitle="Project" [active]="activeTab == 'team'" [disabled]="true">-->
-          <br/>
-          <form [formGroup]="projectForm">
-            <div class="form-group" >
-              <label for="projectId">Project ID</label>
-              <input class="form-control" id="projectId" formControlName="projectId" placeholder="{{placeholder['projectId']}}">
-              <label for="title">Title</label>
-              <textarea type="text" class="form-control" id="title" formControlName="name" rows="3" placeholder="{{placeholder['name']}}"></textarea>
-              <label for="description">Description</label>
-              <textarea type="text"
-                        class="form-control"
-                        id="description" rows="20"
-                        formControlName="description"
-                        placeholder="{{placeholder['description']}}">
-              </textarea>
-            </div>
-
-            <ng-container *ngIf="!inSubmissionMode">
-              <button type="button" class="btn btn-success" (click)="cancel()">Cancel</button>
-              <button type="button" class="btn btn-success" (click)="save(projectForm.value)">Create project</button>
-            </ng-container>
-          </form>
-
-        <!--</tab>-->
-        <!--<tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>-->
-      <!--</tabs>-->
+      <br/>
+      <form [formGroup]="projectForm">
+        <div class="form-group" >
+          <label for="projectId">Project ID</label>
+          <input class="form-control" id="projectId" formControlName="projectId" placeholder="{{placeholder['projectId']}}">
+          <label for="title">Title</label>
+          <textarea type="text" class="form-control" id="title" formControlName="name" rows="3" placeholder="{{placeholder['name']}}"></textarea>
+          <label for="description">Description</label>
+          <textarea type="text"
+                    class="form-control"
+                    id="description" rows="20"
+                    formControlName="description"
+                    placeholder="{{placeholder['description']}}">
+          </textarea>
+        </div>
+        <button type="button" class="btn btn-success" (click)="cancel()">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="save(projectForm.value)">{{projectId ? 'Save project' : 'Create project'}}</button>
+      </form>
     </div>
   </div>
-
 </div>
 
 <ng-container *ngIf="!editMode && projectId">
   <app-overview [project]="project" [projectId]="projectId" >
-
-  <button type="button" class="btn btn-success" (click)="edit()">Edit Project</button>
-  <!--<button type="button" class="btn btn-success" (click)="newProject()">Create a new project</button>-->
-  <button type="button" class="btn btn-success" (click)="newSubmission()">Create project from spreadsheet</button>
-
+    <button type="button" class="btn btn-success" (click)="setToEditMode()">Edit Project</button>
+    <button type="button" class="btn btn-success" (click)="newSubmission()">Create project from spreadsheet</button>
   </app-overview>
 </ng-container>
 

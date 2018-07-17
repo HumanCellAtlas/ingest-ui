@@ -1,25 +1,28 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from 'rxjs/Observable';
-import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import {SubmissionEnvelope} from "../models/submissionEnvelope";
+
+import * as _ from 'lodash';
+
+import {AlertService} from "./alert.service";
 import {ListResult} from "../models/hateoas";
 import {Summary} from "../models/summary";
 import {Project} from "../models/project";
-import {Metadata} from "../models/metadata";
-import {AlertService} from "./alert.service";
+import {PagedData} from "../models/page";
+import {SubmissionEnvelope} from "../models/submissionEnvelope";
+
+import {environment} from '../../../environments/environment';
+
 
 @Injectable()
 export class IngestService {
 
-  // API_URL: string = 'http://api.ingest.integration.data.humancellatlas.org/';
-  // API_URL: string = 'http://192.168.99.100:31763';
-  API_URL: string = 'http://api.ingest.staging.data.humancellatlas.org';
-  // API_URL: string = 'http://localhost:8080';
+  API_URL: string = environment.INGEST_API_URL;
 
   constructor(private http: HttpClient, private alertService: AlertService) {
+    console.log('api url', this.API_URL);
   }
 
   public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
@@ -47,82 +50,13 @@ export class IngestService {
   }
 
   public getUserProjects(): Observable<Project[]> {
-    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'submissionDate,desc'}})
+    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'updateDate,desc'}})
       .map((data: ListResult<Project>) => {
         if(data._embedded && data._embedded.projects)
           return _.values(data._embedded.projects);
         else
           return [];
       });
-  }
-
-  public getFiles(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.files)
-          return _.values(data._embedded.files);
-        else
-          return [];
-      })
-  }
-
-  public getPaginatedFiles(id, params): Observable<Object> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`, {params: params});
-  }
-
-  public getPaginatedSamples(submissionEnvelopeId, params): Observable<Object> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`, {params: params})
-  }
-
-  public getSamples(submissionEnvelopeId): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.samples)
-          return _.values(data._embedded.samples);
-        else
-          return [];
-      })
-  }
-
-  public getAnalyses(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/analyses`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.analyses)
-          return _.values(data._embedded.analyses);
-        else
-          return [];
-      })
-  }
-
-  public getAssays(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/assays`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.assays)
-          return _.values(data._embedded.assays);
-        else
-          return [];
-      })
-  }
-
-  //there's no pagination, check core code
-  public getBundles(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/bundleManifests`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.bundleManifests)
-          return _.values(data._embedded.bundleManifests);
-        else
-          return [];
-      })
-  }
-
-  public getProtocols(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/protocols`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.protocols)
-          return _.values(data._embedded.protocols);
-        else
-          return [];
-      })
   }
 
   public submit(submitLink){
@@ -145,6 +79,10 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/projects/${id}`);
   }
 
+  public getSubmissionManifest(submissionId): Observable<Object>{
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/submissionManifest`);
+  }
+
   public postProject(project): Observable<Object>{
     return this.http.post(`${this.API_URL}/projects`, project);
   }
@@ -163,27 +101,65 @@ export class IngestService {
       })
   }
 
-  public fetchData(entityType, submissionId){
-    switch(entityType) {
-      case 'samples': {
-        return this.getSamples(submissionId)
-      }
-      case 'protocols': {
-        return this.getProtocols(submissionId)
-      }
-      case 'assays': {
-        return this.getAssays(submissionId)
-      }
-      case 'analyses': {
-        return this.getAnalyses(submissionId)
-      }
-      case 'bundles': {
-        return this.getBundles(submissionId)
-      }
-      case 'files': {
-        return this.getFiles(submissionId)
-      }
+  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
+    let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`
+    let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+
+    let sort = params['sort']
+    if(sort){
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContaining`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['sort'] = `${sort['column']},${sort['dir']}`
     }
+
+    if(filterState) {
+      let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContainingAndValidationState`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['state'] = filterState.toUpperCase();
+
+    }
+
+    return this.http.get(url, {params: params})
+      .map((data: ListResult<Object>) => {
+        let pagedData = new PagedData();
+
+        if(data._embedded && data._embedded[entityType]){
+          pagedData.data = _.values(data._embedded[entityType]);
+          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data)
+        }
+        else{
+          pagedData.data = [];
+        }
+        pagedData.page = data.page;
+
+        return pagedData;
+      });
+  }
+
+  public put(ingestLink, content){
+    return this.http.put(ingestLink, content);
+  }
+
+  public patch(ingestLink, patchData){
+    return this.http.patch(ingestLink, patchData);
+  }
+
+  private reduceColumnsForBundleManifests(entityType, data){
+    if(entityType == 'bundleManifests'){
+      return data.map(function(row){
+        let newRow = {
+          'bundleUuid' : row['bundleUuid'],
+          'envelopeUuid' : row['envelopeUuid'],
+          '_links': row['_links'],
+          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws`
+        };
+        return newRow;
+      })
+    }
+    return data;
+
+
   }
 
 }

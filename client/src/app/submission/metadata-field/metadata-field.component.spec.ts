@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProtocolsComponent } from './protocols.component';
+import { MetadataFieldComponent } from './metadata-field.component';
 
-describe('ProtocolsComponent', () => {
-  let component: ProtocolsComponent;
-  let fixture: ComponentFixture<ProtocolsComponent>;
+describe('MetadataFieldComponent', () => {
+  let component: MetadataFieldComponent;
+  let fixture: ComponentFixture<MetadataFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProtocolsComponent ]
+      declarations: [ MetadataFieldComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProtocolsComponent);
+    fixture = TestBed.createComponent(MetadataFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

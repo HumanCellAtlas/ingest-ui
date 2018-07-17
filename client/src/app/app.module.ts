@@ -5,11 +5,15 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatCardModule, MatChipsModule, MatSelectModule, MatTabsModule} from '@angular/material';
+
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
+
 
 import {IngestService} from './shared/services/ingest.service';
 import {BrokerService} from './shared/services/broker.service';
@@ -18,6 +22,7 @@ import {AuthService} from './auth/auth.service';
 import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './home/submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
@@ -29,13 +34,7 @@ import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
 import {FilesComponent} from './submission/files/files.component';
-import {SamplesComponent} from './submission/samples/samples.component';
-import {AssaysComponent} from './submission/assays/assays.component';
-import {ProtocolsComponent} from './submission/protocols/protocols.component';
-import {AnalysesComponent} from './submission/analyses/analyses.component';
-import {BundlesComponent} from './submission/bundles/bundles.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
-import {FileListComponent} from './submission/files/file-list/file-list.component';
 import {TeamComponent} from './shared/components/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
@@ -43,7 +42,6 @@ import {MetadataListComponent} from './submission/metadata-list/metadata-list.co
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ProjectListComponent} from './projects/project-list/project-list.component';
 import {ProjectsComponent} from './projects/projects.component';
-import {PaginationComponent} from './submission/pagination/pagination.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
 import {LoginComponent} from './login/login.component';
 import {OverviewComponent } from './submission/overview/overview.component';
@@ -52,6 +50,16 @@ import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
 import {ConsentComponent} from './submission/consent/consent.component';
 import {FlattenService} from "./shared/services/flatten.service";
+import {SchemaService} from "./shared/services/schema.service";
+
+import {MetadataTableComponent} from './submission/metadata-table/metadata-table.component';
+
+import {
+  MatIconModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatSortModule, MatTableModule, MatTooltipModule
+} from "@angular/material";
+
+import { MetadataFieldComponent } from './submission/metadata-field/metadata-field.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -71,25 +79,20 @@ export function tokenGetter(): string {
     TabComponent,
     TabsComponent,
     FilesComponent,
-    SamplesComponent,
-    AssaysComponent,
-    ProtocolsComponent,
-    AnalysesComponent,
-    BundlesComponent,
     UploadInfoComponent,
-    FileListComponent,
     TeamComponent,
     SubmitComponent,
     MetadataListComponent,
     ProjectListComponent,
     ProjectsComponent,
-    PaginationComponent,
     UploadComponent,
     MetadataComponent,
     LoginComponent,
     OverviewComponent,
     AlertComponent,
-    ConsentComponent
+    ConsentComponent,
+    MetadataTableComponent,
+    MetadataFieldComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -112,9 +115,31 @@ export function tokenGetter(): string {
     SharedModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    FlexLayoutModule,
+    MatCardModule,
+    MatChipsModule,
+    MatTabsModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatSelectModule
   ],
-  providers: [IngestService, BrokerService, AuthService, FormBuilder, AlertService, LoaderService, FlattenService],
+  providers: [
+    IngestService,
+    BrokerService,
+    AuthService,
+    FormBuilder,
+    AlertService,
+    LoaderService,
+    FlattenService,
+    SchemaService
+  ],
   bootstrap: [AppComponent]
 })
 
