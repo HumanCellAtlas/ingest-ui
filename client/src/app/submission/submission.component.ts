@@ -25,6 +25,7 @@ export class SubmissionComponent implements OnInit {
   isSubmittable: boolean;
   isSubmitted: boolean;
   submitLink: string;
+  url:string;
 
   project: any;
 
@@ -75,7 +76,8 @@ export class SubmissionComponent implements OnInit {
             this.isSubmittable = this.checkIfValid(data);
             this.submissionState = data['submissionState'];
             this.isSubmitted = this.isStateSubmitted(data.submissionState)
-            this.submitLink = this.getSubmitLink(data);
+            this.submitLink = this.getLink(data, 'submit');
+            this.url = this.getLink(data, 'self')
 
           });
         this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
@@ -127,9 +129,9 @@ export class SubmissionComponent implements OnInit {
     return (submittedStates.indexOf(state) >= 0);
   }
 
-  getSubmitLink(submissionEnvelope){
+  getLink(submissionEnvelope, linkName){
     let links = submissionEnvelope['_links'];
-    return links && links['submit']? links['submit']['href'] : null;
+    return links && links[linkName]? links[linkName]['href'] : null;
   }
 
   /**
