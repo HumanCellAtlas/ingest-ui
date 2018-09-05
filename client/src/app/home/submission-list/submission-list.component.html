@@ -53,24 +53,14 @@
       </tr>
       </tbody>
     </table>
+
   </div>
 
-  <div class="card-footer text-muted" *ngIf="currentPageInfo['totalPages'] > 1">
-    <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center" >
-
-    <li class="bg-primary page-item" [class.disabled]="currentPageInfo['number'] == 0">
-      <a class="bg-primary page-link" tabindex="-1" [routerLink]="['/submissions/list', addAndGetPageParams(currentPageInfo['number'])]">Previous</a>
-    </li>
-    <li class="bg-primary page-item {{currentPageInfo['number'] == pageItem ? 'active' : ''}}" *ngFor="let pageItem of createRange(currentPageInfo['totalPages'])">
-      <a class="bg-primary page-link" [routerLink]="['/submissions/list', addAndGetPageParams(pageItem+1)]"   >{{pageItem + 1}}</a>
-    </li>
-    <li class="bg-primary page-item" [class.disabled]="currentPageInfo['number'] == (currentPageInfo['totalPages'] - 1)">
-    <a class="bg-primary page-link" [routerLink]="['/submissions/list', addAndGetPageParams(currentPageInfo['number']+2)]"  >Next</a>
-    </li>
-    </ul>
-    </nav>
-    Showing {{currentPageInfo['start']}} - {{currentPageInfo['end']}} of {{currentPageInfo['totalElements']}} total records
-  </div>
 </div>
 
+<mat-paginator [length]="currentPageInfo['totalElements']"
+               [pageSize]="currentPageInfo['size']"
+               [pageIndex]="currentPageInfo['number']"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="pageEvent = $event">
+</mat-paginator>
