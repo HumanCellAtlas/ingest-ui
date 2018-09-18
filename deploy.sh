@@ -5,10 +5,12 @@
 
 # Build the client
 ENV="$1"
+DIST_ID_TESTING="EKPCEEH1OGXGB"
 DIST_ID_DEV="E1GC8ZIY6A9571"
 DIST_ID_INTEGRATION="E3G3XIA004X2WL"
 DIST_ID_STAGING="E2D5GGR57ZBWOQ"
 DIST_ID_PROD="E2HGQ4ZP3FKC7"
+
 
 if [ "$ENV" == 'prod' ]; then
     CLOUDFRONT_ID=${DIST_ID_PROD}
@@ -16,6 +18,10 @@ elif [ "$ENV" == 'staging' ]; then
     CLOUDFRONT_ID=${DIST_ID_STAGING}
 elif [ "$ENV" == 'integration' ]; then
     CLOUDFRONT_ID=${DIST_ID_INTEGRATION}
+elif [ "$ENV" == 'staging' ]; then
+    CLOUDFRONT_ID=${DIST_ID_STAGING}
+elif [ "$ENV" == 'testing' ]; then
+    CLOUDFRONT_ID=${DIST_ID_TESTING}
 else
     ENV='dev'
     CLOUDFRONT_ID=${DIST_ID_DEV}

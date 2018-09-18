@@ -186,7 +186,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   getValidationErrors(row){
-    return row['validationErrors[0].user_friendly_message'];
+    return row['validationErrors[0].userFriendlyMessage'];
     //TODO retrieve all validation errors
   }
 

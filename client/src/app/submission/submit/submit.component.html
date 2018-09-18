@@ -16,7 +16,7 @@
 </ul>
 <br/>
 
-<form action="submit" method="POST" *ngIf="submitLink">
+<ng-container *ngIf="submitLink">
   <br/>
   <h3>What's next?</h3>
   <p>You have entered all necessary information per Human Cell Atlas standards.
@@ -24,7 +24,16 @@
   <br/>
   <p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
     your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
-  <br/><br/>
+  <br/>
+  <mat-checkbox
+    [(ngModel)]="triggersAnalysisCheck"
+    labelPosition="after">
+    Check if you want this submission to trigger analysis.
+  </mat-checkbox>
+  <br/>
+  <br/>
+</ng-container>
+<form action="submit" method="POST" *ngIf="submitLink">
   <button class="btn btn-success btn-lg" (click)="completeSubmission()">
     Submit
   </button>

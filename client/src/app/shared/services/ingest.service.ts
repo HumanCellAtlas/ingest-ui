@@ -14,6 +14,7 @@ import {PagedData} from "../models/page";
 import {SubmissionEnvelope} from "../models/submissionEnvelope";
 
 import {environment} from '../../../environments/environment';
+import {LoaderService} from "./loader.service";
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class IngestService {
 
   API_URL: string = environment.INGEST_API_URL;
 
-  constructor(private http: HttpClient, private alertService: AlertService) {
+  constructor(private http: HttpClient, private alertService: AlertService, private loaderService: LoaderService) {
     console.log('api url', this.API_URL);
   }
 
@@ -60,13 +61,23 @@ export class IngestService {
   }
 
   public submit(submitLink){
+    this.loaderService.display(true);
     this.http.put(submitLink, null).subscribe(
       res=> {
-        this.alertService.success("",'You have successfully submitted your submission envelope.');
-        location.reload();
+        setTimeout(() =>
+          {
+            this.alertService.clear()
+            this.loaderService.display(false);
+            this.alertService.success("",'You have successfully submitted your submission envelope.');
+            location.reload();
+          },
+          3000);
       },
       err => {
+        this.loaderService.display(false);
+        this.alertService.error("",'An error occured on submitting your submission envelope.');
         console.log(err)
+
       }
     )
   }
