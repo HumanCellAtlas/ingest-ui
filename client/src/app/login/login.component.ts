@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
 export class LoginComponent {
 
   buildTimestamp = environment.buildTimestamp;
+  commitHash = environment.commitHash;
 
   constructor(public auth: AuthService, public router: Router) {
     if(auth.isAuthenticated()){
