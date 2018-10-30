@@ -35,6 +35,15 @@ export const AUTH_CONFIG: AuthConfig = {
 };
 
 ```
+
+Try running following commands if there are errors encountered in installing node packages:
+```
+rm -rf node_modules
+rm package-lock.json
+npm cache verify
+npm install
+```
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.

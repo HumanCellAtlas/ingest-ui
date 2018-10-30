@@ -5,6 +5,7 @@ import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
 import {ActivatedRoute} from "@angular/router";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {FlattenService} from "../shared/services/flatten.service";
+import {AlertService} from "../shared/services/alert.service";
 
 
 @Component({
@@ -19,6 +20,8 @@ export class SubmissionComponent implements OnInit {
   submissionEnvelope$: Observable<any>;
   submissionEnvelope;
   submissionState: string;
+  submissionErrors: string;
+
 
   activeTab: string;
 
@@ -36,12 +39,14 @@ export class SubmissionComponent implements OnInit {
 
   manifest: Object;
 
-  constructor(private ingestService: IngestService,
-              private route: ActivatedRoute,
-              private flattenService: FlattenService) {
-    this.pollInterval = 4000; //4s
-    this.alive = true;
-    this.manifest = {};
+  constructor(
+    private alertService: AlertService,
+    private ingestService: IngestService,
+    private route: ActivatedRoute,
+    private flattenService: FlattenService) {
+      this.pollInterval = 4000; //4s
+      this.alive = true;
+      this.manifest = {};
   }
 
   ngOnInit() {
@@ -78,7 +83,14 @@ export class SubmissionComponent implements OnInit {
             this.isSubmitted = this.isStateSubmitted(data.submissionState)
             this.submitLink = this.getLink(data, 'submit');
             this.url = this.getLink(data, 'self')
-
+            let err = data['submissionErrors'] ? data['submissionErrors'][0] : null;
+            if (err){
+              this.alertService.clear();
+              this.alertService.error(err['message'],
+                `${err['errorCode']} : ${err['details']}`,
+                false, false);
+            }
+            console.log(err)
           });
         this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
           .subscribe(data => {
