@@ -6,6 +6,7 @@
     "serverless-finch": "^1.2.2"
   },
   "devDependencies": {
+    "@angular/cli": "^6.0.8",
     "serverless": "^1.24.1"
   },
   "scripts": {
