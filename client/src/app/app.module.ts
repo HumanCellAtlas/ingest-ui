@@ -103,7 +103,7 @@ export function tokenGetter(): string {
     RouterModule.forRoot(ROUTES),
     JwtModule.forRoot({
       config: {
-        tokenGetter,
+        tokenGetter: tokenGetter,
         whitelistedDomains: [
           "localhost:8080", "localhost:5000",
           "api.ingest.testing.data.humancellatlas.org", "ingest.testing.data.humancellatlas.org",

@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AUTH_CONFIG } from './auth0-variables';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AlertService } from "../shared/services/alert.service";
+
 
 @Injectable()
 export class AuthService {
@@ -17,7 +20,7 @@ export class AuthService {
 
   userProfile: any;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, public jwtHelper: JwtHelperService,  private alertService: AlertService) {}
 
   public login(): void {
     if(this.isAuthenticated()){
@@ -32,9 +35,18 @@ export class AuthService {
 
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.setSession(authResult);
-        this.router.navigate(['/home']);
+        let decodedToken = this.jwtHelper.decodeToken(authResult.accessToken);
+
+        if(decodedToken['https://auth.data.humancellatlas.org/group'] != "hca"){
+          this.alertService.clear();
+          this.alertService.error("Unauthorized email", "Sorry, the email you used to login doesn't belong to HCA group. Please contact hca-ingest-dev@ebi.ac.uk for further information.", true, false)
+          this.router.navigate(['/login']);
+        }
+        else{
+          window.location.hash = '';
+          this.setSession(authResult);
+          this.router.navigate(['/home']);
+        }
       } else if (err) {
         this.router.navigate(['/login']);
         console.log(err);
