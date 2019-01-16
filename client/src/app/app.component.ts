@@ -1,8 +1,8 @@
 import {Component} from "@angular/core";
 import {AuthService} from './auth/auth.service';
 import {LoaderService} from "./shared/services/loader.service";
-import {SchemaService} from "./shared/services/schema.service";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
+import {Router} from "@angular/router";
 
 @Component({
   selector: "app-root",
@@ -14,18 +14,20 @@ export class AppComponent {
   authInterval = 5000;
   alive = true;
 
-  constructor(public auth: AuthService,  private loaderService: LoaderService, private schemaService: SchemaService) {
+  constructor(public router: Router,
+              public auth: AuthService,
+              private loaderService: LoaderService) {
     TimerObservable.create(0, this.authInterval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
-         auth.handleAuthentication();
+        if(!auth.isAuthenticated()){
+          this.router.navigate(['/login']);
+        }
       });
 
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
     });
-
-
 
   }
 
