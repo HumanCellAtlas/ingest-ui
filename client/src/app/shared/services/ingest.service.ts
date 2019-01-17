@@ -26,11 +26,11 @@ export class IngestService {
     console.log('api url', this.API_URL);
   }
 
-  public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
+  public getAllSubmissions(params): Observable<any> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params});
   }
 
-  public getUserSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
+  public getUserSubmissions(params): Observable<any> {
     return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params});
   }
 
