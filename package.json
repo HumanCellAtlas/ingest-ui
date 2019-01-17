@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "dependencies": {
+    "npm": "^6.5.0",
     "serverless-finch": "^1.2.2"
   },
   "devDependencies": {
