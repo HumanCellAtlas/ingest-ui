@@ -4,11 +4,13 @@
   "description": "",
   "dependencies": {
     "npm": "^6.5.0",
-    "serverless-finch": "^1.2.2"
+    "serverless-finch": "^1.2.2",
+    "url-parse": ">=1.4.3"
   },
   "devDependencies": {
     "@angular/cli": "^6.0.8",
-    "serverless": "^1.24.1"
+    "serverless": "^1.24.1",
+    "url-parse": ">=1.4.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
