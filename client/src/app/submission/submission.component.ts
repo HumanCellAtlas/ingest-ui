@@ -89,8 +89,8 @@ export class SubmissionComponent implements OnInit {
               this.alertService.error(err['message'],
                 `${err['errorCode']} : ${err['details']}`,
                 false, false);
+              console.log(err);
             }
-            console.log(err)
           });
         this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
           .subscribe(data => {
