@@ -140,7 +140,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
           this.links = data._links;
           this.getCurrentPageInfo(this.pagination);
           this.initSubmissionProjects(submissions);
-          console.log('pageinfo',this.getCurrentPageInfo(this.pagination))
         });
 
     }
@@ -153,7 +152,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
           this.links = data._links;
           this.getCurrentPageInfo(this.pagination);
           this.initSubmissionProjects(submissions);
-          console.log('pageinfo',this.getCurrentPageInfo(this.pagination))
         });
 
     }

@@ -26,18 +26,16 @@ export class IngestService {
     console.log('api url', this.API_URL);
   }
 
-  public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params})
-      .do(console.log);
+  public getAllSubmissions(params): Observable<any> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params});
   }
 
-  public getUserSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params})
-      .do(console.log);
+  public getUserSubmissions(params): Observable<any> {
+    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params});
   }
 
   public getUserSummary(): Observable<Summary> {
-    return this.http.get<Summary>(`${this.API_URL}/user/summary`).do(console.log);
+    return this.http.get<Summary>(`${this.API_URL}/user/summary`);
   }
 
   public getProjects(): Observable<Project[]> {

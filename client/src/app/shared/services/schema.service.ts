@@ -37,9 +37,10 @@ export class SchemaService {
   fields: object = {};
 
   constructor(private http: HttpClient) {
-    console.log('schema api url', this.API_URL);
-    this.initializeSchemaFields();
-    console.log('schema fields', this.fields)
+    // TODO do not initialise for now -- this service can be use for review and repair functionality
+    // console.log('schema api url', this.API_URL);
+    // this.initializeSchemaFields();
+    // console.log('schema fields', this.fields)
   }
 
   // TODO can we generate the column definitions json only during the build?
