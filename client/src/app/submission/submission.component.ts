@@ -25,7 +25,8 @@ export class SubmissionComponent implements OnInit {
 
   activeTab: string;
 
-  isSubmittable: boolean;
+  isValid: boolean;
+  isLinkingDone: boolean;
   isSubmitted: boolean;
   submitLink: string;
   url:string;
@@ -78,7 +79,7 @@ export class SubmissionComponent implements OnInit {
         this.submissionEnvelope$
           .subscribe(data => {
             this.submissionEnvelope = data;
-            this.isSubmittable = this.checkIfValid(data);
+            this.isValid = this.checkIfValid(data);
             this.submissionState = data['submissionState'];
             this.isSubmitted = this.isStateSubmitted(data.submissionState)
             this.submitLink = this.getLink(data, 'submit');
@@ -92,9 +93,15 @@ export class SubmissionComponent implements OnInit {
               console.log(err);
             }
           });
+
         this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
           .subscribe(data => {
             this.manifest = data;
+            let actualLinks = this.manifest['actualLinks'];
+            let expectedLinks = this.manifest['expectedLinks'];
+            if ( !expectedLinks || (actualLinks == expectedLinks)) {
+              this.isLinkingDone = true;
+            }
           });
       });
   }
