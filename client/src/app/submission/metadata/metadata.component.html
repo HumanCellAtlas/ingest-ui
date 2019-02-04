@@ -1,26 +1,27 @@
-<script src="../../shared/components/upload/upload.component.ts"></script>
-<div class="container-fluid"><br/>
-  <br/>
-  <app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
-  <br/>
-
-  <div class="card" *ngIf="submissionEnvelopeId">
-    <div class="card-body">
-      <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Samples">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'samples'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Protocols">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Assays">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'assays'"> </app-metadata-list>
-        </tab>
-        <tab tabTitle="Analyses">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'analyses'"> </app-metadata-list>
-        </tab>
-      </tabs>
-    </div>
-  </div>
-  <br/>
-</div>
+<app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
+<mat-card *ngIf="submissionEnvelopeId">
+  <mat-tab-group>
+    <mat-tab label="Biomaterials">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'biomaterials'" [expectedCount]="manifest['expectedBiomaterials']" > </app-metadata-list>
+    </mat-tab>
+    <mat-tab label="Protocols">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'" [expectedCount]="manifest['expectedProtocols']"> </app-metadata-list>
+    </mat-tab>
+    <mat-tab label="Processes">
+      <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'processes'" [expectedCount]="manifest['expectedProcesses']"> </app-metadata-list>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+<!--<mat-card *ngIf="submissionEnvelopeId">-->
+  <!--<mat-tab-group>-->
+    <!--<mat-tab label="Biomaterials">-->
+      <!--<app-metadata-table [submissionEnvelopeId]="submissionEnvelopeId" [metadataEntity]="'biomaterials'"> </app-metadata-table>-->
+    <!--</mat-tab>-->
+    <!--<mat-tab label="Protocols">-->
+      <!--<app-metadata-table [submissionEnvelopeId]="submissionEnvelopeId" [metadataEntity]="'protocols'"> </app-metadata-table>-->
+    <!--</mat-tab>-->
+    <!--<mat-tab label="Processes">-->
+      <!--<app-metadata-table [submissionEnvelopeId]="submissionEnvelopeId" [metadataEntity]="'processes'"> </app-metadata-table>-->
+    <!--</mat-tab>-->
+  <!--</mat-tab-group>-->
+<!--</mat-card>-->

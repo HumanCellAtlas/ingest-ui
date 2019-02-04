@@ -5,30 +5,25 @@
   <br/>
   <div class="card">
     <div class="card-body">
-      <!--<tabs [navClass]="'nav-tabs'">-->
-        <!--<tab tabTitle="Project" [active]="activeTab == 'project'" [disabled]="true">-->
-          <br/>
-          <span><strong>Project ID</strong></span><br/>
-          <span *ngIf="project['content']"><p>{{project['content']['project_id']}}</p></span><br/>
-
-          <span><strong>Title</strong></span><br/><br/>
-          <span *ngIf="project['content']"><p>{{project['content']['name']}}</p></span><br/>
-
-          <span><strong>Description</strong></span><br/><br/>
-          <span *ngIf="project['content']"><p class="text-justify">{{project['content']['description']}}</p></span><br/>
-
-          <span><strong>Validation State</strong></span><span *ngIf="project"><p>{{project['validationState']}}</p></span><br/>
-
-          <span><strong>Ingest Link</strong></span><span *ngIf="project['_links']">
-            <p><a href="{{project['_links']['self']['href']}}"><span class="oi oi-external-link"></span></a></p>
-          </span><br/>
-        <!--</tab>-->
-
-        <!--<tab tabTitle="Team" [active]="activeTab == 'team'" [disabled]="true"><app-team></app-team></tab>-->
-      <!--</tabs>-->
-
+      <br/>
+      <span><strong>Project Shortname</strong></span>
+      <br/>
+      <span><p>{{project?.content?.project_core?.project_short_name}}</p></span>
+      <span><strong>Title</strong></span>
+      <br/>
+      <span><p>{{project?.content?.project_core?.project_title}}</p></span>
+      <span><strong>Description</strong></span>
+      <br/>
+      <span><p class="text-justify">{{project?.content?.project_core?.project_description}}</p></span>
+      <br/>
+      <span><strong>Validation State</strong></span>
+      <span><p>{{project?.validationState}}</p></span>
+      <br/>
+      <span><strong>Ingest Link</strong></span>
+      <span><p><a href="{{project?._links?.self?.href}}"><span class="oi oi-external-link"></span></a></p></span>
+      <br/>
       <ng-content></ng-content>
+      <br/>
     </div>
   </div>
 </div>
-

@@ -1,5 +1,14 @@
-<script src="../../shared/services/ingest.service.spec.ts"></script>
-<script src="../../shared/services/ingest.service.ts"></script>
+<ng-container *ngIf="showFilterState()">
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Filter by state" (selectionChange)="filterByState($event)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let state of validationStates" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-container>
+
 <ng-container *ngIf="rows && rows.length > 0">
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
   <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
@@ -26,6 +35,10 @@
   [externalPaging]="isPaginated"
 
   (page)='setPage($event)'
+
+  (sort)="onSort($event)"
+
+  [messages]="{totalMessage: expectedCount ? '/ ' + expectedCount : ''}"
 >
 
    <!--Row Detail Template -->
@@ -74,11 +87,29 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <span
+        title="{{value}}"
+        (dblclick)="editing[rowIndex + '-' + column] = true"
+        *ngIf="!editing[rowIndex + '-' + column]">
+            {{value}}
+          </span>
+      <input
+        autofocus
+        (blur)="updateValue($event, column, rowIndex)"
+        *ngIf="editing[rowIndex+ '-' + column]"
+        type="text"
+        [value]="value"
+      />
+    </ng-template>
+  </ngx-datatable-column>
+
   <ng-container *ngFor="let column of getAllColumns(rows)">
     <!--Core.type column-->
     <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{row['content.core.schema_url']}}"> {{ getMetadataType(rowIndex) }}</a>
+        <a href="{{row['content.describedBy']}}"> {{ getMetadataType(rowIndex) }}</a>
       </ng-template>
     </ngx-datatable-column>
 
@@ -109,6 +140,14 @@
       <a href="{{value}}"><span class="oi oi-external-link"></span></a>
     </ng-template>
   </ngx-datatable-column>
+
+  <ng-container *ngIf="metadataType == 'bundleManifests'">
+    <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+      </ng-template>
+    </ngx-datatable-column>
+  </ng-container>
 
 
 </ngx-datatable>

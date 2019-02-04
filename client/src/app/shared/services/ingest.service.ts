@@ -1,17 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from 'rxjs/Observable';
-import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import {SubmissionEnvelope} from "../models/submissionEnvelope";
+
+import * as _ from 'lodash';
+
+import {AlertService} from "./alert.service";
 import {ListResult} from "../models/hateoas";
 import {Summary} from "../models/summary";
 import {Project} from "../models/project";
-import {Metadata} from "../models/metadata";
-import {AlertService} from "./alert.service";
 import {PagedData} from "../models/page";
-import { environment } from '../../../environments/environment';
+import {SubmissionEnvelope} from "../models/submissionEnvelope";
+
+import {environment} from '../../../environments/environment';
+import {LoaderService} from "./loader.service";
 
 
 @Injectable()
@@ -19,22 +22,20 @@ export class IngestService {
 
   API_URL: string = environment.INGEST_API_URL;
 
-  constructor(private http: HttpClient, private alertService: AlertService) {
+  constructor(private http: HttpClient, private alertService: AlertService, private loaderService: LoaderService) {
     console.log('api url', this.API_URL);
   }
 
-  public getAllSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params})
-      .do(console.log);
+  public getAllSubmissions(params): Observable<any> {
+    return this.http.get(`${this.API_URL}/submissionEnvelopes`, {params: params});
   }
 
-  public getUserSubmissions(params): Observable<ListResult<SubmissionEnvelope>> {
-    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params})
-      .do(console.log);
+  public getUserSubmissions(params): Observable<any> {
+    return this.http.get(`${this.API_URL}/user/submissionEnvelopes`, {params: params});
   }
 
   public getUserSummary(): Observable<Summary> {
-    return this.http.get<Summary>(`${this.API_URL}/user/summary`).do(console.log);
+    return this.http.get<Summary>(`${this.API_URL}/user/summary`);
   }
 
   public getProjects(): Observable<Project[]> {
@@ -48,7 +49,7 @@ export class IngestService {
   }
 
   public getUserProjects(): Observable<Project[]> {
-    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'submissionDate,desc'}})
+    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'updateDate,desc'}})
       .map((data: ListResult<Project>) => {
         if(data._embedded && data._embedded.projects)
           return _.values(data._embedded.projects);
@@ -57,75 +58,24 @@ export class IngestService {
       });
   }
 
-  public getFiles(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/files`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.files)
-          return _.values(data._embedded.files);
-        else
-          return [];
-      })
-  }
-
-  public getSamples(submissionEnvelopeId): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionEnvelopeId}/samples`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.samples)
-          return _.values(data._embedded.samples);
-        else
-          return [];
-      })
-  }
-
-  public getAnalyses(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/analyses`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.analyses)
-          return _.values(data._embedded.analyses);
-        else
-          return [];
-      })
-  }
-
-  public getAssays(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/assays`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.assays)
-          return _.values(data._embedded.assays);
-        else
-          return [];
-      })
-  }
-
-  //there's no pagination, check core code
-  public getBundles(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/bundleManifests`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.bundleManifests)
-          return _.values(data._embedded.bundleManifests);
-        else
-          return [];
-      })
-  }
-
-  public getProtocols(id): Observable<Object[]> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${id}/protocols`)
-      .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.protocols)
-          return _.values(data._embedded.protocols);
-        else
-          return [];
-      })
-  }
-
   public submit(submitLink){
+    this.loaderService.display(true);
     this.http.put(submitLink, null).subscribe(
       res=> {
-        this.alertService.success("",'You have successfully submitted your submission envelope.');
-        location.reload();
+        setTimeout(() =>
+          {
+            this.alertService.clear()
+            this.loaderService.display(false);
+            this.alertService.success("",'You have successfully submitted your submission envelope.');
+            location.reload();
+          },
+          3000);
       },
       err => {
+        this.loaderService.display(false);
+        this.alertService.error("",'An error occured on submitting your submission envelope.');
         console.log(err)
+
       }
     )
   }
@@ -136,6 +86,10 @@ export class IngestService {
 
   public getProject(id): Observable<Object> {
     return this.http.get(`${this.API_URL}/projects/${id}`);
+  }
+
+  public getSubmissionManifest(submissionId): Observable<Object>{
+    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/submissionManifest`);
   }
 
   public postProject(project): Observable<Object>{
@@ -156,13 +110,32 @@ export class IngestService {
       })
   }
 
-  public fetchSubmissionData(submissionId, entityType, params): Observable<PagedData> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`, {params: params})
+  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
+    let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`
+    let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+
+    let sort = params['sort']
+    if(sort){
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContaining`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['sort'] = `${sort['column']},${sort['dir']}`
+    }
+
+    if(filterState) {
+      let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContainingAndValidationState`;
+      params['envelopeUri'] = encodeURIComponent(submission_url);
+      params['state'] = filterState.toUpperCase();
+
+    }
+
+    return this.http.get(url, {params: params})
       .map((data: ListResult<Object>) => {
         let pagedData = new PagedData();
 
         if(data._embedded && data._embedded[entityType]){
           pagedData.data = _.values(data._embedded[entityType]);
+          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data)
         }
         else{
           pagedData.data = [];
@@ -179,6 +152,23 @@ export class IngestService {
 
   public patch(ingestLink, patchData){
     return this.http.patch(ingestLink, patchData);
+  }
+
+  private reduceColumnsForBundleManifests(entityType, data){
+    if(entityType == 'bundleManifests'){
+      return data.map(function(row){
+        let newRow = {
+          'bundleUuid' : row['bundleUuid'],
+          'envelopeUuid' : row['envelopeUuid'],
+          '_links': row['_links'],
+          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws`
+        };
+        return newRow;
+      })
+    }
+    return data;
+
+
   }
 
 }

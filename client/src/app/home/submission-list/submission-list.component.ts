@@ -1,12 +1,14 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../../shared/services/ingest.service';
 import {Observable} from "rxjs/Observable";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
-import {ListResult} from "../../shared/models/hateoas";
 import {ActivatedRoute, Router} from "@angular/router";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
 import {AlertService} from "../../shared/services/alert.service";
+import {Subscription} from "rxjs/Subscription";
+import {MatPaginator, PageEvent} from "@angular/material";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-submission-list',
@@ -14,10 +16,7 @@ import {AlertService} from "../../shared/services/alert.service";
   styleUrls: ['./submission-list.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class SubmissionListComponent implements OnInit {
-
-  submissionEnvelopes$: Observable<SubmissionEnvelope[]>;
-
+export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit {
   submissionProjects: Object;
 
   submissionEnvelopes: SubmissionEnvelope[];
@@ -31,6 +30,19 @@ export class SubmissionListComponent implements OnInit {
   private alive: boolean;
 
   private showAll;
+
+  pageFromUrl;
+
+  pollingSubscription: Subscription;
+
+
+  // MatPaginator Inputs
+  pageSizeOptions: number[] = [5, 10, 20, 30];
+
+  // MatPaginator Output
+  pageEvent: PageEvent;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private ingestService: IngestService,
               private router: Router,
@@ -54,6 +66,7 @@ export class SubmissionListComponent implements OnInit {
 
     route.params.subscribe(val => {
       this.showAll = this.route.snapshot.paramMap.get('all');
+      this.resetPolling()
     });
   }
 
@@ -63,6 +76,18 @@ export class SubmissionListComponent implements OnInit {
 
   ngOnDestroy(){
     this.alive = false; // switches your IntervalObservable off
+  }
+
+  ngAfterViewInit() {
+    this.paginator.page
+      .pipe(
+        tap(() => this.loadSubmissions())
+      )
+      .subscribe();
+  }
+
+  loadSubmissions(){
+    this.resetPolling()
   }
 
   getSubmitLink(submissionEnvelope){
@@ -82,8 +107,19 @@ export class SubmissionListComponent implements OnInit {
 
   }
 
+  resetPolling(){
+    this.stopPolling();
+    this.pollSubmissions()
+  }
+
+  stopPolling(){
+    if(this.pollingSubscription){
+      this.pollingSubscription.unsubscribe();
+    }
+  }
+
   pollSubmissions() {
-    TimerObservable.create(0, this.interval)
+    this.pollingSubscription = TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
         this.getSubmissions();
@@ -91,6 +127,10 @@ export class SubmissionListComponent implements OnInit {
   }
 
   getSubmissions(){
+    this.params['page'] = this.paginator.pageIndex;
+    this.params['size'] = this.paginator.pageSize;
+
+
     if(this.showAll){
       this.ingestService.getAllSubmissions(this.params)
         .subscribe(data =>{
@@ -115,6 +155,7 @@ export class SubmissionListComponent implements OnInit {
         });
 
     }
+
   }
 
   initSubmissionProjects(submissions){
@@ -142,41 +183,19 @@ export class SubmissionListComponent implements OnInit {
 
   extractProjectName(project){
     let content = project['content'];
-    return content ? project['content']['name'] : '';
+    return content ? project['content']['project_core']['project_title'] : '';
   }
 
   extractProjectId(project){
     let content = project['content'];
-    return content ? project['content']['project_id'] : '';
+    return content ? project['content']['project_core']['project_short_name'] : '';
   }
 
   getCurrentPageInfo(pagination){
     this.currentPageInfo['totalPages'] = pagination.totalPages;
     this.currentPageInfo['totalElements'] = pagination.totalElements;
     this.currentPageInfo['number'] = pagination.number;
-    this.currentPageInfo['start'] = ((pagination.number) * pagination.size) + 1;
-    let numberTimesSize = (pagination.number+1) * pagination.size;
-    let lastPageTotalElements = (numberTimesSize % pagination.totalElements);
-    this.currentPageInfo['end'] = numberTimesSize - (lastPageTotalElements % pagination.size);
     return this.currentPageInfo;
-  }
-
-  goToPage(pageNumber){
-    this.params['page'] = pageNumber;
-    this.getSubmissions();
-  }
-
-  createRange(number){
-    let items: number[] = [];
-    for(let i = 0; i < number; i++){
-      items.push(i);
-    }
-    return items;
-  }
-
-  toggleShowAll(value){
-    console.log(value)
-    this.showAll = value;
   }
 }
 

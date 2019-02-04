@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AUTH_CONFIG } from './auth0-variables';
-import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
+import {Router} from "@angular/router";
 
 @Injectable()
 export class AuthService {
@@ -20,25 +20,16 @@ export class AuthService {
   constructor(public router: Router) {}
 
   public login(): void {
-    this.auth0.authorize();
+    if(this.isAuthenticated()){
+      alert('You are already logged in. Redirecting to homepage...')
+      this.router.navigate(['/home']);
+    } else {
+      this.authorize()
+    }
   }
 
-  public handleAuthentication(): void {
-
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.setSession(authResult);
-        this.router.navigate(['/home']);
-      } else if (err) {
-        this.router.navigate(['/login']);
-        console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
-      } else if(!this.isAuthenticated())
-      {
-        this.router.navigate(['/login']);
-      }
-    });
+  public authorize():void{
+    window.location.href = `https://${AUTH_CONFIG.domain}/authorize?redirect_uri=${AUTH_CONFIG.callbackURL}`;
   }
 
   public getProfile(cb): void {
@@ -52,16 +43,7 @@ export class AuthService {
       if (profile) {
         self.userProfile = profile;
       }
-      cb(err, profile);
     });
-  }
-
-  private setSession(authResult): void {
-    // Set the time that the access token will expire at
-    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
   }
 
   public logout(): void {

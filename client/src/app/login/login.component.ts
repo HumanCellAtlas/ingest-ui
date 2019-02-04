@@ -9,17 +9,15 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   buildTimestamp = environment.buildTimestamp;
+  commitHash = environment.commitHash;
 
   constructor(public auth: AuthService, public router: Router) {
     if(auth.isAuthenticated()){
       router.navigate(['/home'])
     }
-  }
-
-  ngOnInit() {
   }
 
 }

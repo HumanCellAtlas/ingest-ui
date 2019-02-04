@@ -24,6 +24,7 @@
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
+        "testing": "environments/environment.testing.ts",
         "dev": "environments/environment.dev.ts",
         "integration": "environments/environment.integration.ts",
         "staging": "environments/environment.staging.ts",

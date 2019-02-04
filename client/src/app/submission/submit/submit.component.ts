@@ -1,30 +1,40 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IngestService} from "../../shared/services/ingest.service";
-import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
-import {Observable} from "rxjs/Observable";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-submit',
   templateUrl: './submit.component.html',
   styleUrls: ['./submit.component.css']
 })
-export class SubmitComponent implements OnInit {
+export class SubmitComponent {
   @Input() submissionEnvelopeId;
   @Input() submissionEnvelope$;
   @Input() submitLink: string;
   @Input() isSubmitted: boolean;
+  @Input() submissionUrl: string;
+  triggersAnalysisCheck: boolean;
 
   constructor(private ingestService: IngestService) {
-  }
-
-  ngOnInit() {
+    this.triggersAnalysisCheck = true;
   }
 
   completeSubmission() {
-    console.log('completeSubmission');
-    this.ingestService.submit(this.submitLink);
+    if(!this.triggersAnalysisCheck){
+      console.log('do not trigger analysis');
+      this.ingestService.patch(this.submissionUrl, {triggersAnalysis: false}).subscribe(
+        (response) => {
+          console.log('patched submission');
+          console.log("Response is: ", response);
+          this.ingestService.submit(this.submitLink);
+        },
+        (error) => {
+          console.error("An error occurred, ", error);
+        });
+    }
+    else{
+      console.log('complete submission');
+      this.ingestService.submit(this.submitLink);
+    }
   }
-
 
 }

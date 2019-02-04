@@ -7,7 +7,12 @@
   <alert></alert>
   <router-outlet>
     <div  *ngIf="showLoader" class="loading">
-        <img style="position:relative;z-index: 1000;" src="assets/loading.svg" alt="loading">
+      <mat-spinner
+        class="example-margin"
+        [color]="primary"
+        [mode]="indeterminate"
+        [value]="50">
+      </mat-spinner>
     </div>
   </router-outlet>
 </main>
