@@ -1,6 +1,6 @@
 import {Component, Output, EventEmitter, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {BrokerService} from "../../services/broker.service";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {UploadResults} from "../../models/uploadResults";
 import {Router} from "@angular/router";
 import {AlertService} from "../../services/alert.service";

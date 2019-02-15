@@ -1,14 +1,13 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../../shared/services/ingest.service';
-import {Observable} from "rxjs/Observable";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
 import {ActivatedRoute, Router} from "@angular/router";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
-import 'rxjs/add/operator/takeWhile';
+
 import {AlertService} from "../../shared/services/alert.service";
-import {Subscription} from "rxjs/Subscription";
 import {MatPaginator, PageEvent} from "@angular/material";
 import {tap} from "rxjs/operators";
+import {Subscription} from "rxjs/Rx";
 
 @Component({
   selector: 'app-submission-list',

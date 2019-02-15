@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AuthService} from '../../auth/auth.service';
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {Summary} from "./summary";
 
 @Component({

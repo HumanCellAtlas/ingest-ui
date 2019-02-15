@@ -1,8 +1,9 @@
 import {Component} from "@angular/core";
 import {AuthService} from './auth/auth.service';
 import {LoaderService} from "./shared/services/loader.service";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {Router} from "@angular/router";
+import "rxjs-compat/add/operator/takeWhile";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
 
 @Component({
   selector: "app-root",

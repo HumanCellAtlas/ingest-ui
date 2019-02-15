@@ -1,10 +1,11 @@
+import {Observable} from 'rxjs/Rx';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
 import {catchError, tap} from 'rxjs/operators';
 import {UploadResults} from "../models/uploadResults";
-import 'rxjs/add/observable/throw';
+
 import { environment } from '../../../environments/environment';
+import {throwError} from "rxjs/index";
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
 
@@ -27,7 +28,7 @@ export class BrokerService {
       };
 
       let error = err.error && err.error.message && err.error.details ? err.error : httpError;
-      return Observable.throw(error);
+      return throwError(error);
     }
   }
 

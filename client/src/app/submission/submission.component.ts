@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {IngestService} from "../shared/services/ingest.service";
 import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
 import {ActivatedRoute} from "@angular/router";
