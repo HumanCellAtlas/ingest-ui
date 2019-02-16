@@ -30,14 +30,12 @@ git pull
 
 cd client
 rm -rf node_modules
-rm package-lock.json
 npm cache verify
 npm install
 node ./replace.build.js ${ENV} && ng build --configuration ${ENV}
 
 cd ..
 rm -rf node_modules
-rm package-lock.json
 npm cache verify
 npm install
 serverless client deploy -v --env=${ENV}
@@ -48,3 +46,5 @@ aws configure set preview.cloudfront true
 echo "CLOUDFRONT_ID: ${CLOUDFRONT_ID}"
 # Invalidate CloudFront cache
 aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_ID} --paths '/*'
+
+git checkout -- client/src/environments/environment.dev.ts
