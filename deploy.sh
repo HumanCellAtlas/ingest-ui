@@ -29,10 +29,16 @@ echo "Deploying $ENV..."
 git pull
 
 cd client
+rm -rf node_modules
+rm package-lock.json
+npm cache verify
 npm install
-node ./replace.build.js ${ENV} && ng build --env=${ENV}
+node ./replace.build.js ${ENV} && ng build --configuration ${ENV}
 
 cd ..
+rm -rf node_modules
+rm package-lock.json
+npm cache verify
 npm install
 serverless client deploy -v --env=${ENV}
 
