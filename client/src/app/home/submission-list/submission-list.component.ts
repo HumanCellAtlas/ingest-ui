@@ -187,7 +187,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
 
   extractProjectId(project){
     let content = project['content'];
-    return content ? project['content']['project_core']['project_short_name'] : '';
+    return content ? project['content']['project_core']['project_shortname'] : '';
   }
 
   getCurrentPageInfo(pagination){
