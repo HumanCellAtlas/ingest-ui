@@ -1,12 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 
-import {of} from "rxjs/observable/of";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
-import {catchError, debounceTime, distinctUntilChanged, finalize, tap} from "rxjs/operators";
+import {catchError, finalize, tap} from "rxjs/operators";
 
 import {MatPaginator} from "@angular/material/paginator";
 
@@ -15,7 +10,10 @@ import {Page, PagedData} from "../../shared/models/page";
 import {IngestService} from "../../shared/services/ingest.service";
 import {SchemaService} from "../../shared/services/schema.service";
 import {FlattenService} from "../../shared/services/flatten.service";
-import {fromEvent} from "rxjs/observable/fromEvent";
+import {BehaviorSubject, Observable, Subscription} from "rxjs/Rx";
+import {TimerObservable} from "rxjs/observable/TimerObservable";
+import "rxjs-compat/add/operator/takeWhile";
+import {of} from "rxjs/index";
 
 
 @Component({
