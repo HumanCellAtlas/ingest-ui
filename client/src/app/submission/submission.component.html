@@ -33,7 +33,7 @@
                 [manifest]="manifest">
         </app-files>
       </mat-tab>
-      <mat-tab label="Submit" [disabled]="!isSubmittable">
+      <mat-tab label="Submit" [disabled]="!isValid || !isLinkingDone">
         <app-submit
                 [submissionEnvelope$]="submissionEnvelope$"
                 [submitLink]="submitLink"
