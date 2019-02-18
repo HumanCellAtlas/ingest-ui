@@ -6,7 +6,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatCardModule, MatCheckboxModule, MatChipsModule, MatSelectModule, MatTabsModule} from '@angular/material';
+import {
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatSelectModule,
+  MatTabsModule
+} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -130,7 +133,8 @@ export function tokenGetter(): string {
     MatIconModule,
     MatTooltipModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatButtonModule
   ],
   providers: [
     IngestService,

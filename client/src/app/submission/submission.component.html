@@ -33,13 +33,15 @@
                 [manifest]="manifest">
         </app-files>
       </mat-tab>
-      <mat-tab label="Submit" [disabled]="!isValid || !isLinkingDone">
+      <mat-tab label="Submit" [disabled]="!isValid" >
         <app-submit
                 [submissionEnvelope$]="submissionEnvelope$"
                 [submitLink]="submitLink"
                 [isSubmitted]="isSubmitted"
                 [submissionUrl]="url"
-                [submissionEnvelopeId]="submissionEnvelopeId">
+                [submissionEnvelopeId]="submissionEnvelopeId"
+                [isLinkingDone]="isLinkingDone"
+                [manifest]="manifest">
         </app-submit>
       </mat-tab>
     </mat-tab-group>
