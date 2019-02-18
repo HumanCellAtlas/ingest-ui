@@ -47,4 +47,5 @@ echo "CLOUDFRONT_ID: ${CLOUDFRONT_ID}"
 # Invalidate CloudFront cache
 aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_ID} --paths '/*'
 
-git checkout -- client/src/environments/environment.dev.ts
+git checkout -- "client/src/environments/environment.$ENV.ts"
+
