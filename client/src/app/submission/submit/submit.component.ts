@@ -40,9 +40,12 @@ export class SubmitComponent {
     }
   }
 
-  getPercentage(x, y){
-    let percentage =  x/y * 100;
-    return percentage | 0;
+  getLinkingProgress(manifest){
+    if(manifest){
+      let percentage =  manifest['actualLinks']/manifest['expectedLinks'] * 100;
+      return percentage | 0;
+    }
+    return 100;
   }
 
 }
