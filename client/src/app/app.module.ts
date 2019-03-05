@@ -6,7 +6,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatCardModule, MatCheckboxModule, MatChipsModule, MatSelectModule, MatTabsModule} from '@angular/material';
+import {
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatSelectModule,
+  MatTabsModule
+} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -56,7 +59,7 @@ import {MetadataTableComponent} from './submission/metadata-table/metadata-table
 
 import {
   MatIconModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
-  MatSortModule, MatTableModule, MatTooltipModule
+  MatSortModule, MatTableModule, MatTooltipModule, MatProgressBarModule
 } from "@angular/material";
 
 import { MetadataFieldComponent } from './submission/metadata-field/metadata-field.component';
@@ -131,7 +134,10 @@ export function tokenGetter(): string {
     MatIconModule,
     MatTooltipModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     IngestService,

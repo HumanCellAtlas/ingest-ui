@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IngestService} from "../../shared/services/ingest.service";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 @Component({
   selector: 'app-metadata',

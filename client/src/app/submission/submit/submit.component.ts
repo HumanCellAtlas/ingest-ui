@@ -12,7 +12,10 @@ export class SubmitComponent {
   @Input() submitLink: string;
   @Input() isSubmitted: boolean;
   @Input() submissionUrl: string;
+  @Input() isLinkingDone: boolean;
+  @Input() manifest: object;
   triggersAnalysisCheck: boolean;
+
 
   constructor(private ingestService: IngestService) {
     this.triggersAnalysisCheck = true;
@@ -35,6 +38,14 @@ export class SubmitComponent {
       console.log('complete submission');
       this.ingestService.submit(this.submitLink);
     }
+  }
+
+  getLinkingProgress(manifest){
+    if(manifest){
+      let percentage =  manifest['actualLinks']/manifest['expectedLinks'] * 100;
+      return percentage | 0;
+    }
+    return 100;
   }
 
 }

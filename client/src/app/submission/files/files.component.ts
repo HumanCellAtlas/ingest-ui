@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {IngestService} from "../../shared/services/ingest.service";
 import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
 import {TimerObservable} from "rxjs/observable/TimerObservable";

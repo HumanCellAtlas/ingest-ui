@@ -6,11 +6,11 @@ import {
   ViewChild, AfterViewChecked, OnDestroy
 } from '@angular/core';
 import {IngestService} from "../../shared/services/ingest.service";
-import {Observable} from "rxjs/Observable";
 import {FlattenService} from "../../shared/services/flatten.service";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {Page, PagedData} from "../../shared/models/page";
-import {Subscription} from "rxjs/Subscription";
+import {Observable, Subscription} from "rxjs/Rx";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
+import "rxjs-compat/add/operator/takeWhile";
 
 @Component({
   selector: 'app-metadata-list',

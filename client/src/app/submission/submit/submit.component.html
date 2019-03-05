@@ -28,15 +28,25 @@
   <mat-checkbox
     [(ngModel)]="triggersAnalysisCheck"
     labelPosition="after">
-    Check if you want this submission to trigger analysis.
+    Check if you want this submission to be indexed and trigger analysis.
   </mat-checkbox>
   <br/>
   <br/>
 </ng-container>
 <form action="submit" method="POST" *ngIf="submitLink">
-  <button class="btn btn-success btn-lg" (click)="completeSubmission()">
-    Submit
-  </button>
+    <button mat-raised-button class="btn btn-success btn-lg" (click)="completeSubmission()" [disabled]="!isLinkingDone">
+      <ng-container *ngIf="isLinkingDone">
+        Submit
+      </ng-container>
+      <ng-container *ngIf="!isLinkingDone">
+        <div>
+          Linking is in progress... {{getLinkingProgress(manifest)}}% done!
+          <mat-progress-bar mode="determinate" value="{{getLinkingProgress(manifest)}}"></mat-progress-bar>
+        </div>
+      </ng-container>
+
+    </button>
+
 </form>
 
 <br/>
@@ -44,7 +54,9 @@
   <div class="card-body" >
     <tabs [navClass]="'nav-tabs'">
       <tab tabTitle="Bundles">
-        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'bundleManifests'" [config]="{displayAll: true, hideWhenEmptyRows: true}" > </app-metadata-list>
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId"
+                           [metadataType]="'bundleManifests'"
+                           [config]="{displayAll: true, hideWhenEmptyRows: true}" > </app-metadata-list>
       </tab>
     </tabs>
   </div>
