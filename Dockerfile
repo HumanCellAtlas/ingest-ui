@@ -16,4 +16,4 @@ RUN npm install
 COPY ./client /app
 
 # start app
-CMD npm run prebuild && ng serve --host 0.0.0.0 -c=env
+CMD npm run prebuild && ng serve --host 0.0.0.0 -c=env --disable-host-check
