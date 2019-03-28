@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@angular/cli": "^7.3.0",
-    "serverless": "^1.36.3",
+    "serverless": "^1.39.1",
     "url-parse": ">=1.4.3"
   },
   "scripts": {
