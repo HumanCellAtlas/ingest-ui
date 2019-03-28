@@ -42,6 +42,14 @@
                 }
               ]
             },
+            "env": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.env.ts"
+                }
+              ]
+            },
             "integration": {
               "fileReplacements": [
                 {
@@ -85,6 +93,9 @@
           "configurations": {
             "testing": {
               "browserTarget": "ingest-ui:build:testing"
+            },
+            "env": {
+              "browserTarget": "ingest-ui:build:env"
             },
             "dev": {
               "browserTarget": "ingest-ui:build:dev"
