@@ -18,7 +18,7 @@
           <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{getProjectId(project)}}</a>
         </td>
         <td><span title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></td>
-        <td><span title="{{project?.content?.project_core?.project_shortname}}">{{ project?.content?.project_core?.project_shortname }}</span></td>
+        <td><span title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></td>
         <td>
           <div [ngSwitch]="project?.validationState">
             <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{project?.validationState}}</span>

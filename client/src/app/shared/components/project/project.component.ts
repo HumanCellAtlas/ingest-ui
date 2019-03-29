@@ -174,7 +174,7 @@ export class ProjectComponent implements OnInit {
       .subscribe(data => {
         this.project = data;
         this.projectForm.patchValue({
-          projectId: this.project['content']['project_core']['project_shortname'],
+          projectId: this.project['content']['project_core']['project_short_name'],
           name: this.project['content']['project_core']['project_title'],
           description: this.project['content']['project_core']['project_description']
         });
