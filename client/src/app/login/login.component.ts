@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
-import {environment} from '../../environments/environment';
 import {Router} from "@angular/router";
 
 @Component({
@@ -10,9 +9,6 @@ import {Router} from "@angular/router";
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
-
-  buildTimestamp = environment.buildTimestamp;
-  commitHash = environment.commitHash;
 
   constructor(public auth: AuthService, public router: Router) {
     if(auth.isAuthenticated()){
