@@ -186,8 +186,16 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   getValidationErrors(row){
-    return row['validationErrors[0].userFriendlyMessage'] || row['validationErrors[0].user_friendly_message'];
-    //TODO retrieve all validation errors
+    let columns = Object.keys(row)
+      .filter(column => {
+        return (column.match('^validationErrors.+userFriendlyMessage'))
+      });
+    let errors = []
+    let count = columns.length
+    for(let i = 0; i < count; i++){
+      errors.push(`${i + 1}/${count}: ${row[columns[i]]}`)
+    }
+    return errors;
   }
 
   toggleExpandRow(row) {
@@ -224,7 +232,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
       newPage['sort'] = pageInfo['sort'];
 
       this.metadataList$ = this.ingestService.fetchSubmissionData( this.submissionEnvelopeId, this.metadataType, this.filterState, newPage);
-
       this.metadataList$.subscribe(data => {
         this.rows = data.data.map(this.flattenService.flatten);
         this.metadataList = data.data;

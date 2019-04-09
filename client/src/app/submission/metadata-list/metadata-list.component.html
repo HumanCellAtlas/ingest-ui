@@ -42,11 +42,13 @@
 >
 
    <!--Row Detail Template -->
-  <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
-    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
+  <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow>
+    <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+      <div style="padding-left:35px;height:75px;overflow-y:scroll" *ngIf="row['validationState'] == 'Invalid'">
         <div><strong>Validation Report:</strong></div>
-        <span class="text-danger" title="{{getValidationErrors(row)}}">{{getValidationErrors(row)}}</span>
+        <ng-container *ngFor="let error of getValidationErrors(row)">
+          <span class="text-danger" title="{{error}}">{{error}}</span><br>
+        </ng-container>
       </div>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
         <div><strong>Validation Report:</strong></div>
