@@ -193,7 +193,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     let errors = []
     let count = columns.length
     for(let i = 0; i < count; i++){
-      errors.push(`${i + 1}/${count}: ${row[columns[i]]}`)
+      errors.push(`* ${row[columns[i]]}`)
     }
     return errors;
   }

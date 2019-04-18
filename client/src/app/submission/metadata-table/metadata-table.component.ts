@@ -26,6 +26,13 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input() submissionEnvelopeId: string;
   @Input() metadataEntity: string;
   @Input() metadataEntityType: string;
+  @Input() config = {
+    displayContent: true,
+    displayState: true,
+    displayAll: false,
+    displayColumns: [],
+    hideWhenEmptyRows: false
+  };
 
   POLLING_INTERVAL_MS: number = 4000;
   DEFAULT_PAGE_SIZE = 10;
@@ -55,6 +62,7 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
     private flattenService: FlattenService
   ) {
     this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid'];
+
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -81,17 +89,53 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
 
     this.rows$.subscribe(
       rows => {
-        for(let row of rows){
-          for(let col of Object.keys(row)){
-            if(!col.match('describedBy') && !col.match('schema')){
-              this.contentColumnMap[col] = this.schemaService.getColumnDefinition(this.metadataEntity, row['entityType'], col);
-            }
-          }
-        }
-        console.log('contentColumnMap', this.contentColumnMap);
-        this.displayedColumns = Object.keys(this.contentColumnMap);
+        // for(let row of rows){
+        //   for(let col of Object.keys(row)){
+        //     if(!col.match('describedBy') && !col.match('schema')){
+        //       this.contentColumnMap[col] = this.schemaService.getColumnDefinition(this.metadataEntity, row['entityType'], col);
+        //     }
+        //   }
+        // }
+        // console.log('contentColumnMap', this.contentColumnMap);
+        // this.displayedColumns = Object.keys(this.contentColumnMap);
+        this.displayedColumns =  this.getAllColumns(rows);
+        console.log(rows);
       }
     )
+  }
+
+  getAllColumns(rows){
+    let columns = {};
+    rows.map(function(row) {
+      Object.keys(row).map(function(col){
+
+        columns[col] = '';
+      })
+    });
+
+    return this.getColumns(columns);
+  }
+
+  getColumns(row){
+    let columns = [];
+
+    columns = Object.keys(row)
+      .filter(column => {
+        return !column.match('describedBy') &&
+          !column.match('schema_version') &&
+          !column.match('[\[]') // exclude metadata attributes which are of list type
+      });
+
+
+    if (this.config && this.config.displayContent) {
+      columns.unshift('content.core.type');
+    }
+
+    if(this.config && this.config.displayColumns){
+      columns = columns.concat(this.config.displayColumns);
+    }
+
+    return columns;
   }
 
   ngAfterViewInit() {
