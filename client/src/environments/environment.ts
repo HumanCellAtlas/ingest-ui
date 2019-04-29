@@ -11,5 +11,5 @@ export const environment = {
   BROKER_API_URL: 'http://localhost:5000',
   SCHEMA_API_URL: 'https://schema.humancellatlas.org',
   DSS_API_URL: 'https://dss.dev.data.humancellatlas.org',
-  DOMAIN_WHITELIST: 'http://localhost:8080,http://localhost:5000'
+  DOMAIN_WHITELIST: 'localhost:8080,localhost:5000'
 };
