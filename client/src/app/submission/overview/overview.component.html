@@ -19,7 +19,7 @@
       <span><strong>Validation State</strong></span>
       <span><p>{{project?.validationState}}</p></span>
       <ng-container *ngFor="let error of project?.validationErrors">
-        <span class="text-danger" title="{{error.userFriendlyMessage}}">{{error.userFriendlyMessage}}</span><br>
+        <span class="text-danger" title="{{error.userFriendlyMessage}}">* {{error.userFriendlyMessage}}</span><br>
       </ng-container>
       <br/>
       <span><strong>Ingest Link</strong></span>
