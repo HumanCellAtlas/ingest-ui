@@ -6,7 +6,6 @@ import {UploadResults} from "../models/uploadResults";
 
 import { environment } from '../../../environments/environment';
 import {throwError} from "rxjs/index";
-import {ResponseContentType} from "@angular/http";
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
 
@@ -41,11 +40,19 @@ export class BrokerService {
       );
   }
 
-  public downloadSpreadsheet(submissionId): Observable<Blob> {
+  public downloadSpreadsheet(submissionUuid): Observable<any> {
     return this.http
-      .get(`${this.API_URL}/${submissionId}/download_spreadsheet`, {
-        responseType: "blob"
-      })
+      .get(`${this.API_URL}/submissions/${submissionUuid}/spreadsheet`,
+        { observe: 'response',responseType: 'blob' }
+      ).map((res) => {
+        let contentDisposition = res.headers.get('content-disposition');
+        let filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+        let response = {
+          "data": res.body,
+          "filename": filename
+        }
+        return response
+      });
   }
 
 }

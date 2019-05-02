@@ -1,10 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {IngestService} from "../shared/services/ingest.service";
-import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
 import {ActivatedRoute} from "@angular/router";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
-import {FlattenService} from "../shared/services/flatten.service";
 import {AlertService} from "../shared/services/alert.service";
 
 
@@ -43,8 +41,8 @@ export class SubmissionComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private ingestService: IngestService,
-    private route: ActivatedRoute,
-    private flattenService: FlattenService) {
+    private route: ActivatedRoute
+  ) {
       this.pollInterval = 4000; //4s
       this.alive = true;
       this.manifest = {};
@@ -96,21 +94,16 @@ export class SubmissionComponent implements OnInit {
 
         this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
           .subscribe(
-            data => {
-            this.manifest = data;
-            if(!this.manifest){
-              this.isLinkingDone = true;
-              console.log('islinkingdone', this.isLinkingDone)
-            } else {
+      data => {
+              this.manifest = data;
               let actualLinks = this.manifest['actualLinks'];
               let expectedLinks = this.manifest['expectedLinks'];
               if (!expectedLinks || (actualLinks == expectedLinks)) {
                 this.isLinkingDone = true;
               }
-            }
-          }, err => {
+            }, err => {
               console.log(err)
-              this.isLinkingDone = true;
+              this.isLinkingDone = false;
           });
       });
   }

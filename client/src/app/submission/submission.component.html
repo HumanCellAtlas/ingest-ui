@@ -11,7 +11,9 @@
       <mat-tab label="Overview" [disabled]="!submissionEnvelopeId">
         <app-overview [project]="project"
                       [projectId]="projectId"
-                      [submissionEnvelopeId]="submissionEnvelopeId">
+                      [submissionEnvelope]="submissionEnvelope"
+                      [isLinkingDone]="isLinkingDone"
+        >
         </app-overview>
       </mat-tab>
       <mat-tab label="Metadata">

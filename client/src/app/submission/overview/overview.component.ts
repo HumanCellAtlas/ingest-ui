@@ -10,8 +10,9 @@ import {BrokerService} from "../../shared/services/broker.service";
 })
 export class OverviewComponent implements OnInit {
   @Input() projectId;
-  @Input() submissionEnvelopeId;
+  @Input() submissionEnvelope;
   @Input() project;
+  @Input() isLinkingDone: boolean;
 
   constructor(private ingestService: IngestService, private route: ActivatedRoute, private brokerService: BrokerService) { }
 
@@ -19,9 +20,11 @@ export class OverviewComponent implements OnInit {
   }
 
   downloadFile(){
-    this.brokerService.downloadSpreadsheet(this.submissionEnvelopeId).subscribe(spreadsheet => {
-      console.log("downloaded file!")
-      var newBlob = new Blob([spreadsheet]);
+    let uuid = this.submissionEnvelope['uuid']['uuid']
+    this.brokerService.downloadSpreadsheet(uuid).subscribe(response => {
+      console.log("downloaded spreadsheet!")
+      var filename = response['filename']
+      var newBlob = new Blob([response['data']]);
 
       // For other browsers:
       // Create a link pointing to the ObjectURL containing the blob.
@@ -29,7 +32,7 @@ export class OverviewComponent implements OnInit {
 
       var link = document.createElement('a');
       link.href = data;
-      link.download = `${this.submissionEnvelopeId}.xslx`;
+      link.download = filename;
       // this is necessary as link.click() does not work on the latest firefox
       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
 
