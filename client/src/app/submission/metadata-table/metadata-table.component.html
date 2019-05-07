@@ -30,8 +30,11 @@
     <ng-container *ngFor="let column of displayedColumns" >
       <ng-container matColumnDef="{{column}}">
         <mat-header-cell *matHeaderCellDef>
-          <div class="example-tooltip-host" matTooltip="{{getDescription(column)}}" [matTooltipPosition]="'above'">
-            {{getUserFriendlyName(column)}}
+          <!--<div class="example-tooltip-host" matTooltip="{{getDescription(column)}}" [matTooltipPosition]="'above'">-->
+            <!--{{getUserFriendlyName(column)}}-->
+          <!--</div>-->
+          <div>
+            {{column}}
           </div>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">

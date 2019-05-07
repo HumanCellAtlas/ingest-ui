@@ -40,4 +40,19 @@ export class BrokerService {
       );
   }
 
+  public downloadSpreadsheet(submissionUuid): Observable<any> {
+    return this.http
+      .get(`${this.API_URL}/submissions/${submissionUuid}/spreadsheet`,
+        { observe: 'response',responseType: 'blob' }
+      ).map((res) => {
+        let contentDisposition = res.headers.get('content-disposition');
+        let filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+        let response = {
+          "data": res.body,
+          "filename": filename
+        }
+        return response
+      });
+  }
+
 }

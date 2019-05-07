@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from 'rxjs';
 
-
-
 import * as _ from 'lodash';
 
 import {AlertService} from "./alert.service";
