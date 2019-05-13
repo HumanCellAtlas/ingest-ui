@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   public authorize():void{
-    window.location.href = `https://${AUTH_CONFIG.domain}/authorize?redirect_uri=${AUTH_CONFIG.callbackURL}`;
+    window.location.href = `https://${AUTH_CONFIG.domain}/oauth/authorize?redirect_uri=${AUTH_CONFIG.callbackURL}`;
   }
 
   public getProfile(cb): void {
