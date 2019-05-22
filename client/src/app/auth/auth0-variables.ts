@@ -7,7 +7,7 @@ interface AuthConfig {
 
 export const AUTH_CONFIG: AuthConfig = {
   clientID: 'ycbt5RBAgfjxdrVTcom976IQejacp2VN',
-  domain: 'auth.dev.data.humancellatlas.org',
+  domain: 'auth.integration.data.humancellatlas.org',
   callbackURL: window.location.origin + '/callback',
   apiUrl: 'https://dev.data.humancellatlas.org/'
 };
