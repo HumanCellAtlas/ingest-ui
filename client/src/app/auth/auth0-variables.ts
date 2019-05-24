@@ -1,3 +1,5 @@
+import {environment} from "../../environments/environment";
+
 interface AuthConfig {
   clientID: string;
   domain: string;
@@ -7,7 +9,7 @@ interface AuthConfig {
 
 export const AUTH_CONFIG: AuthConfig = {
   clientID: 'ycbt5RBAgfjxdrVTcom976IQejacp2VN',
-  domain: 'auth.integration.data.humancellatlas.org',
+  domain: environment.AUTH_DOMAIN,
   callbackURL: window.location.origin + '/callback',
   apiUrl: 'https://dev.data.humancellatlas.org/'
 };

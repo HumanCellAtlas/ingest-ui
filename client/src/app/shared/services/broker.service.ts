@@ -1,10 +1,10 @@
 import {Observable} from 'rxjs/Rx';
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {catchError, tap} from 'rxjs/operators';
 import {UploadResults} from "../models/uploadResults";
 
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {throwError} from "rxjs/index";
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
