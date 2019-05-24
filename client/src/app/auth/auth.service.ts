@@ -8,7 +8,7 @@ export class AuthService {
 
   auth0 = new auth0.WebAuth({
     clientID: AUTH_CONFIG.clientID,
-    domain: AUTH_CONFIG.domain,
+    domain: AUTH_CONFIG.auth0,
     responseType: 'token id_token',
     audience: AUTH_CONFIG.apiUrl,
     redirectUri: AUTH_CONFIG.callbackURL,
@@ -43,6 +43,7 @@ export class AuthService {
       if (profile) {
         self.userProfile = profile;
       }
+      cb(err, profile);
     });
   }
 

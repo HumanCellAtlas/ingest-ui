@@ -11,7 +11,9 @@ export class NavigationComponent implements OnInit {
 
   profile: any;
 
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService) {
+
+  }
 
   ngOnInit() {
     if (this.auth.userProfile) {
