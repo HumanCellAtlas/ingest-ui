@@ -10,7 +10,7 @@ export class MetadataFieldComponent implements OnInit {
 
   @Input() value;
   @Input() metadataType;
-  @Input() columnName;
+  @Input() column;
   @Output() onValueChange = new EventEmitter();
 
   editMode: boolean = false;

@@ -66,7 +66,7 @@
                 }
               ]
             },
-            "production": {
+            "prod": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -106,8 +106,8 @@
             "staging": {
               "browserTarget": "ingest-ui:build:staging"
             },
-            "production": {
-              "browserTarget": "ingest-ui:build:production"
+            "prod": {
+              "browserTarget": "ingest-ui:build:prod"
             }
           }
         },
