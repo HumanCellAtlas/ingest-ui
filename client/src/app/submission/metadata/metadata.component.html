@@ -1,4 +1,4 @@
-<app-upload [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
+<app-upload [isUpdate]="isUpdate" [projectId]="projectId" *ngIf="!submissionEnvelopeId" ></app-upload>
 <mat-card *ngIf="submissionEnvelopeId">
   <mat-tab-group>
     <mat-tab label="Biomaterials">

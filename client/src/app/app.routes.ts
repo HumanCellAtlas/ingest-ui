@@ -14,7 +14,7 @@ export const ROUTES: Routes = [
 
   { path: 'submissions/consent', component: ConsentComponent },
   { path: 'submissions/list', component: HomeComponent },
-  { path: 'submissions/new/:tab', component: SubmissionComponent },
+  { path: 'submissions/:tab/:action', component: SubmissionComponent },
   { path: 'submissions/detail/:id/:tab', component: SubmissionComponent },
 
   { path: 'projects/detail/:projectid/submissions/:tab', component: SubmissionComponent },
