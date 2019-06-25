@@ -36,24 +36,12 @@ export class IngestService {
     return this.http.get<Summary>(`${this.API_URL}/user/summary`);
   }
 
-  public getProjects(): Observable<Project[]> {
-    return this.http.get(`${this.API_URL}/projects`, {params: {'sort':'submissionDate,desc'}})
-      .map((data: ListResult<Project>) => {
-        if(data._embedded && data._embedded.projects)
-          return _.values(data._embedded.projects);
-        else
-          return [];
-      });
+  public getProjects(params): Observable<any> {
+    return this.http.get(`${this.API_URL}/projects`, {params: params})
   }
 
-  public getUserProjects(): Observable<Project[]> {
-    return this.http.get(`${this.API_URL}/user/projects`, {params: {'sort':'updateDate,desc'}})
-      .map((data: ListResult<Project>) => {
-        if(data._embedded && data._embedded.projects)
-          return _.values(data._embedded.projects);
-        else
-          return [];
-      });
+  public getUserProjects(params): Observable<any> {
+    return this.http.get(`${this.API_URL}/user/projects`, {params: params})
   }
 
   public submit(submitLink){
