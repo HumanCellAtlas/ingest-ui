@@ -50,7 +50,7 @@ export class ProjectComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.projects$ = this.ingestService.getProjects();
+    this.projects$ = this.ingestService.getProjects({});
     this.projectId = this.route.snapshot.paramMap.get('id');
 
     if(this.projectId){
