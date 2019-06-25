@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "description": "",
   "dependencies": {
-    "npm": "^6.7.0",
-    "serverless-finch": "^2.3.2",
-    "url-parse": ">=1.4.3"
+    "npm": "^6.9.0",
+    "serverless-finch": "^2.3.2"
   },
   "devDependencies": {
     "@angular/cli": "^7.3.0",
     "serverless": "^1.39.1",
-    "url-parse": ">=1.4.3"
+    "url-parse": ">=1.4.3",
+    "js-yaml": ">=3.13.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
