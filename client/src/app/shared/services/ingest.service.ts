@@ -144,6 +144,10 @@ export class IngestService {
     return this.http.patch(ingestLink, patchData);
   }
 
+  public get(url): Observable<Object> {
+    return this.http.get(url);
+  }
+
   private reduceColumnsForBundleManifests(entityType, data){
     if(entityType == 'bundleManifests'){
       return data.map(function(row){

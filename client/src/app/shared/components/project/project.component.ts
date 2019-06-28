@@ -18,8 +18,7 @@ import {SchemaService} from '../../services/schema.service';
 
 
 export class ProjectComponent implements OnInit {
-  @Input() submissionProjectId: string;
-  @Input() submissionEnvelopeId: string;
+  submissionEnvelopes: Object[];
 
   editMode: boolean;
 
@@ -45,8 +44,7 @@ export class ProjectComponent implements OnInit {
     private fb: FormBuilder,
     private ingestService: IngestService,
     private router: Router,
-    private route: ActivatedRoute,
-    private schemaService: SchemaService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -83,9 +81,29 @@ export class ProjectComponent implements OnInit {
   }
 
   getProject(id){
-    this.ingestService.getProject(id).subscribe(data => {
-      this.project = data;
+    this.ingestService.getProject(id).subscribe(projectData => {
+      this.project = projectData;
+      // TODO Find the submission envelope where the project was included for now
+      // In the future, find a way to link submission envelopes to related projects in ingest
+      let submissions_url = projectData['_links']['submissionEnvelopes']['href']
+      this.ingestService.get(submissions_url).subscribe(
+        submissionData => {
+          let submissions = submissionData['_embedded'] ? submissionData['_embedded']['submissionEnvelopes'] : [];
+          this.submissionEnvelopes = submissions;
+        }
+      )
+
     });
+
+  }
+
+  getSubmissionId(submissionEnvelope){
+    let links = submissionEnvelope['_links'];
+    return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
+  }
+
+  getSubmissionUuid(submissionEnvelope){
+    return submissionEnvelope['uuid']['uuid'];
   }
 
   updateProject(id, projectData){

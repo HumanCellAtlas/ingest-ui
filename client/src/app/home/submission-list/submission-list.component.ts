@@ -99,6 +99,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
+  getSubmissionUuid(submissionEnvelope){
+    return submissionEnvelope['uuid']['uuid'];
+  }
+
   completeSubmission(submissionEnvelope) {
     let submitLink = this.getSubmitLink(submissionEnvelope);
     this.ingestService.submit(submitLink);
