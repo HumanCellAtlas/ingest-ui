@@ -92,7 +92,6 @@ export class ProjectComponent implements OnInit {
           this.submissionEnvelopes = submissions;
         }
       )
-
     });
 
   }
