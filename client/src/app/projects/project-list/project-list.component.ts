@@ -4,6 +4,7 @@ import {MatPaginator, PageEvent} from "@angular/material";
 import {IngestService} from "../../shared/services/ingest.service";
 import {TimerObservable} from "rxjs-compat/observable/TimerObservable";
 import {tap} from "rxjs/internal/operators";
+import { MatButtonModule } from '@angular/material/button'
 
 @Component({
   selector: 'app-project-list',
@@ -28,6 +29,8 @@ export class ProjectListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  searchText: string;
+
   constructor(private ingestService: IngestService) {
     this.alive = true;
     this.interval = 4000;
@@ -44,7 +47,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pollProjects()
+    this.getProjects()
   }
 
   getProjectId(project){
@@ -54,6 +57,36 @@ export class ProjectListComponent implements OnInit {
 
   ngOnDestroy(){
     this.alive = false; // switches your IntervalObservable off
+  }
+
+  queryProjects(text: string){
+    let query = [];
+    let fields = [
+      'project_core.project_description',
+      'project_core.project_title',
+      'project_core.project_shortname'
+    ];
+
+    for(let field of fields) {
+      let criteria = {
+        "contentField": field,
+        "operator": "REGEX",
+        "value": text.replace(/\s+/g, '\\s+')
+      }
+      query.push(criteria);
+    }
+
+    this.ingestService.queryProjects(query)
+      .subscribe({
+          next: data => {
+            this.projects = data._embedded ? data._embedded.projects : [];
+            this.pagination = data.page;
+            this.getCurrentPageInfo(this.pagination);
+          },
+          error: err => {
+            console.log("err", err)
+          }
+      });
   }
 
   pollProjects(){
@@ -68,12 +101,18 @@ export class ProjectListComponent implements OnInit {
     this.params['page'] = this.paginator.pageIndex;
     this.params['size'] = this.paginator.pageSize;
 
-    this.ingestService.getUserProjects(this.params)
-      .subscribe(data =>{
-        this.projects = data._embedded ? data._embedded.projects : [];
-        this.pagination = data.page;
-        this.getCurrentPageInfo(this.pagination);
-      });
+    if(this.searchText){
+      this.queryProjects(this.searchText)
+    }
+    else{
+      this.ingestService.getProjects(this.params)
+        .subscribe(data =>{
+          this.projects = data._embedded ? data._embedded.projects : [];
+          this.pagination = data.page;
+          this.getCurrentPageInfo(this.pagination);
+        });
+    }
+
   }
 
   // TODO Create a component which supports dynamic(polled data) datatable loading and pagination

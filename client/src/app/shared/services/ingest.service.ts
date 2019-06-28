@@ -82,6 +82,10 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
+  public queryProjects(query: Object[]): Observable<any>{
+    return this.http.post(`${this.API_URL}/projects/query`, query)
+  }
+
   public putProject(id, project): Observable<Object>{
     return this.http.put(`${this.API_URL}/projects/${id}`, project);
   }
