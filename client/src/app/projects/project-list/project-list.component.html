@@ -1,6 +1,6 @@
 <mat-form-field class="search-bar">
   <mat-icon matPrefix>search</mat-icon>
-  <input matInput placeholder="Search Projects" [(ngModel)]="value" (keydown.enter)="searchText = value; getProjects()">
+  <input matInput placeholder="Search Projects" [(ngModel)]="value" (keydown.enter)="onKeyEnter(value)">
   <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''; searchText = ''; getProjects()">
     <mat-icon>close</mat-icon>
   </button>

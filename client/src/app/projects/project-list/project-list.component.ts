@@ -47,7 +47,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getProjects()
+    this.pollProjects()
   }
 
   getProjectId(project){
@@ -59,7 +59,13 @@ export class ProjectListComponent implements OnInit {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  queryProjects(text: string){
+  onKeyEnter(value){
+    this.searchText = value;
+    this.paginator.pageIndex = 0;
+    this.getProjects();
+  }
+
+  queryProjects(text: string, pagination){
     let query = [];
     let fields = [
       'project_core.project_description',
@@ -76,7 +82,7 @@ export class ProjectListComponent implements OnInit {
       query.push(criteria);
     }
 
-    this.ingestService.queryProjects(query)
+    this.ingestService.queryProjects(query, pagination)
       .subscribe({
           next: data => {
             this.projects = data._embedded ? data._embedded.projects : [];
@@ -102,7 +108,7 @@ export class ProjectListComponent implements OnInit {
     this.params['size'] = this.paginator.pageSize;
 
     if(this.searchText){
-      this.queryProjects(this.searchText)
+      this.queryProjects(this.searchText, this.params)
     }
     else{
       this.ingestService.getProjects(this.params)
