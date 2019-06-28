@@ -77,7 +77,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnDestroy(){
-    this.alive = false; // switches your IntervalObservable off
+    this.alive = false; // switches your TimerObservable off
   }
 
   ngOnInit() {
