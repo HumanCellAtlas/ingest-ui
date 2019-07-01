@@ -1,3 +1,10 @@
+<mat-form-field class="search-bar">
+  <mat-icon matPrefix>search</mat-icon>
+  <input matInput placeholder="Search Projects" [(ngModel)]="value" (keydown.enter)="onKeyEnter(value)">
+  <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''; searchText = ''; getProjects()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
 
 <div class="card" *ngIf="projects || {}">
   <div>
@@ -5,7 +12,7 @@
       <thead class="thead-light">
       <tr>
         <th>Created</th>
-        <th>ID</th>
+        <th>Project UUID</th>
         <th>Project Name</th>
         <th>Project ID</th>
         <th>Validation State</th>
@@ -16,7 +23,7 @@
       <tr *ngFor="let project of projects">
         <td>{{project.submissionDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{getProjectId(project)}}</a>
+          <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{project?.uuid?.uuid}}</a>
         </td>
         <td><span title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></td>
         <td><span title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></td>

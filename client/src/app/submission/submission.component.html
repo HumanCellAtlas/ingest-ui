@@ -9,29 +9,36 @@
   <h3 class="subheading-2">{{projectName}}</h3>
     <mat-tab-group [selectedIndex]="!submissionEnvelopeId ? 1 : 0">
       <mat-tab label="Overview" [disabled]="!submissionEnvelopeId">
+        <ng-template matTabContent>
         <app-overview [project]="project"
                       [projectId]="projectId"
                       [submissionEnvelope]="submissionEnvelope"
                       [isLinkingDone]="isLinkingDone"
         >
         </app-overview>
+        </ng-template>
       </mat-tab>
       <mat-tab label="Metadata">
+        <ng-template matTabContent>
         <app-metadata
                 [projectId]="projectId"
                 [submissionEnvelopeId]="submissionEnvelopeId"
                 [manifest]="manifest"
         >
         </app-metadata>
+        </ng-template>
       </mat-tab>
       <mat-tab label="Data" [disabled]="!submissionEnvelopeId">
+        <ng-template matTabContent>
         <app-files
                 [submissionEnvelope]="submissionEnvelope"
                 [submissionEnvelopeId]="submissionEnvelopeId"
                 [manifest]="manifest">
         </app-files>
+        </ng-template>
       </mat-tab>
       <mat-tab label="Submit" [disabled]="!isValid" >
+        <ng-template matTabContent>
         <app-submit
                 [submissionEnvelope$]="submissionEnvelope$"
                 [submitLink]="submitLink"
@@ -41,6 +48,7 @@
                 [isLinkingDone]="isLinkingDone"
                 [manifest]="manifest">
         </app-submit>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
   </div>

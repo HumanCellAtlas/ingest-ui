@@ -82,6 +82,10 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
+  public queryProjects(query: Object[], pagination): Observable<any>{
+    return this.http.post(`${this.API_URL}/projects/query`, query, {params: pagination})
+  }
+
   public putProject(id, project): Observable<Object>{
     return this.http.put(`${this.API_URL}/projects/${id}`, project);
   }
@@ -138,6 +142,10 @@ export class IngestService {
 
   public patch(ingestLink, patchData){
     return this.http.patch(ingestLink, patchData);
+  }
+
+  public get(url): Observable<Object> {
+    return this.http.get(url);
   }
 
   private reduceColumnsForBundleManifests(entityType, data){
