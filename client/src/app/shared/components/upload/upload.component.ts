@@ -27,6 +27,8 @@ export class UploadComponent implements OnInit {
 
   @Output() fileUpload = new EventEmitter();
 
+  @Input() isUpdate = false;
+
   constructor(private brokerService: BrokerService,
               private router: Router,
               private alertService: AlertService,
@@ -54,7 +56,7 @@ export class UploadComponent implements OnInit {
         formData.append("project_id", projectId );
       }
 
-      this.brokerService.uploadSpreadsheet(formData)
+      this.brokerService.uploadSpreadsheet(formData, this.isUpdate)
         .subscribe(
         data => {
           this.uploadResults$ = <any>data;

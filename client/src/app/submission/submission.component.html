@@ -21,6 +21,7 @@
       <mat-tab label="Metadata">
         <ng-template matTabContent>
         <app-metadata
+                [isUpdate]="isUpdate"
                 [projectId]="projectId"
                 [submissionEnvelopeId]="submissionEnvelopeId"
                 [manifest]="manifest"

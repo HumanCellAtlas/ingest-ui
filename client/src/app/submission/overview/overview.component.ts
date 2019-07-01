@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IngestService} from "../../shared/services/ingest.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {BrokerService} from "../../shared/services/broker.service";
 
 @Component({
@@ -14,7 +14,7 @@ export class OverviewComponent implements OnInit {
   @Input() project;
   @Input() isLinkingDone: boolean;
 
-  constructor(private ingestService: IngestService, private route: ActivatedRoute, private brokerService: BrokerService) { }
+  constructor(private ingestService: IngestService, private route: ActivatedRoute, private brokerService: BrokerService, private router: Router) { }
 
   ngOnInit(){
   }
@@ -42,5 +42,10 @@ export class OverviewComponent implements OnInit {
         link.remove();
       }, 100);
     });
+  }
+
+  updateProject(){
+    this.router.navigate(['submissions/metadata/update']);
+    console.log('update!s')
   }
 }
