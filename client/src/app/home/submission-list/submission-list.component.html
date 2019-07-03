@@ -3,8 +3,9 @@
     <table id="submissions" class="table">
       <thead class="thead-light">
       <tr>
+        <th></th>
         <th>Created</th>
-        <th>Submission ID</th>
+        <th>Submission UUID</th>
         <th>Project Name</th>
         <th>Project ID</th>
         <th>Status</th>
@@ -14,9 +15,12 @@
       </thead>
       <tbody>
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
-        <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{getSubmissionId(submissionEnvelope)}}</a>
+          <mat-icon [ngStyle]="{'color': 'lightgrey'}" *ngIf="submissionEnvelope['isUpdate']" matTooltip="This is an update submission.">info</mat-icon>
+        </td>
+        <td> <a href="{{submissionEnvelope['_links']['self']['href']}}">{{submissionEnvelope.submissionDate | date: "medium"}}</a></td>
+        <td>
+          <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{submissionEnvelope?.uuid?.uuid}}</a>
         </td>
         <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>{{getProjectId(submissionEnvelope)}}</td>
