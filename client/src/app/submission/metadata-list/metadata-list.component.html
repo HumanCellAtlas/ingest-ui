@@ -143,6 +143,12 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <ngx-datatable-column prop="_links.patch.href" name="patch" [width]="'130'" >
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+    </ng-template>
+  </ngx-datatable-column>
+
   <ng-container *ngIf="metadataType == 'bundleManifests'">
     <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
