@@ -153,9 +153,10 @@ export class IngestService {
       return data.map(function(row){
         let newRow = {
           'bundleUuid' : row['bundleUuid'],
+          'version' : row['bundleVersion'],
           'envelopeUuid' : row['envelopeUuid'],
           '_links': row['_links'],
-          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws`
+          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws&version${row['bundleVersion']}`
         };
         return newRow;
       })
