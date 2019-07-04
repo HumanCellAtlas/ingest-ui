@@ -79,7 +79,7 @@
   <!--patch-->
   <ngx-datatable-column prop="_links.patch.href" name="" [width]="'130'" >
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <a *ngIf="row['isUpdate']" href="{{value}}"><mat-icon [ngStyle]="{'color': 'lightgrey'}" matTooltip="See patch">compare</mat-icon></a>
+      <a *ngIf="row['isUpdate']" href="{{value}}" target="_blank"><mat-icon [ngStyle]="{'color': 'lightgrey'}" matTooltip="See patch">compare</mat-icon></a>
     </ng-template>
   </ngx-datatable-column>
 
@@ -99,9 +99,9 @@
   </ngx-datatable-column>
 
   <!--ingest link-->
-  <ngx-datatable-column prop="_links.self.href" name="json" [width]="'130'" >
+  <ngx-datatable-column prop="_links.self.href" name="ingest json" [width]="'130'" >
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+      <a href="{{value}}" target="_blank"><span class="oi oi-external-link"></span></a>
     </ng-template>
   </ngx-datatable-column>
 
