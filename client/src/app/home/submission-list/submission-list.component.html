@@ -18,7 +18,7 @@
         <td>
           <mat-icon [ngStyle]="{'color': 'lightgrey'}" *ngIf="submissionEnvelope['isUpdate']" matTooltip="This is an update submission.">info</mat-icon>
         </td>
-        <td> <a href="{{submissionEnvelope['_links']['self']['href']}}">{{submissionEnvelope.submissionDate | date: "medium"}}</a></td>
+        <td> <a href="{{submissionEnvelope['_links']['self']['href']}}" target="_blank">{{submissionEnvelope.submissionDate | date: "medium"}}</a></td>
         <td>
           <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{submissionEnvelope?.uuid?.uuid}}</a>
         </td>

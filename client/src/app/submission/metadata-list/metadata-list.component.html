@@ -99,7 +99,7 @@
   </ngx-datatable-column>
 
   <!--ingest link-->
-  <ngx-datatable-column prop="_links.self.href" name="ingest json" [width]="'130'" >
+  <ngx-datatable-column prop="_links.self.href" name="ingest api url" [width]="'130'" >
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <a href="{{value}}" target="_blank"><span class="oi oi-external-link"></span></a>
     </ng-template>
