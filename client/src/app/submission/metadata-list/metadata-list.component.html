@@ -105,6 +105,15 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <!--dss link-->
+  <ng-container *ngIf="metadataType == 'bundleManifests'">
+    <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <a href="{{value}}"><span class="oi oi-external-link"></span></a>
+      </ng-template>
+    </ngx-datatable-column>
+  </ng-container>
+
   <!--uuid-->
   <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
@@ -135,7 +144,7 @@
 
     <!--Other columns-->
     <ng-template #textColumn>
-      <ngx-datatable-column prop="{{column}}" name="{{column.replace('content.','')}}">
+      <ngx-datatable-column *ngIf="!column.startsWith('_')" prop="{{column}}" name="{{column.replace('content.','')}}">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
           <span
             title="{{value}}"
@@ -153,14 +162,6 @@
         </ng-template>
       </ngx-datatable-column>
     </ng-template>
-  </ng-container>
-
-  <ng-container *ngIf="metadataType == 'bundleManifests'">
-    <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{value}}"><span class="oi oi-external-link"></span></a>
-      </ng-template>
-    </ngx-datatable-column>
   </ng-container>
 
 </ngx-datatable>
