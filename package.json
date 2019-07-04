@@ -4,7 +4,8 @@
   "description": "",
   "dependencies": {
     "npm": "^6.9.0",
-    "serverless-finch": "^2.3.2"
+    "serverless-finch": "^2.3.2",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@angular/cli": "^7.3.0",
@@ -13,7 +14,9 @@
     "js-yaml": ">=3.13.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,6 @@
   "bugs": {
     "url": "https://github.com/HumanCellAtlas/ingest-ui/issues"
   },
-  "homepage": "https://github.com/HumanCellAtlas/ingest-ui#readme"
+  "homepage": "https://github.com/HumanCellAtlas/ingest-ui#readme",
+  "snyk": true
 }
