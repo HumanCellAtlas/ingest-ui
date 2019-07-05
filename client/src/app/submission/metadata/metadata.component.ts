@@ -10,7 +10,6 @@ export class MetadataComponent implements OnInit {
   @Input() submissionEnvelopeId: number;
   @Input() projectId: number;
   @Input() manifest: Object;
-  @Input() isUpdate: boolean;
 
   private alive: boolean;
   private pollInterval : number;

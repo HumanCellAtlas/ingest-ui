@@ -7,7 +7,7 @@ import {RouterModule} from '@angular/router';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatSelectModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatRadioModule, MatSelectModule,
   MatTabsModule
 } from '@angular/material';
 
@@ -132,7 +132,8 @@ export function tokenGetter(): string {
     MatCheckboxModule,
     MatButtonModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatRadioModule
   ],
   providers: [
     IngestService,

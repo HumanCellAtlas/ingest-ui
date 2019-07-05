@@ -27,12 +27,13 @@ export class UploadComponent implements OnInit {
 
   @Output() fileUpload = new EventEmitter();
 
-  @Input() isUpdate = false;
+  isUpdate:boolean = false;
 
   constructor(private brokerService: BrokerService,
               private router: Router,
               private alertService: AlertService,
               private loaderService: LoaderService) {
+    this.isUpdate = false;
   }
 
   ngOnInit() {
@@ -57,21 +58,25 @@ export class UploadComponent implements OnInit {
       }
 
       this.brokerService.uploadSpreadsheet(formData, this.isUpdate)
-        .subscribe(
-        data => {
-          this.uploadResults$ = <any>data;
-          let submissionId = this.uploadResults$['details']['submission_id'];
-          let submissionsPath = `/submissions/detail/${submissionId}/overview`;
+        .subscribe({
+          next: data => {
+            this.uploadResults$ = <any>data;
+            let submissionId = this.uploadResults$['details']['submission_id'];
+            let submissionsPath = `/submissions/detail/${submissionId}/overview`;
 
-          this.router.navigate([submissionsPath]);
-          this.alertService.success("", this.uploadResults$['message']);
-          this.loaderService.display(false);
-        },
-        err => {
-          this.error$ = <any>err
-          this.alertService.error(this.error$['message'], this.error$['details']);
-          this.loaderService.display(false);
+            this.router.navigate([submissionsPath]);
+            this.alertService.success("", this.uploadResults$['message']);
+            this.loaderService.display(false);
+          },
+          error: err => {
+            this.error$ = <any>err
+            this.alertService.error(this.error$['message'], this.error$['details']);
+            this.loaderService.display(false);
+          }
         });
+    } else {
+      this.alertService.clear();
+      this.alertService.error("No file chosen!", "Please choose a spreadsheet to upload.", false, true)
     }
 
   }

@@ -38,8 +38,6 @@ export class SubmissionComponent implements OnInit {
 
   manifest: Object;
 
-  isUpdate: boolean;
-
   constructor(
     private alertService: AlertService,
     private ingestService: IngestService,
@@ -48,15 +46,11 @@ export class SubmissionComponent implements OnInit {
       this.pollInterval = 4000; //4s
       this.alive = true;
       this.manifest = {};
-      this.isUpdate = false;
   }
 
   ngOnInit() {
     this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
     let tab = this.route.snapshot.paramMap.get('tab');
-    let action = this.route.snapshot.paramMap.get('action');
-
-    this.isUpdate = action == 'update';
 
     this.activeTab = tab ? tab.toLowerCase() : '';
 

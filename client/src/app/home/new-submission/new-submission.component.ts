@@ -16,7 +16,7 @@ export class NewSubmissionComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['submissions/metadata/new']);
+    this.router.navigate(['submissions/metadata/upload']);
   }
 
 }
