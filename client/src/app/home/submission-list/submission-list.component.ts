@@ -41,7 +41,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(private ingestService: IngestService,
               private router: Router,
