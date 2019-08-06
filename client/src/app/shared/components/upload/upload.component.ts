@@ -14,8 +14,8 @@ import {LoaderService} from "../../services/loader.service";
 })
 export class UploadComponent implements OnInit {
 
-  @ViewChild('fileInput') fileInput;
-  @ViewChild('projectIdInput') projectIdInput;
+  @ViewChild('fileInput', { static: true }) fileInput;
+  @ViewChild('projectIdInput', { static: true }) projectIdInput;
 
   error$: Observable<String>;
 

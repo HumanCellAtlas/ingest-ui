@@ -27,7 +27,7 @@ export class ProjectListComponent implements OnInit {
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   searchText: string;
 

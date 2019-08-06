@@ -65,8 +65,8 @@ export class MetadataTableComponent implements OnInit, AfterViewInit, OnDestroy 
 
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('input') input: ElementRef;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild('input', { static: false }) input: ElementRef;
 
   ngOnInit() {
     this.alive = true;
