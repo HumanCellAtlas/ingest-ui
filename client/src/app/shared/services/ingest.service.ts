@@ -43,7 +43,11 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/user/projects`, {params: params})
   }
 
-  public submit(submitLink) {
+  public deleteSubmission(submissionId){
+    return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`)
+  }
+
+  public submit(submitLink){
     this.loaderService.display(true);
     this.http.put(submitLink, null).subscribe(
       res => {

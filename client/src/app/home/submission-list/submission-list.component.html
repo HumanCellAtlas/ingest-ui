@@ -9,6 +9,7 @@
         <th>Project Name</th>
         <th>Project ID</th>
         <th>Status</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -37,6 +38,11 @@
             <span *ngSwitchCase="'Complete'"
                   class="badge-in-list badge badge-pill border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
           </div>
+        </td>
+        <td>
+          <button mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
         </td>
       </tr>
       <tr *ngIf="!submissionEnvelopes">
