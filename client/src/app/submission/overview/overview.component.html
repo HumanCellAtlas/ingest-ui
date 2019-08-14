@@ -16,6 +16,10 @@
       <br/>
       <span><p class="text-justify">{{project?.content?.project_core?.project_description}}</p></span>
       <br/>
+      <span><strong>Project UUID</strong></span>
+      <br/>
+      <span><p class="text-justify">{{project?.uuid?.uuid}}</p></span>
+      <br/>
       <span><strong>Validation State</strong></span>
       <span><p>{{project?.validationState}}</p></span>
       <ng-container *ngFor="let error of project?.validationErrors">
