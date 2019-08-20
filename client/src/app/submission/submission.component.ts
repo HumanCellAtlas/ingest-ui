@@ -90,6 +90,13 @@ export class SubmissionComponent implements OnInit {
             data => {
               this.submissionErrors = data['_embedded']['submissionErrors'];
               this.alertService.clear();
+              if (this.submissionErrors.length > this.MAX_ERRORS) {
+                this.alertService.error(
+                  `${ this.submissionErrors.length - this.MAX_ERRORS } Other Errors`,
+                  `Cannot show more than ${ this.MAX_ERRORS } errors, total errors: ${ this.submissionErrors.length }`,
+                  false,
+                  false);
+              }
               let errors_displayed = 0;
               for (const err of this.submissionErrors) {
                 if (errors_displayed >= this.MAX_ERRORS) {
