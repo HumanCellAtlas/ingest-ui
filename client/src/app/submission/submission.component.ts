@@ -18,8 +18,6 @@ export class SubmissionComponent implements OnInit {
   submissionEnvelope$: Observable<any>;
   submissionEnvelope;
   submissionState: string;
-  submissionErrors: string;
-
 
   activeTab: string;
 
@@ -37,6 +35,7 @@ export class SubmissionComponent implements OnInit {
   private pollInterval: number;
 
   manifest: Object;
+  submissionErrors: Object;
 
   constructor(
     private alertService: AlertService,
@@ -82,16 +81,21 @@ export class SubmissionComponent implements OnInit {
             this.submissionState = data['submissionState'];
             this.isSubmitted = this.isStateSubmitted(data.submissionState)
             this.submitLink = this.getLink(data, 'submit');
-            this.url = this.getLink(data, 'self')
-            let err = data['submissionErrors'] ? data['submissionErrors'][0] : null;
-            if (err){
-              this.alertService.clear();
-              this.alertService.error(err['message'],
-                `${err['errorCode']} : ${err['details']}`,
-                false, false);
-              console.log(err);
-            }
+            this.url = this.getLink(data, 'self');
           });
+
+        this.ingestService.getSubmissionErrors(this.submissionEnvelopeId)
+          .subscribe(
+            data => {
+              this.submissionErrors = data['_embedded']['submissionErrors'];
+              const err = this.submissionErrors ? this.submissionErrors[0] : null;
+              if (err){
+                this.alertService.clear();
+                this.alertService.error(err['title'], err['detail'], false, false);
+                console.log(err);
+              }
+            }
+          );
 
         this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
           .subscribe(
