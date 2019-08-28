@@ -28,10 +28,16 @@
 
 <ng-container *ngIf="!editMode && projectId">
   <app-overview [project]="project" [projectId]="projectId" >
-    <button type="button" class="btn btn-success" (click)="setToEditMode()">Edit Project</button>
-    <button type="button" class="btn btn-success" (click)="newSubmission()">Create project from spreadsheet</button>
+<!--    <button type="button" class="btn btn-success" (click)="setToEditMode()">Edit Project</button>-->
+<!--    <button type="button" class="btn btn-success" (click)="newSubmission()">Create project from spreadsheet</button>-->
+    <a class="btn btn-success" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/metadata" >Create submission</a>
   </app-overview>
+
 </ng-container>
+
+
+
+
 <br/><br/>
 <h3>Submissions</h3>
 <br/>
@@ -42,8 +48,6 @@
       <th>Created</th>
       <th>Submission UUID</th>
       <th>Status</th>
-      <th>
-      </th>
     </tr>
     </thead>
     <tbody>
