@@ -33,9 +33,10 @@ export class SubmissionComponent implements OnInit {
 
   private alive: boolean;
   private pollInterval: number;
+  private MAX_ERRORS = 9;
 
   manifest: Object;
-  submissionErrors: Object;
+  submissionErrors: Object[];
 
   constructor(
     private alertService: AlertService,
@@ -88,11 +89,22 @@ export class SubmissionComponent implements OnInit {
           .subscribe(
             data => {
               this.submissionErrors = data['_embedded']['submissionErrors'];
-              const err = this.submissionErrors ? this.submissionErrors[0] : null;
-              if (err){
-                this.alertService.clear();
-                this.alertService.error(err['title'], err['detail'], false, false);
+              this.alertService.clear();
+              if (this.submissionErrors.length > this.MAX_ERRORS) {
+                this.alertService.error(
+                  `${ this.submissionErrors.length - this.MAX_ERRORS } Other Errors`,
+                  `Cannot show more than ${ this.MAX_ERRORS } errors, total errors: ${ this.submissionErrors.length }`,
+                  false,
+                  false);
+              }
+              let errors_displayed = 0;
+              for (const err of this.submissionErrors) {
+                if (errors_displayed >= this.MAX_ERRORS) {
+                  break;
+                }
                 console.log(err);
+                this.alertService.error(err['title'], err['detail'], false, false);
+                errors_displayed++;
               }
             }
           );
