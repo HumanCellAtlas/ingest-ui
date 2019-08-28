@@ -36,7 +36,7 @@ export class SubmissionComponent implements OnInit {
   private MAX_ERRORS = 9;
 
   manifest: Object;
-  submissionErrors: Object[];
+  submissionErrors: any[];
 
   constructor(
     private alertService: AlertService,
@@ -91,9 +91,11 @@ export class SubmissionComponent implements OnInit {
               this.submissionErrors = data['_embedded']['submissionErrors'];
               this.alertService.clear();
               if (this.submissionErrors.length > this.MAX_ERRORS) {
+                const link = this.submissionEnvelope._links.submissionEnvelopeErrors.href;
+                const message = `Cannot show more than ${ this.MAX_ERRORS } errors.`;
                 this.alertService.error(
                   `${ this.submissionErrors.length - this.MAX_ERRORS } Other Errors`,
-                  `Cannot show more than ${ this.MAX_ERRORS } errors, total errors: ${ this.submissionErrors.length }`,
+                  `${ message } <a href="${ link }">View all ${ this.submissionErrors.length } errors.</a>`,
                   false,
                   false);
               }
