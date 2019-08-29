@@ -23,7 +23,7 @@
       <tr *ngFor="let project of projects">
         <td>{{project.submissionDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/projects/detail/{{getProjectId(project)}}" class="text-info" >{{project?.uuid?.uuid}}</a>
+          <a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info" >{{project?.uuid?.uuid}}</a>
         </td>
         <td><span title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></td>
         <td><span title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></td>
