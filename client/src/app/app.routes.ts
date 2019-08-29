@@ -23,6 +23,7 @@ export const ROUTES: Routes = [
 
   { path: 'projects/new', component: ProjectComponent },
   { path: 'projects/detail/:id', component: ProjectComponent },
+  { path: 'projects/detail', component: ProjectComponent },
 
   { path: 'home', component: HomeComponent },
 

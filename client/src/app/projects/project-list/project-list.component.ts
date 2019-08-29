@@ -55,6 +55,10 @@ export class ProjectListComponent implements OnInit {
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
+  getProjectUuid(project){
+    return project['uuid']['uuid'];
+  }
+
   ngOnDestroy(){
     this.alive = false; // switches your IntervalObservable off
   }
