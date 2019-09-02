@@ -203,7 +203,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
     let submissionId : String = this.getSubmissionId(submissionEnvelope);
-    if(confirm("Are you sure?")){
+    if(confirm(`Are you sure you want to delete the submission with UUID, ${submissionEnvelope['uuid']['uuid']}, for the project, "${this.getProjectName(submissionEnvelope)}" ?`)){
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {
           this.alertService.clear();
