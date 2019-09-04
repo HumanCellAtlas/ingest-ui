@@ -4,6 +4,7 @@ import {IngestService} from "../shared/services/ingest.service";
 import {ActivatedRoute} from "@angular/router";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {AlertService} from "../shared/services/alert.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 
 @Component({
@@ -88,7 +89,7 @@ export class SubmissionComponent implements OnInit {
         this.ingestService.getSubmissionErrors(this.submissionEnvelopeId)
           .subscribe(
             data => {
-              this.submissionErrors = data['_embedded']['submissionErrors'];
+              this.submissionErrors = data['_embedded'] ? data['_embedded']['submissionErrors'] : [];
               this.alertService.clear();
               if (this.submissionErrors.length > this.MAX_ERRORS) {
                 const link = this.submissionEnvelope._links.submissionEnvelopeErrors.href;
@@ -104,7 +105,6 @@ export class SubmissionComponent implements OnInit {
                 if (errors_displayed >= this.MAX_ERRORS) {
                   break;
                 }
-                console.log(err);
                 this.alertService.error(err['title'], err['detail'], false, false);
                 errors_displayed++;
               }
@@ -121,8 +121,12 @@ export class SubmissionComponent implements OnInit {
                 this.isLinkingDone = true;
               }
             }, err => {
-              console.log(err)
               this.isLinkingDone = false;
+              if (err instanceof HttpErrorResponse && err.status == 404 ){
+                // do nothing, the endpoint throws error when no submission manifest is found
+              } else {
+                console.log(err)
+              }
           });
       });
   }

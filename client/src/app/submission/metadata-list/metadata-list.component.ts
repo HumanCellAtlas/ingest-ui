@@ -188,7 +188,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   getValidationErrors(row){
     let columns = Object.keys(row)
       .filter(column => {
-        return (column.match('^validationErrors.+userFriendlyMessage'))
+        return (column.match('^validationErrors.+userFriendlyMessage') || column.match('^validationErrors.+user_friendly_message'));
       });
     let errors = []
     let count = columns.length
