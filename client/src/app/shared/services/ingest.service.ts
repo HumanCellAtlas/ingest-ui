@@ -37,7 +37,8 @@ export class IngestService {
   }
 
   public getProjects(params): Observable<any> {
-    return this.http.get(`${this.API_URL}/projects`, {params: params})
+    params['excludedTitles'] = ['SS2 1 Cell Integration Test', '10x 1 Run Integration Test'];
+    return this.http.get(`${this.API_URL}/projects/search/findAllExcludingTitles`, {params: params});
   }
 
   public getUserProjects(params): Observable<any> {
