@@ -99,6 +99,25 @@ export class ProjectListComponent implements OnInit {
       });
   }
 
+  getDefaultProjects(pagination) {
+    const query = [{
+      'contentField': 'project_core.project_title',
+      'operator': 'NIN',
+      'value': ['SS2 1 Cell Integration Test', '10x 1 Run Integration Test']
+    }];
+    this.ingestService.queryProjects(query, pagination)
+      .subscribe({
+        next: data => {
+          this.projects = data._embedded ? data._embedded.projects : [];
+          this.pagination = data.page;
+          this.getCurrentPageInfo(this.pagination);
+        },
+        error: err => {
+          console.log('err', err);
+        }
+      });
+  }
+
   pollProjects(){
     TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive
@@ -115,12 +134,7 @@ export class ProjectListComponent implements OnInit {
       this.queryProjects(this.searchText, this.params)
     }
     else{
-      this.ingestService.getProjects(this.params)
-        .subscribe(data =>{
-          this.projects = data._embedded ? data._embedded.projects : [];
-          this.pagination = data.page;
-          this.getCurrentPageInfo(this.pagination);
-        });
+      this.getDefaultProjects(this.params);
     }
 
   }
