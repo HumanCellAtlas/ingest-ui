@@ -33,7 +33,7 @@ export class BrokerService {
   }
 
   public uploadSpreadsheet(formData, isUpdate=false): Observable<UploadResults> {
-    var uploadApiSuffix = isUpdate ? '_update': ''
+    let uploadApiSuffix = isUpdate ? '_update': ''
     return this.http.post<UploadResults>(`${this.API_URL}/api_upload${uploadApiSuffix}`, formData)
       .pipe(
         tap(data => console.log('server data:', data)),

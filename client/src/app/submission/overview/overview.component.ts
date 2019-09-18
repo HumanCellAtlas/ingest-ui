@@ -9,7 +9,6 @@ import {BrokerService} from "../../shared/services/broker.service";
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-  @Input() projectId;
   @Input() submissionEnvelope;
   @Input() project;
   @Input() isLinkingDone: boolean;

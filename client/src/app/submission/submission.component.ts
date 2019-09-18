@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {IngestService} from "../shared/services/ingest.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {AlertService} from "../shared/services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -14,7 +14,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class SubmissionComponent implements OnInit {
   submissionEnvelopeId: string;
-  projectId: string;
+  submissionEnvelopeUuid: string;
+  projectUuid: string;
 
   submissionEnvelope$: Observable<any>;
   submissionEnvelope;
@@ -42,7 +43,8 @@ export class SubmissionComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private ingestService: IngestService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
       this.pollInterval = 4000; //4s
       this.alive = true;
@@ -50,18 +52,22 @@ export class SubmissionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.submissionEnvelopeUuid = queryParams.get("uuid")
+    });
+
     this.submissionEnvelopeId = this.route.snapshot.paramMap.get('id');
     let tab = this.route.snapshot.paramMap.get('tab');
 
     this.activeTab = tab ? tab.toLowerCase() : '';
 
-    if(!this.submissionEnvelopeId){
-      this.projectId = this.route.snapshot.paramMap.get('projectid');
-      if(this.projectId){
-        this.getProject(this.projectId)
+    if(!this.submissionEnvelopeId && !this.submissionEnvelopeUuid){
+      this.projectUuid = this.route.snapshot.paramMap.get('projectUuid');
+      if(this.projectUuid){
+        this.getProject(this.projectUuid)
       }
     } else {
-      this.pollSubmissionEnvelope(this.submissionEnvelopeId);
+      this.pollSubmissionEnvelope();
       this.pollEntities();
 
     }
@@ -71,63 +77,15 @@ export class SubmissionComponent implements OnInit {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  pollSubmissionEnvelope(id){
+  pollSubmissionEnvelope(){
     TimerObservable.create(0, this.pollInterval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
-        this.submissionEnvelope$ = this.ingestService.getSubmission(id);
-        this.submissionEnvelope$
-          .subscribe(data => {
-            this.submissionEnvelope = data;
-            this.isValid = this.checkIfValid(data);
-            this.submissionState = data['submissionState'];
-            this.isSubmitted = this.isStateSubmitted(data.submissionState)
-            this.submitLink = this.getLink(data, 'submit');
-            this.url = this.getLink(data, 'self');
-          });
-
-        this.ingestService.getSubmissionErrors(this.submissionEnvelopeId)
-          .subscribe(
-            data => {
-              this.submissionErrors = data['_embedded'] ? data['_embedded']['submissionErrors'] : [];
-              this.alertService.clear();
-              if (this.submissionErrors.length > this.MAX_ERRORS) {
-                const link = this.submissionEnvelope._links.submissionEnvelopeErrors.href;
-                const message = `Cannot show more than ${ this.MAX_ERRORS } errors.`;
-                this.alertService.error(
-                  `${ this.submissionErrors.length - this.MAX_ERRORS } Other Errors`,
-                  `${ message } <a href="${ link }">View all ${ this.submissionErrors.length } errors.</a>`,
-                  false,
-                  false);
-              }
-              let errors_displayed = 0;
-              for (const err of this.submissionErrors) {
-                if (errors_displayed >= this.MAX_ERRORS) {
-                  break;
-                }
-                this.alertService.error(err['title'], err['detail'], false, false);
-                errors_displayed++;
-              }
-            }
-          );
-
-        this.ingestService.getSubmissionManifest(this.submissionEnvelopeId)
-          .subscribe(
-      data => {
-              this.manifest = data;
-              let actualLinks = this.manifest['actualLinks'];
-              let expectedLinks = this.manifest['expectedLinks'];
-              if (!expectedLinks || (actualLinks == expectedLinks)) {
-                this.isLinkingDone = true;
-              }
-            }, err => {
-              this.isLinkingDone = false;
-              if (err instanceof HttpErrorResponse && err.status == 404 ){
-                // do nothing, the endpoint throws error when no submission manifest is found
-              } else {
-                console.log(err)
-              }
-          });
+        this.getSubmissionEnvelope();
+        if(this.submissionEnvelope){
+          this.getSubmissionErrors();
+          this.getSubmissionManifest();
+        }
       });
   }
 
@@ -147,8 +105,8 @@ export class SubmissionComponent implements OnInit {
     return (validStates.indexOf(status) >= 0);
   }
 
-  getProject(id){
-    this.ingestService.getProject(id)
+  getProject(projectUuid){
+    this.ingestService.getProjectByUuid(projectUuid)
       .subscribe(project => {
         this.project = project;
         this.projectName = this.getProjectName();
@@ -216,5 +174,85 @@ export class SubmissionComponent implements OnInit {
     }
 
     return '';
+  }
+
+  private getSubmissionEnvelope() {
+    if(this.submissionEnvelopeId){
+      this.submissionEnvelope$ = this.ingestService.getSubmission(this.submissionEnvelopeId);
+    } else if (this.submissionEnvelopeUuid) {
+      console.log('submission uuid', this.submissionEnvelopeUuid)
+      this.submissionEnvelope$ = this.ingestService.getSubmissionByUuid(this.submissionEnvelopeUuid);
+    } else {
+      this.submissionEnvelope$ = null
+    }
+
+    if (this.submissionEnvelope$){
+      this.submissionEnvelope$
+        .subscribe(data => {
+          console.log('submission envelope data', data)
+          this.submissionEnvelope = data;
+          this.submissionEnvelopeId = this.getSubmissionId(data)
+          this.isValid = this.checkIfValid(data);
+          this.submissionState = data['submissionState'];
+          this.isSubmitted = this.isStateSubmitted(data.submissionState)
+          this.submitLink = this.getLink(data, 'submit');
+          this.url = this.getLink(data, 'self');
+        }, error =>{
+          this.alertService.error('Submission Not Found', `Submission could not be found.`, true, true);
+          this.router.navigate([`/submissions/list`]);
+        });
+    }
+  }
+
+  private getSubmissionId(submissionEnvelope){
+    let links = submissionEnvelope['_links'];
+    return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
+  }
+
+  private getSubmissionErrors() {
+    this.ingestService.get(this.submissionEnvelope['_links']['submissionEnvelopeErrors']['href'])
+      .subscribe(
+        data => {
+          this.submissionErrors = data['_embedded'] ? data['_embedded']['submissionErrors'] : [];
+          this.alertService.clear();
+          if (this.submissionErrors.length > this.MAX_ERRORS) {
+            const link = this.submissionEnvelope._links.submissionEnvelopeErrors.href;
+            const message = `Cannot show more than ${ this.MAX_ERRORS } errors.`;
+            this.alertService.error(
+              `${ this.submissionErrors.length - this.MAX_ERRORS } Other Errors`,
+              `${ message } <a href="${ link }">View all ${ this.submissionErrors.length } errors.</a>`,
+              false,
+              false);
+          }
+          let errors_displayed = 0;
+          for (const err of this.submissionErrors) {
+            if (errors_displayed >= this.MAX_ERRORS) {
+              break;
+            }
+            this.alertService.error(err['title'], err['detail'], false, false);
+            errors_displayed++;
+          }
+        }
+      );
+  }
+
+  private getSubmissionManifest() {
+    this.ingestService.get(this.submissionEnvelope['_links']['submissionManifest']['href'])
+      .subscribe(
+        data => {
+          this.manifest = data;
+          let actualLinks = this.manifest['actualLinks'];
+          let expectedLinks = this.manifest['expectedLinks'];
+          if (!expectedLinks || (actualLinks == expectedLinks)) {
+            this.isLinkingDone = true;
+          }
+        }, err => {
+          this.isLinkingDone = false;
+          if (err instanceof HttpErrorResponse && err.status == 404 ){
+            // do nothing, the endpoint throws error when no submission manifest is found
+          } else {
+            console.log(err)
+          }
+        });
   }
 }

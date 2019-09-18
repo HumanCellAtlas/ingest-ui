@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import {AlertService} from "./alert.service";
 import {ListResult} from "../models/hateoas";
 import {Summary} from "../models/summary";
-import {Project} from "../models/project";
 import {PagedData} from "../models/page";
 import {SubmissionEnvelope} from "../models/submissionEnvelope";
 
@@ -44,30 +43,33 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/user/projects`, {params: params})
   }
 
-  public submit(submitLink){
+  public submit(submitLink) {
     this.loaderService.display(true);
     this.http.put(submitLink, null).subscribe(
-      res=> {
-        setTimeout(() =>
-          {
-            this.alertService.clear()
+      res => {
+        setTimeout(() => {
+            this.alertService.clear();
             this.loaderService.display(false);
-            this.alertService.success("",'You have successfully submitted your submission envelope.');
+            this.alertService.success("", 'You have successfully submitted your submission envelope.');
             location.reload();
           },
           3000);
       },
       err => {
         this.loaderService.display(false);
-        this.alertService.error("",'An error occured on submitting your submission envelope.');
+        this.alertService.error("", 'An error occured on submitting your submission envelope.');
         console.log(err)
 
       }
     )
   }
 
-  public getSubmission(id): Observable<SubmissionEnvelope>{
+  public getSubmission(id): Observable<SubmissionEnvelope> {
     return this.http.get<SubmissionEnvelope>(`${this.API_URL}/submissionEnvelopes/${id}`);
+  }
+
+  public getSubmissionByUuid(uuid): Observable<SubmissionEnvelope> {
+    return this.http.get<SubmissionEnvelope>(`${this.API_URL}/submissionEnvelopes/search/findByUuidUuid?uuid=${uuid}`);
   }
 
   public getProject(id): Observable<Object> {
@@ -78,30 +80,26 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/projects/search/findByUuid?uuid=${uuid}`);
   }
 
-  public getSubmissionErrors(submissionId): Observable<Object>{
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/submissionErrors`);
-  }
-
-  public getSubmissionManifest(submissionId): Observable<Object>{
+  public getSubmissionManifest(submissionId): Observable<Object> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/submissionManifest`);
   }
 
-  public postProject(project): Observable<Object>{
+  public postProject(project): Observable<Object> {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
-  public queryProjects(query: Object[], pagination): Observable<any>{
+  public queryProjects(query: Object[], pagination): Observable<any> {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: pagination})
   }
 
-  public putProject(id, project): Observable<Object>{
+  public putProject(id, project): Observable<Object> {
     return this.http.put(`${this.API_URL}/projects/${id}`, project);
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
       .map((data: ListResult<Object>) => {
-        if(data._embedded && data._embedded.projects)
+        if (data._embedded && data._embedded.projects)
           return _.values(data._embedded.projects)[0]; // there should only be one project linked to the submission env
         else
           return {};
@@ -109,17 +107,17 @@ export class IngestService {
   }
 
   public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
-    let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`
+    let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`;
     let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
 
-    let sort = params['sort']
-    if(sort){
+    let sort = params['sort'];
+    if (sort) {
       url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContaining`;
       params['envelopeUri'] = encodeURIComponent(submission_url);
       params['sort'] = `${sort['column']},${sort['dir']}`
     }
 
-    if(filterState) {
+    if (filterState) {
       let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
       url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContainingAndValidationState`;
       params['envelopeUri'] = encodeURIComponent(submission_url);
@@ -131,11 +129,10 @@ export class IngestService {
       .map((data: ListResult<Object>) => {
         let pagedData = new PagedData();
 
-        if(data._embedded && data._embedded[entityType]){
+        if (data._embedded && data._embedded[entityType]) {
           pagedData.data = _.values(data._embedded[entityType]);
           pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data)
-        }
-        else{
+        } else {
           pagedData.data = [];
         }
         pagedData.page = data.page;
@@ -144,11 +141,11 @@ export class IngestService {
       });
   }
 
-  public put(ingestLink, content){
+  public put(ingestLink, content) {
     return this.http.put(ingestLink, content);
   }
 
-  public patch(ingestLink, patchData){
+  public patch(ingestLink, patchData) {
     return this.http.patch(ingestLink, patchData);
   }
 
@@ -156,13 +153,13 @@ export class IngestService {
     return this.http.get(url);
   }
 
-  private reduceColumnsForBundleManifests(entityType, data){
-    if(entityType == 'bundleManifests'){
-      return data.map(function(row){
+  private reduceColumnsForBundleManifests(entityType, data) {
+    if (entityType == 'bundleManifests') {
+      return data.map(function (row) {
         let newRow = {
-          'bundleUuid' : row['bundleUuid'],
-          'version' : row['bundleVersion'],
-          'envelopeUuid' : row['envelopeUuid'],
+          'bundleUuid': row['bundleUuid'],
+          'version': row['bundleVersion'],
+          'envelopeUuid': row['envelopeUuid'],
           '_links': row['_links'],
           '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws&version${row['bundleVersion']}`
         };
