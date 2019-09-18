@@ -15,15 +15,13 @@ import {LoaderService} from "../../services/loader.service";
 export class UploadComponent implements OnInit {
 
   @ViewChild('fileInput', { static: true }) fileInput;
-  @ViewChild('projectIdInput', { static: true }) projectIdInput;
+  @ViewChild('projectUuidInput', { static: true }) projectIdInput;
 
   error$: Observable<String>;
 
   uploadResults$: Observable<UploadResults>;
 
-  downloadFile:string;
-
-  @Input() projectId;
+  @Input() projectUuid;
 
   @Output() fileUpload = new EventEmitter();
 
@@ -36,13 +34,7 @@ export class UploadComponent implements OnInit {
     this.isUpdate = false;
   }
 
-  ngOnInit() {
-    if(this.projectId){
-      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.6.1_spreadsheet_NOPROJECTTAB.xlsx';
-    } else {
-      this.downloadFile = 'assets/xlsx-templates/Empty_template_v4.6.1_spreadsheet_PROJECTTAB.xlsx';
-    }
-  }
+  ngOnInit() {}
 
   upload() {
     let fileBrowser = this.fileInput.nativeElement;
@@ -51,10 +43,10 @@ export class UploadComponent implements OnInit {
       const formData = new FormData();
       formData.append("file", fileBrowser.files[0]);
 
-      let projectId = this.projectIdInput.nativeElement.value;
+      let projectUuid = this.projectIdInput.nativeElement.value;
 
-      if(projectId){
-        formData.append("project_id", projectId );
+      if(projectUuid){
+        formData.append("projectUuid", projectUuid );
       }
 
       this.brokerService.uploadSpreadsheet(formData, this.isUpdate)

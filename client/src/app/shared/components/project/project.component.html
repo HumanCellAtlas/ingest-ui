@@ -3,8 +3,8 @@ Loading project ...
 </ng-container>
 
 <ng-container *ngIf="project" >
-  <app-overview [project]="project" [projectId]="projectId" >
-    <a class="btn btn-success" role="button" routerLink="/projects/detail/{{getProjectId(project)}}/submissions/metadata" >Create submission</a>
+  <app-overview [project]="project">
+    <a class="btn btn-success" role="button" routerLink="/projects/detail/{{projectUuid}}/submissions/metadata" >Create submission</a>
   </app-overview>
   <br/><br/>
   <h3>Submissions</h3>
@@ -22,7 +22,7 @@ Loading project ...
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/submissions/detail/{{getSubmissionId(submissionEnvelope)}}/overview" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
+          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope)}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
         </td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState">

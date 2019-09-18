@@ -8,7 +8,7 @@ import {IngestService} from "../../shared/services/ingest.service";
 })
 export class MetadataComponent implements OnInit {
   @Input() submissionEnvelopeId: number;
-  @Input() projectId: number;
+  @Input() projectUuid: number;
   @Input() manifest: Object;
 
   private alive: boolean;
