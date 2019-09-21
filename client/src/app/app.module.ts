@@ -38,7 +38,6 @@ import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
 import {FilesComponent} from './submission/files/files.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
-import {TeamComponent} from './shared/components/team/team.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component'
@@ -51,7 +50,6 @@ import {OverviewComponent } from './submission/overview/overview.component';
 import {AlertService} from "./shared/services/alert.service";
 import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
-import {ConsentComponent} from './submission/consent/consent.component';
 import {FlattenService} from "./shared/services/flatten.service";
 import {SchemaService} from "./shared/services/schema.service";
 
@@ -85,7 +83,6 @@ export function tokenGetter(): string {
     TabsComponent,
     FilesComponent,
     UploadInfoComponent,
-    TeamComponent,
     SubmitComponent,
     MetadataListComponent,
     ProjectListComponent,
@@ -95,7 +92,6 @@ export function tokenGetter(): string {
     LoginComponent,
     OverviewComponent,
     AlertComponent,
-    ConsentComponent,
     MetadataTableComponent,
     MetadataFieldComponent
   ],

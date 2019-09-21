@@ -4,28 +4,32 @@ import { WelcomeComponent } from './welcome.component';
 import {NewSubmissionComponent} from "../new-submission/new-submission.component";
 import {IngestService} from "../../shared/services/ingest.service";
 import {AuthService} from "../../auth/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
+
 import {RouterTestingModule} from "@angular/router/testing";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 
 describe('WelcomeComponent', () => {
   let component: WelcomeComponent;
   let fixture: ComponentFixture<WelcomeComponent>;
+  let mockAuthSvc: jasmine.SpyObj<AuthService>;
+  let mockIngestSvc: jasmine.SpyObj<IngestService>;
 
   beforeEach(async(() => {
+    mockAuthSvc = jasmine.createSpyObj(['handleAuthentication', 'isAuthenticated']);
+    mockAuthSvc.userProfile = true;
+    mockIngestSvc = jasmine.createSpyObj(['getUserSummary']);
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule ],
       declarations: [
         WelcomeComponent,
         NewSubmissionComponent,
-
       ],
       providers: [
-        { provide: AuthService, useValue: { handleAuthentication: () => {}, isAuthenticated: () => {} } },
-        { provide: IngestService, useValue: { getUserSummary: () => {} } },
-        { provide: Router, useClass: class { navigate = jasmine.createSpy("navigate"); }},
-
+        { provide: AuthService, useValue: mockAuthSvc},
+        { provide: IngestService, useValue: mockIngestSvc },
       ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
