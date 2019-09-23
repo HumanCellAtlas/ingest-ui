@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/HumanCellAtlas/ingest-ui.svg?branch=master)](https://travis-ci.org/HumanCellAtlas/ingest-ui)
+
 # Ingest UI
 
 This is the UI app for monitoring and tracking submissions to the DCP. 
