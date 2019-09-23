@@ -30,6 +30,7 @@ export class ProjectListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   searchText: string;
+  value: any;
 
   constructor(private ingestService: IngestService) {
     this.alive = true;
