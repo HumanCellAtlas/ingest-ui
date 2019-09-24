@@ -197,9 +197,6 @@ export class SubmissionComponent implements OnInit {
           this.isSubmitted = this.isStateSubmitted(data.submissionState)
           this.submitLink = this.getLink(data, 'submit');
           this.url = this.getLink(data, 'self');
-        }, error =>{
-          this.alertService.error('Submission Not Found', `Submission could not be found.`, true, true);
-          this.router.navigate([`/submissions/list`]);
         });
     }
   }
