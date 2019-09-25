@@ -43,8 +43,7 @@ export class SubmissionComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private ingestService: IngestService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {
       this.pollInterval = 4000; //4s
       this.alive = true;
@@ -180,7 +179,7 @@ export class SubmissionComponent implements OnInit {
     if(this.submissionEnvelopeId){
       this.submissionEnvelope$ = this.ingestService.getSubmission(this.submissionEnvelopeId);
     } else if (this.submissionEnvelopeUuid) {
-      console.log('submission uuid', this.submissionEnvelopeUuid)
+
       this.submissionEnvelope$ = this.ingestService.getSubmissionByUuid(this.submissionEnvelopeUuid);
     } else {
       this.submissionEnvelope$ = null

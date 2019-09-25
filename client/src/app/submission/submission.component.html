@@ -7,7 +7,7 @@
   </div>
   <div>
   <h3 class="subheading-2">{{projectName}}</h3>
-    <mat-tab-group [selectedIndex]="!submissionEnvelopeId ? 1 : 0">
+    <mat-tab-group [selectedIndex]="!submissionEnvelopeId && !submissionEnvelopeUuid ? 1 : 0">
       <mat-tab label="Overview" [disabled]="!submissionEnvelopeId">
         <ng-template matTabContent>
         <app-overview [project]="project"
@@ -18,7 +18,7 @@
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>
-          <app-upload *ngIf="!submissionEnvelopeId" [projectUuid]="projectUuid"></app-upload>
+          <app-upload *ngIf="!submissionEnvelopeId && !submissionEnvelopeUuid" [projectUuid]="projectUuid"></app-upload>
           <app-metadata *ngIf="submissionEnvelopeId"
             [projectUuid]="projectUuid"
             [submissionEnvelopeId]="submissionEnvelopeId"
