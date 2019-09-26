@@ -13,6 +13,7 @@ export const ROUTES: Routes = [
 
   { path: 'submissions/list', component: HomeComponent },
   { path: 'submissions/:tab/upload', component: SubmissionComponent },
+  { path: 'submissions/detail/:id', component: SubmissionComponent },
   { path: 'submissions/detail/:id/:tab', component: SubmissionComponent },
   { path: 'submissions/detail', component: SubmissionComponent },
 
