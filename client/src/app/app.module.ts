@@ -8,7 +8,7 @@ import {RouterModule} from '@angular/router';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatRadioModule, MatSelectModule,
-  MatTabsModule
+  MatTabsModule, MatTreeModule
 } from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -63,6 +63,9 @@ import {
 import { MetadataFieldComponent } from './submission/metadata-field/metadata-field.component';
 
 import {environment} from '../environments/environment';
+import { MetadataDetailComponent } from './metadata-detail/metadata-detail.component';
+import {CdkTableModule} from "@angular/cdk/table";
+import {CdkTreeModule} from '@angular/cdk/tree';
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -93,7 +96,8 @@ export function tokenGetter(): string {
     OverviewComponent,
     AlertComponent,
     MetadataTableComponent,
-    MetadataFieldComponent
+    MetadataFieldComponent,
+    MetadataDetailComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -129,7 +133,10 @@ export function tokenGetter(): string {
     MatButtonModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule
+    MatRadioModule,
+    CdkTableModule,
+    CdkTreeModule,
+    MatTreeModule
   ],
   providers: [
     IngestService,

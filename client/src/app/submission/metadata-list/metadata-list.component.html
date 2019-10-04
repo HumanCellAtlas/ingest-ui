@@ -105,6 +105,12 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <ngx-datatable-column prop="uuid.uuid" name="view details" [width]="'130'" >
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-type="row['type']">
+      <a [routerLink]="['/metadata/detail/'+ type.toString().toLowerCase() +'/'+ value]" class="text-info" target="_blank"><span class="oi oi-external-link"></span></a>
+    </ng-template>
+  </ngx-datatable-column>
+
   <!--dss link-->
   <ng-container *ngIf="metadataType == 'bundleManifests'">
     <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
@@ -119,14 +125,14 @@
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span
         title="{{value}}"
-        (dblclick)="editing[rowIndex + '-' + column] = true"
-        *ngIf="!editing[rowIndex + '-' + column]">
+        (dblclick)="editing[rowIndex + '-' + 'uuid'] = true"
+        *ngIf="!editing[rowIndex + '-' + 'uuid']">
             {{value}}
           </span>
       <input
         autofocus
-        (blur)="updateValue($event, column, rowIndex)"
-        *ngIf="editing[rowIndex+ '-' + column]"
+        (blur)="updateValue($event, 'uuid', rowIndex)"
+        *ngIf="editing[rowIndex+ '-' + 'uuid']"
         type="text"
         [value]="value"
       />

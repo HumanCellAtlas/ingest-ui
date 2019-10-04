@@ -106,6 +106,10 @@ export class IngestService {
       })
   }
 
+  public getEntityByUuid(type, uuid): Observable<any> {
+    return this.http.get(`${this.API_URL}/${type}s/search/findByUuid?uuid=${uuid}`);
+  }
+
   public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
     let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`;
     let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;

@@ -5,11 +5,14 @@ import {ProjectComponent} from "./shared/components/project/project.component";
 import {SubmissionComponent} from "./submission/submission.component";
 import {ProjectsComponent} from "./projects/projects.component";
 import {LoginComponent} from "./login/login.component";
+import {MetadataDetailComponent} from "./metadata-detail/metadata-detail.component";
 
 export const ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'callback', component: CallbackComponent },
+
+  { path: 'metadata/detail/:type/:uuid', component: MetadataDetailComponent },
 
   { path: 'submissions/list', component: HomeComponent },
   { path: 'submissions/:tab/upload', component: SubmissionComponent },
