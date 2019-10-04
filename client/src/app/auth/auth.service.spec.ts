@@ -1,15 +1,22 @@
 import {AuthService} from './auth.service';
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {of} from "rxjs";
 
 describe('AuthService', () => {
   let authorizeSpy: jasmine.Spy;
   let authenticateSpy: jasmine.Spy;
   let mockRouter: jasmine.SpyObj<Router>;
-  let authService: AuthService
+  let authService: AuthService;
+  let httpService: jasmine.SpyObj<HttpClient>;
 
   beforeEach(() => {
     mockRouter = jasmine.createSpyObj(['navigate']);
-    authService = new AuthService(mockRouter)
+    httpService = jasmine.createSpyObj(['get']);
+    httpService.get.and.returnValue(of({}))
+
+    authService = new AuthService(mockRouter, httpService)
+
   });
 
   describe('login method', function () {
