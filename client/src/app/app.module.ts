@@ -66,6 +66,7 @@ import {environment} from '../environments/environment';
 import { MetadataDetailComponent } from './metadata-detail/metadata-detail.component';
 import {CdkTableModule} from "@angular/cdk/table";
 import {CdkTreeModule} from '@angular/cdk/tree';
+import {ConcreteTypePipe} from "./shared/pipes/concrete-type.pipe";
 
 export function tokenGetter(): string {
   return localStorage.getItem('access_token');
@@ -97,7 +98,8 @@ export function tokenGetter(): string {
     AlertComponent,
     MetadataTableComponent,
     MetadataFieldComponent,
-    MetadataDetailComponent
+    MetadataDetailComponent,
+    ConcreteTypePipe
   ],
   imports: [
     NgbModule.forRoot(),
