@@ -24,6 +24,10 @@ export class MetadataDetailComponent implements OnInit {
   uuid: string;
   type: string;
   json: any;
+  content: any;
+
+  inputs: any;
+  outputs: any;
 
   constructor(private route: ActivatedRoute,
               private ingestService: IngestService) {
@@ -35,7 +39,9 @@ export class MetadataDetailComponent implements OnInit {
     this.ingestService.getEntityByUuid(this.type, this.uuid).subscribe(
       json => {
         this.json = json;
+        this.content = json['content'];
         this.initialiseTree(json['content']);
+        this.getLinks(json);
       })
 
   }
@@ -66,5 +72,15 @@ export class MetadataDetailComponent implements OnInit {
   }
 
   hasChild = (_: number, node: FieldNode) => !!node.children && node.children.length > 0;
+
+  getLinks(entityJson){
+    const type = this.type.toLowerCase()
+    if (type in ['biomaterial', 'file'] ) {
+      const inputToProcessesUrl = entityJson['_links']['inputToProcesses']['href'];
+      this.ingestService.get(inputToProcessesUrl);
+
+    }
+
+  }
 
 }

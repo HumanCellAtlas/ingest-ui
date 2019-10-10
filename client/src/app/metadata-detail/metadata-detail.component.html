@@ -1,4 +1,5 @@
-<h4>{{type}} {{uuid}}</h4>
+<h4> {{content | concreteType}} </h4>
+<h6> {{uuid}}</h6>
 <div>
   <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="example-tree">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
@@ -25,4 +26,13 @@
       </li>
     </mat-nested-tree-node>
   </mat-tree>
+</div>
+
+<div>
+Input
+</div>
+
+
+<div>
+  Input
 </div>
