@@ -29,13 +29,9 @@
         </a>
       </li>
     </ul>
-
-    <form class="form-inline my-2 my-lg-0">
-      <button type="submit"
-              class="btn btn-logout"
-              *ngIf="auth.isAuthenticated()"
-              (click)="auth.logout()">Sign out
-      </button>
-    </form>
+    <button class="btn btn-logout"
+            *ngIf="auth.isAuthenticated()"
+            (click)="auth.logout()">Sign out
+    </button>
   </div>
 </nav>

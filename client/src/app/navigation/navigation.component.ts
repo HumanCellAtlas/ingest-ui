@@ -16,13 +16,9 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.auth.userProfile) {
-      this.profile = this.auth.userProfile;
-    } else {
-      this.auth.getProfile((err, profile) => {
-        this.profile = profile;
-      });
-    }
+    this.auth.getProfile().subscribe((profile)=>{
+      this.profile = profile
+    });
   }
 
 }

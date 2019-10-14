@@ -2,6 +2,7 @@
 <nav *ngIf="!auth.isAuthenticated()" class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
   <a class="navbar-brand" href="#">Human Cell Atlas</a>
 </nav>
+
 <main class="container-fluid">
   <br/>
   <alert></alert>
@@ -16,3 +17,15 @@
     </div>
   </router-outlet>
 </main>
+
+<!--TODO: REMOVE this after testing-->
+<button
+  class="btn btn-success btn-margin" (click)="auth.refreshToken()">
+  Refresh Token
+</button>
+<button
+  class="btn btn-success btn-margin" (click)="auth.revokeToken()">
+  Refresh Token
+</button>
+<div>access token: {{this.auth.oauthService.getAccessToken()}}</div>
+<div>refresh token: {{this.auth.oauthService.getRefreshToken()}}</div>

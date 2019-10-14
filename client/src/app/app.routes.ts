@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { CallbackComponent } from './callback/callback.component';
 import {ProjectComponent} from "./shared/components/project/project.component";
 import {SubmissionComponent} from "./submission/submission.component";
 import {ProjectsComponent} from "./projects/projects.component";
@@ -9,7 +8,6 @@ import {LoginComponent} from "./login/login.component";
 export const ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'callback', component: CallbackComponent },
 
   { path: 'submissions/list', component: HomeComponent },
   { path: 'submissions/:tab/upload', component: SubmissionComponent },

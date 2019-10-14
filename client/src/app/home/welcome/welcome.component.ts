@@ -11,8 +11,7 @@ import {Summary} from "./summary";
   encapsulation: ViewEncapsulation.None
 })
 export class WelcomeComponent implements OnInit {
-
-  profile: any;
+  profile: object;
 
   summary$: Observable<Summary>;
 
@@ -20,13 +19,9 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.auth.userProfile) {
-      this.profile = this.auth.userProfile;
-    } else {
-      this.auth.getProfile((err, profile) => {
-        this.profile = profile;
-      });
-    }
+    this.auth.getProfile().subscribe((profile)=>{
+      this.profile = profile
+    });
     this.summary$ = this.ingestService.getUserSummary();
   }
 }

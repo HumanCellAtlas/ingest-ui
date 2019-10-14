@@ -1,14 +1,28 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {JwtModule} from '@auth0/angular-jwt';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
+import {OAuthModule} from "angular-oauth2-oidc";
+
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatRadioModule, MatSelectModule,
-  MatTabsModule
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatIconModule,
+  MatInputModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatTooltipModule
 } from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -25,12 +39,11 @@ import {AuthService} from './auth/auth.service';
 import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './home/submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
 import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
-import {CallbackComponent} from './callback/callback.component';
 import {HomeComponent} from './home/home.component';
 import {ProjectComponent} from './shared/components/project/project.component';
 import {SubmissionComponent} from './submission/submission.component';
@@ -41,12 +54,11 @@ import {UploadInfoComponent} from './submission/files/upload-info/upload-info.co
 import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component'
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ProjectListComponent} from './projects/project-list/project-list.component';
 import {ProjectsComponent} from './projects/projects.component';
 import {UploadComponent} from './shared/components/upload/upload.component';
 import {LoginComponent} from './login/login.component';
-import {OverviewComponent } from './submission/overview/overview.component';
+import {OverviewComponent} from './submission/overview/overview.component';
 import {AlertService} from "./shared/services/alert.service";
 import {AlertComponent} from "./shared/components/alert/alert.component";
 import {LoaderService} from "./shared/services/loader.service";
@@ -55,18 +67,11 @@ import {SchemaService} from "./shared/services/schema.service";
 
 import {MetadataTableComponent} from './submission/metadata-table/metadata-table.component';
 
-import {
-  MatIconModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
-  MatSortModule, MatTableModule, MatTooltipModule, MatProgressBarModule
-} from "@angular/material";
+import {MetadataFieldComponent} from './submission/metadata-field/metadata-field.component';
+import {environment} from "../environments/environment";
 
-import { MetadataFieldComponent } from './submission/metadata-field/metadata-field.component';
-
-import {environment} from '../environments/environment';
-
-export function tokenGetter(): string {
-  return localStorage.getItem('access_token');
-}
+const domains = environment.DOMAIN_WHITELIST.split(',');
+const urlWhitelist = [...domains.map(d => `https://${d}`), ...domains.map(d => `http://${d}`)];
 
 @NgModule({
   declarations: [
@@ -75,7 +80,6 @@ export function tokenGetter(): string {
     NavigationComponent,
     WelcomeComponent,
     NewSubmissionComponent,
-    CallbackComponent,
     HomeComponent,
     ProjectComponent,
     SubmissionComponent,
@@ -100,14 +104,13 @@ export function tokenGetter(): string {
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    HttpClientModule,
-    RouterModule.forRoot(ROUTES),
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: environment.DOMAIN_WHITELIST.split(',')
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: urlWhitelist,
+        sendAccessToken: true
       }
     }),
+    RouterModule.forRoot(ROUTES),
     SharedModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
@@ -129,7 +132,8 @@ export function tokenGetter(): string {
     MatButtonModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule
+    MatRadioModule,
+
   ],
   providers: [
     IngestService,
@@ -147,4 +151,6 @@ export function tokenGetter(): string {
 
 export class AppModule {
 }
+
+
 
