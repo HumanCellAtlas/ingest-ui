@@ -24,8 +24,12 @@
   Refresh Token
 </button>
 <button
-  class="btn btn-success btn-margin" (click)="auth.revokeToken()">
-  Refresh Token
+  class="btn btn-success btn-margin" (click)="auth.revokeToken().subscribe({})">
+  Revoke Token
+</button>
+<button
+  class="btn btn-success btn-margin" (click)="auth.clearBrowser()">
+  Logout
 </button>
 <div>access token: {{this.auth.oauthService.getAccessToken()}}</div>
 <div>refresh token: {{this.auth.oauthService.getRefreshToken()}}</div>

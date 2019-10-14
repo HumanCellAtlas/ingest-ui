@@ -46,7 +46,8 @@ export class AuthService {
   authenticated: boolean;
   private discoveryDocument: object;
 
-  constructor(private router: Router, private oauthService: OAuthService, private http: HttpClient) {
+  //TODO make oauth service private, making public for now for testing
+  constructor(private router: Router, public oauthService: OAuthService, private http: HttpClient) {
     this.userProfile = new BehaviorSubject({});
     this.oauthService.configure(authCodeFlowConfigTest);
     this.oauthService.tokenValidationHandler = new CustomJwksValidationHandler();
@@ -57,7 +58,7 @@ export class AuthService {
       });
   }
 
-  public authenticate() {
+  authenticate() {
     this.oauthService.tryLogin().then(
       (success) => {
         if (success) {
@@ -78,19 +79,19 @@ export class AuthService {
       });
   }
 
-  public login(): void {
+  login(): void {
     this.oauthService.initCodeFlow();
   }
 
-  public getProfile(): BehaviorSubject<object> {
+  getProfile(): BehaviorSubject<object> {
     return this.userProfile;
   }
 
-  public logout(): void {
+  logout(): void {
     this.revokeToken().subscribe(
       (res) => {
         this.router.navigate(['/login']);
-        this.oauthService.logOut();
+        this.clearBrowser();
       },
       (err) => {
         console.log('Error in revoking refresh token', err)
@@ -100,12 +101,16 @@ export class AuthService {
 
   }
 
-  public isAuthenticated(): boolean {
+  clearBrowser() {
+    this.oauthService.logOut();
+  }
+
+  isAuthenticated(): boolean {
     const expiresAt = this.oauthService.getAccessTokenExpiration();
     return new Date().getTime() < expiresAt;
   }
 
-  private revokeToken() {
+  revokeToken() {
     const revoke_endpoint = this.discoveryDocument['revocation_endpoint'];
 
     const httpOptions = {
@@ -115,7 +120,7 @@ export class AuthService {
     };
 
     const body = {
-      client_id: authCodeFlowConfig.clientId,
+      client_id: authCodeFlowConfigTest.clientId,
       token: this.oauthService.getRefreshToken()
     };
     console.log('revoke url', revoke_endpoint);
