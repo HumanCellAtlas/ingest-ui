@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AuthService} from '../auth/auth.service';
+import {UserInfo} from "../auth/auth.model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-navigation',
@@ -8,21 +10,13 @@ import { AuthService } from '../auth/auth.service';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent implements OnInit {
-
-  profile: any;
+  userInfo$: Observable<UserInfo>;
 
   constructor(public auth: AuthService) {
-
   }
 
   ngOnInit() {
-    if (this.auth.userProfile) {
-      this.profile = this.auth.userProfile;
-    } else {
-      this.auth.getProfile((err, profile) => {
-        this.profile = profile;
-      });
-    }
+    this.userInfo$ = this.auth.getUserInfo();
   }
 
 }

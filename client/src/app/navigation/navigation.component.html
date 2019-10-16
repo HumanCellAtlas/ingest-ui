@@ -23,9 +23,9 @@
 
     <ul *ngIf="auth.isAuthenticated()" class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
       <li class="nav-item dropdown">
-        <a *ngIf="auth.isAuthenticated()" class="nav-item nav-link mr-md-2" id="bd-versions"
+        <a *ngIf="userInfo$ | async as userInfo" class="nav-item nav-link mr-md-2" id="bd-versions"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="{{ profile?.picture}}" class="rounded-circle profile-image">{{ profile?.name }}
+          <img src="{{ userInfo?.picture}}" class="rounded-circle profile-image">{{ userInfo?.name }}
         </a>
       </li>
     </ul>

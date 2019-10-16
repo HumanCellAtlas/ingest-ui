@@ -32,7 +32,6 @@
     "@auth0/angular-jwt": "^2.1.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.2",
     "@swimlane/ngx-datatable": "^15.0.0",
-    "auth0-js": "9.10.0",
     "core-js": "^2.6.3",
     "ejs": "^2.6.1",
     "hammerjs": "^2.0.8",
