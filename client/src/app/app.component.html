@@ -1,5 +1,5 @@
-<app-navigation *ngIf="auth.isAuthenticated()"></app-navigation>
-<nav *ngIf="!auth.isAuthenticated()" class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+<app-navigation *ngIf="auth.hasValidAccessToken()"></app-navigation>
+<nav *ngIf="!auth.hasValidAccessToken()" class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
   <a class="navbar-brand" href="#">Human Cell Atlas</a>
 </nav>
 
@@ -18,18 +18,41 @@
   </router-outlet>
 </main>
 
+
+
+
+
 <!--TODO: REMOVE this after testing-->
-<button
-  class="btn btn-success btn-margin" (click)="auth.refreshToken()">
-  Refresh Token
-</button>
-<button
-  class="btn btn-success btn-margin" (click)="auth.revokeToken().subscribe({})">
-  Revoke Token
-</button>
-<button
-  class="btn btn-success btn-margin" (click)="auth.clearBrowser()">
-  Logout
-</button>
-<div>access token: {{this.auth.oauthService.getAccessToken()}}</div>
-<div>refresh token: {{this.auth.oauthService.getRefreshToken()}}</div>
+<div>
+  <button
+    class="btn btn-success btn-margin" (click)="auth.login()">
+    Login
+  </button>
+  |
+  <button
+    class="btn btn-success btn-margin" (click)="auth.refreshToken()">
+    Refresh Token
+  </button>
+  |
+  <button
+    class="btn btn-success btn-margin" (click)="auth.revokeToken().subscribe({})">
+    Revoke Token
+  </button>
+  |
+  <button
+    class="btn btn-success btn-margin" (click)="auth.clearBrowser()">
+    Logout
+  </button>
+  <div>
+    access token:
+    <code>
+      {{this.auth.oauthService.getAccessToken()}}
+    </code>
+  </div>
+  <div>
+    refresh token:
+    <code>
+      {{this.auth.oauthService.getRefreshToken()}}
+    </code>
+  </div>
+</div>

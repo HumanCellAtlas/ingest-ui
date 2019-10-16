@@ -19,25 +19,35 @@ class CustomJwksValidationHandler extends JwksValidationHandler {
 }
 
 export const authCodeFlowConfigTest: AuthConfig = {
-  issuer: 'https://alegria.auth0.com/',
-  redirectUri: window.location.origin,
-  clientId: '9f5b4gwFY5hujyIuHjtD9zRZUBQwdRHg',
-  responseType: 'code',
-  scope: 'openid profile read:profile email offline_access',
+  // issuer: 'https://auth.integration.data.humancellatlas.org/',
+  issuer: 'https://humancellatlas.auth0.com',
+  redirectUri: 'http://myapp.example:4200',
+  // redirectUri: 'http://localhost:4200',
+  clientId: 'ycbt5RBAgfjxdrVTcom976IQejacp2VN',
+  // responseType: 'code',
+  scope: 'openid profile read:profile email',
   showDebugInformation: true,
   disableAtHashCheck: true,
+  silentRefreshRedirectUri: 'http://myapp.example:4200' + '/silent-refresh.html',
+  skipIssuerCheck: true,
+  silentRefreshMessagePrefix: '?',
+  // sessionChecksEnabled: true
+  // silentRefreshRedirectUri: 'http://localhost:4200' + '/silent-refresh.html'
 };
 
-export const authCodeFlowConfig: AuthConfig = {
-  issuer: 'https://' + environment.AUTH_DOMAIN,
-  redirectUri: window.location.origin,
-  clientId: 'ycbt5RBAgfjxdrVTcom976IQejacp2VN',
-  responseType: 'code',
-  scope: 'openid profile read:profile email offline_access',
-  showDebugInformation: true,
-  disableAtHashCheck: true,
-  skipIssuerCheck: true
-};
+//
+// export const authCodeFlowConfig: AuthConfig = {
+//   issuer: 'https://' + environment.AUTH_DOMAIN,
+//   issuer: 'humancellatlas.auth0.com',
+//   redirectUri: window.location.origin,
+//   clientId: 'ycbt5RBAgfjxdrVTcom976IQejacp2VN',
+//   responseType: 'code',
+//   scope: 'openid profile read:profile email offline_access',
+//   showDebugInformation: true,
+//   disableAtHashCheck: true,
+//   skipIssuerCheck: true
+// };
+
 
 @Injectable()
 export class AuthService {
@@ -59,16 +69,18 @@ export class AuthService {
   }
 
   authenticate() {
-    this.oauthService.tryLogin().then(
+    const callbackParams =  window.location.hash || '#' + window.location.search
+    this.oauthService.tryLogin({customHashFragment: callbackParams}).then(
       (success) => {
         if (success) {
           this.oauthService.setupAutomaticSilentRefresh();
-          if (this.isAuthenticated()) {
+          if (this.hasValidAccessToken()) {
             this.oauthService.loadUserProfile().then((userInfo) => {
               this.userProfile.next(userInfo);
             });
             this.router.navigate(['/home']);
           } else {
+            this.authenticated = true
             this.router.navigate(['/login']);
           }
         }
@@ -80,7 +92,7 @@ export class AuthService {
   }
 
   login(): void {
-    this.oauthService.initCodeFlow();
+    this.oauthService.initLoginFlow();
   }
 
   getProfile(): BehaviorSubject<object> {
@@ -88,16 +100,18 @@ export class AuthService {
   }
 
   logout(): void {
-    this.revokeToken().subscribe(
-      (res) => {
-        this.router.navigate(['/login']);
-        this.clearBrowser();
-      },
-      (err) => {
-        console.log('Error in revoking refresh token', err)
-        this.router.navigate(['/login']);
-      }
-    );;
+    // this.revokeToken().subscribe(
+    //   (res) => {
+    //     this.router.navigate(['/login']);
+    //
+    //   },
+    //   (err) => {
+    //     console.log('Error in revoking refresh token', err)
+    //     this.router.navigate(['/login']);
+    //   }
+    // );
+
+    this.clearBrowser();
 
   }
 
@@ -105,7 +119,7 @@ export class AuthService {
     this.oauthService.logOut();
   }
 
-  isAuthenticated(): boolean {
+  hasValidAccessToken(): boolean {
     const expiresAt = this.oauthService.getAccessTokenExpiration();
     return new Date().getTime() < expiresAt;
   }
@@ -130,7 +144,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    this.oauthService.refreshToken();
+    this.oauthService.silentRefresh();
   }
 
 }

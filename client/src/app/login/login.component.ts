@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 export class LoginComponent {
 
   constructor(public auth: AuthService, public router: Router) {
-    if(this.auth.isAuthenticated()){
+    if(this.auth.hasValidAccessToken()){
       this.router.navigate(['/home'])
     }
   }

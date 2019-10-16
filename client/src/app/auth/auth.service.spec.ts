@@ -14,7 +14,7 @@ describe('AuthService', () => {
 
   describe('login method', function () {
     it('should redirect to fusillade and authorise the user', () => {
-      authenticateSpy = spyOn(authService, 'isAuthenticated').and.returnValue(false);
+      authenticateSpy = spyOn(authService, 'hasValidAccessToken').and.returnValue(false);
       authorizeSpy = spyOn(authService, 'authorize');
 
       authService.login();
@@ -25,7 +25,7 @@ describe('AuthService', () => {
     });
 
     it('should navigate to home when user is authenticated', () => {
-      authenticateSpy = spyOn(authService, 'isAuthenticated').and.returnValue(true);
+      authenticateSpy = spyOn(authService, 'hasValidAccessToken').and.returnValue(true);
       authorizeSpy = spyOn(authService, 'authorize');
 
       authService.login();

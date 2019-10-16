@@ -17,9 +17,18 @@ export class AppComponent {
   constructor(public router: Router,
               public auth: AuthService,
               private loaderService: LoaderService) {
+    if (this.auth.authenticated){
+      if(this.auth.hasValidAccessToken()){
+        this.router.navigate(['/home']);
+      }else{
+        this.router.navigate(['/login']);
+      }
+    }
+
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
     });
+
   }
 
 }

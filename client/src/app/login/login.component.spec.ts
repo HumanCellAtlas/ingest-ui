@@ -23,14 +23,14 @@ describe('LoginComponent', () => {
   });
 
   it('should create', () => {
-    mockAuthSvc.isAuthenticated.and.returnValue(false);
+    mockAuthSvc.hasValidAccessToken.and.returnValue(false);
     loginFixture = TestBed.createComponent(LoginComponent);
     component = loginFixture.componentInstance;
     expect(component).toBeTruthy();
   });
 
   it('should redirect to home when user is not authenticated', () => {
-    mockAuthSvc.isAuthenticated.and.returnValue(true);
+    mockAuthSvc.hasValidAccessToken.and.returnValue(true);
     loginFixture = TestBed.createComponent(LoginComponent);
     component = loginFixture.componentInstance;
     expect(mockRouterSvc.navigate).toHaveBeenCalledWith(['/home'])

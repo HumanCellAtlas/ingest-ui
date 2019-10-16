@@ -1,4 +1,4 @@
-<div *ngIf="auth.isAuthenticated()" class="container-fluid">
+<div *ngIf="auth.hasValidAccessToken()" class="container-fluid">
   <app-welcome></app-welcome>
 
   <div class="row">
