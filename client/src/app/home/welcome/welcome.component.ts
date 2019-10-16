@@ -3,6 +3,7 @@ import {IngestService} from '../../shared/services/ingest.service';
 import {AuthService} from '../../auth/auth.service';
 import {Observable} from "rxjs";
 import {Summary} from "./summary";
+import {UserInfo} from "../../auth/auth.model";
 
 @Component({
   selector: 'app-welcome',
@@ -11,22 +12,14 @@ import {Summary} from "./summary";
   encapsulation: ViewEncapsulation.None
 })
 export class WelcomeComponent implements OnInit {
-
-  profile: any;
-
+  userInfo$: Observable<UserInfo>;
   summary$: Observable<Summary>;
 
   constructor(public auth: AuthService, private ingestService: IngestService) {
   }
 
   ngOnInit() {
-    if (this.auth.userProfile) {
-      this.profile = this.auth.userProfile;
-    } else {
-      this.auth.getProfile((err, profile) => {
-        this.profile = profile;
-      });
-    }
+    this.userInfo$ = this.auth.getUserInfo();
     this.summary$ = this.ingestService.getUserSummary();
   }
 }

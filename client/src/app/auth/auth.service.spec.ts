@@ -1,38 +1,58 @@
 import {AuthService} from './auth.service';
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {of} from "rxjs";
 
 describe('AuthService', () => {
-  let authorizeSpy: jasmine.Spy;
-  let authenticateSpy: jasmine.Spy;
+
   let mockRouter: jasmine.SpyObj<Router>;
-  let authService: AuthService
+  let mockHttp: jasmine.SpyObj<HttpClient>;
+  let authSvc: AuthService
 
   beforeEach(() => {
     mockRouter = jasmine.createSpyObj(['navigate']);
-    authService = new AuthService(mockRouter)
+    mockHttp = jasmine.createSpyObj(['get']);
+    mockHttp.get.and.returnValue(of({}))
+    authSvc = new AuthService(mockRouter, mockHttp);
+
+    authSvc.config = {
+      domain: 'domain',
+      callbackUrl: '/cb',
+      apiUrl: ''
+    }
+    authSvc.openIdConfig = {
+      authorization_endpoint: '/authorize'
+    }
+
   });
 
-  describe('login method', function () {
-    it('should redirect to fusillade and authorise the user', () => {
-      authenticateSpy = spyOn(authService, 'isAuthenticated').and.returnValue(false);
-      authorizeSpy = spyOn(authService, 'authorize');
+  describe('buildSearchParams', () => {
+    it('should convert obj to search params', () => {
+      const obj: object = {
+        'key': 'value',
+        'key2': 'value2'
+      };
+      const out = authSvc.buildSearchParams(obj);
+      expect(out).toEqual('key=value&key2=value2');
+    })
+  });
 
-      authService.login();
+  describe('authorize', () => {
+    it('should redirect to authorize endpoint with correct params', () => {
+      authSvc.redirect = jasmine.createSpy();
+      authSvc.authorize();
+      expect(authSvc.redirect).toHaveBeenCalledWith('/authorize?redirect_uri=%2Fcb');
+    })
+  });
 
-      expect(authenticateSpy).toHaveBeenCalledTimes(1);
-      expect(authorizeSpy).toHaveBeenCalledTimes(1);
-      expect(mockRouter.navigate).toHaveBeenCalledTimes(0);
-    });
+  describe('authorizeSilently', () => {
+    it('should call runIframe with authorize url and domain url', () => {
+      authSvc.redirect = jasmine.createSpy();
+      authSvc.runIframe = jasmine.createSpy().and.returnValue(of({'k': 'v'}).toPromise());
+      authSvc.setSession = jasmine.createSpy();
 
-    it('should navigate to home when user is authenticated', () => {
-      authenticateSpy = spyOn(authService, 'isAuthenticated').and.returnValue(true);
-      authorizeSpy = spyOn(authService, 'authorize');
-
-      authService.login();
-
-      expect(authenticateSpy).toHaveBeenCalledTimes(1);
-      expect(authorizeSpy).toHaveBeenCalledTimes(0);
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/home']);
+      authSvc.authorizeSilently();
+      expect(authSvc.runIframe).toHaveBeenCalledWith('/authorize?scope=openid+profile+read%3Aprofile+email&redirect_uri=%2Fcb&prompt=none', 'https://domain');
     });
   });
 
