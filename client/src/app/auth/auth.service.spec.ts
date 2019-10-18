@@ -2,6 +2,7 @@ import {AuthService} from './auth.service';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {of} from "rxjs";
+import {fakeAsync, flushMicrotasks, tick} from "@angular/core/testing";
 
 describe('AuthService', () => {
 
@@ -56,4 +57,26 @@ describe('AuthService', () => {
     });
   });
 
+  describe('setUpSilentAuth', () => {
+    it('should be calling authorize based on the configured interval when user is authenticated', fakeAsync(() => {
+      authSvc.authorizeSilently = jasmine.createSpy();
+      let isAuthSpy = spyOn(authSvc, 'isAuthenticated').and.returnValue(true);
+      authSvc.setUpSilentAuth();
+      tick(authSvc.silentAuthInterval);
+      expect(authSvc.authorizeSilently).toHaveBeenCalledTimes(1);
+      tick(authSvc.silentAuthInterval);
+      expect(authSvc.authorizeSilently).toHaveBeenCalledTimes(2);
+      isAuthSpy.and.returnValue(false);
+      tick(authSvc.silentAuthInterval);
+    }));
+
+    it('should stop calling authorize when user is not authenticated', fakeAsync(() => {
+      authSvc.authorizeSilently = jasmine.createSpy();
+      let isAuthSpy = spyOn(authSvc, 'isAuthenticated').and.returnValue(false);
+      authSvc.setUpSilentAuth();
+      tick(authSvc.silentAuthInterval);
+      expect(authSvc.authorizeSilently).toHaveBeenCalledTimes(0);
+    }));
+
+  });
 });

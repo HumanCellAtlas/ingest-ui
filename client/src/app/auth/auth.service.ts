@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {AUTH_CONFIG} from './auth0-variables';
 import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subscription, timer} from "rxjs";
 import {AuthConfig, OpenIdConfig, UserInfo} from "./auth.model";
 import {mergeMap} from "rxjs/operators";
+import {TimerObservable} from "rxjs-compat/observable/TimerObservable";
 
 
 @Injectable()
@@ -12,9 +13,17 @@ export class AuthService {
 
   config: AuthConfig;
   openIdConfig: OpenIdConfig;
+  silentAuthInterval: number;
+  private silentAuthTimer: Observable<number>;
+  private readonly tokenDuration: number
+  private readonly tokenRefreshPeriod: number;
+  private silentAuthSubscription: Subscription;
 
   constructor(private router: Router, private http: HttpClient) {
     this.config = AUTH_CONFIG;
+    this.tokenDuration = 900000; // 15 min
+    this.tokenRefreshPeriod = 60000; // 1min
+    this.silentAuthInterval = this.tokenDuration - this.tokenRefreshPeriod;
   }
 
   getOpenIdConfig(): Observable<OpenIdConfig> {
@@ -28,7 +37,6 @@ export class AuthService {
 
   getUserInfo(): Observable<UserInfo> {
     return this.getOpenIdConfig().pipe(mergeMap((openIdConfig) => {
-
       const userInfoEndpoint = openIdConfig.userinfo_endpoint;
       const accessToken = this.getAccessToken();
 
@@ -84,13 +92,16 @@ export class AuthService {
     })
   }
 
-  setUpSilentAuthentication(): void {
-    this.getOpenIdConfig().subscribe((openIdConfig) => {
+  setUpSilentAuth(): void {
+    this.silentAuthTimer = TimerObservable.create( this.silentAuthInterval, this.silentAuthInterval)
+      .takeWhile(() => this.isAuthenticated()); // only fires when component is alive
 
-    })
+    this.silentAuthSubscription = this.silentAuthTimer.subscribe(() => {
+      this.authorizeSilently();
+    });
   }
 
-  public logout(): void {
+  logout(): void {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
@@ -113,11 +124,11 @@ export class AuthService {
     return localStorage.getItem('access_token');
   }
 
-  public redirect(url): void {
+  redirect(url): void {
     window.location.href = url;
   }
 
-  public runIframe(authorizeUrl: string, eventOrigin: string) {
+  runIframe(authorizeUrl: string, eventOrigin: string) {
     return new Promise<object>((res, rej) => {
       var iframe = window.document.createElement('iframe');
       iframe.setAttribute('width', '0');
@@ -144,7 +155,7 @@ export class AuthService {
     });
   };
 
-  public buildSearchParams(obj): string {
+  buildSearchParams(obj): string {
     const params = new URLSearchParams();
     for (let key in obj) {
       params.set(key, obj[key])
