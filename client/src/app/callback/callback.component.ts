@@ -32,6 +32,7 @@ export class CallbackComponent implements OnInit {
     }
     else{
       this.auth.setSession(params);
+      this.auth.setUpSilentAuth();
       this.router.navigate(['/home']);
     }
   }
