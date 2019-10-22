@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AUTH_CONFIG} from './auth0-variables';
 import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, of, Subscription, timer} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import {AuthConfig, OpenIdConfig, UserInfo} from "./auth.model";
 import {mergeMap} from "rxjs/operators";
 import {TimerObservable} from "rxjs-compat/observable/TimerObservable";
@@ -86,15 +86,15 @@ export class AuthService {
       const url: string = `${authorizeEndpoint}?${urlParams}`;
 
       this.runIframe(url, `https://${this.config.domain}`).then((data) => {
-        console.log('code result', data);
+        console.debug('code result', data);
         this.setSession(data);
       })
     })
   }
 
   setUpSilentAuth(): void {
-    this.silentAuthTimer = TimerObservable.create( this.silentAuthInterval, this.silentAuthInterval)
-      .takeWhile(() => this.isAuthenticated()); // only fires when component is alive
+    this.silentAuthTimer = TimerObservable.create(this.silentAuthInterval, this.silentAuthInterval)
+      .takeWhile(() => this.isAuthenticated());
 
     this.silentAuthSubscription = this.silentAuthTimer.subscribe(() => {
       this.authorizeSilently();
