@@ -94,6 +94,8 @@ export class AuthService {
       this.runIframe(url, `https://${this.config.domain}`).then((data) => {
         console.debug('code result', data);
         this.setSession(data);
+      }).catch((error) => {
+        console.error('Error in silent authentication', error);
       })
     })
   }
@@ -152,7 +154,7 @@ export class AuthService {
       iframe.style.display = 'none';
 
       const timeoutSetTimeoutId = setTimeout(() => {
-        rej('timed out');
+        rej(new Error('timed out'));
         window.document.body.removeChild(iframe);
       }, 60 * 1000);
 

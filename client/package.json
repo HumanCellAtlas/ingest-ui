@@ -11,10 +11,12 @@
     "prod": "ng serve -c prod",
     "start": "ng serve",
     "build": "ng build -c=env",
-    "test": "ng test",
+    "test": "snyk test && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prebuild": "node ./prebuild.ts"
+    "prebuild": "node ./prebuild.ts",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "private": true,
   "dependencies": {
@@ -36,9 +38,10 @@
     "ejs": "^2.6.1",
     "hammerjs": "^2.0.8",
     "node-sass": "^4.12.0",
-    "npm": "^6.10.2",
+    "npm": "^6.12.0",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
+    "snyk": "^1.148.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
@@ -69,5 +72,6 @@
     "tslint": "~5.12.1",
     "typescript": "3.5.3",
     "url-parse": ">=1.4.3"
-  }
+  },
+  "snyk": true
 }
