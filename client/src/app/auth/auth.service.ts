@@ -18,6 +18,7 @@ export class AuthService {
   private readonly tokenDuration: number
   private readonly tokenRefreshPeriod: number;
   private silentAuthSubscription: Subscription;
+  private userInfo$: Observable<UserInfo>;
 
   constructor(private router: Router, private http: HttpClient) {
     this.config = AUTH_CONFIG;
@@ -36,6 +37,9 @@ export class AuthService {
   }
 
   getUserInfo(): Observable<UserInfo> {
+    if (this.userInfo$){
+      return this.userInfo$;
+    }
     return this.getOpenIdConfig().pipe(mergeMap((openIdConfig) => {
       const userInfoEndpoint = openIdConfig.userinfo_endpoint;
       const accessToken = this.getAccessToken();
@@ -47,10 +51,13 @@ export class AuthService {
         })
       };
 
-      return this.http.get(userInfoEndpoint, httpOptions)
+      this.userInfo$ = this.http.get(userInfoEndpoint, httpOptions)
         .map((response) => response as UserInfo);
+
+      return this.userInfo$;
     }))
   }
+
 
   authorize(): void {
     this.getOpenIdConfig().subscribe((openIdConfig) => {
@@ -61,7 +68,6 @@ export class AuthService {
 
       const urlParams: string = this.buildSearchParams(params);
       const url: string = `${authorizeEndpoint}?${urlParams}`;
-
       this.redirect(url);
     })
   }
@@ -106,6 +112,16 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+
+    this.getOpenIdConfig().pipe(mergeMap((openIdConfig) => {
+      const logoutEndpoint = openIdConfig.logout_endpoint;
+      return this.http.get(logoutEndpoint);
+    })).subscribe(
+      ()=> {
+      console.log('successfully logged out...');
+    }, err => {
+      console.error('Error in logging out', err)
+    });
 
     this.router.navigate(['/login']);
   }
