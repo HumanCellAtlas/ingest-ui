@@ -26,6 +26,7 @@ export interface OpenIdConfig {
   id_token_signing_alg_values_supported?: string[];
   issuer?: string;
   jwks_uri?: string;
+  logout_endpoint?: string;
   mfa_challenge_endpoint?: string;
   registration_endpoint?: string;
   request_uri_parameter_supported?: boolean;
