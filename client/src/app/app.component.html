@@ -9,36 +9,10 @@
     <div  *ngIf="showLoader" class="loading">
       <mat-spinner
         class="example-margin"
-        [color]="primary"
-        [mode]="indeterminate"
+        [color]="'primary'"
+        [mode]="'indeterminate'"
         [value]="50">
       </mat-spinner>
     </div>
   </router-outlet>
 </main>
-
-
-
-<!--TODO: REMOVE this after testing-->
-<!--<div>-->
-<!--  <button-->
-<!--    class="btn btn-success btn-margin" (click)="auth.authorize()">-->
-<!--    Login-->
-<!--  </button>-->
-<!--  |-->
-<!--  <button-->
-<!--    class="btn btn-success btn-margin" (click)="auth.authorizeSilently()">-->
-<!--    Refresh Token-->
-<!--  </button>-->
-<!--  |-->
-<!--  <button-->
-<!--    class="btn btn-success btn-margin" (click)="auth.logout()">-->
-<!--    Logout-->
-<!--  </button>-->
-<!--  <div>-->
-<!--    access token:-->
-<!--    <code>-->
-<!--      {{this.auth.getAccessToken()}}-->
-<!--    </code>-->
-<!--  </div>-->
-<!--</div>-->
