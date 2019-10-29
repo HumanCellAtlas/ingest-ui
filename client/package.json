@@ -11,7 +11,7 @@
     "prod": "ng serve -c prod",
     "start": "ng serve",
     "build": "ng build -c=env",
-    "test": "snyk test && ng test",
+    "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prebuild": "node ./prebuild.ts",
