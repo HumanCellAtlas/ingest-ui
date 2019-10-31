@@ -22,6 +22,11 @@ describe('AuthService', () => {
       apiUrl: ''
     }
     authSvc.openIdConfig = {
+      issuer: '',
+      jwks_uri: '',
+      logout_endpoint: '',
+      token_endpoint: '',
+      userinfo_endpoint: '',
       authorization_endpoint: '/authorize'
     }
 
