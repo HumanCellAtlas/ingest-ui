@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of, Subscription} from "rxjs";
 import {AuthConfig, OpenIdConfig, UserInfo} from "./auth.model";
-import {mergeMap} from "rxjs/operators";
+import {concatMap} from "rxjs/operators";
 import {TimerObservable} from "rxjs-compat/observable/TimerObservable";
 
 
@@ -40,7 +40,7 @@ export class AuthService {
     if (this.userInfo$){
       return this.userInfo$;
     }
-    return this.getOpenIdConfig().pipe(mergeMap((openIdConfig) => {
+    return this.getOpenIdConfig().pipe(concatMap((openIdConfig) => {
       const userInfoEndpoint = openIdConfig.userinfo_endpoint;
       const accessToken = this.getAccessToken();
 
@@ -115,7 +115,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
 
-    this.getOpenIdConfig().pipe(mergeMap((openIdConfig) => {
+    this.getOpenIdConfig().pipe(concatMap((openIdConfig) => {
       const logoutEndpoint = openIdConfig.logout_endpoint;
       return this.http.get(logoutEndpoint);
     })).subscribe(
