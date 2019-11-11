@@ -16,8 +16,7 @@ describe('WelcomeComponent', () => {
   let mockIngestSvc: jasmine.SpyObj<IngestService>;
 
   beforeEach(async(() => {
-    mockAuthSvc = jasmine.createSpyObj(['handleAuthentication', 'isAuthenticated']);
-    mockAuthSvc.userProfile = true;
+    mockAuthSvc = jasmine.createSpyObj(['handleAuthentication', 'isAuthenticated', 'getUserInfo']);
     mockIngestSvc = jasmine.createSpyObj(['getUserSummary']);
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule ],

@@ -12,5 +12,5 @@ export const environment = {
   SCHEMA_API_URL: 'https://schema.humancellatlas.org',
   DSS_API_URL: 'https://dss.dev.data.humancellatlas.org',
   DOMAIN_WHITELIST: 'localhost:8080,localhost:5000',
-  AUTH_DOMAIN: 'auth.integration.data.humancellatlas.org'
+  AUTH_DOMAIN: 'auth.dev.data.humancellatlas.org'
 };
