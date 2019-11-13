@@ -112,14 +112,14 @@ export class IngestService {
 
     let sort = params['sort'];
     if (sort) {
-      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContaining`;
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelope`;
       params['envelopeUri'] = encodeURIComponent(submission_url);
       params['sort'] = `${sort['column']},${sort['dir']}`
     }
 
     if (filterState) {
       let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
-      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopesContainingAndValidationState`;
+      url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopeAndValidationState`;
       params['envelopeUri'] = encodeURIComponent(submission_url);
       params['state'] = filterState.toUpperCase();
 
