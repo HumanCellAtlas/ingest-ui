@@ -200,6 +200,30 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
     this.currentPageInfo['number'] = pagination.number;
     return this.currentPageInfo;
   }
+
+  onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
+    let submissionId : String = this.getSubmissionId(submissionEnvelope);
+    let projectName = this.getProjectName(submissionEnvelope);
+    let projectInfo = projectName ? `(${projectName})`: '';
+    let submissionUuid = submissionEnvelope['uuid']['uuid'];
+    let message = `Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
+    let messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
+    let messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
+
+    if(confirm(message)){
+      this.ingestService.deleteSubmission(submissionId).subscribe(
+        data => {
+          this.alertService.clear();
+          this.alertService.success('', messageOnSuccess);
+          this.loadSubmissions();
+        },
+        err => {
+          this.alertService.clear();
+          this.alertService.error(messageOnError, err);
+          console.log('error deleting submission', err)
+        });
+    }
+  }
 }
 
 
