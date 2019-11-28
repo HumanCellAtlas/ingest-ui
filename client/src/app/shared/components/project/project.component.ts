@@ -81,6 +81,9 @@ export class ProjectComponent implements OnInit {
     )
   }
 
+  getProjectName(){
+    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
+  }
   getSubmissionId(submissionEnvelope){
     let links = submissionEnvelope['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
@@ -97,16 +100,22 @@ export class ProjectComponent implements OnInit {
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
     let submissionId : String = this.getSubmissionId(submissionEnvelope);
-    if(confirm("Are you sure?")){
+    let projectName = this.getProjectName();
+    let projectInfo = projectName ? `(${projectName})`: '';
+    let submissionUuid = submissionEnvelope['uuid']['uuid'];
+    let message = `This may take some time. Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
+    let messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
+    let messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
+
+    if(confirm(message)){
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {
           this.alertService.clear();
-          this.alertService.success('',`Submission ${submissionId} was deleted!`);
-          this.getProject(this.projectId);
+          this.alertService.success('', messageOnSuccess);
         },
         err => {
           this.alertService.clear();
-          this.alertService.error('','An error has occurred while delete the submission!');
+          this.alertService.error(messageOnError, err);
           console.log('error deleting submission', err)
         });
     }
