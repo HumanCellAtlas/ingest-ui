@@ -40,7 +40,7 @@
           </div>
         </td>
         <td>
-          <button mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
+          <button *ngIf="submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
             <mat-icon>delete_forever</mat-icon>
           </button>
         </td>
