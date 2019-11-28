@@ -72,8 +72,6 @@ export class ProjectComponent implements OnInit {
 
   setProjectData(projectData){
     this.project = projectData;
-    // TODO Find the submission envelope where the project was included for now
-    // In the future, find a way to link submission envelopes to related projects in ingest
     let submissions_url = projectData['_links']['submissionEnvelopes']['href']
     this.ingestService.get(submissions_url).subscribe(
       submissionData => {
