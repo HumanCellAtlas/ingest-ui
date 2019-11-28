@@ -4,6 +4,7 @@ import {Component, OnInit} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
 import {AuthService} from '../../../auth/auth.service';
 import {IngestService} from '../../services/ingest.service';
+import {SubmissionEnvelope} from '../../models/submissionEnvelope';
 
 @Component({
   selector: 'app-project',
@@ -13,7 +14,7 @@ import {IngestService} from '../../services/ingest.service';
 
 
 export class ProjectComponent implements OnInit {
-  submissionEnvelopes: Object[];
+  submissionEnvelopes: SubmissionEnvelope[];
 
   profile: object;
 

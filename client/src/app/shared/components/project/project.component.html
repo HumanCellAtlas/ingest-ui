@@ -4,7 +4,7 @@ Loading project ...
 
 <ng-container *ngIf="project" >
   <app-overview [project]="project">
-    <a class="btn btn-success" role="button" routerLink="/projects/detail/{{projectUuid}}/submissions/metadata" >Create submission</a>
+    <a *ngIf="!project?.hasOpenSubmission" class="btn btn-success" role="button" routerLink="/projects/detail/{{projectUuid}}/submissions/metadata" >Create submission</a>
   </app-overview>
   <br/><br/>
   <h3>Submissions</h3>
