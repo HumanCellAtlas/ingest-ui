@@ -50,4 +50,9 @@
       </mat-tab>
     </mat-tab-group>
   </div>
+  <div fxLayout="row" fxLayoutAlign="end">
+    <button *ngIf="submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
 </div>
