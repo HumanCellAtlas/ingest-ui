@@ -16,6 +16,7 @@ Loading project ...
         <th>Created</th>
         <th>Submission UUID</th>
         <th>Status</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -39,6 +40,11 @@ Loading project ...
             <span *ngSwitchCase="'Complete'"
                   class="badge-in-list badge badge-pill border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
           </div>
+        </td>
+        <td>
+          <button *ngIf="submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
         </td>
       </tr>
       <tr *ngIf="!submissionEnvelopes">

@@ -95,4 +95,20 @@ export class ProjectComponent implements OnInit {
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
+  onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
+    let submissionId : String = this.getSubmissionId(submissionEnvelope);
+    if(confirm("Are you sure?")){
+      this.ingestService.deleteSubmission(submissionId).subscribe(
+        data => {
+          this.alertService.clear();
+          this.alertService.success('',`Submission ${submissionId} was deleted!`);
+          this.getProject(this.projectId);
+        },
+        err => {
+          this.alertService.clear();
+          this.alertService.error('','An error has occurred while delete the submission!');
+          console.log('error deleting submission', err)
+        });
+    }
+  }
 }
