@@ -6,6 +6,7 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {AlertService} from "../shared/services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
+import {LoaderService} from "../shared/services/loader.service";
 
 
 @Component({
@@ -45,7 +46,8 @@ export class SubmissionComponent implements OnInit {
     private alertService: AlertService,
     private ingestService: IngestService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService
   ) {
       this.pollInterval = 4000; //4s
       this.alive = true;
@@ -271,15 +273,18 @@ export class SubmissionComponent implements OnInit {
     let messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
 
     if(confirm(message)){
+      this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
+          this.loaderService.display(false);
         },
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err);
-          console.log('error deleting submission', err)
+          console.log('error deleting submission', err);
+          this.loaderService.display(false);
         });
       this.router.navigateByUrl(`/projects/detail?uuid=${this.getProjectUuid()}`);
     }

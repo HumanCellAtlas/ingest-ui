@@ -8,6 +8,7 @@ import {AlertService} from "../../shared/services/alert.service";
 import {MatPaginator, PageEvent} from "@angular/material";
 import {tap} from "rxjs/operators";
 import {Subscription} from "rxjs/Rx";
+import {LoaderService} from "../../shared/services/loader.service";
 
 @Component({
   selector: 'app-submission-list',
@@ -46,7 +47,8 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(private ingestService: IngestService,
               private router: Router,
               private route: ActivatedRoute,
-              private alertService: AlertService
+              private alertService: AlertService,
+              private loaderService: LoaderService
   ) {
     this.alive = true;
     this.interval = 10000;
@@ -211,16 +213,19 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
     let messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
 
     if(confirm(message)){
+      this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.loadSubmissions();
+          this.loaderService.display(false);
         },
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err);
           console.log('error deleting submission', err)
+          this.loaderService.display(false);
         });
     }
   }
