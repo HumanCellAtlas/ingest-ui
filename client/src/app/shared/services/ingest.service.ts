@@ -92,8 +92,9 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
-  public queryProjects(query: Object[], pagination): Observable<any> {
-    return this.http.post(`${this.API_URL}/projects/query`, query, {params: pagination})
+  public queryProjects(query: Object[], params): Observable<any> {
+    params['isUpdate'] = false;
+    return this.http.post(`${this.API_URL}/projects/query`, query, {params: params})
   }
 
   public putProject(id, project): Observable<Object> {
