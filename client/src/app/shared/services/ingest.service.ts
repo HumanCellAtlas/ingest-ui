@@ -93,7 +93,6 @@ export class IngestService {
   }
 
   public queryProjects(query: Object[], params): Observable<any> {
-    params['isUpdate'] = false;
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params})
   }
 
