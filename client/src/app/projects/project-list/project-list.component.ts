@@ -75,7 +75,7 @@ export class ProjectListComponent implements OnInit {
     let fields = [
       'content.project_core.project_description',
       'content.project_core.project_title',
-      'content.project_core.project_shortname'
+      'content.project_core.project_short_name'
     ];
 
     for(let field of fields) {
@@ -86,6 +86,7 @@ export class ProjectListComponent implements OnInit {
       };
       query.push(criteria);
     }
+
     params['operator'] = 'or';
     this.ingestService.queryProjects(query, params)
       .subscribe({
