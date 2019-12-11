@@ -267,6 +267,7 @@ export class SubmissionComponent implements OnInit {
     let submissionId : String = this.getSubmissionId(submissionEnvelope);
     let projectName = this.getProjectName();
     let projectInfo = projectName ? `(${projectName})`: '';
+    let projectUrl = `/projects/detail?uuid=${this.getProjectUuid()}`;
     let submissionUuid = submissionEnvelope['uuid']['uuid'];
     let message = `This may take some time. Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
     let messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
@@ -279,14 +280,15 @@ export class SubmissionComponent implements OnInit {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.loaderService.display(false);
+          this.router.navigateByUrl(projectUrl);
         },
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err);
           console.log('error deleting submission', err);
           this.loaderService.display(false);
+          this.router.navigateByUrl(projectUrl);
         });
-      this.router.navigateByUrl(`/projects/detail?uuid=${this.getProjectUuid()}`);
     }
   }
 }
