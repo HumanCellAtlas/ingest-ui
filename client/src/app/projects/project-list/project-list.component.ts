@@ -70,12 +70,12 @@ export class ProjectListComponent implements OnInit {
     this.getProjects();
   }
 
-  queryProjects(text: string, pagination){
+  queryProjects(text: string, params){
     let query = [];
     let fields = [
-      'project_core.project_description',
-      'project_core.project_title',
-      'project_core.project_shortname'
+      'content.project_core.project_description',
+      'content.project_core.project_title',
+      'content.project_core.project_short_name'
     ];
 
     for(let field of fields) {
@@ -83,11 +83,12 @@ export class ProjectListComponent implements OnInit {
         "contentField": field,
         "operator": "REGEX",
         "value": text.replace(/\s+/g, '\\s+')
-      }
+      };
       query.push(criteria);
     }
 
-    this.ingestService.queryProjects(query, pagination)
+    params['operator'] = 'or';
+    this.ingestService.queryProjects(query, params)
       .subscribe({
           next: data => {
             this.projects = data._embedded ? data._embedded.projects : [];
@@ -100,13 +101,18 @@ export class ProjectListComponent implements OnInit {
       });
   }
 
-  getDefaultProjects(pagination) {
+  getDefaultProjects(params) {
     const query = [{
-      'contentField': 'project_core.project_title',
+      'contentField': 'content.project_core.project_title',
       'operator': 'NIN',
       'value': ['SS2 1 Cell Integration Test', '10x 1 Run Integration Test']
+    },{
+      'contentField': 'isUpdate',
+      'operator': 'IS',
+      'value': false
     }];
-    this.ingestService.queryProjects(query, pagination)
+    params['operator'] = 'and';
+    this.ingestService.queryProjects(query, params)
       .subscribe({
         next: data => {
           this.projects = data._embedded ? data._embedded.projects : [];
