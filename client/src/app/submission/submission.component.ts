@@ -175,7 +175,7 @@ export class SubmissionComponent implements OnInit {
       return 'secondary';
     }
 
-    if ( submissionState === 'Processing' || submissionState === 'Cleanup' ) {
+    if ( submissionState === 'Processing' || submissionState === 'Cleanup' || submissionState === 'Archiving' ) {
       return 'warning-invert';
     }
 
