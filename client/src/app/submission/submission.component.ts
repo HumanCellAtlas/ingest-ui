@@ -104,7 +104,7 @@ export class SubmissionComponent implements OnInit {
 
   checkIfValid(submission){
     let status = submission['submissionState'];
-    let validStates = ["Valid", "Submitted", "Processing", "Cleanup", "Complete"];
+    let validStates = ["Valid", "Submitted", "Processing", "Archiving", "Cleanup", "Complete"];
     return (validStates.indexOf(status) >= 0);
   }
 
