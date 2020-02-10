@@ -2,7 +2,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 
 import {AlertService} from '../../services/alert.service';
-import {AuthService} from '../../../auth/auth.service';
 import {IngestService} from '../../services/ingest.service';
 import {SubmissionEnvelope} from '../../models/submissionEnvelope';
 import {LoaderService} from "../../services/loader.service";
@@ -26,7 +25,6 @@ export class ProjectComponent implements OnInit {
 
   constructor(
     private alertService: AlertService,
-    private auth: AuthService,
     private ingestService: IngestService,
     private router: Router,
     private route: ActivatedRoute,
