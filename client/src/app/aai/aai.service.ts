@@ -4,13 +4,14 @@ import {from, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
+import { environment } from '../../environments/environment';
 
 export function getClientSettings(): UserManagerSettings {
   return {
-    authority: 'https://login.elixir-czech.org/oidc',
-    client_id: '',
-    redirect_uri: 'http://localhost:4200/aai-callback',
-    post_logout_redirect_uri: 'http://localhost:4200/',
+    authority: environment.AAI_AUTHORITY,
+    client_id: environment.AAI_CLIENT_ID,
+    redirect_uri: environment.AAI_REDIRECT_URI,
+    post_logout_redirect_uri: environment.AAI_POST_LOGOUT_REDIRECT_URI,
     response_type: 'token id_token',
     scope: 'email openid profile',
     filterProtocolClaims: true,
