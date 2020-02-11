@@ -5,12 +5,9 @@
 
 export const environment = {
   production: false,
-  buildTimestamp: '',
-  commitHash: '',
   INGEST_API_URL: 'http://localhost:8080',
   BROKER_API_URL: 'http://localhost:5000',
   SCHEMA_API_URL: 'https://schema.humancellatlas.org',
   DSS_API_URL: 'https://dss.dev.data.humancellatlas.org',
-  DOMAIN_WHITELIST: 'localhost:8080,localhost:5000',
-  AUTH_DOMAIN: 'auth.dev.data.humancellatlas.org'
+  DOMAIN_WHITELIST: 'localhost:8080,localhost:5000'
 };
