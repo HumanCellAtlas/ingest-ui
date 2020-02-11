@@ -32,17 +32,17 @@ export class AaiService {
               private alertService: AlertService,
               private router: Router) {
 
-    this.getUser().then(user => {
+    this.getUser().subscribe(user => {
       this.user = user;
     });
   }
 
-  getUser(): Promise<User> {
-    return this.manager.getUser();
+  getUser(): Observable<User> {
+    return from(this.manager.getUser());
   }
 
   isLoggedIn(): Observable<boolean> {
-    return from(this.manager.getUser()).map(user => user && !this.user.expired);
+    return this.getUser().map(user => user && !this.user.expired);
   }
 
   isAuthenticated(): boolean {
@@ -54,7 +54,10 @@ export class AaiService {
   }
 
   getAuthorizationHeaderValue(): string {
-    return `${this.user.token_type} ${this.user.access_token}`;
+    if (this.user) {
+      return `${this.user.token_type} ${this.user.access_token}`;
+    }
+    return '';
   }
 
   startAuthentication(): Promise<void> {
