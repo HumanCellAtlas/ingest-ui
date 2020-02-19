@@ -10,8 +10,8 @@ export function getClientSettings(): UserManagerSettings {
   return {
     authority: environment.AAI_AUTHORITY,
     client_id: environment.AAI_CLIENT_ID,
-    redirect_uri: environment.AAI_REDIRECT_URI,
-    post_logout_redirect_uri: environment.AAI_POST_LOGOUT_REDIRECT_URI,
+    redirect_uri: window.location.origin + '/aai-callback',
+    post_logout_redirect_uri: window.location.origin,
     response_type: 'token id_token',
     scope: 'email openid profile',
     filterProtocolClaims: true,
@@ -76,8 +76,11 @@ export class AaiService {
       this.user = user;
       this.user$.next(user);
       this.router.navigate(['/home']);
-    }).catch(function (err) {
-      console.log('err', err);
+    }).catch(error => {
+      this.alertService.error('Authentication Error',
+        'An error occured during authentication. Please retry logging in. ' +
+        'If the error is persistent, please email hca-ingest-dev@ebi.ac.uk');
+      console.error('Authentication callback error', error);
     });
   }
 

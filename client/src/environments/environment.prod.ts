@@ -7,7 +7,5 @@ export const environment = {
   DOMAIN_WHITELIST: 'api.ingest.data.humancellatlas.org,ingest.data.humancellatlas.org',
   // AAI
   AAI_CLIENT_ID: '',
-  AAI_AUTHORITY: '',
-  AAI_REDIRECT_URI:  '',
-  AAI_POST_LOGOUT_REDIRECT_URI: ''
+  AAI_AUTHORITY: ''
 };

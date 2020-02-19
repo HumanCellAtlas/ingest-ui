@@ -7,7 +7,5 @@ export const environment = {
   DOMAIN_WHITELIST: 'api.ingest.integration.data.humancellatlas.org,ingest.integration.data.humancellatlas.org',
   // AAI
   AAI_CLIENT_ID: '',
-  AAI_AUTHORITY: 'https://login.elixir-czech.org/oidc',
-  AAI_REDIRECT_URI:  'http://localhost:4200/aai-callback',
-  AAI_POST_LOGOUT_REDIRECT_URI: 'http://localhost:4200/'
+  AAI_AUTHORITY: 'https://login.elixir-czech.org/oidc'
 };
