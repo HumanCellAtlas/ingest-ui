@@ -13,7 +13,7 @@ export class AuthGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    return this.aai.isLoggedIn().pipe(
+    return this.aai.isUserLoggedInAndFromEBI().pipe(
       map(isLoggedIn => {
         if (!isLoggedIn) {
           return this.router.parseUrl('/login');

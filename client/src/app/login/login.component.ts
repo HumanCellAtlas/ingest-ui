@@ -14,19 +14,20 @@ export class LoginComponent {
   constructor(private aai: AaiService,
               private router: Router,
               private alertService: AlertService) {
-    if (this.aai.isAuthenticated() && this.aai.isUserFromEBI()) {
-      alert('You are already logged in. Redirecting to homepage...')
-      this.router.navigate(['/home']);
-    }
+    this.aai.isUserLoggedInAndFromEBI().subscribe(isLoggedInAndFromEBI => {
+      if (isLoggedInAndFromEBI) {
+        alert('You are already logged in. Redirecting to homepage...');
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   login(): void {
-    if (this.aai.isAuthenticated()) {
-      if (!this.aai.isUserFromEBI()) {
-        this.alertService.error('Unauthorised', 'Your account email address is not allowed to access the page, sorry!', true);
+    this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
+      console.log('isLoggedIn login component', isLoggedIn);
+      if (!isLoggedIn) {
+        this.aai.startAuthentication();
       }
-    } else {
-      this.aai.startAuthentication();
-    }
+    });
   }
 }

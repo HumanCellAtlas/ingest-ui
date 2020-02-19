@@ -19,7 +19,9 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userInfo = this.aai.getUserInfo();
+    this.aai.getUserInfo().subscribe(profile => {
+      this.userInfo = profile;
+    });
     this.summary$ = this.ingestService.getUserSummary();
   }
 }

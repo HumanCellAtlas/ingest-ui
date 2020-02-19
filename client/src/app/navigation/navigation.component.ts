@@ -10,12 +10,22 @@ import {AaiService} from '../aai/aai.service';
 })
 export class NavigationComponent implements OnInit {
   userInfo: Profile
+  isLoggedIn: boolean
+
 
   constructor(public aai: AaiService) {
+    this.aai.getUserSubject().subscribe(user => {
+      this.isLoggedIn = user && !user.expired;
+      if (user) {
+        this.userInfo = user.profile;
+      }
+      console.log('userinfo', this.userInfo);
+      console.log('isLoggedIn', this.isLoggedIn);
+    });
   }
 
   ngOnInit() {
-    this.userInfo = this.aai.getUserInfo();
+
   }
 
 }

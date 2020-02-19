@@ -11,15 +11,16 @@ import {AaiService} from './aai/aai.service';
 })
 export class AppComponent {
   showLoader: boolean;
+  isLoggedIn: boolean;
 
-  constructor(public router: Router,
-              public aai: AaiService,
+  constructor(private router: Router,
+              private aai: AaiService,
               private loaderService: LoaderService) {
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
     });
-
-
+    this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+    });
   }
-
 }

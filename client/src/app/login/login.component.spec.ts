@@ -5,18 +5,19 @@ import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {Router} from '@angular/router';
 import {AaiService} from '../aai/aai.service';
 import {AlertService} from "../shared/services/alert.service";
+import {of} from "rxjs";
+import {User} from "oidc-client";
 
 
 describe('LoginComponent', () => {
   let loginFixture;
   let component: LoginComponent;
   let mockAaiSvc, mockRouterSvc, mockAlertSvc;
-  let authorizeSpy: jasmine.Spy;
   let isAuthenticatedSpy: jasmine.Spy;
-  let isUserFromEBISpy: jasmine.Spy;
+  let getUserSpy: jasmine.Spy;
 
   beforeEach(() => {
-    mockAaiSvc = jasmine.createSpyObj(['isAuthenticated', 'isUserFromEBI', 'startAuthentication']);
+    mockAaiSvc = jasmine.createSpyObj(['getUser', 'isUserLoggedIn', 'isUserLoggedInAndFromEBI', 'startAuthentication']);
     mockRouterSvc = jasmine.createSpyObj(['navigate']);
     mockAlertSvc = jasmine.createSpyObj(['error']);
     TestBed.configureTestingModule({
@@ -30,8 +31,7 @@ describe('LoginComponent', () => {
 
 
   it('should create', () => {
-    mockAaiSvc.isAuthenticated.and.returnValue(false);
-    mockAaiSvc.isUserFromEBI.and.returnValue(false);
+    mockAaiSvc.isUserLoggedInAndFromEBI.and.returnValue(of(false));
     loginFixture = TestBed.createComponent(LoginComponent);
     component = loginFixture.componentInstance;
     expect(component).toBeTruthy();
@@ -39,28 +39,16 @@ describe('LoginComponent', () => {
 
   describe('login method', function () {
     it('should redirect and authorise the user', () => {
-      isAuthenticatedSpy = mockAaiSvc.isAuthenticated.and.returnValue(false);
-      isUserFromEBISpy = mockAaiSvc.isUserFromEBI.and.returnValue(false);
+      mockAaiSvc.isUserLoggedInAndFromEBI.and.returnValue(of(false));
+      isAuthenticatedSpy = mockAaiSvc.isUserLoggedIn.and.returnValue(of(false));
+      getUserSpy = mockAaiSvc.getUser.and.returnValue(of(<User>{expired: false}));
 
       component = new LoginComponent(mockAaiSvc, mockRouterSvc, mockAlertSvc);
       component.login();
 
-      expect(isAuthenticatedSpy).toHaveBeenCalledTimes(2);
+      expect(isAuthenticatedSpy).toHaveBeenCalledTimes(1);
       expect(mockAaiSvc.startAuthentication).toHaveBeenCalledTimes(1);
       expect(mockRouterSvc.navigate).toHaveBeenCalledTimes(0);
-    });
-
-    it('should navigate to home when user is authenticated', () => {
-      isAuthenticatedSpy = mockAaiSvc.isAuthenticated.and.returnValue(true);
-      isUserFromEBISpy = mockAaiSvc.isUserFromEBI.and.returnValue(true);
-      authorizeSpy = mockAaiSvc.startAuthentication;
-
-      component = new LoginComponent(mockAaiSvc, mockRouterSvc, mockAlertSvc);
-      component.login();
-
-      expect(isAuthenticatedSpy).toHaveBeenCalledTimes(2);
-      expect(authorizeSpy).toHaveBeenCalledTimes(0);
-      expect(mockRouterSvc.navigate).toHaveBeenCalledWith(['/home']);
     });
   });
 
