@@ -1,6 +1,6 @@
 import {Profile, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import {Injectable} from '@angular/core';
-import {from, Observable, Subject} from 'rxjs';
+import {from, Observable, Subject, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
@@ -64,7 +64,7 @@ export class AaiService {
     if (this.user) {
       return `${this.user.token_type} ${this.user.access_token}`;
     }
-    return '';
+    throw new Error('No user was found!');
   }
 
   startAuthentication(): Promise<void> {
