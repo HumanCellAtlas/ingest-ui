@@ -21,7 +21,6 @@ export class OverviewComponent implements OnInit {
   downloadFile(){
     let uuid = this.submissionEnvelope['uuid']['uuid']
     this.brokerService.downloadSpreadsheet(uuid).subscribe(response => {
-      console.log("downloaded spreadsheet!")
       var filename = response['filename']
       var newBlob = new Blob([response['data']]);
 

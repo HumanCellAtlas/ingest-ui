@@ -199,7 +199,6 @@ export class SubmissionComponent implements OnInit {
     if (this.submissionEnvelope$){
       this.submissionEnvelope$
         .subscribe(data => {
-          console.log('submission envelope data', data)
           this.submissionEnvelope = data;
           this.submissionEnvelopeId = this.getSubmissionId(data)
           this.isValid = this.checkIfValid(data);

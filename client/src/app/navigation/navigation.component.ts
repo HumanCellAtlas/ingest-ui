@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {AuthService} from '../auth/auth.service';
-import {UserInfo} from "../auth/auth.model";
-import {Observable} from "rxjs";
+import {Profile} from 'oidc-client';
+import {AaiService} from '../aai/aai.service';
 
 @Component({
   selector: 'app-navigation',
@@ -10,13 +9,21 @@ import {Observable} from "rxjs";
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent implements OnInit {
-  userInfo$: Observable<UserInfo>;
+  userInfo: Profile
+  isLoggedIn: boolean
 
-  constructor(public auth: AuthService) {
+
+  constructor(public aai: AaiService) {
+    this.aai.getUserSubject().subscribe(user => {
+      this.isLoggedIn = user && !user.expired;
+      if (user) {
+        this.userInfo = user.profile;
+      }
+    });
   }
 
   ngOnInit() {
-    this.userInfo$ = this.auth.getUserInfo();
+
   }
 
 }

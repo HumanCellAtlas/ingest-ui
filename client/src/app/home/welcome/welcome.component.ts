@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../../shared/services/ingest.service';
-import {AuthService} from '../../auth/auth.service';
-import {Observable} from "rxjs";
-import {Summary} from "./summary";
-import {UserInfo} from "../../auth/auth.model";
+import {Observable} from 'rxjs';
+import {Summary} from './summary';
+import {AaiService} from '../../aai/aai.service';
+import {Profile} from 'oidc-client';
 
 @Component({
   selector: 'app-welcome',
@@ -12,14 +12,16 @@ import {UserInfo} from "../../auth/auth.model";
   encapsulation: ViewEncapsulation.None
 })
 export class WelcomeComponent implements OnInit {
-  userInfo$: Observable<UserInfo>;
+  userInfo: Profile;
   summary$: Observable<Summary>;
 
-  constructor(public auth: AuthService, private ingestService: IngestService) {
+  constructor(public aai: AaiService, private ingestService: IngestService) {
   }
 
   ngOnInit() {
-    this.userInfo$ = this.auth.getUserInfo();
+    this.aai.getUserInfo().subscribe(profile => {
+      this.userInfo = profile;
+    });
     this.summary$ = this.ingestService.getUserSummary();
   }
 }

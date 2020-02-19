@@ -1,12 +1,12 @@
-<app-navigation *ngIf="auth.isAuthenticated()"></app-navigation>
-<nav *ngIf="!auth.isAuthenticated()" class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
   <a class="navbar-brand" href="#">Human Cell Atlas</a>
 </nav>
+<app-navigation></app-navigation>
 <main class="container-fluid">
   <br/>
   <alert></alert>
   <router-outlet>
-    <div  *ngIf="showLoader" class="loading">
+    <div *ngIf="showLoader" class="loading">
       <mat-spinner
         class="example-margin"
         [color]="'primary'"

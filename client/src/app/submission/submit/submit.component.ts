@@ -23,7 +23,6 @@ export class SubmitComponent {
 
   completeSubmission() {
     if(!this.triggersAnalysisCheck){
-      console.log('do not trigger analysis');
       this.ingestService.patch(this.submissionUrl, {triggersAnalysis: false}).subscribe(
         (response) => {
           console.log('patched submission');
