@@ -19,8 +19,6 @@ export class NavigationComponent implements OnInit {
       if (user) {
         this.userInfo = user.profile;
       }
-      console.log('userinfo', this.userInfo);
-      console.log('isLoggedIn', this.isLoggedIn);
     });
   }
 

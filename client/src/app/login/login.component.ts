@@ -24,7 +24,6 @@ export class LoginComponent {
 
   login(): void {
     this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
-      console.log('isLoggedIn login component', isLoggedIn);
       if (!isLoggedIn) {
         this.aai.startAuthentication();
       }
