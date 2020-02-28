@@ -126,12 +126,11 @@ import {OidcInterceptor} from './aai/oidc-interceptor';
     MatRadioModule
   ],
   providers: [
-    // TODO Add this when token verification is added in Ingest API
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: OidcInterceptor,
-    //   multi: true
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: OidcInterceptor,
+      multi: true
+    },
     IngestService,
     BrokerService,
     FormBuilder,
