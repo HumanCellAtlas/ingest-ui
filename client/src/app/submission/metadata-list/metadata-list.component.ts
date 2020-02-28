@@ -280,4 +280,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
   }
+
+  getRowId(row) {
+    return row['uuid.uuid'];
+  }
 }

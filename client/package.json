@@ -33,7 +33,7 @@
     "@angular/router": "8.2.0",
     "@auth0/angular-jwt": "^2.1.2",
     "@ng-bootstrap/ng-bootstrap": "^4.2.2",
-    "@swimlane/ngx-datatable": "^15.0.0",
+    "@swimlane/ngx-datatable": "^16.0.3",
     "core-js": "^2.6.11",
     "ejs": "^2.7.4",
     "hammerjs": "^2.0.8",
