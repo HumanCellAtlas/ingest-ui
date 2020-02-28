@@ -53,7 +53,7 @@ export class AaiService {
   }
 
   isUserFromEBI(): Observable<boolean> {
-    return this.getUser().map(user => user && user.profile && user.profile.email.indexOf('ebi') >= 0);
+    return this.getUser().map(user => user && user.profile && user.profile.email.indexOf('@ebi.ac.uk') >= 0);
   }
 
   isUserLoggedInAndFromEBI(): Observable<boolean> {
