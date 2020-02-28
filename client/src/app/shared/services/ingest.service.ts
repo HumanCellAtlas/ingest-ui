@@ -80,6 +80,10 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/projects/${id}`);
   }
 
+  public deleteProject(id: string): Observable<Object> {
+    return this.http.delete(`${this.API_URL}/projects/${id}`)
+  }
+
   public getProjectByUuid(uuid): Observable<Object> {
     return this.http.get(`${this.API_URL}/projects/search/findByUuid?uuid=${uuid}`);
   }
@@ -174,5 +178,4 @@ export class IngestService {
 
 
   }
-
 }

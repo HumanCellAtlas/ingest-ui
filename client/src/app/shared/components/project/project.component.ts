@@ -127,4 +127,27 @@ export class ProjectComponent implements OnInit {
         });
     }
   }
+
+  onDeleteProject() {
+    if (!this.projectId){
+      this.projectId = this.getProjectId(this.project)
+    }
+    let projectName = this.getProjectName();
+    let messageOnSuccess = `Project ${projectName} was deleted!`;
+    let messageOnError = `An error has occurred while deleting project ${projectName}`;
+
+    this.ingestService.deleteProject(this.projectId).subscribe(
+      data => {
+        this.alertService.clear();
+        this.alertService.success('', messageOnSuccess);
+        this.loaderService.display(false);
+        this.router.navigate(['/home']);
+      },
+      err => {
+        this.alertService.clear();
+        this.alertService.error(messageOnError, err);
+        console.log('error deleting project', err);
+        this.loaderService.display(false);
+      });
+  }
 }
