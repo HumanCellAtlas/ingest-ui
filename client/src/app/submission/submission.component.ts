@@ -283,7 +283,7 @@ export class SubmissionComponent implements OnInit {
         },
         err => {
           this.alertService.clear();
-          this.alertService.error(messageOnError, err);
+          this.alertService.error(messageOnError, err.error.message);
           console.log('error deleting submission', err);
           this.loaderService.display(false);
           this.router.navigateByUrl(projectUrl);
