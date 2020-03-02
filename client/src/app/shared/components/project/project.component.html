@@ -5,7 +5,9 @@ Loading project ...
 <ng-container *ngIf="project" >
   <app-overview [project]="project">
     <a *ngIf="!project?.hasOpenSubmission" class="btn btn-success" role="button" routerLink="/projects/detail/{{projectUuid}}/submissions/metadata" >Create submission</a>
-    <a *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" class="btn btn-success" (click)="onDeleteProject()" >Delete Project</a>
+    <button *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" mat-icon-button (click)="onDeleteProject()">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
   </app-overview>
   <br/><br/>
   <h3>Submissions</h3>
