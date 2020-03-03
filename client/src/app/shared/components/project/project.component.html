@@ -38,6 +38,8 @@ Loading project ...
             <span *ngSwitchCase="'Submitted'" class="badge-in-list badge badge-pill badge-secondary">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Processing'"
                   class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Archiving'"
+                  class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Cleanup'"
                   class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Complete'"
