@@ -6,6 +6,7 @@ import {ProjectsComponent} from './projects/projects.component';
 import {LoginComponent} from './login/login.component';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {AuthGuardService} from './aai/auth-guard.service';
+import {ProjectFormComponent} from "./submitter/project-form/project-form.component";
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
@@ -23,6 +24,8 @@ export const ROUTES: Routes = [
   {path: 'projects/list', component: ProjectsComponent,  canActivate: [AuthGuardService]},
   {path: 'projects/detail/:id', component: ProjectComponent,  canActivate: [AuthGuardService]},
   {path: 'projects/detail', component: ProjectComponent,  canActivate: [AuthGuardService]},
+
+  {path: 'projects/new', component: ProjectFormComponent},
 
   {path: '**', redirectTo: ''}
 ];

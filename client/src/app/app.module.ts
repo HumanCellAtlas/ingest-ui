@@ -66,6 +66,8 @@ import {MetadataTableComponent} from './submission/metadata-table/metadata-table
 import {MetadataFieldComponent} from './submission/metadata-field/metadata-field.component';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
+import { ProjectFormComponent } from './submitter/project-form/project-form.component';
+import {MaterialDesignFrameworkModule} from '@ajsf/material';
 
 
 @NgModule({
@@ -93,7 +95,8 @@ import {OidcInterceptor} from './aai/oidc-interceptor';
     AlertComponent,
     MetadataTableComponent,
     MetadataFieldComponent,
-    AaiCallbackComponent
+    AaiCallbackComponent,
+    ProjectFormComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -123,7 +126,8 @@ import {OidcInterceptor} from './aai/oidc-interceptor';
     MatButtonModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule
+    MatRadioModule,
+    MaterialDesignFrameworkModule
   ],
   providers: [
     {
