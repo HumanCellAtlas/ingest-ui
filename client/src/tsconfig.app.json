@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "types": []
+    "types": [],
+    "resolveJsonModule": true
   },
   "exclude": [
     "test.ts",

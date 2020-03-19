@@ -1,0 +1,77 @@
+[
+  {
+    "type": "tabs",
+    "tabs": [
+      {
+        "title": "Project",
+        "items": [
+          "project_core.project_title",
+          "project_core.project_description",
+          "project_core.project_short_name"
+        ]
+      },
+      {
+        "title": "Contributors",
+        "items": [
+          {
+            "key": "contributors",
+            "items": [
+              "contributors[].name",
+              "contributors[].email",
+              "contributors[].phone",
+              "contributors[].institution",
+              "contributors[].laboratory",
+              "contributors[].address",
+              "contributors[].country",
+              "contributors[].orcid_id",
+              "contributors[].project_role.ontology",
+              "contributors[].corresponding_contributor"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Publications",
+        "items": [
+          {
+            "key": "publications",
+            "items": [
+              "publications[].authors",
+              "publications[].title",
+              "publications[].doi",
+              "publications[].pmid",
+              "publications[].url"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Funders",
+        "items": [
+          {
+            "key": "funders",
+            "items": [
+              "funders[].grant_title",
+              "funders[].grant_id",
+              "funders[].organization"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Validate & Submit",
+        "items": [
+          {
+            "type": "help",
+            "helpvalue": "Perhaps put validation summary here?"
+          },
+          {
+            "type": "submit",
+            "style": "btn-success",
+            "title": "Create Project"
+          }
+        ]
+      }
+    ]
+  }
+]
