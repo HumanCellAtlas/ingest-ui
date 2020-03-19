@@ -46,6 +46,7 @@
             "add": "Add Publication",
             "notitle": true,
             "items": [
+              "publications[].title",
               {
                 "key": "publications[].authors",
                 "add": "Add Author",
@@ -60,7 +61,6 @@
                   }
                 ]
               },
-              "publications[].title",
               "publications[].doi",
               "publications[].pmid",
               "publications[].url"
