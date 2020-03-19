@@ -50,10 +50,13 @@
                 "key": "publications[].authors",
                 "add": "Add Author",
                 "notitle": true,
+                "minItems": 1,
                 "items": [
                   {
                     "key": "publications[].authors[]",
-                    "title": "Author"
+                    "title": "Author",
+                    "description": "An author associated with the publication.",
+                    "required": true
                   }
                 ]
               },
