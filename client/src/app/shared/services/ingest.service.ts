@@ -43,11 +43,11 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/user/projects`, {params: params})
   }
 
-  public deleteSubmission(submissionId){
+  public deleteSubmission(submissionId) {
     return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`)
   }
 
-  public submit(submitLink){
+  public submit(submitLink) {
     this.loaderService.display(true);
     this.http.put(submitLink, null).subscribe(
       res => {
@@ -100,8 +100,9 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params})
   }
 
-  public putProject(id, project): Observable<Object> {
-    return this.http.put(`${this.API_URL}/projects/${id}`, project);
+  public patchProject(projectResource, project): Observable<Object> {
+    const projectLink: string = projectResource['_links']['self']['href']
+    return this.http.patch(projectLink, {content: project});
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {

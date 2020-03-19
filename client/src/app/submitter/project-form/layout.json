@@ -92,7 +92,7 @@
           {
             "type": "submit",
             "style": "btn-success",
-            "title": "Create Project"
+            "title": "Save"
           }
         ]
       }

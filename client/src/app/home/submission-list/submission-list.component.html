@@ -19,7 +19,7 @@
         </td>
         <td> <a href="{{submissionEnvelope['_links']['self']['href']}}" target="_blank">{{submissionEnvelope.submissionDate | date: "medium"}}</a></td>
         <td>
-          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope)}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
+          <a [routerLink]="['/submissions/detail']" [queryParams]="{d:getSubmissionUuid(submissionEnvelope)}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
         </td>
         <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>{{getProjectId(submissionEnvelope)}}</td>
