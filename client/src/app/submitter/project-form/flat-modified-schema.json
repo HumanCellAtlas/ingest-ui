@@ -117,7 +117,6 @@
       ],
       "title": "Project core",
       "name": "project_core",
-      "title": "Project core",
       "type": "object",
       "properties": {
         "describedBy": {
