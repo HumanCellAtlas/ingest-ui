@@ -5,9 +5,20 @@
       {
         "title": "Project",
         "items": [
-          "project_core.project_title",
-          "project_core.project_description",
-          "project_core.project_short_name"
+          {
+            "key": "project_core",
+            "notitle": true,
+            "items": [
+              "project_core.project_title",
+              "project_core.project_description",
+              "project_core.project_short_name"
+            ]
+          },
+          {
+            "key": "release_date",
+            "title": "Release Date",
+            "type": "date"
+          }
         ]
       },
       {
@@ -15,6 +26,8 @@
         "items": [
           {
             "key": "contributors",
+            "add": "Add Contributor",
+            "notitle": true,
             "items": [
               "contributors[].name",
               "contributors[].email",
@@ -35,8 +48,20 @@
         "items": [
           {
             "key": "publications",
+            "add": "Add Publication",
+            "notitle": true,
             "items": [
-              "publications[].authors",
+              {
+                "key": "publications[].authors",
+                "add": "Add Author",
+                "notitle": true,
+                "items": [
+                  {
+                    "key": "publications[].authors[]",
+                    "title": "Author"
+                  }
+                ]
+              },
               "publications[].title",
               "publications[].doi",
               "publications[].pmid",
@@ -50,6 +75,7 @@
         "items": [
           {
             "key": "funders",
+            "notitle": true,
             "items": [
               "funders[].grant_title",
               "funders[].grant_id",
