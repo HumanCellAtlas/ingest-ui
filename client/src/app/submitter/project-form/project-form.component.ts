@@ -8,8 +8,9 @@ import * as layout from './layout.json';
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit {
-  projectSchema : any = (schema as any).default;
-  projectLayout : any = (layout as any).default;
+  projectSchema: any = (schema as any).default;
+  projectLayout: any = (layout as any).default;
+  project: any = {};
 
   constructor() {
   }
@@ -18,6 +19,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onSubmit($event) {
-    console.log('submit');
+    console.log('submit', $event);
+    console.log('project', this.project);
   }
 }
