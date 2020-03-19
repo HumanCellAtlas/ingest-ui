@@ -13,11 +13,6 @@
               "project_core.project_description",
               "project_core.project_short_name"
             ]
-          },
-          {
-            "key": "release_date",
-            "title": "Release Date",
-            "type": "date"
           }
         ]
       },
