@@ -43,6 +43,15 @@
               ]
             },
             "env": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -66,7 +75,7 @@
                 }
               ]
             },
-            "prod": {
+            "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -106,8 +115,8 @@
             "staging": {
               "browserTarget": "ingest-ui:build:staging"
             },
-            "prod": {
-              "browserTarget": "ingest-ui:build:prod"
+            "production": {
+              "browserTarget": "ingest-ui:build:production"
             }
           }
         },
