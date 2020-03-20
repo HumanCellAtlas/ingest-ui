@@ -7,6 +7,7 @@ import {AlertService} from "../shared/services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
 import {LoaderService} from "../shared/services/loader.service";
+import {BrokerService} from '../shared/services/broker.service';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class SubmissionComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private ingestService: IngestService,
+    private brokerService: BrokerService,
     private route: ActivatedRoute,
     private router: Router,
     private loaderService: LoaderService
@@ -260,6 +262,31 @@ export class SubmissionComponent implements OnInit {
             console.log(err)
           }
         });
+  }
+
+
+  downloadFile(){
+    let uuid = this.submissionEnvelope['uuid']['uuid']
+    this.brokerService.downloadSpreadsheet(uuid).subscribe(response => {
+      var filename = response['filename']
+      var newBlob = new Blob([response['data']]);
+
+      // For other browsers:
+      // Create a link pointing to the ObjectURL containing the blob.
+      const data = window.URL.createObjectURL(newBlob);
+
+      var link = document.createElement('a');
+      link.href = data;
+      link.download = filename;
+      // this is necessary as link.click() does not work on the latest firefox
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+      setTimeout(function () {
+        // For Firefox it is necessary to delay revoking the ObjectURL
+        window.URL.revokeObjectURL(data);
+        link.remove();
+      }, 100);
+    });
   }
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {

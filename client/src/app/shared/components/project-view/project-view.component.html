@@ -1,0 +1,14 @@
+<mat-tab-group *ngIf="project">
+  <mat-tab label="Project" *ngIf="project?.content?.project_core">
+    {{project?.content?.project_core | json}}
+  </mat-tab>
+  <mat-tab label="Contributors" *ngIf="project?.content?.contributors">>
+    {{project?.content?.contributors | json}}
+  </mat-tab>
+  <mat-tab label="Publications" *ngIf="project?.content?.publications">
+    {{project?.content?.publications | json}}
+  </mat-tab>
+  <mat-tab label="Funders" *ngIf="project?.content?.funders">
+    {{project?.content?.funders | json}}
+  </mat-tab>
+</mat-tab-group>

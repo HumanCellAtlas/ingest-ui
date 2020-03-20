@@ -5,6 +5,7 @@ import {AlertService} from '../../services/alert.service';
 import {IngestService} from '../../services/ingest.service';
 import {SubmissionEnvelope} from '../../models/submissionEnvelope';
 import {LoaderService} from "../../services/loader.service";
+import {Project} from '../../models/project';
 
 @Component({
   selector: 'app-project',
@@ -18,7 +19,7 @@ export class ProjectComponent implements OnInit {
 
   profile: object;
 
-  project: object;
+  project: Project;
 
   projectId: string;
   projectUuid: string;

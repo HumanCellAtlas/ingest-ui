@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {Project} from '../../shared/models/project';
@@ -13,7 +13,7 @@ import {Profile} from 'oidc-client';
   templateUrl: './my-projects.component.html',
   styleUrls: ['./my-projects.component.css']
 })
-export class MyProjectsComponent implements OnInit {
+export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   userInfo: Profile;
   projects: Project[];
   alive: boolean;
@@ -32,7 +32,7 @@ export class MyProjectsComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
 
-  constructor(private aai: AaiService, private ingestService: IngestService, private router: Router) {
+  constructor(private aai: AaiService, private ingestService: IngestService,) {
     this.alive = true;
     this.interval = 4000;
 
@@ -59,6 +59,7 @@ export class MyProjectsComponent implements OnInit {
     links = project['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
+
   ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
   }

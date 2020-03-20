@@ -61,7 +61,7 @@ import {ProjectFormComponent} from './submitter/project-form/project-form.compon
 
 import {UploadComponent} from './shared/components/upload/upload.component';
 import {LoginComponent} from './login/login.component';
-import {OverviewComponent} from './submission/overview/overview.component';
+import {ProjectViewComponent} from './shared/components/project-view/project-view.component';
 import {AlertService} from './shared/services/alert.service';
 import {AlertComponent} from './shared/components/alert/alert.component';
 import {LoaderService} from './shared/services/loader.service';
@@ -94,7 +94,7 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     UploadComponent,
     MetadataComponent,
     LoginComponent,
-    OverviewComponent,
+    ProjectViewComponent,
     AlertComponent,
     MetadataTableComponent,
     MetadataFieldComponent,

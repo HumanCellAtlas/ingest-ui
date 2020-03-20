@@ -1,21 +1,21 @@
-export class Project {
-  uuid : string;
-  updateDate : string;
-  content: Object;
+export interface Project {
+  content: object;
+  submissionDate: string;
+  updateDate: string;
+  user?: any;
+  lastModifiedUser: string;
+  type: string;
+  uuid: Uuid;
+  events: any[];
+  dcpVersion: string;
+  accession?: any;
+  validationState: string;
+  validationErrors: any[];
+  isUpdate: boolean;
+  hasOpenSubmission: boolean;
+  _links: object;
 }
 
-export class ProjectContent {
-  project_id: string;
-  name: string;
-  description: string;
-  contributors: Contact[]
-}
-
-export class Contact {
-  city: string;
-  name: string;
-  country: string;
-  institution: string;
-  address: string;
-  email: string;
+interface Uuid {
+  uuid: string;
 }
