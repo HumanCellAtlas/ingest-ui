@@ -1,0 +1,7 @@
+<app-project-list [projects]=projects></app-project-list>
+<mat-paginator [length]="currentPageInfo['totalElements']"
+               [pageSize]="currentPageInfo['size']"
+               [pageIndex]="currentPageInfo['number']"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="pageEvent = $event">
+</mat-paginator>

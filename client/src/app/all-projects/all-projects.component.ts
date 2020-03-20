@@ -1,17 +1,16 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Project} from '../../shared/models/project';
+import {Project} from '../shared/models/project';
 import {MatPaginator, PageEvent} from '@angular/material';
-import {IngestService} from '../../shared/services/ingest.service';
+import {IngestService} from '../shared/services/ingest.service';
 import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
-import {tap} from 'rxjs/internal/operators';
+import {tap} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-project-list',
-  templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.css']
+  selector: 'app-all-projects',
+  templateUrl: './all-projects.component.html',
+  styleUrls: ['./all-projects.component.css']
 })
-
-export class ProjectListComponent implements OnInit , OnDestroy, AfterViewInit {
+export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   projects: Project[];
   alive: boolean;
   interval: number;
@@ -64,12 +63,6 @@ export class ProjectListComponent implements OnInit , OnDestroy, AfterViewInit {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  onKeyEnter(value) {
-    this.searchText = value;
-    this.paginator.pageIndex = 0;
-    this.getProjects();
-  }
-
   queryProjects(text: string, params) {
     const query = [];
     const fields = [
@@ -118,6 +111,7 @@ export class ProjectListComponent implements OnInit , OnDestroy, AfterViewInit {
           this.projects = data._embedded ? data._embedded.projects : [];
           this.pagination = data.page;
           this.getCurrentPageInfo(this.pagination);
+
         },
         error: err => {
           console.log('err', err);
@@ -159,6 +153,13 @@ export class ProjectListComponent implements OnInit , OnDestroy, AfterViewInit {
     this.currentPageInfo['totalElements'] = pagination.totalElements;
     this.currentPageInfo['number'] = pagination.number;
     return this.currentPageInfo;
+  }
+
+
+  onKeyEnter(value) {
+    this.searchText = value;
+    this.paginator.pageIndex = 0;
+    this.getProjects();
   }
 
 }

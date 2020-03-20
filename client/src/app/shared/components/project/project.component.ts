@@ -51,7 +51,7 @@ export class ProjectComponent implements OnInit {
     }
 
     if (!this.projectId && !this.projectUuid) {
-      this.router.navigate([`/projects/list`]);
+      this.router.navigate([`/projects`]);
     }
   }
 
@@ -60,7 +60,7 @@ export class ProjectComponent implements OnInit {
       this.setProjectData(projectData);
     }, error => {
       this.alertService.error('Project Not Found', `Project could not be found.`, true, true);
-      this.router.navigate([`/projects/list`]);
+      this.router.navigate([`/projects`]);
     });
 
   }
@@ -70,7 +70,7 @@ export class ProjectComponent implements OnInit {
       this.setProjectData(projectData);
     }, error => {
       this.alertService.error('Project Not Found', `Project ${uuid} was not found.`, true, true);
-      this.router.navigate([`/projects/list`]);
+      this.router.navigate([`/projects`]);
     });
   }
 
