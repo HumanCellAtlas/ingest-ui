@@ -65,17 +65,8 @@ export class SubmissionComponent implements OnInit {
     let tab = this.route.snapshot.paramMap.get('tab');
 
     this.activeTab = tab ? tab.toLowerCase() : '';
-
-    if(!this.submissionEnvelopeId && !this.submissionEnvelopeUuid){
-      this.projectUuid = this.route.snapshot.paramMap.get('projectUuid');
-      if(this.projectUuid){
-        this.getProject(this.projectUuid)
-      }
-    } else {
-      this.pollSubmissionEnvelope();
-      this.pollEntities();
-
-    }
+    this.pollSubmissionEnvelope();
+    this.pollEntities();
   }
 
   ngOnDestroy(){
@@ -108,13 +99,6 @@ export class SubmissionComponent implements OnInit {
     let status = submission['submissionState'];
     let validStates = ["Valid", "Submitted", "Processing", "Archiving", "Cleanup", "Complete"];
     return (validStates.indexOf(status) >= 0);
-  }
-
-  getProject(projectUuid){
-    this.ingestService.getProjectByUuid(projectUuid)
-      .subscribe(project => {
-        this.setProject(project);
-      });
   }
 
   getSubmissionProject(id){

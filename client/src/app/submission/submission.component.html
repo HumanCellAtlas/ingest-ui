@@ -2,27 +2,18 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <h1 class="mat-headline">Submission</h1>
     <mat-chip-list selectable="false">
+      <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;<span class="oi oi-external-link"></span></a></mat-basic-chip>
+      <mat-basic-chip *ngIf="isLinkingDone">
+        <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
+      </mat-basic-chip>
       <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
     </mat-chip-list>
   </div>
   <div>
-  <h3 class="subheading-2">{{projectName}}</h3>
     <mat-tab-group [selectedIndex]="!submissionEnvelopeId && !submissionEnvelopeUuid ? 1 : 0">
-      <mat-tab label="Overview" [disabled]="!submissionEnvelopeId">
-        <ng-template matTabContent>
+      <mat-tab label="Project" [disabled]="!submissionEnvelopeId" [hidden]="!project">
         <project-view [project]="project">
         </project-view>
-        <ng-container *ngIf="isLinkingDone">
-          <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
-        </ng-container>
-        <ng-container *ngFor="let error of project?.validationErrors">
-          <span class="text-danger" title="{{error.userFriendlyMessage}}">* {{error.userFriendlyMessage}}</span><br>
-        </ng-container>
-        <br/>
-        <span><strong>Ingest Link</strong></span>
-        <span><p><a href="{{submissionEnvelope?._links?.self?.href}}"><span class="oi oi-external-link"></span></a></p></span>
-        <br/>
-        </ng-template>
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>
@@ -45,15 +36,18 @@
       </mat-tab>
       <mat-tab label="Submit" [disabled]="!isValid" >
         <ng-template matTabContent>
-        <app-submit
-                [submissionEnvelope$]="submissionEnvelope$"
-                [submitLink]="submitLink"
-                [isSubmitted]="isSubmitted"
-                [submissionUrl]="url"
-                [submissionEnvelopeId]="submissionEnvelopeId"
-                [isLinkingDone]="isLinkingDone"
-                [manifest]="manifest">
-        </app-submit>
+          <ng-container *ngFor="let error of project?.validationErrors">
+            <span class="text-danger" title="{{error.userFriendlyMessage}}">* {{error.userFriendlyMessage}}</span><br>
+          </ng-container>
+          <app-submit
+                  [submissionEnvelope$]="submissionEnvelope$"
+                  [submitLink]="submitLink"
+                  [isSubmitted]="isSubmitted"
+                  [submissionUrl]="url"
+                  [submissionEnvelopeId]="submissionEnvelopeId"
+                  [isLinkingDone]="isLinkingDone"
+                  [manifest]="manifest">
+          </app-submit>
         </ng-template>
       </mat-tab>
     </mat-tab-group>
