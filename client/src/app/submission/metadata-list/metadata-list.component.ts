@@ -34,7 +34,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   @Input() submissionEnvelopeId: string;
   editing = {};
   iconsDir: string;
-  page = new Page();
+  page: Page = {number: 0, size: 0, sort: '', totalElements: 0, totalPages: 0};
   rows: any[];
   expandAll: boolean;
   isPaginated: boolean;
@@ -208,12 +208,13 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   fetchData(pageInfo) {
 
     if (this.submissionEnvelopeId) {
-      const newPage = new Page();
-      newPage['number'] = pageInfo['offset'];
-      newPage['size'] = pageInfo['size'];
-      newPage['sort'] = pageInfo['sort'];
+      const params = {
+        page: pageInfo['offset'],
+        size: pageInfo['size'],
+        sort: pageInfo['sort']
+      };
 
-      this.metadataList$ = this.ingestService.fetchSubmissionData(this.submissionEnvelopeId, this.metadataType, this.filterState, newPage);
+      this.metadataList$ = this.ingestService.fetchSubmissionData(this.submissionEnvelopeId, this.metadataType, this.filterState, params);
       this.metadataList$.subscribe(data => {
         this.rows = data.data.map(this.flattenService.flatten);
         this.metadataList = data.data;
