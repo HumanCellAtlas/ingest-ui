@@ -50,8 +50,7 @@ export class ProjectFormComponent implements OnInit {
       console.log('Creating project');
       this.ingestService.postProject(this.project).subscribe(resource => {
           console.log('project created', resource);
-          const uuid = resource['uuid']['uuid'];
-          this.router.navigate([`projects/${uuid}`]);
+          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
         },
         error => {
@@ -60,6 +59,7 @@ export class ProjectFormComponent implements OnInit {
     } else {
       console.log('Updating project');
       this.ingestService.patchProject(this.projectResource, this.project).subscribe(resource => {
+          this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource.uuid.uuid}`);
           this.alertService.success('Success', 'Project has been successfully updated!');
         },
         error => {

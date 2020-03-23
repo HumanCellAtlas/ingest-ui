@@ -1,3 +1,6 @@
+<a *ngIf="this.createMode" routerLink="/projects" class="text-info" >Cancel</a>
+<a *ngIf="!this.createMode" routerLink="/projects/detail" [queryParams]="{uuid:this.projectResource.uuid.uuid}" class="text-info" >Cancel</a>
+
 <json-schema-form
   loadExternalAssets="true"
   [schema]="projectSchema"
