@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {Project} from '../../shared/models/project';
 import {MatPaginator, PageEvent} from '@angular/material';
@@ -31,8 +30,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
+  constructor(private aai: AaiService, private ingestService: IngestService) {
 
-  constructor(private aai: AaiService, private ingestService: IngestService,) {
     this.alive = true;
     this.interval = 4000;
 
