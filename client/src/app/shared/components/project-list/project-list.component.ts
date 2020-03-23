@@ -9,23 +9,24 @@ import {Router} from '@angular/router';
 })
 
 export class ProjectListComponent implements OnInit {
-  private _projects :Project[];
-
   constructor(private router: Router) {
+  }
+
+  private _projects: Project[];
+
+  get projects(): Project[] {
+    return this._projects;
+  }
+
+  @Input()
+  set projects(projects: Project[]) {
+    this._projects = projects;
   }
 
   ngOnInit() {
   }
 
-  @Input()
-  set projects(projects: Project[]) {
-    this._projects = projects
-  }
-
-  get projects(): Project[] {
-    return this._projects;
-  }
-  redirect(){
+  redirect() {
     this.router.navigate(['projects/new']);
   }
 
