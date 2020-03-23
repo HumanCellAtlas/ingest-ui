@@ -50,8 +50,6 @@ import {SubmitComponent} from './submission/submit/submit.component';
 
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component';
-import {MetadataTableComponent} from './submission/metadata-table/metadata-table.component';
-import {MetadataFieldComponent} from './submission/metadata-field/metadata-field.component';
 
 import {ProjectComponent} from './shared/components/project/project.component';
 import {ProjectListComponent} from './shared/components/project-list/project-list.component';
@@ -96,8 +94,6 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     LoginComponent,
     ProjectViewComponent,
     AlertComponent,
-    MetadataTableComponent,
-    MetadataFieldComponent,
     AaiCallbackComponent,
     ProjectFormComponent,
     MyProjectsComponent
