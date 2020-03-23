@@ -13,8 +13,8 @@ export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'aai-callback', component: AaiCallbackComponent},
 
-  {path: '', component: HomeComponent, canActivate: [AuthGuardService]},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuardService]},
+  {path: '', component: MyProjectsComponent, canActivate: [AuthGuardService]},
+  {path: 'home', component: MyProjectsComponent, canActivate: [AuthGuardService]},
   {path: 'submissions/list', component: HomeComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/:tab/upload', component: SubmissionComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/detail/:id', component: SubmissionComponent,  canActivate: [AuthGuardService]},
@@ -26,9 +26,9 @@ export const ROUTES: Routes = [
   {path: 'projects/detail', component: ProjectComponent,  canActivate: [AuthGuardService]},
   {path: 'projects/all', component: AllProjectsComponent,  canActivate: [AuthGuardService]},
 
-  {path: 'projects', component: MyProjectsComponent},
-  {path: 'projects/new', component: ProjectFormComponent},
-  {path: 'projects/:uuid', component: ProjectFormComponent},
+  {path: 'projects', component: MyProjectsComponent,  canActivate: [AuthGuardService]},
+  {path: 'projects/new', component: ProjectFormComponent,  canActivate: [AuthGuardService]},
+  {path: 'projects/:uuid', component: ProjectFormComponent,  canActivate: [AuthGuardService]},
 
   {path: '**', redirectTo: ''}
 ];
