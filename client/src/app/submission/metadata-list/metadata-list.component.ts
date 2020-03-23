@@ -68,7 +68,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.iconsDir = 'assets/open-iconic/svg';
     this.pollInterval = 4000; //4s
     this.alive = true;
-    this.page.page = 0;
+    this.page.number = 0;
     this.page.size = 20;
     this.pollingTimer = TimerObservable.create( 0, this.pollInterval)
       .takeWhile(() => this.alive); // only fires when component is alive
@@ -217,7 +217,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   setPage(pageInfo){
     this.currentPageInfo = pageInfo;
     this.stopPolling();
-    this.page.page = pageInfo.offset;
+    this.page.number = pageInfo.offset;
     this.startPolling(this.currentPageInfo);
     this.alive = true;
   }
@@ -227,7 +227,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
     if(this.submissionEnvelopeId){
       let newPage = new Page();
-      newPage['page'] = pageInfo['offset'];
+      newPage['number'] = pageInfo['offset'];
       newPage['size'] = pageInfo['size'];
       newPage['sort'] = pageInfo['sort'];
 
