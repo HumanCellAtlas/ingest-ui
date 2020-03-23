@@ -27,8 +27,8 @@ export const ROUTES: Routes = [
   {path: 'projects/all', component: AllProjectsComponent,  canActivate: [AuthGuardService]},
 
   {path: 'projects', component: MyProjectsComponent},
-  {path: 'projects/:uuid', component: ProjectFormComponent},
   {path: 'projects/new', component: ProjectFormComponent},
+  {path: 'projects/:uuid', component: ProjectFormComponent},
 
   {path: '**', redirectTo: ''}
 ];

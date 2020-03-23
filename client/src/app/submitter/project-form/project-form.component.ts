@@ -47,7 +47,7 @@ export class ProjectFormComponent implements OnInit {
     console.log('project', this.project);
 
     if (this.createMode) {
-      console.log('creating project');
+      console.log('Creating project');
       this.ingestService.postProject(this.project).subscribe(resource => {
           console.log('project created', resource);
           const uuid = resource['uuid']['uuid'];
@@ -58,6 +58,7 @@ export class ProjectFormComponent implements OnInit {
           this.alertService.error('Error', error.message);
         });
     } else {
+      console.log('Updating project');
       this.ingestService.patchProject(this.projectResource, this.project).subscribe(resource => {
           this.alertService.success('Success', 'Project has been successfully updated!');
         },
