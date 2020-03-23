@@ -12,6 +12,7 @@ import {SubmissionEnvelope} from '../models/submissionEnvelope';
 
 import {environment} from '../../../environments/environment';
 import {LoaderService} from './loader.service';
+import {MetadataDocument} from '../models/metadata-document';
 
 
 @Injectable()
@@ -117,7 +118,7 @@ export class IngestService {
       });
   }
 
-  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
+  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData<MetadataDocument>> {
     let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`;
     const submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
 
@@ -135,8 +136,8 @@ export class IngestService {
 
     }
     return this.http.get(url, {params: params})
-      .map((data: ListResult<object>) => {
-        const pagedData: PagedData = {data: [], page: undefined};
+      .map((data: ListResult<MetadataDocument>) => {
+        const pagedData: PagedData<MetadataDocument> = {data: [], page: undefined};
         if (data._embedded && data._embedded[entityType]) {
           pagedData.data = _.values(data._embedded[entityType]);
           pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data);

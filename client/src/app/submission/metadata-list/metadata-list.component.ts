@@ -5,6 +5,7 @@ import {Page, PagedData} from '../../shared/models/page';
 import {Observable, Subscription} from 'rxjs';
 import {TimerObservable} from 'rxjs/observable/TimerObservable';
 import 'rxjs-compat/add/operator/takeWhile';
+import {MetadataDocument} from '../../shared/models/metadata-document';
 
 @Component({
   selector: 'app-metadata-list',
@@ -30,7 +31,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     displayColumns: [],
     hideWhenEmptyRows: false
   };
-  metadataList$: Observable<PagedData>;
+  metadataList$: Observable<PagedData<MetadataDocument>>;
   @Input() submissionEnvelopeId: string;
   editing = {};
   iconsDir: string;

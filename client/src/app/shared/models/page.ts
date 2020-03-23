@@ -7,7 +7,7 @@ export interface Page {
 }
 
 
-export interface PagedData {
-  data: object[];
+export interface PagedData<T> {
+  data: T[];
   page: Page;
 }

@@ -1,21 +1,6 @@
-export interface Project {
-  content: object;
-  submissionDate: string;
-  updateDate: string;
-  user?: any;
-  lastModifiedUser: string;
-  type: string;
-  uuid: Uuid;
-  events: any[];
-  dcpVersion: string;
-  accession?: any;
-  validationState: string;
-  validationErrors: any[];
-  isUpdate: boolean;
+import {MetadataDocument} from './metadata-document';
+
+export interface Project extends MetadataDocument {
   hasOpenSubmission: boolean;
   _links: object;
-}
-
-interface Uuid {
-  uuid: string;
 }
