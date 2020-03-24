@@ -1,0 +1,8 @@
+:host-context(.mat-tab-body-content) {
+  display: block;
+  margin-top: 24px;
+
+  mat-card {
+    margin: 0 3px 4px; /* Add margin to card so that card box shadow is not clipped by overflow settings on parent tab */
+  }
+}

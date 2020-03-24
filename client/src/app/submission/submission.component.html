@@ -11,9 +11,9 @@
   </div>
   <div>
     <mat-tab-group [selectedIndex]="!submissionEnvelopeId && !submissionEnvelopeUuid ? 1 : 0">
-      <mat-tab label="Project" [disabled]="!submissionEnvelopeId" [hidden]="!project">
-        <project-view [project]="project">
-        </project-view>
+      <mat-tab label="Overview" [disabled]="!submissionEnvelopeId" [hidden]="!project">
+        <app-project-view [project]="project">
+        </app-project-view>
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>

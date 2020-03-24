@@ -3,8 +3,8 @@ Loading project ...
 </ng-container>
 
 <ng-container *ngIf="project" >
-  <project-view [project]="project">
-  </project-view>
+  <app-project-view [project]="project">
+  </app-project-view>
   <button *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" mat-icon-button (click)="onDeleteProject()">
     <mat-icon>delete_forever</mat-icon>
   </button>

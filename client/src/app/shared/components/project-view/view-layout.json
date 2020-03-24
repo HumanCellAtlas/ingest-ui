@@ -1,0 +1,91 @@
+[
+  {
+    "type": "tabs",
+    "tabs": [
+      {
+        "title": "Project",
+        "items": [
+          {
+            "key": "project_core",
+            "notitle": true,
+            "items": [
+              "project_core.project_title",
+              "project_core.project_description",
+              "project_core.project_short_name"
+            ],
+            "readonly": true
+          }
+        ]
+      },
+      {
+        "title": "Contributors",
+        "items": [
+          {
+            "key": "contributors",
+            "add": "Add Contributor",
+            "notitle": true,
+            "items": [
+              "contributors[].name",
+              "contributors[].email",
+              "contributors[].phone",
+              "contributors[].institution",
+              "contributors[].laboratory",
+              "contributors[].address",
+              "contributors[].country",
+              "contributors[].orcid_id",
+              "contributors[].project_role.ontology",
+              "contributors[].corresponding_contributor"
+            ],
+            "readonly": true
+          }
+        ]
+      },
+      {
+        "title": "Publications",
+        "items": [
+          {
+            "key": "publications",
+            "add": "Add Publication",
+            "notitle": true,
+            "items": [
+              "publications[].title",
+              {
+                "key": "publications[].authors",
+                "add": "Add Author",
+                "notitle": true,
+                "minItems": 1,
+                "items": [
+                  {
+                    "key": "publications[].authors[]",
+                    "title": "Author",
+                    "description": "An author associated with the publication.",
+                    "required": true
+                  }
+                ]
+              },
+              "publications[].doi",
+              "publications[].pmid",
+              "publications[].url"
+            ],
+            "readonly": true
+          }
+        ]
+      },
+      {
+        "title": "Funders",
+        "items": [
+          {
+            "key": "funders",
+            "notitle": true,
+            "items": [
+              "funders[].grant_title",
+              "funders[].grant_id",
+              "funders[].organization"
+            ],
+            "readonly": true
+          }
+        ]
+      }
+    ]
+  }
+]

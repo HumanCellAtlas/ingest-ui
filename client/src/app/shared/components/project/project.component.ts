@@ -4,7 +4,7 @@ import {Component, OnInit} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
 import {IngestService} from '../../services/ingest.service';
 import {SubmissionEnvelope} from '../../models/submissionEnvelope';
-import {LoaderService} from "../../services/loader.service";
+import {LoaderService} from '../../services/loader.service';
 import {Project} from '../../models/project';
 
 @Component({
@@ -38,8 +38,8 @@ export class ProjectComponent implements OnInit {
 
   private initProject() {
     this.route.queryParamMap.subscribe(queryParams => {
-      this.projectUuid = queryParams.get("uuid")
-    })
+      this.projectUuid = queryParams.get('uuid');
+    });
 
     this.projectId = this.route.snapshot.paramMap.get('id');
 
@@ -56,7 +56,7 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  getProject(id){
+  getProject(id) {
     this.ingestService.getProject(id).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
@@ -66,7 +66,7 @@ export class ProjectComponent implements OnInit {
 
   }
 
-  getProjectByUuid(uuid){
+  getProjectByUuid(uuid) {
     this.ingestService.getProjectByUuid(uuid).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
@@ -75,43 +75,43 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  setProjectData(projectData){
+  setProjectData(projectData) {
     this.project = projectData;
-    let submissions_url = projectData['_links']['submissionEnvelopes']['href']
+    const submissions_url = projectData['_links']['submissionEnvelopes']['href'];
     this.ingestService.get(submissions_url).subscribe(
       submissionData => {
-        let submissions = submissionData['_embedded'] ? submissionData['_embedded']['submissionEnvelopes'] : [];
+        const submissions = submissionData['_embedded'] ? submissionData['_embedded']['submissionEnvelopes'] : [];
         this.submissionEnvelopes = submissions;
       }
-    )
+    );
   }
 
-  getProjectName(){
+  getProjectName() {
     return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
   }
-  getSubmissionId(submissionEnvelope){
-    let links = submissionEnvelope['_links'];
+  getSubmissionId(submissionEnvelope) {
+    const links = submissionEnvelope['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
-  getSubmissionUuid(submissionEnvelope){
+  getSubmissionUuid(submissionEnvelope) {
     return submissionEnvelope['uuid']['uuid'];
   }
 
-  getProjectId(project){
-    let links = project['_links'];
+  getProjectId(project) {
+    const links = project['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
-    let submissionId : String = this.getSubmissionId(submissionEnvelope);
-    let projectName = this.getProjectName();
-    let projectInfo = projectName ? `(${projectName})`: '';
-    let submissionUuid = submissionEnvelope['uuid']['uuid'];
-    let message = `This may take some time. Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
-    let messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
-    let messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
-    if(confirm(message)){
+    const submissionId: String = this.getSubmissionId(submissionEnvelope);
+    const projectName = this.getProjectName();
+    const projectInfo = projectName ? `(${projectName})` : '';
+    const submissionUuid = submissionEnvelope['uuid']['uuid'];
+    const message = `This may take some time. Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
+    const messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
+    const messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
+    if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {
@@ -130,15 +130,15 @@ export class ProjectComponent implements OnInit {
   }
 
   onDeleteProject() {
-    if (!this.projectId){
-      this.projectId = this.getProjectId(this.project)
+    if (!this.projectId) {
+      this.projectId = this.getProjectId(this.project);
     }
-    let projectName = this.getProjectName();
-    let message = `Delete ${projectName}?`;
-    let messageOnSuccess = `Project ${projectName} was deleted!`;
-    let messageOnError = `An error has occurred while deleting project ${projectName}`;
+    const projectName = this.getProjectName();
+    const message = `Delete ${projectName}?`;
+    const messageOnSuccess = `Project ${projectName} was deleted!`;
+    const messageOnError = `An error has occurred while deleting project ${projectName}`;
 
-    if(confirm(message)) {
+    if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteProject(this.projectId).subscribe(
         data => {

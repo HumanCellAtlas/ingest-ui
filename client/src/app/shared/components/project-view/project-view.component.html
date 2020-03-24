@@ -1,15 +1,11 @@
-<mat-tab-group *ngIf="project">
-  <mat-tab label="Overview" [hidden]="!project?.content?.project_core">
-    {{project?.content?.project_core | json}}
-  </mat-tab>
-  <mat-tab label="Contributors" [hidden]="!project?.content?.contributors">>
-    {{project?.content?.contributors | json}}
-  </mat-tab>
-  <mat-tab label="Publications" [hidden]="!project?.content?.publications">
-    {{project?.content?.publications | json}}
-  </mat-tab>
-  <mat-tab label="Funders" [hidden]="!project?.content?.funders">
-    {{project?.content?.funders | json}}
-  </mat-tab>
-</mat-tab-group>
-<a class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
+<json-schema-form
+  *ngIf="project"
+  loadExternalAssets="true"
+  [schema]="projectSchema"
+  [layout]="projectLayout"
+  framework="material-design"
+  [(data)]="project.content"
+>
+</json-schema-form>
+<a *ngIf="project" class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
+
