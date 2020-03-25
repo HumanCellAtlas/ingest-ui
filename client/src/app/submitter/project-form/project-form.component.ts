@@ -4,6 +4,8 @@ import * as layout from './layout.json';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
+import {SchemaService} from '../../shared/services/schema.service';
+import {concatMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-form',
@@ -13,14 +15,15 @@ import {AlertService} from '../../shared/services/alert.service';
 export class ProjectFormComponent implements OnInit {
   projectSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
-  project: any;
+  project: object;
   projectResource: any;
   createMode = true;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private ingestService: IngestService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private schemaService: SchemaService) {
   }
 
   ngOnInit() {
@@ -48,7 +51,18 @@ export class ProjectFormComponent implements OnInit {
 
     if (this.createMode) {
       console.log('Creating project');
-      this.ingestService.postProject(this.project).subscribe(resource => {
+      this.schemaService.getLatestSchema('project')
+        .pipe(
+          concatMap(
+            project_schema => {
+              const schemaUri = project_schema._links['json-schema'].href;
+              this.project['describedBy'] = schemaUri;
+              this.project['schema_type'] = project_schema.domainEntity;
+              return this.ingestService.postProject(this.project);
+            }
+          )
+        ).subscribe(
+        resource => {
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);

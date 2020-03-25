@@ -13,6 +13,7 @@ import {SubmissionEnvelope} from '../models/submissionEnvelope';
 import {environment} from '../../../environments/environment';
 import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
+import {MetadataSchema} from "../models/metadata-schema";
 
 
 @Injectable()
@@ -161,6 +162,11 @@ export class IngestService {
     return this.http.get(url);
   }
 
+  public getLatestSchemas(): Observable<ListResult<MetadataSchema>> {
+    return this.get(`${this.API_URL}/schemas/search/filterLatestSchemas?highLevelEntity=type`)
+      .map(data => data as ListResult<MetadataSchema>);
+  }
+
   private reduceColumnsForBundleManifests(entityType, data) {
     if (entityType === 'bundleManifests') {
       return data.map(function (row) {
@@ -178,4 +184,5 @@ export class IngestService {
 
 
   }
+
 }
