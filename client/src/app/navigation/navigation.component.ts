@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Profile} from 'oidc-client';
 import {AaiService} from '../aai/aai.service';
 
 @Component({
