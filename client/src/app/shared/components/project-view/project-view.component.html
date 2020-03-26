@@ -5,6 +5,7 @@
   [layout]="projectLayout"
   framework="material-design"
   [(data)]="project.content"
+  [options]=options
 >
 </json-schema-form>
 <a *ngIf="project" class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
