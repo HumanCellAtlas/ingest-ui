@@ -69,6 +69,7 @@ import {SchemaService} from './shared/services/schema.service';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
 import {MaterialDesignFrameworkModule} from '@ajsf/material';
+import { GlobalHeaderComponent } from './global-header/global-header.component';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     AlertComponent,
     AaiCallbackComponent,
     ProjectFormComponent,
-    MyProjectsComponent
+    MyProjectsComponent,
+    GlobalHeaderComponent
   ],
   imports: [
     NgbModule.forRoot(),
