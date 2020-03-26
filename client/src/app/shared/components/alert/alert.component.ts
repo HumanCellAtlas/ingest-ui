@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Alert, AlertType} from "../../models/alert";
 import {AlertService} from "../../services/alert.service";
 
@@ -12,7 +12,8 @@ import {AlertService} from "../../services/alert.service";
 export class AlertComponent {
   alerts: Alert[] = [];
 
-  constructor(private alertService: AlertService) { }
+  constructor(private alertService: AlertService) {
+  }
 
   ngOnInit() {
     this.alertService.getAlert().subscribe((alert: Alert) => {
@@ -35,17 +36,21 @@ export class AlertComponent {
     if (!alert) {
       return;
     }
+    // TODO some banner classes are not yet implemented in Visual Framework 2.0
+    // Use phase class for all now
+    return 'vf-banner--phase ';
+    return '.vf-u-background-color--green--lightest';
 
     // return css class based on alert type
     switch (alert.type) {
       case AlertType.Success:
-        return 'alert alert-success';
+        return 'vf-banner--success';
       case AlertType.Error:
-        return 'alert alert-danger';
+        return 'vf-banner--alert';
       case AlertType.Info:
-        return 'alert alert-info';
+        return 'vf-banner--notice';
       case AlertType.Warning:
-        return 'alert alert-warning';
+        return 'vf-banner--warning warning';
     }
   }
 }

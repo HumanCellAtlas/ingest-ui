@@ -3,6 +3,7 @@ import {LoaderService} from './shared/services/loader.service';
 import {Router} from '@angular/router';
 import 'rxjs-compat/add/operator/takeWhile';
 import {AaiService} from './aai/aai.service';
+import {Profile} from 'oidc-client';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import {AaiService} from './aai/aai.service';
 export class AppComponent {
   showLoader: boolean;
   isLoggedIn: boolean;
+  userInfo: Profile;
 
   constructor(private router: Router,
               private aai: AaiService,
@@ -22,5 +24,15 @@ export class AppComponent {
     this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
+    this.aai.getUserSubject().subscribe(user => {
+      this.isLoggedIn = user && !user.expired;
+      if (user) {
+        this.userInfo = user.profile;
+      }
+    });
+  }
+
+  logout() {
+    this.aai.logout();
   }
 }

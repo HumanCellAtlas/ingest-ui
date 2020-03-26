@@ -1,41 +1,20 @@
-<nav *ngIf="isLoggedIn" class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
-
-  <a class="navbar-brand" href="/home">Human Cell Atlas</a>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul *ngIf="isLoggedIn" class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/projects">My Projects</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/projects/all">All Projects</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" title="View all submissions" [routerLink]="['/submissions/list', {all: 1}]">All Submissions</a>
-      </li>
-    </ul>
-
-    <ul *ngIf="isLoggedIn" class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-      <li class="nav-item dropdown">
-        <a *ngIf="isLoggedIn" class="nav-item nav-link mr-md-2" id="bd-versions"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img *ngIf="userInfo.picture" src="{{ userInfo?.picture}}" class="rounded-circle profile-image"> {{ userInfo?.name }}
-        </a>
-
-      </li>
-    </ul>
-
-    <form class="form-inline my-2 my-lg-0">
-      <button type="submit"
-              class="btn btn-logout"
-              *ngIf="isLoggedIn"
-              (click)="aai.logout()">Sign out
-      </button>
-    </form>
+<div class="vf-grid">
+  <div class="vf-component__container">
+    <div class="vf-global-layout--hard vf-global-theme--secondary">
+      <nav class="vf-navigation vf-navigation--main">
+        <ul class="vf-navigation__list | vf-list--inline" *ngIf="isLoggedIn">
+          <li class="vf-navigation__item">
+            <a class="vf-navigation__link" routerLink="/projects">My Projects</a>
+          </li>
+          <li class="vf-navigation__item">
+            <a class="vf-navigation__link" routerLink="/projects/all">All Projects</a>
+          </li>
+          <li class="vf-navigation__item">
+            <a class="vf-navigation__link" title="View all submissions" [routerLink]="['/submissions/list', {all: 1}]">All
+              Submissions</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
-</nav>
+</div>

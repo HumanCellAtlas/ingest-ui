@@ -1,8 +1,11 @@
-<button type="button" class="btn btn-success align-right" (click)="redirect()">Create a new project</button>
+<div class="vf-section-header">
+  <h2 class="vf-section-header__heading"> Projects </h2>
+  <p> This is where you keep track of your project and teams. </p> <button type="button" class="vf-button vf-button--primary vf-button--sm vf-u-float__left" (click)="redirect()"> Create a new project</button>
+</div>
 <div class="card" *ngIf="projects || {}">
   <div>
-    <table class="table">
-      <thead class="thead-light">
+    <table style="width:100%">
+      <thead align="left">
       <tr>
         <th>Created</th>
         <th>Project Label</th>
@@ -12,8 +15,12 @@
       <tbody>
       <tr *ngFor="let project of projects">
         <td>{{project.submissionDate | date: "medium"}}</td>
-        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a></td>
-        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></a></td>
+        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span
+          title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a>
+        </td>
+        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span
+          title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></a>
+        </td>
       </tr>
       <tr *ngIf="!projects">
         <td>Loading your projects...</td>

@@ -7,4 +7,5 @@
   [(data)]="project.content"
 >
 </json-schema-form>
-<a *ngIf="project" class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
+<br/>
+<a *ngIf="project" class="vf-button vf-button--primary vf-button--sm" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
