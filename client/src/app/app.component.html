@@ -1,6 +1,6 @@
-<header class="vf-global-header">
+<header class="vf-global-header" *ngIf="isLoggedIn">
   <div class="vf-global-header__inner">
-    <img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" width="110px" alt="Human Cell Atlas">
+    <img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas" style="width:10%;height: 10%">
     <p class="vf-logo__text"> Ingest Service </p>
   </div>
 
@@ -24,11 +24,11 @@
 
 </header>
 
-<div class="vf-component__container"  *ngIf="isLoggedIn" >
-  <br/>
-  <h1 class="vf-page-header__heading">Contribute</h1>
-  <br/>
-</div>
+<!--<div class="vf-component__container"  *ngIf="isLoggedIn" >-->
+<!--  <br/>-->
+<!--  <h1 class="vf-page-header__heading">Contribute</h1>-->
+<!--  <br/>-->
+<!--</div>-->
 
 <div class="vf-component__container">
   <app-navigation></app-navigation>
