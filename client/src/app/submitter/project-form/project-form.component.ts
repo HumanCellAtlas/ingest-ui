@@ -73,8 +73,9 @@ export class ProjectFormComponent implements OnInit {
     } else {
       console.log('Updating project');
       this.ingestService.patchProject(this.projectResource, this.project).subscribe(resource => {
-          this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource.uuid.uuid}`);
-          this.alertService.success('Success', 'Project has been successfully updated!');
+          console.log('project updated', resource);
+          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
+          this.alertService.success('Success', 'Project has been successfully updated!',true);
         },
         error => {
           this.alertService.error('Error', error.message);
