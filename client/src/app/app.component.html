@@ -1,11 +1,12 @@
 <header class="vf-global-header" *ngIf="isLoggedIn">
   <div class="vf-global-header__inner">
-    <img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas" style="width:10%;height: 10%">
-    <p class="vf-logo__text"> Ingest Service </p>
+    <img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas"
+         style="width:10%;height: 10%">
+        <p class="vf-logo__text"> Ingest Service </p>
   </div>
-
   <nav class="vf-navigation vf-navigation--global">
     <ul class="vf-navigation__list | vf-list--inline">
+
       <li class="vf-navigation__item">
         <a *ngIf="isLoggedIn" class="vf-navigation__link">
           <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}"
