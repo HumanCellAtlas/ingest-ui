@@ -10,7 +10,10 @@
             "notitle": true,
             "items": [
               "project_core.project_title",
-              "project_core.project_description",
+              {
+                "key": "project_core.project_description",
+                "type": "textarea"
+              },
               "project_core.project_short_name"
             ]
           }
@@ -21,7 +24,6 @@
         "items": [
           {
             "key": "contributors",
-            "add": "Add Contributor",
             "notitle": true,
             "items": [
               "contributors[].name",
@@ -43,13 +45,11 @@
         "items": [
           {
             "key": "publications",
-            "add": "Add Publication",
             "notitle": true,
             "items": [
               "publications[].title",
               {
                 "key": "publications[].authors",
-                "add": "Add Author",
                 "notitle": true,
                 "minItems": 1,
                 "items": [
