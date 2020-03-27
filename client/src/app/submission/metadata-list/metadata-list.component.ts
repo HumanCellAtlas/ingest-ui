@@ -34,7 +34,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   metadataList$: Observable<PagedData<MetadataDocument>>;
   @Input() submissionEnvelopeId: string;
   editing = {};
-  iconsDir: string;
   page: Page = {number: 0, size: 0, sort: '', totalElements: 0, totalPages: 0};
   rows: any[];
   expandAll: boolean;
@@ -48,7 +47,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
-    this.iconsDir = 'assets/open-iconic/svg';
     this.pollInterval = 4000; // 4s
     this.alive = true;
     this.page.number = 0;
