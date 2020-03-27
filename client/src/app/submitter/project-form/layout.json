@@ -4,6 +4,7 @@
     "tabs": [
       {
         "title": "Project",
+        "notitle": true,
         "items": [
           {
             "key": "project_core",
@@ -21,6 +22,7 @@
       },
       {
         "title": "Contributors",
+        "notitle": true,
         "items": [
           {
             "key": "contributors",
@@ -42,6 +44,7 @@
       },
       {
         "title": "Publications",
+        "notitle": true,
         "items": [
           {
             "key": "publications",
@@ -70,6 +73,7 @@
       },
       {
         "title": "Funders",
+        "notitle": true,
         "items": [
           {
             "key": "funders",
@@ -84,6 +88,7 @@
       },
       {
         "title": "Validate & Submit",
+        "notitle": true,
         "items": [
           {
             "type": "help",
