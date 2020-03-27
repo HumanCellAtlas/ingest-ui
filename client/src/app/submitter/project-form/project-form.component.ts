@@ -18,6 +18,12 @@ export class ProjectFormComponent implements OnInit {
   project: object;
   projectResource: any;
   createMode = true;
+  formValidationErrors :any = null;
+  formIsValid: boolean = null;
+  formOptions: any = {
+    addSubmit: true,
+    defaultWidgetOptions: { feedback: true }
+  };
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -33,6 +39,12 @@ export class ProjectFormComponent implements OnInit {
     if (projectUuid) {
       this.createMode = false;
       this.getProject(projectUuid);
+    } else {
+      this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
+        this.project['describedBy'] = latestProjectSchema._links['json-schema'].href;
+        this.project['schema_type'] = latestProjectSchema.domainEntity;
+        console.log('Default Project Data', this.project)
+      })
     }
 
   }
@@ -41,28 +53,17 @@ export class ProjectFormComponent implements OnInit {
     this.ingestService.getProjectByUuid(projectUuid).subscribe(resource => {
       this.project = resource['content'];
       this.projectResource = resource;
+      this.formIsValid = null;
+      this.formValidationErrors = null;
     });
   }
 
-  onSave($event) {
+  onSave() {
     this.alertService.clear();
-    console.log('submit', $event);
     console.log('project', this.project);
-
     if (this.createMode) {
       console.log('Creating project');
-      this.schemaService.getLatestSchema('project')
-        .pipe(
-          concatMap(
-            project_schema => {
-              const schemaUri = project_schema._links['json-schema'].href;
-              this.project['describedBy'] = schemaUri;
-              this.project['schema_type'] = project_schema.domainEntity;
-              return this.ingestService.postProject(this.project);
-            }
-          )
-        ).subscribe(
-        resource => {
+      this.ingestService.postProject(this.project).subscribe(resource => {
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
@@ -75,7 +76,7 @@ export class ProjectFormComponent implements OnInit {
       this.ingestService.patchProject(this.projectResource, this.project).subscribe(resource => {
           console.log('project updated', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-          this.alertService.success('Success', 'Project has been successfully updated!',true);
+          this.alertService.success('Success', 'Project has been successfully updated!', true);
         },
         error => {
           this.alertService.error('Error', error.message);
@@ -83,4 +84,20 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
+  validationErrors(data: any) {
+    this.formValidationErrors = data;
+  }
+
+  isValid(isValid: boolean) {
+    this.formIsValid = isValid;
+  }
+
+  get prettyValidationErrors() {
+    if (!this.formValidationErrors) { return null; }
+    const errorArray = [];
+    for (const error of this.formValidationErrors) {
+      errorArray.push(error.message);
+    }
+    return errorArray.join('<br>');
+  }
 }

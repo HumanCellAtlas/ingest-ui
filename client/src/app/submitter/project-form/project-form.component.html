@@ -4,10 +4,16 @@
 
 <json-schema-form
   loadExternalAssets="true"
+  [framework]="'material-design'"
   [schema]="projectSchema"
   [layout]="projectLayout"
-  framework="material-design"
-  (onSubmit)="onSave($event)"
   [(data)]="project"
+  [options]="formOptions"
+  (onSubmit)="onSave()"
+  (isValid)="isValid($event)"
+  (validationErrors)="validationErrors($event)">
 >
 </json-schema-form>
+<div *ngIf="!this.formIsValid"
+     class="alert-warning"
+     [innerHTML]="prettyValidationErrors"></div>

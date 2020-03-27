@@ -85,21 +85,6 @@
             ]
           }
         ]
-      },
-      {
-        "title": "Validate & Submit",
-        "notitle": true,
-        "items": [
-          {
-            "type": "help",
-            "helpvalue": "Perhaps put validation summary here?"
-          },
-          {
-            "type": "submit",
-            "style": "btn-success",
-            "title": "Save"
-          }
-        ]
       }
     ]
   }
