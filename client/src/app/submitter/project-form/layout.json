@@ -4,13 +4,17 @@
     "tabs": [
       {
         "title": "Project",
+        "notitle": true,
         "items": [
           {
             "key": "project_core",
             "notitle": true,
             "items": [
               "project_core.project_title",
-              "project_core.project_description",
+              {
+                "key": "project_core.project_description",
+                "type": "textarea"
+              },
               "project_core.project_short_name"
             ]
           }
@@ -18,10 +22,10 @@
       },
       {
         "title": "Contributors",
+        "notitle": true,
         "items": [
           {
             "key": "contributors",
-            "add": "Add Contributor",
             "notitle": true,
             "items": [
               "contributors[].name",
@@ -40,16 +44,15 @@
       },
       {
         "title": "Publications",
+        "notitle": true,
         "items": [
           {
             "key": "publications",
-            "add": "Add Publication",
             "notitle": true,
             "items": [
               "publications[].title",
               {
                 "key": "publications[].authors",
-                "add": "Add Author",
                 "notitle": true,
                 "minItems": 1,
                 "items": [
@@ -70,6 +73,7 @@
       },
       {
         "title": "Funders",
+        "notitle": true,
         "items": [
           {
             "key": "funders",
@@ -79,20 +83,6 @@
               "funders[].grant_id",
               "funders[].organization"
             ]
-          }
-        ]
-      },
-      {
-        "title": "Validate & Submit",
-        "items": [
-          {
-            "type": "help",
-            "helpvalue": "Perhaps put validation summary here?"
-          },
-          {
-            "type": "submit",
-            "style": "btn-success",
-            "title": "Save"
           }
         ]
       }

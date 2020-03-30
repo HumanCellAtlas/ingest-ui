@@ -12,7 +12,7 @@ export class ProjectViewComponent implements OnInit {
   @Input() project: Project;
   projectLayout: any = (layout as any).default;
   projectSchema: any = (schema as any).default;
-
+  options: object = {addSubmit: false};
   constructor() {
   }
 

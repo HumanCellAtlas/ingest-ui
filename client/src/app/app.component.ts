@@ -14,7 +14,6 @@ export class AppComponent {
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
     });
-
   }
 
 }

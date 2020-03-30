@@ -104,7 +104,7 @@ export class IngestService {
 
   public patchProject(projectResource, project): Observable<Object> {
     const projectLink: string = projectResource['_links']['self']['href'];
-    return this.http.patch(projectLink, {content: project});
+    return this.http.patch(projectLink, {content: project, validationState: 'Draft'});
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {
