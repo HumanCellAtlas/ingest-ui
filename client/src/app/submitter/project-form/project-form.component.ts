@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
-import {concatMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-form',
@@ -18,18 +17,30 @@ export class ProjectFormComponent implements OnInit {
   project: object;
   projectResource: any;
   createMode = true;
-  formValidationErrors :any = null;
+  formValidationErrors: any = null;
   formIsValid: boolean = null;
   formOptions: any = {
     addSubmit: true,
-    defaultWidgetOptions: { feedback: true }
+    defaultWidgetOptions: {feedback: true}
   };
+  newProject: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private ingestService: IngestService,
               private alertService: AlertService,
               private schemaService: SchemaService) {
+  }
+
+  get prettyValidationErrors() {
+    if (!this.formValidationErrors) {
+      return null;
+    }
+    const errorArray = [];
+    for (const error of this.formValidationErrors) {
+      errorArray.push(error.message);
+    }
+    return errorArray.join('<br>');
   }
 
   ngOnInit() {
@@ -44,7 +55,7 @@ export class ProjectFormComponent implements OnInit {
         this.project['describedBy'] = latestProjectSchema._links['json-schema'].href;
         this.project['schema_type'] = latestProjectSchema.domainEntity;
         console.log('Default Project Data', this.project)
-      })
+      });
     }
 
   }
@@ -52,6 +63,7 @@ export class ProjectFormComponent implements OnInit {
   getProject(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid).subscribe(resource => {
       this.project = resource['content'];
+      console.log('get project', this.project);
       this.projectResource = resource;
       this.formIsValid = null;
       this.formValidationErrors = null;
@@ -60,10 +72,10 @@ export class ProjectFormComponent implements OnInit {
 
   onSave() {
     this.alertService.clear();
-    console.log('project', this.project);
+    console.log('project', this.newProject);
     if (this.createMode) {
       console.log('Creating project');
-      this.ingestService.postProject(this.project).subscribe(resource => {
+      this.ingestService.postProject(this.newProject).subscribe(resource => {
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
@@ -73,7 +85,8 @@ export class ProjectFormComponent implements OnInit {
         });
     } else {
       console.log('Updating project');
-      this.ingestService.patchProject(this.projectResource, this.project).subscribe(resource => {
+
+      this.ingestService.patchProject(this.projectResource, this.newProject).subscribe(resource => {
           console.log('project updated', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully updated!', true);
@@ -92,12 +105,7 @@ export class ProjectFormComponent implements OnInit {
     this.formIsValid = isValid;
   }
 
-  get prettyValidationErrors() {
-    if (!this.formValidationErrors) { return null; }
-    const errorArray = [];
-    for (const error of this.formValidationErrors) {
-      errorArray.push(error.message);
-    }
-    return errorArray.join('<br>');
+  onChanges($event) {
+    this.newProject = $event;
   }
 }
