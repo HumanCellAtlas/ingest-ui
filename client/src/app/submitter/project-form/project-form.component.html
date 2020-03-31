@@ -4,12 +4,12 @@
      class="text-info">Cancel</a>
 </div>
 
-<ng-container *ngIf="projectResource">
+<ng-container>
   <json-schema-form
     [framework]="'material-design'"
     [schema]="projectSchema"
     [layout]="projectLayout"
-    [data]="projectResource.content"
+    [data]="projectContent"
     [options]="formOptions"
     (onSubmit)="onSave()"
     (isValid)="isValid($event)"

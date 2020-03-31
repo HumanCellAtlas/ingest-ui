@@ -16,6 +16,9 @@ export class ProjectFormComponent implements OnInit {
   projectSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
   projectResource: Project;
+  projectContent: any;
+  projectNewContent: any;
+
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
@@ -23,7 +26,6 @@ export class ProjectFormComponent implements OnInit {
     addSubmit: true,
     defaultWidgetOptions: {feedback: true}
   };
-  newProject: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -59,26 +61,29 @@ export class ProjectFormComponent implements OnInit {
 
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
-    this.newProject = {};
 
     if (projectUuid) {
       this.createMode = false;
       this.getProject(projectUuid);
     } else {
       this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
-        this.newProject['describedBy'] = latestProjectSchema._links['json-schema'].href;
-        this.newProject['schema_type'] = latestProjectSchema.domainEntity;
+        this.projectContent = {
+          describedBy: latestProjectSchema['_links']['json-schema']['href'],
+          schema_type: latestProjectSchema.domainEntity
+        };
+        this.projectNewContent = this.projectContent;
+        console.log('New project content', this.projectContent);
       });
     }
-
   }
 
   getProject(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
       .map(data => data as Project)
       .subscribe(resource => {
-        console.log('project resource', this.projectResource);
+        console.log('load project resource', this.projectResource);
         this.projectResource = resource;
+        this.projectContent = resource.content;
         this.formIsValid = null;
         this.formValidationErrors = null;
       });
@@ -87,8 +92,8 @@ export class ProjectFormComponent implements OnInit {
   onSave() {
     this.alertService.clear();
     if (this.createMode) {
-      console.log('Creating project');
-      this.ingestService.postProject(this.newProject).subscribe(resource => {
+      console.log('Creating project', this.projectNewContent);
+      this.ingestService.postProject(this.projectNewContent).subscribe(resource => {
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
@@ -97,9 +102,8 @@ export class ProjectFormComponent implements OnInit {
           this.alertService.error('Error', error.message);
         });
     } else {
-      console.log('Updating project');
-
-      this.ingestService.patchProject(this.projectResource, this.newProject).subscribe(resource => {
+      console.log('Updating project', this.projectNewContent);
+      this.ingestService.patchProject(this.projectResource, this.projectNewContent).subscribe(resource => {
           console.log('project updated', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully updated!', true);
@@ -119,6 +123,6 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onChanges($event) {
-    this.newProject = $event;
+    this.projectNewContent = $event;
   }
 }
