@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../models/project';
-import * as layout from './view-layout.json';
+import * as layout from '../../../submitter/project-form/layout.json';
 import * as schema from '../../../submitter/project-form/flat-modified-schema.json';
 
 @Component({
@@ -12,7 +12,16 @@ export class ProjectViewComponent implements OnInit {
   @Input() project: Project;
   projectLayout: any = (layout as any).default;
   projectSchema: any = (schema as any).default;
-  options: object = {addSubmit: false};
+  options: object = {
+    addSubmit: false,
+    defautWidgetOptions: {
+      readonly: true,
+      addable: false,
+      orderable: false,
+      removable: false
+    }
+  };
+
   constructor() {
   }
 
