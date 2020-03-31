@@ -61,31 +61,35 @@ export class ProjectFormComponent implements OnInit {
 
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
-
+    this.projectResource = null;
+    this.projectContent = {};
+    this.projectNewContent = {};
+    this.formIsValid = null;
+    this.formValidationErrors = null;
     if (projectUuid) {
       this.createMode = false;
       this.getProject(projectUuid);
-    } else {
-      this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
-        this.projectContent = {
-          describedBy: latestProjectSchema['_links']['json-schema']['href'],
-          schema_type: latestProjectSchema.domainEntity
-        };
-        this.projectNewContent = this.projectContent;
-        console.log('New project content', this.projectContent);
-      });
     }
+    this.getLatestSchema();
+  }
+
+  getLatestSchema(type='project'){
+    this.schemaService.getLatestSchema(type).subscribe(latestProjectSchema => {
+      if ( !this.projectContent || !this.projectContent.describedBy || !this.projectContent.schema_type) {
+        this.projectContent['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+        this.projectContent['schema_type'] = 'project';
+        console.log('Patched Project Schema', this.projectContent);
+      }
+    });
   }
 
   getProject(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
       .map(data => data as Project)
       .subscribe(resource => {
-        console.log('load project resource', this.projectResource);
+        console.log('load project resource', resource);
         this.projectResource = resource;
         this.projectContent = resource.content;
-        this.formIsValid = null;
-        this.formValidationErrors = null;
       });
   }
 
