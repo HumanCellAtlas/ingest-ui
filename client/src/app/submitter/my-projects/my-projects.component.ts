@@ -6,6 +6,7 @@ import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
 import {AaiService} from '../../aai/aai.service';
 import {Profile} from 'oidc-client';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-my-projects',
@@ -30,7 +31,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  constructor(private aai: AaiService, private ingestService: IngestService) {
+  constructor(private aai: AaiService, private ingestService: IngestService, private router: Router) {
 
     this.alive = true;
     this.interval = 4000;
@@ -101,5 +102,9 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentPageInfo['totalElements'] = pagination.totalElements;
     this.currentPageInfo['number'] = pagination.number;
     return this.currentPageInfo;
+  }
+
+  newProject() {
+    this.router.navigate(['projects/new']);
   }
 }

@@ -4,6 +4,7 @@ import {MatPaginator, PageEvent} from '@angular/material';
 import {IngestService} from '../shared/services/ingest.service';
 import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-all-projects',
@@ -30,7 +31,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   searchText: string;
   value: any;
 
-  constructor(private ingestService: IngestService) {
+  constructor(private ingestService: IngestService, private router: Router) {
     this.alive = true;
     this.interval = 4000;
     this.currentPageInfo = {
@@ -162,4 +163,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjects();
   }
 
+  newProject() {
+    this.router.navigate(['projects/new']);
+  }
 }
