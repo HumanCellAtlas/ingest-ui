@@ -16,8 +16,8 @@ export class ProjectFormComponent implements OnInit {
   projectSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
   projectResource: Project;
-  projectContent: any;
-  projectNewContent: any;
+  projectContent: object;
+  projectNewContent: object;
 
   createMode = true;
   formValidationErrors: any = null;
@@ -62,35 +62,43 @@ export class ProjectFormComponent implements OnInit {
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     this.projectResource = null;
-    this.projectContent = {};
-    this.projectNewContent = {};
+    this.projectContent = null;
+    this.projectNewContent = null;
     this.formIsValid = null;
     this.formValidationErrors = null;
     if (projectUuid) {
       this.createMode = false;
-      this.getProject(projectUuid);
+      this.setProjectContent(projectUuid);
+    } else {
+      this.setEmptyProjectContent();
     }
-    this.getLatestSchema();
   }
 
-  getLatestSchema(type='project'){
-    this.schemaService.getLatestSchema(type).subscribe(latestProjectSchema => {
-      if ( !this.projectContent || !this.projectContent.describedBy || !this.projectContent.schema_type) {
-        this.projectContent['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
-        this.projectContent['schema_type'] = 'project';
-        console.log('Patched Project Schema', this.projectContent);
-      }
-    });
-  }
-
-  getProject(projectUuid) {
+  setProjectContent(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
       .map(data => data as Project)
-      .subscribe(resource => {
-        console.log('load project resource', resource);
-        this.projectResource = resource;
-        this.projectContent = resource.content;
+      .subscribe(projectResource => {
+        console.log('load project resource', projectResource);
+        this.projectResource = projectResource;
+        if (!projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
+          this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
+            projectResource.content['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+            projectResource.content['schema_type'] = 'project';
+            console.log('Patched Project content', projectResource.content);
+          });
+        }
+        this.projectContent = projectResource.content;
       });
+  }
+
+  setEmptyProjectContent(){
+    this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
+      let content: object = {};
+      content['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+      content['schema_type'] = 'project';
+      console.log('New Project', content);
+      this.projectContent = content;
+    });
   }
 
   onSave() {
