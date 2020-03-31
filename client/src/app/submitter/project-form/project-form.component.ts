@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
+import {Project} from '../../shared/models/project';
 
 @Component({
   selector: 'app-project-form',
@@ -14,8 +15,7 @@ import {SchemaService} from '../../shared/services/schema.service';
 export class ProjectFormComponent implements OnInit {
   projectSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
-  project: object;
-  projectResource: any;
+  projectResource: Project;
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
@@ -43,36 +43,49 @@ export class ProjectFormComponent implements OnInit {
     return errorArray.join('<br>');
   }
 
+  get postValidationErrors() {
+    if (!this.projectResource) {
+      return null;
+    }
+    if (this.projectResource.validationState !== 'Invalid') {
+      return null;
+    }
+    const errorArray = [];
+    for (const error of this.projectResource.validationErrors) {
+      errorArray.push(error.message);
+    }
+    return errorArray.join('<br>');
+  }
+
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
-    this.project = {};
+    this.newProject = {};
 
     if (projectUuid) {
       this.createMode = false;
       this.getProject(projectUuid);
     } else {
       this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
-        this.project['describedBy'] = latestProjectSchema._links['json-schema'].href;
-        this.project['schema_type'] = latestProjectSchema.domainEntity;
-        console.log('Default Project Data', this.project)
+        this.newProject['describedBy'] = latestProjectSchema._links['json-schema'].href;
+        this.newProject['schema_type'] = latestProjectSchema.domainEntity;
       });
     }
 
   }
 
   getProject(projectUuid) {
-    this.ingestService.getProjectByUuid(projectUuid).subscribe(resource => {
-      this.project = resource['content'];
-      console.log('get project', this.project);
-      this.projectResource = resource;
-      this.formIsValid = null;
-      this.formValidationErrors = null;
-    });
+    this.ingestService.getProjectByUuid(projectUuid)
+      .map(data => data as Project)
+      .subscribe(resource => {
+        console.log('project resource', this.projectResource);
+        this.projectResource = resource;
+        this.formIsValid = null;
+        this.formValidationErrors = null;
+      });
   }
 
   onSave() {
     this.alertService.clear();
-    console.log('project', this.newProject);
     if (this.createMode) {
       console.log('Creating project');
       this.ingestService.postProject(this.newProject).subscribe(resource => {

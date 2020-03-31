@@ -16,6 +16,20 @@ export class ProjectViewComponent implements OnInit {
   constructor() {
   }
 
+  get postValidationErrors() {
+    if (!this.project) {
+      return null;
+    }
+    if (this.project.validationState !== 'Invalid') {
+      return null;
+    }
+    const errorArray = [];
+    for (const error of this.project.validationErrors) {
+      errorArray.push(error.message);
+    }
+    return errorArray.join('<br>');
+  }
+
   ngOnInit() {
   }
 
