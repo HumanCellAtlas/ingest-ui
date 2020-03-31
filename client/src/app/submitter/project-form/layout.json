@@ -54,11 +54,13 @@
               {
                 "key": "publications[].authors",
                 "notitle": true,
+                "minItems": 1,
                 "items": [
                   {
                     "key": "publications[].authors[]",
                     "title": "Author",
-                    "description": "An author associated with the publication."
+                    "description": "An author associated with the publication.",
+                    "required": true
                   }
                 ]
               },
