@@ -18,7 +18,10 @@ export class SchemaService {
 
   public getLatestSchema(concreteType: string): Observable<MetadataSchema> {
     return this.getLatestSchemas().map(schemaMap => {
-      const schema: MetadataSchema = schemaMap.get(concreteType);
+      let schema: MetadataSchema = schemaMap.get(concreteType);
+      if (schema['_links']['json-schema']['href'].includes('humancellatlas.orgtype')) {
+        schema['_links']['json-schema']['href'] = schema['_links']['json-schema']['href'].replace('humancellatlas.orgtype','humancellatlas.org/type');
+      }
       return schema;
     });
   }
