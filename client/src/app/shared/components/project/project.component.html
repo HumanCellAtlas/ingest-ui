@@ -5,7 +5,9 @@ Loading project ...
 <ng-container *ngIf="project" >
   <app-project-view [project]="project">
   </app-project-view>
-  <div align="right">
+  <br/>
+  <div>
+    <a class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
     <button *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" mat-icon-button (click)="onDeleteProject()">
       <mat-icon>delete_forever</mat-icon>
     </button>

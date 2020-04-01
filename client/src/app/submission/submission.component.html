@@ -7,6 +7,11 @@
         <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
       </mat-basic-chip>
       <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
+      <mat-basic-chip>
+          <button *ngIf="submissionEnvelope && submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+      </mat-basic-chip>
     </mat-chip-list>
   </div>
   <div>
@@ -51,10 +56,5 @@
         </ng-template>
       </mat-tab>
     </mat-tab-group>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="end">
-    <button *ngIf="submissionEnvelope && submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
   </div>
 </div>
