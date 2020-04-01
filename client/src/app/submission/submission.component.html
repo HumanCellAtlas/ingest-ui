@@ -19,6 +19,8 @@
       <mat-tab label="Overview" [disabled]="!submissionEnvelopeId" [hidden]="!project">
         <app-project-view [project]="project">
         </app-project-view>
+        <br />
+        <a [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}" class="text-info">View Project</a>
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>
