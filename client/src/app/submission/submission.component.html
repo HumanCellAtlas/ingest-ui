@@ -3,15 +3,15 @@
     <h1 class="mat-headline">Submission</h1>
     <mat-chip-list selectable="false">
       <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;<span class="oi oi-external-link"></span></a></mat-basic-chip>
+      <mat-basic-chip>
+        <button mat-raised-button *ngIf="submissionEnvelope && submissionEnvelope.open" (click)="onDeleteSubmission(submissionEnvelope)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </mat-basic-chip>
       <mat-basic-chip *ngIf="isLinkingDone">
         <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
       </mat-basic-chip>
       <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
-      <mat-basic-chip>
-          <button *ngIf="submissionEnvelope && submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
-            <mat-icon>delete_forever</mat-icon>
-          </button>
-      </mat-basic-chip>
     </mat-chip-list>
   </div>
   <div>
