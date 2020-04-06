@@ -50,7 +50,7 @@ import {SubmitComponent} from './submission/submit/submit.component';
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component';
 
-import {ProjectComponent} from './shared/components/project/project.component';
+import {ProjectComponent} from './project/project.component';
 import {ProjectListComponent} from './shared/components/project-list/project-list.component';
 import {AllProjectsComponent} from './all-projects/all-projects.component';
 import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';

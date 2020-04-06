@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {ProjectComponent} from './shared/components/project/project.component';
+import {ProjectComponent} from './project/project.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {AllProjectsComponent} from './all-projects/all-projects.component';
 import {LoginComponent} from './login/login.component';
