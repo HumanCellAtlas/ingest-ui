@@ -7,7 +7,7 @@
     </button>
   </mat-form-field>
   &nbsp;
-  <button type="button" class="btn btn-success" align="right" (click)="newProject()">Create Project</button>
+  <a class="btn btn-success" role="button" routerLink="/projects/new">Create Project</a>
 </div>
 <app-project-list [projects]=projects></app-project-list>
 <mat-paginator [length]="currentPageInfo['totalElements']"

@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {Summary} from './summary';
 import {AaiService} from '../../aai/aai.service';
 import {Profile} from 'oidc-client';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
@@ -16,7 +15,7 @@ export class WelcomeComponent implements OnInit {
   userInfo: Profile;
   summary$: Observable<Summary>;
 
-  constructor(public aai: AaiService, private ingestService: IngestService, private router: Router) {
+  constructor(public aai: AaiService, private ingestService: IngestService) {
   }
 
   ngOnInit() {
@@ -24,9 +23,5 @@ export class WelcomeComponent implements OnInit {
       this.userInfo = profile;
     });
     this.summary$ = this.ingestService.getUserSummary();
-  }
-
-  createProject() {
-    this.router.navigate(['projects/new']);
   }
 }
