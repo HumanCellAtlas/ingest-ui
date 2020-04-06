@@ -1,5 +1,4 @@
 import {Routes} from '@angular/router';
-import {HomeComponent} from './home/home.component';
 import {ProjectComponent} from './shared/components/project/project.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {AllProjectsComponent} from './all-projects/all-projects.component';
@@ -8,6 +7,7 @@ import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {AuthGuardService} from './aai/auth-guard.service';
 import {ProjectFormComponent} from "./submitter/project-form/project-form.component";
 import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
+import {SubmissionListComponent} from './submission-list/submission-list.component';
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
@@ -15,7 +15,7 @@ export const ROUTES: Routes = [
 
   {path: '', component: MyProjectsComponent, canActivate: [AuthGuardService]},
   {path: 'home', component: MyProjectsComponent, canActivate: [AuthGuardService]},
-  {path: 'submissions/list', component: HomeComponent,  canActivate: [AuthGuardService]},
+  {path: 'submissions/list', component: SubmissionListComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/:tab/upload', component: SubmissionComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/detail/:id', component: SubmissionComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/detail/:id/:tab', component: SubmissionComponent,  canActivate: [AuthGuardService]},

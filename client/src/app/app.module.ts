@@ -36,11 +36,10 @@ import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {SubmissionListComponent} from './home/submission-list/submission-list.component';
+import {SubmissionListComponent} from './submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './submitter/welcome/welcome.component';
-import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
-import {HomeComponent} from './home/home.component';
+import {NewSubmissionComponent} from './new-submission/new-submission.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
@@ -78,7 +77,6 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     NavigationComponent,
     WelcomeComponent,
     NewSubmissionComponent,
-    HomeComponent,
     ProjectComponent,
     SubmissionComponent,
     TabComponent,
