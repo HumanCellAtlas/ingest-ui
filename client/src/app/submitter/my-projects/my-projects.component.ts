@@ -31,7 +31,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  constructor(private aai: AaiService, private ingestService: IngestService, private router: Router) {
+  constructor(private aai: AaiService, private ingestService: IngestService) {
 
     this.alive = true;
     this.interval = 4000;
@@ -102,9 +102,5 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentPageInfo['totalElements'] = pagination.totalElements;
     this.currentPageInfo['number'] = pagination.number;
     return this.currentPageInfo;
-  }
-
-  newProject() {
-    this.router.navigate(['projects/new']);
   }
 }

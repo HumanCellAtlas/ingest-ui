@@ -38,7 +38,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './home/submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
-import {WelcomeComponent} from './home/welcome/welcome.component';
+import {WelcomeComponent} from './submitter/welcome/welcome.component';
 import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
 import {HomeComponent} from './home/home.component';
 import {SubmissionComponent} from './submission/submission.component';
