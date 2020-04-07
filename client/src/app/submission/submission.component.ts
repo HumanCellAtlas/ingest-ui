@@ -274,9 +274,7 @@ export class SubmissionComponent implements OnInit {
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
     let submissionId : String = SubmissionComponent.getSubmissionId(submissionEnvelope);
-    let projectName = this.getProjectName();
-    let projectInfo = projectName ? `(${projectName})`: '';
-    let projectUrl = `/projects/detail?uuid=${this.getProjectUuid()}`;
+    let projectInfo = this.projectName ? `(${this.projectName})`: '';
     let submissionUuid = submissionEnvelope['uuid']['uuid'];
     let message = `This may take some time. Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
     let messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
@@ -287,17 +285,18 @@ export class SubmissionComponent implements OnInit {
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {
           this.alertService.clear();
-          this.alertService.success('', messageOnSuccess);
+          this.alertService.success('', messageOnSuccess, true, true);
           this.loaderService.display(false);
-          this.router.navigateByUrl(projectUrl);
+          this.router.navigate(['/projects/detail'], {queryParams: { uuid: this.projectUuid } } );
         },
         err => {
           this.alertService.clear();
-          this.alertService.error(messageOnError, err.error.message);
+          this.alertService.error(messageOnError, err.error.message, true, true);
           console.log('error deleting submission', err);
           this.loaderService.display(false);
-          this.router.navigateByUrl(projectUrl);
-        });
+          this.router.navigate(['/projects/detail'], {queryParams: { uuid: this.projectUuid } } );
+        }
+      );
     }
   }
 }
