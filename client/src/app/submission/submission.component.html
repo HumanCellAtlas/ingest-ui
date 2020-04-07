@@ -24,7 +24,6 @@
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>
-          <app-upload *ngIf="!submissionEnvelopeId && !submissionEnvelopeUuid" [projectUuid]="projectUuid"></app-upload>
           <app-metadata *ngIf="submissionEnvelopeId"
             [projectUuid]="projectUuid"
             [submissionEnvelopeId]="submissionEnvelopeId"
