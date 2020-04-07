@@ -54,7 +54,7 @@ export class UploadComponent implements OnInit {
           next: data => {
             this.uploadResults$ = <any>data;
             let submissionId = this.uploadResults$['details']['submission_id'];
-            let submissionsPath = `/submissions/detail/${submissionId}/overview`;
+            let submissionsPath = `/submissions/detail/${submissionId}`;
 
             this.router.navigate([submissionsPath]);
             this.alertService.success("", this.uploadResults$['message']);

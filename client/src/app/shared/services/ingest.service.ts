@@ -114,7 +114,7 @@ export class IngestService {
           return _.values(data._embedded.projects)[0];
         } // there should only be one project linked to the submission env
         else {
-          return {};
+          return null;
         }
       });
   }
