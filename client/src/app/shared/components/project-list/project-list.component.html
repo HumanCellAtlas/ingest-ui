@@ -1,0 +1,26 @@
+<div class="card" *ngIf="projects || {}">
+  <div>
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th>Created</th>
+        <th>Project Label</th>
+        <th>Project Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let project of projects">
+        <td>{{project.submissionDate | date: "medium"}}</td>
+        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a></td>
+        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></a></td>
+      </tr>
+      <tr *ngIf="!projects">
+        <td>Loading your projects...</td>
+      </tr>
+      <tr *ngIf="projects && projects.length === 0">
+        <td>You do not currently have any projects</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

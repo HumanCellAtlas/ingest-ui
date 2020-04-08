@@ -1,17 +1,19 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import * as _ from 'lodash';
 
-import {AlertService} from "./alert.service";
-import {ListResult} from "../models/hateoas";
-import {Summary} from "../models/summary";
-import {PagedData} from "../models/page";
-import {SubmissionEnvelope} from "../models/submissionEnvelope";
+import {AlertService} from './alert.service';
+import {ListResult} from '../models/hateoas';
+import {Summary} from '../models/summary';
+import {PagedData} from '../models/page';
+import {SubmissionEnvelope} from '../models/submissionEnvelope';
 
 import {environment} from '../../../environments/environment';
-import {LoaderService} from "./loader.service";
+import {LoaderService} from './loader.service';
+import {MetadataDocument} from '../models/metadata-document';
+import {MetadataSchema} from "../models/metadata-schema";
 
 
 @Injectable()
@@ -36,36 +38,36 @@ export class IngestService {
   }
 
   public getProjects(params): Observable<any> {
-    return this.http.get(`${this.API_URL}/projects`, {params: params})
+    return this.http.get(`${this.API_URL}/projects`, {params: params});
   }
 
   public getUserProjects(params): Observable<any> {
-    return this.http.get(`${this.API_URL}/user/projects`, {params: params})
+    return this.http.get(`${this.API_URL}/user/projects`, {params: params});
   }
 
-  public deleteSubmission(submissionId){
-    return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`)
+  public deleteSubmission(submissionId) {
+    return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`);
   }
 
-  public submit(submitLink){
+  public submit(submitLink) {
     this.loaderService.display(true);
     this.http.put(submitLink, null).subscribe(
       res => {
         setTimeout(() => {
             this.alertService.clear();
             this.loaderService.display(false);
-            this.alertService.success("", 'You have successfully submitted your submission envelope.');
+            this.alertService.success('', 'You have successfully submitted your submission envelope.');
             location.reload();
           },
           3000);
       },
       err => {
         this.loaderService.display(false);
-        this.alertService.error("", 'An error occured on submitting your submission envelope.');
-        console.log(err)
+        this.alertService.error('', 'An error occured on submitting your submission envelope.');
+        console.log(err);
 
       }
-    )
+    );
   }
 
   public getSubmission(id): Observable<SubmissionEnvelope> {
@@ -81,7 +83,7 @@ export class IngestService {
   }
 
   public deleteProject(id: string): Observable<Object> {
-    return this.http.delete(`${this.API_URL}/projects/${id}`)
+    return this.http.delete(`${this.API_URL}/projects/${id}`);
   }
 
   public getProjectByUuid(uuid): Observable<Object> {
@@ -97,54 +99,53 @@ export class IngestService {
   }
 
   public queryProjects(query: Object[], params): Observable<any> {
-    return this.http.post(`${this.API_URL}/projects/query`, query, {params: params})
+    return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
   }
 
-  public putProject(id, project): Observable<Object> {
-    return this.http.put(`${this.API_URL}/projects/${id}`, project);
+  public patchProject(projectResource, projectContent): Observable<Object> {
+    const projectLink: string = projectResource['_links']['self']['href'];
+    return this.http.patch(projectLink, {content: projectContent, validationState: 'Draft'});
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
       .map((data: ListResult<Object>) => {
-        if (data._embedded && data._embedded.projects)
-          return _.values(data._embedded.projects)[0]; // there should only be one project linked to the submission env
-        else
+        if (data._embedded && data._embedded.projects) {
+          return _.values(data._embedded.projects)[0];
+        } // there should only be one project linked to the submission env
+        else {
           return {};
-      })
+        }
+      });
   }
 
-  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData> {
+  public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData<MetadataDocument>> {
     let url = `${this.API_URL}/submissionEnvelopes/${submissionId}/${entityType}`;
-    let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
+    const submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
 
-    let sort = params['sort'];
+    const sort = params['sort'];
     if (sort) {
       url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelope`;
       params['envelopeUri'] = encodeURIComponent(submission_url);
-      params['sort'] = `${sort['column']},${sort['dir']}`
+      params['sort'] = `${sort['column']},${sort['dir']}`;
     }
 
     if (filterState) {
-      let submission_url = `${this.API_URL}/submissionEnvelopes/${submissionId}`;
       url = `${this.API_URL}/${entityType}/search/findBySubmissionEnvelopeAndValidationState`;
       params['envelopeUri'] = encodeURIComponent(submission_url);
       params['state'] = filterState.toUpperCase();
 
     }
-
     return this.http.get(url, {params: params})
-      .map((data: ListResult<Object>) => {
-        let pagedData = new PagedData();
-
+      .map((data: ListResult<MetadataDocument>) => {
+        const pagedData: PagedData<MetadataDocument> = {data: [], page: undefined};
         if (data._embedded && data._embedded[entityType]) {
           pagedData.data = _.values(data._embedded[entityType]);
-          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data)
+          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data);
         } else {
           pagedData.data = [];
         }
         pagedData.page = data.page;
-
         return pagedData;
       });
   }
@@ -161,10 +162,15 @@ export class IngestService {
     return this.http.get(url);
   }
 
+  public getLatestSchemas(): Observable<ListResult<MetadataSchema>> {
+    return this.get(`${this.API_URL}/schemas/search/filterLatestSchemas?highLevelEntity=type`)
+      .map(data => data as ListResult<MetadataSchema>);
+  }
+
   private reduceColumnsForBundleManifests(entityType, data) {
-    if (entityType == 'bundleManifests') {
+    if (entityType === 'bundleManifests') {
       return data.map(function (row) {
-        let newRow = {
+        const newRow = {
           'bundleUuid': row['bundleUuid'],
           'version': row['bundleVersion'],
           'envelopeUuid': row['envelopeUuid'],
@@ -172,10 +178,11 @@ export class IngestService {
           '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws&version${row['bundleVersion']}`
         };
         return newRow;
-      })
+      });
     }
     return data;
 
 
   }
+
 }

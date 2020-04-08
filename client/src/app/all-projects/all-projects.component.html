@@ -1,0 +1,18 @@
+<div>
+  <mat-form-field class="search-bar">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput placeholder="Search Projects" [(ngModel)]="value" (keydown.enter)="onKeyEnter(value)">
+    <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''; searchText = ''; getProjects()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  &nbsp;
+  <a class="btn btn-success" role="button" routerLink="/projects/new">Create Project</a>
+</div>
+<app-project-list [projects]=projects></app-project-list>
+<mat-paginator [length]="currentPageInfo['totalElements']"
+               [pageSize]="currentPageInfo['size']"
+               [pageIndex]="currentPageInfo['number']"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="pageEvent = $event">
+</mat-paginator>

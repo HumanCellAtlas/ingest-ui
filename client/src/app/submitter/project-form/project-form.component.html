@@ -1,0 +1,28 @@
+<div align="right">
+  <a *ngIf="createMode" routerLink="/projects" class="text-info">Cancel</a>
+  <a *ngIf="!createMode" routerLink="/projects/detail" [queryParams]="{uuid:projectResource?.uuid?.uuid}"
+     class="text-info">Cancel</a>
+</div>
+
+<ng-container>
+  <json-schema-form
+    [framework]="'material-design'"
+    [schema]="projectSchema"
+    [layout]="projectLayout"
+    [data]="projectContent"
+    [options]="formOptions"
+    (onSubmit)="onSave()"
+    (isValid)="isValid($event)"
+    (onChanges)="onChanges($event)"
+    (validationErrors)="validationErrors($event)">
+  </json-schema-form>
+  <div>
+    <br/>
+    <span class="text-danger"
+          [innerHTML]="prettyValidationErrors"></span>
+    <br/>
+    <span class="text-danger"
+          [innerHTML]="postValidationErrors"></span>
+  </div>
+</ng-container>
+

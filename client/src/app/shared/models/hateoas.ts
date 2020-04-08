@@ -13,4 +13,5 @@ export interface EmbeddedList<T> {
   assays: T[];
   protocols: T[];
   bundleManifests: T[];
+  schemas: T[];
 }

@@ -36,36 +36,38 @@ import {ROUTES} from './app.routes';
 
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {SubmissionListComponent} from './home/submission-list/submission-list.component';
+import {SubmissionListComponent} from './submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
-import {WelcomeComponent} from './home/welcome/welcome.component';
-import {NewSubmissionComponent} from './home/new-submission/new-submission.component';
-import {HomeComponent} from './home/home.component';
-import {ProjectComponent} from './shared/components/project/project.component';
+import {WelcomeComponent} from './submitter/welcome/welcome.component';
+import {NewSubmissionComponent} from './new-submission/new-submission.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
 import {FilesComponent} from './submission/files/files.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
 import {SubmitComponent} from './submission/submit/submit.component';
+
 import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component';
-import {ProjectListComponent} from './projects/project-list/project-list.component';
-import {ProjectsComponent} from './projects/projects.component';
+
+import {ProjectComponent} from './project/project.component';
+import {ProjectListComponent} from './shared/components/project-list/project-list.component';
+import {AllProjectsComponent} from './all-projects/all-projects.component';
+import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
+import {ProjectFormComponent} from './submitter/project-form/project-form.component';
+
 import {UploadComponent} from './shared/components/upload/upload.component';
 import {LoginComponent} from './login/login.component';
-import {OverviewComponent} from './submission/overview/overview.component';
+import {ProjectViewComponent} from './shared/components/project-view/project-view.component';
 import {AlertService} from './shared/services/alert.service';
 import {AlertComponent} from './shared/components/alert/alert.component';
 import {LoaderService} from './shared/services/loader.service';
 import {FlattenService} from './shared/services/flatten.service';
 import {SchemaService} from './shared/services/schema.service';
 
-import {MetadataTableComponent} from './submission/metadata-table/metadata-table.component';
-
-import {MetadataFieldComponent} from './submission/metadata-field/metadata-field.component';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
+import {MaterialDesignFrameworkModule} from '@ajsf/material';
 
 
 @NgModule({
@@ -75,7 +77,6 @@ import {OidcInterceptor} from './aai/oidc-interceptor';
     NavigationComponent,
     WelcomeComponent,
     NewSubmissionComponent,
-    HomeComponent,
     ProjectComponent,
     SubmissionComponent,
     TabComponent,
@@ -85,15 +86,15 @@ import {OidcInterceptor} from './aai/oidc-interceptor';
     SubmitComponent,
     MetadataListComponent,
     ProjectListComponent,
-    ProjectsComponent,
+    AllProjectsComponent,
     UploadComponent,
     MetadataComponent,
     LoginComponent,
-    OverviewComponent,
+    ProjectViewComponent,
     AlertComponent,
-    MetadataTableComponent,
-    MetadataFieldComponent,
-    AaiCallbackComponent
+    AaiCallbackComponent,
+    ProjectFormComponent,
+    MyProjectsComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -123,7 +124,8 @@ import {OidcInterceptor} from './aai/oidc-interceptor';
     MatButtonModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule
+    MatRadioModule,
+    MaterialDesignFrameworkModule
   ],
   providers: [
     {

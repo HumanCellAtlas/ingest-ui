@@ -1,21 +1,19 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Project} from "../../shared/models/project";
-import {MatPaginator, PageEvent} from "@angular/material";
-import {IngestService} from "../../shared/services/ingest.service";
-import {TimerObservable} from "rxjs-compat/observable/TimerObservable";
-import {tap} from "rxjs/internal/operators";
-import { MatButtonModule } from '@angular/material/button'
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Project} from '../shared/models/project';
+import {MatPaginator, PageEvent} from '@angular/material';
+import {IngestService} from '../shared/services/ingest.service';
+import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
+import {tap} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-project-list',
-  templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.css']
+  selector: 'app-all-projects',
+  templateUrl: './all-projects.component.html',
+  styleUrls: ['./all-projects.component.css']
 })
-
-export class ProjectListComponent implements OnInit {
+export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   projects: Project[];
   alive: boolean;
-  interval:number;
+  interval: number;
 
   pagination: Object;
   params: Object;
@@ -27,7 +25,7 @@ export class ProjectListComponent implements OnInit {
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   searchText: string;
   value: any;
@@ -38,80 +36,51 @@ export class ProjectListComponent implements OnInit {
     this.currentPageInfo = {
       size: 20,
       number: 0,
-      totalPages:0,
+      totalPages: 0,
       totalElements: 0,
       start: 0,
-      end:0
+      end: 0
     };
 
-    this.params ={'page': 0, 'size': 20, 'sort' : 'updateDate,desc'};
+    this.params = {'page': 0, 'size': 20, 'sort': 'updateDate,desc'};
   }
 
   ngOnInit() {
-    this.pollProjects()
+    this.pollProjects();
   }
 
-  getProjectId(project){
-    let links = project['_links'];
+  getProjectId(project) {
+    let links: any;
+    links = project['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
-  getProjectUuid(project){
-    return project['uuid']['uuid'];
+  getProjectUuid(project) {
+    return project['uuid'] ? project['uuid']['uuid'] : '';
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  onKeyEnter(value){
-    this.searchText = value;
-    this.paginator.pageIndex = 0;
-    this.getProjects();
-  }
-
-  queryProjects(text: string, params){
-    let query = [];
-    let fields = [
+  queryProjects(text: string, params) {
+    const query = [];
+    const fields = [
       'content.project_core.project_description',
       'content.project_core.project_title',
       'content.project_core.project_short_name'
     ];
 
-    for(let field of fields) {
-      let criteria = {
-        "contentField": field,
-        "operator": "REGEX",
-        "value": text.replace(/\s+/g, '\\s+')
+    for (const field of fields) {
+      const criteria = {
+        'contentField': field,
+        'operator': 'REGEX',
+        'value': text.replace(/\s+/g, '\\s+')
       };
       query.push(criteria);
     }
 
     params['operator'] = 'or';
-    this.ingestService.queryProjects(query, params)
-      .subscribe({
-          next: data => {
-            this.projects = data._embedded ? data._embedded.projects : [];
-            this.pagination = data.page;
-            this.getCurrentPageInfo(this.pagination);
-          },
-          error: err => {
-            console.log("err", err)
-          }
-      });
-  }
-
-  getDefaultProjects(params) {
-    const query = [{
-      'contentField': 'content.project_core.project_title',
-      'operator': 'NIN',
-      'value': ['SS2 1 Cell Integration Test', '10x 1 Run Integration Test']
-    },{
-      'contentField': 'isUpdate',
-      'operator': 'IS',
-      'value': false
-    }];
-    params['operator'] = 'and';
     this.ingestService.queryProjects(query, params)
       .subscribe({
         next: data => {
@@ -125,7 +94,32 @@ export class ProjectListComponent implements OnInit {
       });
   }
 
-  pollProjects(){
+  getDefaultProjects(params) {
+    const query = [{
+      'contentField': 'content.project_core.project_title',
+      'operator': 'NIN',
+      'value': ['SS2 1 Cell Integration Test', '10x 1 Run Integration Test']
+    }, {
+      'contentField': 'isUpdate',
+      'operator': 'IS',
+      'value': false
+    }];
+    params['operator'] = 'and';
+    this.ingestService.queryProjects(query, params)
+      .subscribe({
+        next: data => {
+          this.projects = data._embedded ? data._embedded.projects : [];
+          this.pagination = data.page;
+          this.getCurrentPageInfo(this.pagination);
+
+        },
+        error: err => {
+          console.log('err', err);
+        }
+      });
+  }
+
+  pollProjects() {
     TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
@@ -133,14 +127,13 @@ export class ProjectListComponent implements OnInit {
       });
   }
 
-  getProjects(){
+  getProjects() {
     this.params['page'] = this.paginator.pageIndex;
     this.params['size'] = this.paginator.pageSize;
 
-    if(this.searchText){
-      this.queryProjects(this.searchText, this.params)
-    }
-    else{
+    if (this.searchText) {
+      this.queryProjects(this.searchText, this.params);
+    } else {
       this.getDefaultProjects(this.params);
     }
 
@@ -155,11 +148,17 @@ export class ProjectListComponent implements OnInit {
       .subscribe();
   }
 
-  getCurrentPageInfo(pagination){
+  getCurrentPageInfo(pagination) {
     this.currentPageInfo['totalPages'] = pagination.totalPages;
     this.currentPageInfo['totalElements'] = pagination.totalElements;
     this.currentPageInfo['number'] = pagination.number;
     return this.currentPageInfo;
   }
 
+
+  onKeyEnter(value) {
+    this.searchText = value;
+    this.paginator.pageIndex = 0;
+    this.getProjects();
+  }
 }

@@ -2,19 +2,25 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <h1 class="mat-headline">Submission</h1>
     <mat-chip-list selectable="false">
+      <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;<span class="oi oi-external-link"></span></a></mat-basic-chip>
+      <mat-basic-chip>
+        <button mat-raised-button *ngIf="submissionEnvelope && submissionEnvelope.open" (click)="onDeleteSubmission(submissionEnvelope)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </mat-basic-chip>
+      <mat-basic-chip *ngIf="isLinkingDone">
+        <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
+      </mat-basic-chip>
       <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
     </mat-chip-list>
   </div>
   <div>
-  <h3 class="subheading-2">{{projectName}}</h3>
     <mat-tab-group [selectedIndex]="!submissionEnvelopeId && !submissionEnvelopeUuid ? 1 : 0">
-      <mat-tab label="Overview" [disabled]="!submissionEnvelopeId">
-        <ng-template matTabContent>
-        <app-overview [project]="project"
-                      [submissionEnvelope]="submissionEnvelope"
-                      [isLinkingDone]="isLinkingDone">
-        </app-overview>
-        </ng-template>
+      <mat-tab label="Overview" [disabled]="!submissionEnvelopeId" [hidden]="!project">
+        <app-project-view [project]="project">
+        </app-project-view>
+        <br />
+        <a [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}" class="text-info">View Project</a>
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>
@@ -37,22 +43,20 @@
       </mat-tab>
       <mat-tab label="Submit" [disabled]="!isValid" >
         <ng-template matTabContent>
-        <app-submit
-                [submissionEnvelope$]="submissionEnvelope$"
-                [submitLink]="submitLink"
-                [isSubmitted]="isSubmitted"
-                [submissionUrl]="url"
-                [submissionEnvelopeId]="submissionEnvelopeId"
-                [isLinkingDone]="isLinkingDone"
-                [manifest]="manifest">
-        </app-submit>
+          <ng-container *ngFor="let error of project?.validationErrors">
+            <span class="text-danger" title="{{error.userFriendlyMessage}}">* {{error.userFriendlyMessage}}</span><br>
+          </ng-container>
+          <app-submit
+                  [submissionEnvelope$]="submissionEnvelope$"
+                  [submitLink]="submitLink"
+                  [isSubmitted]="isSubmitted"
+                  [submissionUrl]="url"
+                  [submissionEnvelopeId]="submissionEnvelopeId"
+                  [isLinkingDone]="isLinkingDone"
+                  [manifest]="manifest">
+          </app-submit>
         </ng-template>
       </mat-tab>
     </mat-tab-group>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="end">
-    <button *ngIf="submissionEnvelope && submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
   </div>
 </div>

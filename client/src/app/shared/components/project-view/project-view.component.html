@@ -1,0 +1,17 @@
+<json-schema-form
+  *ngIf="project"
+  loadExternalAssets="true"
+  [schema]="projectSchema"
+  [layout]="projectLayout"
+  framework="material-design"
+  [(data)]="project.content"
+  [options]=options
+>
+</json-schema-form>
+
+<span class="text-danger"
+      [innerHTML]="postValidationErrors">
+</span>
+<br/>
+<br/>
+
