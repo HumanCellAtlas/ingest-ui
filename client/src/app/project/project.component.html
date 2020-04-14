@@ -8,12 +8,15 @@ Loading project ...
   <br/>
   <div>
     <a class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
+    <button *ngIf="!(project.hasOpenSubmission || project.validationState == 'Invalid' || project.validationErrors.length > 0)" type="button" class="btn btn-success" (click)="onSwitchUpload()">{{upload ? "Cancel" : "Submit to Project"}}</button>
     <button *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" mat-icon-button (click)="onDeleteProject()">
       <mat-icon>delete_forever</mat-icon>
     </button>
   </div>
   <br/>
-  <div class="card" *ngIf="submissionEnvelopes && submissionEnvelopes.length > 0">
+  <app-upload *ngIf="upload" [projectUuid]="projectUuid"></app-upload>
+
+  <div class="card" *ngIf="!upload && submissionEnvelopes && submissionEnvelopes.length > 0">
     <table class="table">
       <thead class="thead-light">
       <tr>
@@ -27,7 +30,7 @@ Loading project ...
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
         <td>
-          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope)}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
+          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope), project:project?.uuid?.uuid}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
         </td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState">

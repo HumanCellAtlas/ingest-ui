@@ -34,7 +34,10 @@ export class ProjectViewComponent implements OnInit {
     }
     const errorArray = [];
     for (const error of this.project.validationErrors) {
-      errorArray.push(error.message);
+      if(error.userFriendlyMessage)
+        errorArray.push(error.userFriendlyMessage);
+      else
+        errorArray.push(error.message);
     }
     return errorArray.join('<br>');
   }

@@ -23,6 +23,7 @@ export class ProjectComponent implements OnInit {
 
   projectId: string;
   projectUuid: string;
+  upload: boolean = false;
 
   constructor(
     private alertService: AlertService,
@@ -154,5 +155,10 @@ export class ProjectComponent implements OnInit {
           this.loaderService.display(false);
         });
     }
+  }
+
+  onSwitchUpload() {
+    this.upload = !this.upload;
+
   }
 }

@@ -39,7 +39,6 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
 import {SubmissionListComponent} from './submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {WelcomeComponent} from './submitter/welcome/welcome.component';
-import {NewSubmissionComponent} from './new-submission/new-submission.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
@@ -76,7 +75,6 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     SubmissionListComponent,
     NavigationComponent,
     WelcomeComponent,
-    NewSubmissionComponent,
     ProjectComponent,
     SubmissionComponent,
     TabComponent,
