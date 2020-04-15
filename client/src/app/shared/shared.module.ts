@@ -1,18 +1,27 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { ClipboardDirective } from './directives/clipboard.directive';
-import {ClipboardService} from "./services/clipboard.service";
+import {ClipboardDirective} from './directives/clipboard.directive';
+import {ClipboardService} from './services/clipboard.service';
+import {StateChipComponent} from './components/state-chip/state-chip.component';
+import {MatChipsModule} from '@angular/material';
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({
+  imports : [
+    CommonModule,
+    MatChipsModule
+  ],
   declarations: [
-    ClipboardDirective
+    ClipboardDirective,
+    StateChipComponent,
   ],
   exports: [
-    ClipboardDirective
+    ClipboardDirective,
+    StateChipComponent
   ],
   providers: [
     ClipboardService
   ],
 })
-export class SharedModule{}
+export class SharedModule {}

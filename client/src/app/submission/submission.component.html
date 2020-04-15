@@ -12,7 +12,7 @@
       <mat-basic-chip *ngIf="isLinkingDone">
         <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
       </mat-basic-chip>
-      <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
+      <app-state-chip [state]="submissionState">{{submissionState}}</app-state-chip>
     </mat-chip-list>
   </div>
   <div>

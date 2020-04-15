@@ -23,23 +23,8 @@
         </td>
         <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>{{getProjectId(submissionEnvelope)}}</td>
-        <td>
-          <div [ngSwitch]="submissionEnvelope.submissionState">
-            <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Submitted'" class="badge-in-list badge badge-pill badge-secondary">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Processing'"
-                  class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Archiving'"
-                  class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Cleanup'"
-                  class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Complete'"
-                  class="badge-in-list badge badge-pill border border-success bg-light text-success">{{submissionEnvelope.submissionState}}</span>
-          </div>
+        <td align="center">
+          <app-state-chip [state]="submissionEnvelope.submissionState"></app-state-chip>
         </td>
         <td>
           <button *ngIf="submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
