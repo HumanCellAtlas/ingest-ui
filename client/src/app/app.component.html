@@ -1,19 +1,23 @@
+<div class="vf-body"></div>
 <app-global-header></app-global-header>
-<div class="vf-component__container">
-  <app-navigation></app-navigation>
-
-  <main>
-    <br/>
-    <alert></alert>
-    <router-outlet>
-      <div *ngIf="showLoader" class="loading">
-        <mat-spinner
-          class="example-margin"
-          [color]="'primary'"
-          [mode]="'indeterminate'"
-          [value]="50">
-        </mat-spinner>
-      </div>
-    </router-outlet>
-  </main>
+<div class="vf-body">
+  <div></div>
+  <div class="vf-component__container">
+    <app-navigation></app-navigation>
+    <main>
+      <br/>
+      <alert></alert>
+      <router-outlet>
+        <div *ngIf="showLoader" class="loading">
+          <mat-spinner
+            class="example-margin"
+            [color]="'primary'"
+            [mode]="'indeterminate'"
+            [value]="50">
+          </mat-spinner>
+        </div>
+      </router-outlet>
+    </main>
+  </div>
+  <div></div>
 </div>
