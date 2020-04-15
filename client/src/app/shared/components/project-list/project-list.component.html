@@ -1,28 +1,34 @@
-<div class="card" *ngIf="projects || {}">
+<div class="dashboard mat-typography" *ngIf="projects || {}">
   <div>
     <table style="width:100%">
       <thead align="left">
       <tr>
-        <th>Created</th>
-        <th>Project Label</th>
-        <th>Project Name</th>
+        <th></th>
+        <th>Short name</th>
+        <th>Project title</th>
+        <th>Last Updated</th>
+        <th>Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let project of projects">
-        <td>{{project.submissionDate | date: "medium"}}</td>
-        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span
+        <td></td>
+        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="vf-link"><span
           title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a>
         </td>
-        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="text-info"><span
-          title="{{project?.content?.project_core?.project_title}}"> {{ project?.content?.project_core?.project_title }}</span></a>
+        <td>{{ project?.content?.project_core?.project_title }}
+        </td>
+        <td>{{project.updateDate | date: "medium"}}</td>
+        <td>
+          <a routerLink="/projects/{{project?.uuid?.uuid}}}" class="vf-link"><span
+            title="{{project?.content?.project_core?.project_short_name}}">Edit</span></a>
         </td>
       </tr>
       <tr *ngIf="!projects">
-        <td>Loading your projects...</td>
+        <td></td><td>Loading your projects...</td>
       </tr>
       <tr *ngIf="projects && projects.length === 0">
-        <td>You do not currently have any projects</td>
+        <td></td><td>You do not currently have any projects</td>
       </tr>
       </tbody>
     </table>

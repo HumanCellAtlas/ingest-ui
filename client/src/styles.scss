@@ -9,3 +9,28 @@
 
 // Default MD theme TODO revisit - customize once ingest-ui UI design is completed 	// Default MD theme TODO revisit - customize once ingest-ui UI design is completed
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+$grey-color: #f2f2f2;
+$dark-grey-color: #d4d4d4;
+
+.dashboard {
+  thead {
+    th {
+      background-color: $dark-grey-color;
+      padding: 10px;
+      font-weight: 300;
+    }
+  }
+
+  tbody {
+    tr:nth-child(even) {
+      background-color: $grey-color;
+    }
+
+    td {
+      padding: 10px;
+      font-weight: 300;
+    }
+
+  }
+}
