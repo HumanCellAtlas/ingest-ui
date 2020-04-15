@@ -2,7 +2,13 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <h1 class="mat-headline">Submission</h1>
     <mat-chip-list selectable="false">
+      <mat-basic-chip *ngIf="projectUuid" ><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}" class="text-info">Back to Project</a></mat-basic-chip>
       <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;<mat-icon [ngStyle]="{'color': 'lightgrey'}" >link</mat-icon></a></mat-basic-chip>
+      <mat-basic-chip>
+        <button mat-raised-button *ngIf="submissionEnvelope && submissionEnvelope.open" (click)="onDeleteSubmission(submissionEnvelope)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </mat-basic-chip>
       <mat-basic-chip *ngIf="isLinkingDone">
         <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
       </mat-basic-chip>
@@ -10,15 +16,14 @@
     </mat-chip-list>
   </div>
   <div>
-    <mat-tab-group [selectedIndex]="!submissionEnvelopeId && !submissionEnvelopeUuid ? 1 : 0">
-      <mat-tab label="Overview" [disabled]="!submissionEnvelopeId" [hidden]="!project">
+    <mat-tab-group *ngIf="submissionEnvelopeId" [selectedIndex]="this.selectedIndex">
+      <mat-tab label="Project Content" [disabled]="!project">
         <app-project-view [project]="project">
         </app-project-view>
       </mat-tab>
       <mat-tab label="Metadata">
         <ng-template matTabContent>
-          <app-upload *ngIf="!submissionEnvelopeId && !submissionEnvelopeUuid" [projectUuid]="projectUuid"></app-upload>
-          <app-metadata *ngIf="submissionEnvelopeId"
+          <app-metadata
             [projectUuid]="projectUuid"
             [submissionEnvelopeId]="submissionEnvelopeId"
             [manifest]="manifest">
@@ -51,10 +56,5 @@
         </ng-template>
       </mat-tab>
     </mat-tab-group>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="end">
-    <button *ngIf="submissionEnvelope && submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
   </div>
 </div>

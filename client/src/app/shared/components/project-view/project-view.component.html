@@ -8,5 +8,9 @@
   [options]=options
 >
 </json-schema-form>
+<span class="text-danger"
+      [innerHTML]="postValidationErrors">
+</span>
 <br/>
-<a *ngIf="project" class="vf-button vf-button--primary vf-button--sm" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
+<br/>
+

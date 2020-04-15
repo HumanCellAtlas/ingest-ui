@@ -1,8 +1,4 @@
-<div class="vf-section-header">
-  <h2 class="vf-section-header__heading"> Projects </h2>
-  <p> This is where you keep track of your project and teams. </p> <button type="button" class="vf-button vf-button--primary vf-button--sm vf-u-float__left" (click)="redirect()"> Create a new project</button>
-</div>
-<div *ngIf="projects || {}">
+<div class="card" *ngIf="projects || {}">
   <div>
     <table style="width:100%">
       <thead align="left">

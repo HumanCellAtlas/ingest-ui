@@ -161,5 +161,4 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.paginator.pageIndex = 0;
     this.getProjects();
   }
-
 }

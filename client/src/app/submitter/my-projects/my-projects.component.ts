@@ -6,6 +6,7 @@ import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
 import {AaiService} from '../../aai/aai.service';
 import {Profile} from 'oidc-client';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-my-projects',

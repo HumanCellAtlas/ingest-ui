@@ -1,11 +1,11 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 
-import {AlertService} from '../../services/alert.service';
-import {IngestService} from '../../services/ingest.service';
-import {SubmissionEnvelope} from '../../models/submissionEnvelope';
-import {LoaderService} from '../../services/loader.service';
-import {Project} from '../../models/project';
+import {AlertService} from '../shared/services/alert.service';
+import {IngestService} from '../shared/services/ingest.service';
+import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
+import {LoaderService} from '../shared/services/loader.service';
+import {Project} from '../shared/models/project';
 
 @Component({
   selector: 'app-project',
@@ -23,6 +23,7 @@ export class ProjectComponent implements OnInit {
 
   projectId: string;
   projectUuid: string;
+  upload: boolean = false;
 
   constructor(
     private alertService: AlertService,
@@ -154,5 +155,10 @@ export class ProjectComponent implements OnInit {
           this.loaderService.display(false);
         });
     }
+  }
+
+  onSwitchUpload() {
+    this.upload = !this.upload;
+
   }
 }

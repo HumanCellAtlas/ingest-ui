@@ -102,9 +102,9 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
   }
 
-  public patchProject(projectResource, project): Observable<Object> {
+  public patchProject(projectResource, projectContent): Observable<Object> {
     const projectLink: string = projectResource['_links']['self']['href'];
-    return this.http.patch(projectLink, {content: project, validationState: 'Draft'});
+    return this.http.patch(projectLink, {content: projectContent, validationState: 'Draft'});
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {
@@ -114,7 +114,7 @@ export class IngestService {
           return _.values(data._embedded.projects)[0];
         } // there should only be one project linked to the submission env
         else {
-          return {};
+          return null;
         }
       });
   }

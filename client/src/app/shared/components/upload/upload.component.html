@@ -7,14 +7,7 @@
         <input type="file" #fileInput placeholder="Upload file..."/>
         <input type="hidden" #projectUuidInput name="projectUuid" value="{{projectUuid}}" />
       </p>
-
-      <mat-radio-group [(ngModel)]="isUpdate">
-        <mat-radio-button [value]="false" [checked]="!isUpdate" ><span>Create</span></mat-radio-button>
-        <mat-radio-button [value]="true" [checked]="isUpdate" ><span>Update</span></mat-radio-button>
-      </mat-radio-group>
-<br/>
-      <button type="button" (click)="upload()" class="vf-button vf-button--primary vf-button--sm" >Upload</button>
-
+      <button type="button" (click)="upload()" class="btn btn-success">Upload</button>
     </div>
   </div>
 </div>

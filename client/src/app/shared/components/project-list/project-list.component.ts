@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../models/project';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-project-list',
@@ -9,7 +8,7 @@ import {Router} from '@angular/router';
 })
 
 export class ProjectListComponent implements OnInit {
-  constructor(private router: Router) {
+  constructor() {
   }
 
   private _projects: Project[];
@@ -24,10 +23,6 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  redirect() {
-    this.router.navigate(['projects/new']);
   }
 
 }

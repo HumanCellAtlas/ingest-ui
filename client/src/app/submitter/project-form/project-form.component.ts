@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
+import {Project} from '../../shared/models/project';
 
 @Component({
   selector: 'app-project-form',
@@ -14,8 +15,10 @@ import {SchemaService} from '../../shared/services/schema.service';
 export class ProjectFormComponent implements OnInit {
   projectSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
-  project: object;
-  projectResource: any;
+  projectResource: Project;
+  projectContent: object;
+  projectNewContent: object;
+
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
@@ -23,7 +26,6 @@ export class ProjectFormComponent implements OnInit {
     addSubmit: true,
     defaultWidgetOptions: {feedback: true}
   };
-  newProject: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -43,39 +45,67 @@ export class ProjectFormComponent implements OnInit {
     return errorArray.join('<br>');
   }
 
-  ngOnInit() {
-    const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
-    this.project = {};
-
-    if (projectUuid) {
-      this.createMode = false;
-      this.getProject(projectUuid);
-    } else {
-      this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
-        this.project['describedBy'] = latestProjectSchema._links['json-schema'].href;
-        this.project['schema_type'] = latestProjectSchema.domainEntity;
-        console.log('Default Project Data', this.project)
-      });
+  get postValidationErrors() {
+    if (!this.projectResource) {
+      return null;
     }
-
+    if (this.projectResource.validationState !== 'Invalid') {
+      return null;
+    }
+    const errorArray = [];
+    for (const error of this.projectResource.validationErrors) {
+      errorArray.push(error.message);
+    }
+    return errorArray.join('<br>');
   }
 
-  getProject(projectUuid) {
-    this.ingestService.getProjectByUuid(projectUuid).subscribe(resource => {
-      this.project = resource['content'];
-      console.log('get project', this.project);
-      this.projectResource = resource;
-      this.formIsValid = null;
-      this.formValidationErrors = null;
+  ngOnInit() {
+    const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
+    this.projectResource = null;
+    this.projectContent = null;
+    this.projectNewContent = null;
+    this.formIsValid = null;
+    this.formValidationErrors = null;
+    if (projectUuid) {
+      this.createMode = false;
+      this.setProjectContent(projectUuid);
+    } else {
+      this.setEmptyProjectContent();
+    }
+  }
+
+  setProjectContent(projectUuid) {
+    this.ingestService.getProjectByUuid(projectUuid)
+      .map(data => data as Project)
+      .subscribe(projectResource => {
+        console.log('load project resource', projectResource);
+        this.projectResource = projectResource;
+        if (!projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
+          this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
+            projectResource.content['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+            projectResource.content['schema_type'] = 'project';
+            console.log('Patched Project content', projectResource.content);
+          });
+        }
+        this.projectContent = projectResource.content;
+      });
+  }
+
+  setEmptyProjectContent(){
+    this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
+      let content: object = {};
+      content['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+      content['schema_type'] = 'project';
+      console.log('New Project', content);
+      this.projectContent = content;
     });
   }
 
   onSave() {
     this.alertService.clear();
-    console.log('project', this.newProject);
     if (this.createMode) {
-      console.log('Creating project');
-      this.ingestService.postProject(this.newProject).subscribe(resource => {
+      console.log('Creating project', this.projectNewContent);
+      this.ingestService.postProject(this.projectNewContent).subscribe(resource => {
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
@@ -84,9 +114,8 @@ export class ProjectFormComponent implements OnInit {
           this.alertService.error('Error', error.message);
         });
     } else {
-      console.log('Updating project');
-
-      this.ingestService.patchProject(this.projectResource, this.newProject).subscribe(resource => {
+      console.log('Updating project', this.projectNewContent);
+      this.ingestService.patchProject(this.projectResource, this.projectNewContent).subscribe(resource => {
           console.log('project updated', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully updated!', true);
@@ -106,6 +135,6 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onChanges($event) {
-    this.newProject = $event;
+    this.projectNewContent = $event;
   }
 }

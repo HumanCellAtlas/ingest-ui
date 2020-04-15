@@ -1,0 +1,15 @@
+<div>
+  <div class="row">
+    <h1 *ngIf="userInfo">Hi {{userInfo?.given_name}}</h1>
+  </div>
+  <div class="row">
+    <div class="col-9" *ngIf="(summary$ | async) || {draftSubmissions:0, pendingSubmissions:0, completedSubmissions:0}; let summary">
+      <span *ngIf="summary.pendingSubmissions > 0">You currently have {{summary.pendingSubmissions}} pending submissions.<br /></span>
+      <span *ngIf="summary.completedSubmissions > 0">You have successfully completed {{summary.completedSubmissions}} submissions to the Human Cell Atlas.<br /></span>
+      {{summary.completedSubmissions == 0 ?  "We're looking forward to your contribution to the future of science." : "Thanks for contributing to the future of science."}}
+    </div>
+    <div class="col-1">
+      <a class="btn btn-success" role="button" routerLink="/projects/new">Create Project</a>
+    </div>
+  </div>
+</div>
