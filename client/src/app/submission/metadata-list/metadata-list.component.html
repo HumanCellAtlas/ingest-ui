@@ -87,14 +87,7 @@
   <!--State Column-->
   <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'" >
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <ng-container [ngSwitch]="value">
-        <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{value}}</span>
-        <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{value}}</span>
-        <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{value}}</span>
-        <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{value}}</span>
-        <span *ngSwitchCase="'Processing'" class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{value}}</span>
-        <span *ngSwitchCase="'Complete'" class="badge-in-list badge badge-pill badge-secondary">{{value}}</span>
-      </ng-container>
+      <app-metadata-state [state]="value"></app-metadata-state>
     </ng-template>
   </ngx-datatable-column>
 

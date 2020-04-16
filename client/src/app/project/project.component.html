@@ -16,8 +16,8 @@ Loading project ...
   <br/>
   <app-upload *ngIf="upload" [projectUuid]="projectUuid"></app-upload>
 
-  <div class="card" *ngIf="!upload && submissionEnvelopes && submissionEnvelopes.length > 0">
-    <table class="dashboard">
+  <div class="dashboard" *ngIf="!upload && submissionEnvelopes && submissionEnvelopes.length > 0">
+    <table>
       <thead class="thead-light">
       <tr>
         <th>Created</th>

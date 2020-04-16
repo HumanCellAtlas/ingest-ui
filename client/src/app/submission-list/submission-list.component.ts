@@ -1,14 +1,14 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../shared/services/ingest.service';
-import {SubmissionEnvelope} from "../shared/models/submissionEnvelope";
-import {ActivatedRoute, Router} from "@angular/router";
-import { TimerObservable } from "rxjs/observable/TimerObservable";
+import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
+import {ActivatedRoute, Router} from '@angular/router';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
-import {AlertService} from "../shared/services/alert.service";
-import {MatPaginator, PageEvent} from "@angular/material";
-import {tap} from "rxjs/operators";
-import {Subscription} from "rxjs/Rx";
-import {LoaderService} from "../shared/services/loader.service";
+import {AlertService} from '../shared/services/alert.service';
+import {MatPaginator, PageEvent} from '@angular/material';
+import {tap} from 'rxjs/operators';
+import {Subscription} from 'rxjs/Rx';
+import {LoaderService} from '../shared/services/loader.service';
 
 @Component({
   selector: 'app-submission-list',
@@ -55,27 +55,27 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
     this.currentPageInfo = {
       size: 20,
       number: 0,
-      totalPages:0,
+      totalPages: 0,
       totalElements: 0,
       start: 0,
-      end:0
+      end: 0
     };
 
     this.submissionProjects = {};
 
-    this.params ={'page': 0, 'size': 20, 'sort' : 'submissionDate,desc'};
+    this.params = {'page': 0, 'size': 20, 'sort' : 'submissionDate,desc'};
 
     route.params.subscribe(val => {
       this.showAll = this.route.snapshot.paramMap.get('all');
-      this.resetPolling()
+      this.resetPolling();
     });
   }
 
   ngOnInit() {
-    this.pollSubmissions()
+    this.pollSubmissions();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
   }
 
@@ -87,38 +87,38 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
       .subscribe();
   }
 
-  loadSubmissions(){
-    this.resetPolling()
+  loadSubmissions() {
+    this.resetPolling();
   }
 
-  getSubmitLink(submissionEnvelope){
-    let links = submissionEnvelope['_links'];
-    return links && links['submit']? links['submit']['href'] : null;
+  getSubmitLink(submissionEnvelope) {
+    const links = submissionEnvelope['_links'];
+    return links && links['submit'] ? links['submit']['href'] : null;
   }
 
-  getSubmissionId(submissionEnvelope){
-    let links = submissionEnvelope['_links'];
+  getSubmissionId(submissionEnvelope) {
+    const links = submissionEnvelope['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
-  getSubmissionUuid(submissionEnvelope){
+  getSubmissionUuid(submissionEnvelope) {
     return submissionEnvelope['uuid']['uuid'];
   }
 
   completeSubmission(submissionEnvelope) {
-    let submitLink = this.getSubmitLink(submissionEnvelope);
+    const submitLink = this.getSubmitLink(submissionEnvelope);
     this.ingestService.submit(submitLink);
-    this.alertService.success("",'You have successfully submitted your submission envelope.');
+    this.alertService.success('', 'You have successfully submitted your submission envelope.');
 
   }
 
-  resetPolling(){
+  resetPolling() {
     this.stopPolling();
-    this.pollSubmissions()
+    this.pollSubmissions();
   }
 
-  stopPolling(){
-    if(this.pollingSubscription){
+  stopPolling() {
+    if (this.pollingSubscription) {
       this.pollingSubscription.unsubscribe();
     }
   }
@@ -131,15 +131,15 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-  getSubmissions(){
+  getSubmissions() {
     this.params['page'] = this.paginator.pageIndex;
     this.params['size'] = this.paginator.pageSize;
 
 
-    if(this.showAll){
+    if (this.showAll) {
       this.ingestService.getAllSubmissions(this.params)
-        .subscribe(data =>{
-          let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
+        .subscribe(data => {
+          const submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
           this.submissionEnvelopes = submissions;
           this.pagination = data.page;
           this.links = data._links;
@@ -147,11 +147,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
           this.initSubmissionProjects(submissions);
         });
 
-    }
-    else{
+    } else {
       this.ingestService.getUserSubmissions(this.params)
-        .subscribe(data =>{
-          let submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
+        .subscribe(data => {
+          const submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
           this.submissionEnvelopes = submissions;
           this.pagination = data.page;
           this.links = data._links;
@@ -163,40 +162,40 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
 
   }
 
-  initSubmissionProjects(submissions){
-    for(let submission of submissions){
-      let submissionId = this.getSubmissionId(submission);
+  initSubmissionProjects(submissions) {
+    for (const submission of submissions) {
+      const submissionId = this.getSubmissionId(submission);
 
-      if(this.submissionProjects[submissionId] == undefined){
+      if (this.submissionProjects[submissionId] == undefined) {
         this.submissionProjects[submissionId] = '';
         this.ingestService.getSubmissionProject(submissionId)
           .subscribe(data => {
             this.submissionProjects[submissionId] = {};
             this.submissionProjects[submissionId]['name'] = this.extractProjectName(data);
             this.submissionProjects[submissionId]['id'] = this.extractProjectId(data);
-          })
+          });
       }
     }
   }
 
-  getProjectName(submission){
+  getProjectName(submission) {
     return this.submissionProjects[this.getSubmissionId(submission)]['name'];
   }
-  getProjectId(submission){
+  getProjectId(submission) {
     return this.submissionProjects[this.getSubmissionId(submission)]['id'];
   }
 
-  extractProjectName(project){
-    let content = project['content'];
+  extractProjectName(project) {
+    const content = project ? project['content'] : null;
     return content ? project['content']['project_core']['project_title'] : '';
   }
 
-  extractProjectId(project){
-    let content = project['content'];
+  extractProjectId(project) {
+    const content = project ? project['content'] : null;
     return content ? project['content']['project_core']['project_short_name'] : '';
   }
 
-  getCurrentPageInfo(pagination){
+  getCurrentPageInfo(pagination) {
     this.currentPageInfo['totalPages'] = pagination.totalPages;
     this.currentPageInfo['totalElements'] = pagination.totalElements;
     this.currentPageInfo['number'] = pagination.number;
@@ -204,15 +203,15 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
-    let submissionId : String = this.getSubmissionId(submissionEnvelope);
-    let projectName = this.getProjectName(submissionEnvelope);
-    let projectInfo = projectName ? `(${projectName})`: '';
-    let submissionUuid = submissionEnvelope['uuid']['uuid'];
-    let message = `Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
-    let messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
-    let messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
+    const submissionId: String = this.getSubmissionId(submissionEnvelope);
+    const projectName = this.getProjectName(submissionEnvelope);
+    const projectInfo = projectName ? `(${projectName})` : '';
+    const submissionUuid = submissionEnvelope['uuid']['uuid'];
+    const message = `Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
+    const messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
+    const messageOnError = `An error has occurred while deleting the submission w/UUID ${submissionUuid} ${projectInfo}`;
 
-    if(confirm(message)){
+    if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
         data => {

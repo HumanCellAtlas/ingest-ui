@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-state-chip',
-  templateUrl: './state-chip.component.html',
-  styleUrls: ['./state-chip.component.scss']
+  selector: 'app-submission-state',
+  templateUrl: './submission-state.component.html',
+  styleUrls: ['./submission-state.scss']
 })
-export class StateChipComponent implements OnInit {
+export class SubmissionStateComponent implements OnInit {
   @Input()
   state: string;
 

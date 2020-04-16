@@ -1,6 +1,6 @@
 <div class="dashboard mat-typography" *ngIf="projects || {}">
   <div>
-    <table style="width:100%">
+    <table>
       <thead align="left">
       <tr>
         <th></th>
@@ -20,7 +20,7 @@
         </td>
         <td>{{project.updateDate | date: "medium"}}</td>
         <td>
-          <a routerLink="/projects/{{project?.uuid?.uuid}}}" class="vf-link"><span
+          <a routerLink="/projects/{{project?.uuid?.uuid}}" class="vf-link"><span
             title="{{project?.content?.project_core?.project_short_name}}">Edit</span></a>
         </td>
       </tr>

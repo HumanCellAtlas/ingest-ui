@@ -1,30 +1,40 @@
 <div class="dashboard mat-typography" *ngIf="submissionEnvelopes || {}">
   <div>
-    <table id="submissions" style="width:100%">
+    <table  id="submissions">
       <thead align="left">
       <tr>
+        <th></th>
         <th></th>
         <th>Created</th>
         <th>Submission UUID</th>
         <th>Project Name</th>
         <th>Project ID</th>
-        <th>Status</th>
+        <th align="center">Status</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>
-          <mat-icon [ngStyle]="{'color': 'lightgrey'}" *ngIf="submissionEnvelope['isUpdate']" matTooltip="This is an update submission.">info</mat-icon>
+          <mat-icon [ngStyle]="{'color': 'lightgrey'}" *ngIf="submissionEnvelope['isUpdate']"
+                    matTooltip="This is an update submission.">info
+          </mat-icon>
         </td>
-        <td> <a href="{{submissionEnvelope['_links']['self']['href']}}" target="_blank">{{submissionEnvelope.submissionDate | date: "medium"}}</a></td>
+        <td><a href="{{submissionEnvelope['_links']['self']['href']}}" target="_blank" class="vf-link"
+               title="click to see Ingest API resource">
+          <mat-icon [ngStyle]="{'color': 'lightgrey'}">link</mat-icon>
+        </a></td>
+
+        <td> {{submissionEnvelope.submissionDate | date: "medium"}}</td>
+
         <td>
-          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope)}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
+          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope)}"
+             class="vf-link">{{getSubmissionUuid(submissionEnvelope)}}</a>
         </td>
         <td>{{getProjectName(submissionEnvelope)}}</td>
         <td>{{getProjectId(submissionEnvelope)}}</td>
         <td align="center">
-          <app-state-chip [state]="submissionEnvelope.submissionState"></app-state-chip>
+          <app-metadata-state [state]="submissionEnvelope.submissionState"></app-metadata-state>
         </td>
         <td>
           <button *ngIf="submissionEnvelope.open" mat-icon-button (click)="onDeleteSubmission(submissionEnvelope)">
@@ -33,10 +43,12 @@
         </td>
       </tr>
       <tr *ngIf="!submissionEnvelopes">
-        <td></td><td>Loading your submissions...</td>
+        <td></td>
+        <td>Loading your submissions...</td>
       </tr>
       <tr *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0">
-        <td></td><td>You do not currently have any submissions</td>
+        <td></td>
+        <td>You do not currently have any submissions</td>
       </tr>
       </tbody>
     </table>

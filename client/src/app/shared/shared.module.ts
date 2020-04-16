@@ -2,26 +2,30 @@ import {NgModule} from '@angular/core';
 
 import {ClipboardDirective} from './directives/clipboard.directive';
 import {ClipboardService} from './services/clipboard.service';
-import {StateChipComponent} from './components/state-chip/state-chip.component';
+import {SubmissionStateComponent} from './components/submission-state/submission-state.component';
 import {MatChipsModule} from '@angular/material';
 import {CommonModule} from '@angular/common';
+import {MetadataStateComponent} from './components/metadata-state/metadata-state.component';
 
 
 @NgModule({
-  imports : [
+  imports: [
     CommonModule,
     MatChipsModule
   ],
   declarations: [
     ClipboardDirective,
-    StateChipComponent,
+    SubmissionStateComponent,
+    MetadataStateComponent,
   ],
   exports: [
     ClipboardDirective,
-    StateChipComponent
+    SubmissionStateComponent,
+    MetadataStateComponent
   ],
   providers: [
     ClipboardService
   ],
 })
-export class SharedModule {}
+export class SharedModule {
+}

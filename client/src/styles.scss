@@ -13,7 +13,13 @@
 $grey-color: #f2f2f2;
 $dark-grey-color: #d4d4d4;
 
+
 .dashboard {
+  table{
+    border-spacing: 2px;
+    width: 100%;
+  }
+
   thead {
     th {
       background-color: $dark-grey-color;
@@ -34,3 +40,5 @@ $dark-grey-color: #d4d4d4;
 
   }
 }
+
+
