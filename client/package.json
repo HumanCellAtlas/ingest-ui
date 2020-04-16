@@ -32,7 +32,6 @@
     "@angular/platform-browser": "8.2.0",
     "@angular/platform-browser-dynamic": "8.2.0",
     "@angular/router": "8.2.0",
-    "@apidevtools/json-schema-ref-parser": "^8.0.0",
     "@auth0/angular-jwt": "^2.1.2",
     "@ng-bootstrap/ng-bootstrap": "^4.2.2",
     "@swimlane/ngx-datatable": "^16.0.3",
