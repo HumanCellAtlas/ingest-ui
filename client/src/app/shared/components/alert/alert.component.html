@@ -1,6 +1,6 @@
-<div *ngFor="let alert of alerts" class="vf-banner {{ cssClass(alert) }} alert-dismissable">
-  <div class="vf-banner__content">
-    <ng-container *ngIf="alert.dismissible"><a class="close" (click)="removeAlert(alert)">&times;</a></ng-container>
+<div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
+  <div>
+    <ng-container *ngIf="alert.dismissible"><p align="right"><a class="close" (click)="removeAlert(alert)">&times;</a></p></ng-container>
     <p><b>{{alert.title}}</b></p>
     <div [innerHtml]="alert.message"></div>
   </div>
