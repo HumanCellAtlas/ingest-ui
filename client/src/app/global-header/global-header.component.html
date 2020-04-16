@@ -1,6 +1,6 @@
-<header class="vf-global-header" *ngIf="isLoggedIn">
+<header class="vf-global-header" >
   <div class="vf-global-header__inner">
-    <img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas"
+    <img *ngIf="isLoggedIn" class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas"
          style="width:100px;height:50px;">
     <p class="vf-logo__text vf-u-padding__left--xxl vf-u-padding__top--sm"> Data Contribution Service </p>
     <nav class="vf-navigation vf-navigation--global">
