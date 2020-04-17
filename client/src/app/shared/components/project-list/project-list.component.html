@@ -7,6 +7,7 @@
         <th>Short name</th>
         <th>Project title</th>
         <th>Last Updated</th>
+        <th>State</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -16,19 +17,23 @@
         <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="vf-link"><span
           title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a>
         </td>
-        <td>{{ project?.content?.project_core?.project_title }}
-        </td>
+        <td>{{ project?.content?.project_core?.project_title }}</td>
         <td>{{project.updateDate | date: "medium"}}</td>
+        <td>
+          <app-metadata-state [state]="project?.validationState"></app-metadata-state>
+        </td>
         <td>
           <a routerLink="/projects/{{project?.uuid?.uuid}}" class="vf-link"><span
             title="{{project?.content?.project_core?.project_short_name}}">Edit</span></a>
         </td>
       </tr>
       <tr *ngIf="!projects">
-        <td></td><td>Loading your projects...</td>
+        <td></td>
+        <td>Loading your projects...</td>
       </tr>
       <tr *ngIf="projects && projects.length === 0">
-        <td></td><td>You do not currently have any projects</td>
+        <td></td>
+        <td>You do not currently have any projects</td>
       </tr>
       </tbody>
     </table>
