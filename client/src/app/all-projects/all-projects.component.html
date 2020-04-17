@@ -1,4 +1,6 @@
 <div>
+  <div align="right"><a class="vf-button vf-button--primary vf-button--sm" routerLink="/projects/new">New Project</a></div>
+
   <mat-form-field class="search-bar">
     <mat-icon matPrefix>search</mat-icon>
     <input matInput placeholder="Search Projects" [(ngModel)]="value" (keydown.enter)="onKeyEnter(value)">
@@ -6,8 +8,6 @@
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
-  &nbsp;
-  <div align="right"><a class="vf-button vf-button--primary vf-button--sm" routerLink="/projects/new">New Project</a></div>
 </div>
 <app-project-list [projects]=projects></app-project-list>
 <mat-paginator [length]="currentPageInfo['totalElements']"

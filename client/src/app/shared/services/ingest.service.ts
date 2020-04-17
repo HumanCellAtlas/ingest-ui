@@ -13,7 +13,7 @@ import {SubmissionEnvelope} from '../models/submissionEnvelope';
 import {environment} from '../../../environments/environment';
 import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
-import {MetadataSchema} from "../models/metadata-schema";
+import {MetadataSchema} from '../models/metadata-schema';
 
 
 @Injectable()
