@@ -114,7 +114,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   getMetadataType(rowIndex) {
     const row = this.metadataList[rowIndex];
-    const schemaId = row['content'] ? row['content']['describedBy'] : '';
+    const schemaId = row && row['content'] ? row['content']['describedBy'] : '';
 
     if (!schemaId) {
       return 'unknown';
