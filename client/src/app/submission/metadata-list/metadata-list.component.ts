@@ -18,7 +18,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   pollingSubscription: Subscription;
   pollingTimer: Observable<number>;
 
-  @ViewChild('datatable', {static: false}) table: any;
+  @ViewChild('datatable') table: any;
 
   @Input() metadataList;
   @Input() metadataType;
