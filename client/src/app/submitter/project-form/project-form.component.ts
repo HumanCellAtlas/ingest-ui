@@ -81,8 +81,8 @@ export class ProjectFormComponent implements OnInit {
         console.log('load project resource', projectResource);
         this.projectResource = projectResource;
         if (!projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
-          this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
-            projectResource.content['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+          this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
+            projectResource.content['describedBy'] = schemaUrl;
             projectResource.content['schema_type'] = 'project';
             console.log('Patched Project content', projectResource.content);
           });
@@ -91,10 +91,10 @@ export class ProjectFormComponent implements OnInit {
       });
   }
 
-  setEmptyProjectContent(){
-    this.schemaService.getLatestSchema('project').subscribe(latestProjectSchema => {
-      let content: object = {};
-      content['describedBy'] = latestProjectSchema['_links']['json-schema']['href'];
+  setEmptyProjectContent() {
+    this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
+      const content: object = {};
+      content['describedBy'] = schemaUrl;
       content['schema_type'] = 'project';
       console.log('New Project', content);
       this.projectContent = content;
