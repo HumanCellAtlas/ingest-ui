@@ -1,14 +1,17 @@
 <ng-container *ngIf="!project">
-Loading project ...
+  Loading project ...
 </ng-container>
 
-<ng-container *ngIf="project" >
+<ng-container *ngIf="project">
   <app-project-view [project]="project">
   </app-project-view>
   <br/>
   <div>
     <a class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
-    <button *ngIf="!(project.hasOpenSubmission || project.validationState == 'Invalid' || project.validationErrors.length > 0)" type="button" class="btn btn-success" (click)="onSwitchUpload()">{{upload ? "Cancel" : "Submit to Project"}}</button>
+    <button
+      *ngIf="canSubmit(project)"
+      type="button" class="btn btn-success"
+      (click)="onSwitchUpload()">{{upload ? "Cancel" : "Submit to Project"}}</button>
     <button *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" mat-icon-button (click)="onDeleteProject()">
       <mat-icon>delete_forever</mat-icon>
     </button>
@@ -30,16 +33,24 @@ Loading project ...
       <tr *ngFor="let submissionEnvelope of submissionEnvelopes">
         <td>{{submissionEnvelope.submissionDate | date: "medium"}}</td>
         <td>
-          <a [routerLink]="['/submissions/detail']" [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope), project:project?.uuid?.uuid}" class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
+          <a [routerLink]="['/submissions/detail']"
+             [queryParams]="{uuid:getSubmissionUuid(submissionEnvelope), project:project?.uuid?.uuid}"
+             class="text-info">{{getSubmissionUuid(submissionEnvelope)}}</a>
         </td>
         <td>
           <div [ngSwitch]="submissionEnvelope.submissionState">
-            <span *ngSwitchCase="'Pending'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Draft'" class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Validating'" class="badge-in-list badge badge-pill badge-info">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Valid'" class="badge-in-list badge badge-pill badge-success">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Invalid'" class="badge-in-list badge badge-pill badge-danger">{{submissionEnvelope.submissionState}}</span>
-            <span *ngSwitchCase="'Submitted'" class="badge-in-list badge badge-pill badge-secondary">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Pending'"
+                  class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Draft'"
+                  class="badge-in-list badge badge-pill badge-warning">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Validating'"
+                  class="badge-in-list badge badge-pill badge-info">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Valid'"
+                  class="badge-in-list badge badge-pill badge-success">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Invalid'"
+                  class="badge-in-list badge badge-pill badge-danger">{{submissionEnvelope.submissionState}}</span>
+            <span *ngSwitchCase="'Submitted'"
+                  class="badge-in-list badge badge-pill badge-secondary">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Processing'"
                   class="badge-in-list badge badge-pill border border-warning bg-light text-warning">{{submissionEnvelope.submissionState}}</span>
             <span *ngSwitchCase="'Archiving'"
