@@ -5,10 +5,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
 import {AlertService} from '../shared/services/alert.service';
-import {MatPaginator, PageEvent} from '@angular/material';
 import {tap} from 'rxjs/operators';
-import {Subscription} from 'rxjs/Rx';
 import {LoaderService} from '../shared/services/loader.service';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-submission-list',

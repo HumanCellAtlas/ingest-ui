@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Project} from '../shared/models/project';
-import {MatPaginator, PageEvent} from '@angular/material';
 import {IngestService} from '../shared/services/ingest.service';
 import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-all-projects',
