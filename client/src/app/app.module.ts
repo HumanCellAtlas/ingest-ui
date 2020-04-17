@@ -23,8 +23,6 @@ import {
   MatTooltipModule
 } from '@angular/material';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 import {SharedModule} from './shared/shared.module';
@@ -67,7 +65,7 @@ import {SchemaService} from './shared/services/schema.service';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
 import {MaterialDesignFrameworkModule} from '@ajsf/material';
-import { GlobalHeaderComponent } from './global-header/global-header.component';
+import {GlobalHeaderComponent} from './global-header/global-header.component';
 
 
 @NgModule({
@@ -97,7 +95,6 @@ import { GlobalHeaderComponent } from './global-header/global-header.component';
     GlobalHeaderComponent
   ],
   imports: [
-    NgbModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpClientModule,
