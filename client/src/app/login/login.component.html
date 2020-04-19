@@ -1,41 +1,31 @@
 <div>
-  <div align="center">
-    <img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" style="width:40%;height: 40%"
-         alt="Human Cell Atlas">
-
-  </div>
-  <div>
-    <section class="vf-intro | embl-grid embl-grid--has-centered-content">
-      <br/>
-      <p  align="center" class="vf-text-body vf-text-body--1">
-        We're building a Human Cell Atlas reference map!
-      </p>
-
-      <p align="center" class="vf-text-body vf-text-body--2"> Sign in below in order to submit your single-cell
-        sequencing data to the HCA.
-      </p>
-
-
-      <p align="center" class="vf-text-body vf-text-body--5"> This website requires cookies, and the limited processing
-        of your personal data in
-        order
-        to
-        function. By using the site you are agreeing to this as outlined in our
-
-        <a class="vf-link"
-           href="http://www.ebi.ac.uk/data-protection/privacy-notice/human-cell-atlas-ingest-submission"
-           target="_blank">Privacy Notice
-        </a>.
-      </p>
-
-
-      <p class="center">
-        <a (click)="login()" href="javascript:void(0)" class="vf-link">
-          <img src="assets/login-button-blue-small.png" alt="[ELIXIR Login]">
-        </a>
-      </p>
-
-
-    </section>
-  </div>
+  <mat-card>
+    <mat-card-content>
+      <div>
+        <p align="center" class="vf-text-body vf-text-body--1">
+          Sign in
+        </p>
+        <p align="center" class="vf-text-body vf-text-body--3">
+          to submit your single-cell sequencing data to the Human Cell Atlas.
+        </p>
+        <br/>
+        <p align="center">
+          <a (click)="login()" href="javascript:void(0)" class="vf-link">
+            <img src="assets/login-button-blue-small.png" alt="[ELIXIR Login]">
+          </a>
+        </p>
+      </div>
+    </mat-card-content>
+    <p align="left" class="vf-text-body vf-text-body--5"> This website requires cookies, and the limited
+      processing
+      of your personal data in
+      order
+      to
+      function. By using the site you are agreeing to this as outlined in our
+      <a class="vf-link"
+         href="http://www.ebi.ac.uk/data-protection/privacy-notice/human-cell-atlas-ingest-submission"
+         target="_blank">Privacy Notice
+      </a>.
+    </p>
+  </mat-card>
 </div>

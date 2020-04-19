@@ -6,7 +6,7 @@ import {AlertService} from '../shared/services/alert.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
