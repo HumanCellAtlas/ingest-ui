@@ -23,8 +23,7 @@ describe('WelcomeComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
-        WelcomeComponent,
-        NewSubmissionComponent,
+        WelcomeComponent
       ],
       providers: [
         {provide: AaiService, useValue: mockAaiSvc},

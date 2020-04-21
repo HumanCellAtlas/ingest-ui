@@ -6,22 +6,29 @@ import {SubmissionStateComponent} from './components/submission-state/submission
 import {CommonModule} from '@angular/common';
 import {MetadataStateComponent} from './components/metadata-state/metadata-state.component';
 import {MatChipsModule} from '@angular/material/chips';
+import { MetadataFormComponent } from './metadata-form/metadata-form.component';
+import { MetadataFieldComponent } from './metadata-field/metadata-field.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    MatChipsModule
+    MatChipsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ClipboardDirective,
     SubmissionStateComponent,
     MetadataStateComponent,
+    MetadataFormComponent,
+    MetadataFieldComponent,
   ],
   exports: [
     ClipboardDirective,
     SubmissionStateComponent,
-    MetadataStateComponent
+    MetadataStateComponent,
+    MetadataFormComponent
   ],
   providers: [
     ClipboardService

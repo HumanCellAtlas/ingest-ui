@@ -1,0 +1,30 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div formArrayName="array_express_accessions">
+    <label>
+      array_express_accessions
+      <input type="text" formControlName="0">
+    </label>
+  </div>
+  <div formArrayName="insdc_study_accessions">
+    <label>
+      insdc_study_accessions
+      <input type="text" formControlName="0">
+    </label>
+  </div>
+  <div [formGroup]="form.controls.project_core">
+    <label>
+      project_short_name
+      <input type="number" formControlName="project_short_name">
+    </label>
+    <label>
+      project_title
+      <input type="text" formControlName="project_title">
+    </label>
+    <label>
+      project_title
+      <input type="text" formControlName="project_description">
+    </label>
+  </div>
+
+  <button type="submit">console log form value</button>
+</form>

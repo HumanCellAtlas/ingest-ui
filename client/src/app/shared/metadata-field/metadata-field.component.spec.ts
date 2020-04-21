@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GlobalHeaderComponent } from './global-header.component';
+import { MetadataFieldComponent } from './metadata-field.component';
 
-describe('GlobalHeaderComponent', () => {
-  let component: GlobalHeaderComponent;
-  let fixture: ComponentFixture<GlobalHeaderComponent>;
+describe('MetadataFieldComponent', () => {
+  let component: MetadataFieldComponent;
+  let fixture: ComponentFixture<MetadataFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GlobalHeaderComponent ]
+      declarations: [ MetadataFieldComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GlobalHeaderComponent);
+    fixture = TestBed.createComponent(MetadataFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
