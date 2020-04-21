@@ -7,7 +7,7 @@
         <th>Short name</th>
         <th>Project title</th>
         <th>Last Updated</th>
-        <th>State</th>
+        <th align="center">State</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -19,7 +19,7 @@
         </td>
         <td>{{ project?.content?.project_core?.project_title }}</td>
         <td>{{project.updateDate | date: "medium"}}</td>
-        <td>
+        <td align="center">
           <app-metadata-state [state]="project?.validationState"></app-metadata-state>
         </td>
         <td>
