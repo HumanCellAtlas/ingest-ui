@@ -1,30 +1,151 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div formArrayName="array_express_accessions">
-    <label>
-      array_express_accessions
-      <input type="text" formControlName="0">
-    </label>
-  </div>
-  <div formArrayName="insdc_study_accessions">
-    <label>
-      insdc_study_accessions
-      <input type="text" formControlName="0">
-    </label>
-  </div>
-  <div [formGroup]="form.controls.project_core">
-    <label>
-      project_short_name
-      <input type="number" formControlName="project_short_name">
-    </label>
-    <label>
-      project_title
-      <input type="text" formControlName="project_title">
-    </label>
-    <label>
-      project_title
-      <input type="text" formControlName="project_description">
-    </label>
-  </div>
 
-  <button type="submit">console log form value</button>
+  <!--  <mat-tab-group>-->
+  <!--        <mat-tab label="Project">-->
+  <!--                <div [formGroup]="form.controls.project_core">-->
+  <!--                  <label>-->
+  <!--                    project_short_name-->
+  <!--                    <input type="text" formControlName="project_short_name">-->
+  <!--                  </label>-->
+  <!--                  <label>-->
+  <!--                    project_title-->
+  <!--                    <input type="text" formControlName="project_title">-->
+  <!--                  </label>-->
+  <!--                  <label>-->
+  <!--                    project_description-->
+  <!--                    <input type="text" formControlName="project_description">-->
+  <!--                  </label>-->
+  <!--                </div>-->
+  <!--          <div formArrayName="array_express_accessions">-->
+  <!--            <label>-->
+  <!--              array_express_accessions-->
+  <!--              <input type="text" formControlName="0">-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--          <div formArrayName="insdc_study_accessions">-->
+  <!--            <label>-->
+  <!--              insdc_study_accessions-->
+  <!--              <input type="text" formControlName="0">-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--        </mat-tab>-->
+  <!--    <mat-tab label="Contributors">-->
+  <!--      <div formArrayName="contributors">-->
+  <!--        <ng-container *ngFor="let contributorFormGroup of form.get('contributors')['controls'] ; let i = index">-->
+  <!--          <div [formGroup]="contributorFormGroup">-->
+  <!--            <label>-->
+  <!--              name-->
+  <!--              <input type="text" formControlName="name">-->
+  <!--            </label>-->
+  <!--            <label>-->
+  <!--              email-->
+  <!--              <input type="text" formControlName="email">-->
+  <!--            </label>-->
+  <!--            <label>-->
+  <!--              phone-->
+  <!--              <input type="text" formControlName="phone">-->
+  <!--            </label>-->
+  <!--            <label>-->
+  <!--              institution-->
+  <!--              <input type="text" formControlName="institution">-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--        </ng-container>-->
+  <!--      </div>-->
+  <!--    </mat-tab>-->
+  <!--    <mat-tab label="Publications">-->
+  <!--      <div formArrayName="publications">-->
+  <!--        <div formGroupName="0">-->
+  <!--          <label>-->
+  <!--            name-->
+  <!--            <input type="text" formControlName="title">-->
+  <!--          </label>-->
+  <!--          <label>-->
+  <!--            doi-->
+  <!--            <input type="text" formControlName="doi">-->
+  <!--          </label>-->
+  <!--          <label>-->
+  <!--            pmid-->
+  <!--            <input type="text" formControlName="pmid">-->
+  <!--          </label>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </mat-tab>-->
+  <!--    <mat-tab label="Funders"> Funders</mat-tab>-->
+  <!--  </mat-tab-group>-->
+
+
+  <mat-tab-group>
+    <mat-tab label="Project">
+      <div class="vf-u-margin__top--xxl">
+        <div [formGroup]="form.controls.project_core">
+          <app-vf-input formControlName="project_short_name" [label]="'project_short_name'" [type]="'text'"
+                        [isRequired]="true"></app-vf-input>
+
+          <app-vf-input formControlName="project_title" [label]="'project_title'" [type]="'text'"
+                        [isRequired]="true"></app-vf-input>
+
+          <app-vf-input formControlName="project_description" [label]="'project_description'" [type]="'text'"
+                        [isRequired]="true"></app-vf-input>
+        </div>
+
+        <div formArrayName="array_express_accessions">
+          <app-vf-input formControlName="0" [label]="'array_express_accessions'"
+                        [type]="'text'"></app-vf-input>
+        </div>
+
+        <div formArrayName="insdc_study_accessions">
+          <app-vf-input formControlName="0" [label]="'insdc_study_accessions'"
+                        [type]="'text'"></app-vf-input>
+        </div>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab label="Contributors">
+      <div class="vf-u-margin__top--xxl">
+        <div formArrayName="contributors">
+          <ng-container *ngFor="let contributorFormGroup of form.get('contributors')['controls'] ; let i = index">
+            <div [formGroup]="contributorFormGroup">
+              <app-vf-input formControlName="name" [label]="'name'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+              <app-vf-input formControlName="email" [label]="'email'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+              <app-vf-input formControlName="phone" [label]="'phone'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+              <app-vf-input formControlName="institution" [label]="'institution'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Publications">
+      <div class="vf-u-margin__top--xxl">
+        <div formArrayName="publications">
+          <ng-container *ngFor="let publicationFormGroup of form.get('publications')['controls'] ; let i = index">
+            <div [formGroup]="publicationFormGroup">
+              <app-vf-input formControlName="title" [label]="'title'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+              <app-vf-input formControlName="doi" [label]="'doi'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+              <app-vf-input formControlName="pmid" [label]="'pmid'" [type]="'text'"
+                            [isRequired]="true"></app-vf-input>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Funders"> Funders</mat-tab>
+  </mat-tab-group>
+
+
+  <a class="vf-button vf-button--tertiary vf-button--sm" routerLink="/projects">Cancel</a>
+  <button type="submit" class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
+
+
+
+
+  <!--  <button type="submit">console log form value</button>-->
 </form>

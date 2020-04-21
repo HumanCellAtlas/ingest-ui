@@ -8,14 +8,20 @@ import {MetadataStateComponent} from './components/metadata-state/metadata-state
 import {MatChipsModule} from '@angular/material/chips';
 import { MetadataFormComponent } from './metadata-form/metadata-form.component';
 import { MetadataFieldComponent } from './metadata-field/metadata-field.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatTabsModule} from "@angular/material/tabs";
+import { VfInputComponent } from './vf-input/vf-input.component';
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
   imports: [
     CommonModule,
     MatChipsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule,
+    FormsModule,
+    RouterModule
   ],
   declarations: [
     ClipboardDirective,
@@ -23,6 +29,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     MetadataStateComponent,
     MetadataFormComponent,
     MetadataFieldComponent,
+    VfInputComponent,
   ],
   exports: [
     ClipboardDirective,

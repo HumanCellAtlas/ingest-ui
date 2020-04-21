@@ -42,7 +42,7 @@ export class MetadataFormService {
       const property = this.getProperty(key, jsonSchema);
       const requiredFields = jsonSchema.required ? jsonSchema.required : [];
       const is_required = requiredFields.indexOf(key) >= 0;
-      const metadataField = new MetadataField({is_required: is_required, key: key, schema: property});
+      const metadataField = new MetadataField({isRequired: is_required, key: key, schema: property});
       metadataFieldMap.set(key, metadataField);
     }
     return metadataFieldMap;

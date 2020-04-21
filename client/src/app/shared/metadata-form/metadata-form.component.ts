@@ -3,8 +3,8 @@ import {FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
 import * as jsonSchema from './test-json-schema.json';
-import {JsonSchemaProperty} from "./json-schema-property";
-import {JsonSchemaFormConfig} from "./json-schema-form-config";
+import {JsonSchemaProperty} from './json-schema-property';
+import {JsonSchemaFormConfig} from './json-schema-form-config';
 
 @Component({
   selector: 'app-metadata-form',
@@ -38,10 +38,12 @@ export class MetadataFormComponent implements OnInit {
     };
     this.schema = (jsonSchema as any).default;
     this.form = this.metadataFormService.toFormGroup(this.schema);
+    console.log('contributors', this.form.controls.contributors);
   }
 
   onSubmit() {
     console.log('form data', this.form.value);
     console.log('clean form data', this.metadataFormService.cleanFormData(this.form.value));
   }
+
 }

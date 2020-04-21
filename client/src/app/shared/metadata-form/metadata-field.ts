@@ -9,11 +9,11 @@ export class MetadataField {
   constructor(options: {
     schema: JsonSchemaProperty;
     key: string;
-    is_required: boolean;
+    isRequired: boolean;
   }) {
     this.schema = options.schema;
     this.key = options.key;
-    this.is_required = options.is_required;
+    this.is_required = options.isRequired;
   }
 
   isObjectList(): boolean {

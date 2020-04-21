@@ -14,8 +14,9 @@ describe('MetadataField', () => {
           description: 'The URL reference to the schema.',
           type: 'string'
         } as unknown as JsonSchemaProperty;
+
         // when
-        const field = new MetadataField({is_required: false, key: 'describedBy', schema: scalar});
+        const field = new MetadataField({isRequired: false, key: 'describedBy', schema: scalar});
 
         // then
         expect(field.isScalar()).toEqual(true);
@@ -38,7 +39,8 @@ describe('MetadataField', () => {
         } as JsonSchemaProperty;
 
         // when
-        const field = new MetadataField({is_required: false, key: 'array_express_accessions', schema: scalarList});
+        const field = new MetadataField({isRequired: false, key: 'array_express_accessions', schema: scalarList});
+
         // then
         expect(field.isScalarList()).toEqual(true);
       });
@@ -47,9 +49,6 @@ describe('MetadataField', () => {
     describe('isObject', () => {
       it('return True', () => {
         // given
-        const testSchema = (jsonSchema as any).default;
-
-        // when
         const obj = {
           '$schema': 'http://json-schema.org/draft-07/schema#',
           '$id': 'http://schema.dev.data.humancellatlas.org/core/project/7.0.5/project_core',
@@ -85,16 +84,13 @@ describe('MetadataField', () => {
               'type': 'string',
               'example': 'Study of single cells in the human body.',
               'user_friendly': 'Project title',
-            },
-            'project_description': {
-              'description': 'A longer description of the project which includes research goals and experimental approach.',
-              'type': 'string',
-              'user_friendly': 'Project description',
             }
           }
         } as JsonSchemaProperty;
 
-        const field = new MetadataField({is_required: true, key: 'array_express_accessions', schema: obj});
+        // when
+        const field = new MetadataField({isRequired: true, key: 'array_express_accessions', schema: obj});
+
         // then
         expect(field.isObject()).toEqual(true);
 
@@ -145,7 +141,7 @@ describe('MetadataField', () => {
           'user_friendly': 'Contributors'
         } as JsonSchemaProperty;
 
-        const field = new MetadataField({is_required: true, key: 'array_express_accessions', schema: objectList});
+        const field = new MetadataField({isRequired: true, key: 'array_express_accessions', schema: objectList});
 
         // then
         expect(field.isObjectList()).toEqual(true);
