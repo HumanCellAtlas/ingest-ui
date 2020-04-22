@@ -16,6 +16,16 @@ function setUp() {
   remoteService = TestBed.get(HttpTestingController);
 }
 
+function expectAuthorisedRequest(token: string, httpMethod?: string): TestRequest {
+  const request = remoteService.expectOne(req => req.url.startsWith(environment.INGEST_API_URL));
+  const authorization = request.request.headers.get('Authorization');
+  expect(authorization).toEqual(`Bearer ${token}`);
+  if (httpMethod) {
+    expect(request.request.method).toEqual(httpMethod);
+  }
+  return request;
+};
+
 describe('Get Account', () => {
 
   beforeEach(setUp);
@@ -35,12 +45,10 @@ describe('Get Account', () => {
     });
 
     //given:
-    const request = expectRemoteRequest(token, 'GET');
+    const request = expectAuthorisedRequest(token, 'GET');
     request.flush({
       'id': accountId,
-      'roles': [
-        'CONTRIBUTOR'
-      ],
+      'roles': ['CONTRIBUTOR'],
     });
 
     //and:
@@ -55,22 +63,12 @@ describe('Get Account', () => {
     });
 
     //given:
-    const request = expectRemoteRequest(token, 'GET');
+    const request = expectAuthorisedRequest(token, 'GET');
     request.flush(null, { status: 404, statusText: 'not found' });
 
     //and:
     done();
   });
-
-  function expectRemoteRequest(token: string, httpMethod?: string): TestRequest {
-    const request = remoteService.expectOne(req => req.url.startsWith('http'));
-    const authorization = request.request.headers.get('Authorization');
-    expect(authorization).toEqual(`Bearer ${token}`);
-    if (httpMethod) {
-      expect(request.request.method).toEqual(httpMethod);
-    }
-    return request;
-  };
 
 });
 
@@ -91,10 +89,7 @@ describe('Account Registration', () => {
     });
 
     //given:
-    const request = remoteService.expectOne(req => req.url.startsWith(environment.INGEST_API_URL));
-    expect(request.request.method).toEqual('POST');
-
-    //and:
+    const request = expectAuthorisedRequest(token, 'POST');
     request.flush({
       'id': accountId,
       'providerReference': providerReference,
