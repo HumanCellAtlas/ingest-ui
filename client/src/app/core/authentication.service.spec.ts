@@ -2,19 +2,22 @@ import {AuthenticationService} from "./authentication.service";
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 
+let accountService: AuthenticationService;
+let remoteService: HttpTestingController
+
+function setUp() {
+  TestBed.configureTestingModule({
+    providers: [AuthenticationService],
+    imports: [HttpClientTestingModule],
+  });
+
+  accountService = TestBed.get(AuthenticationService);
+  remoteService = TestBed.get(HttpTestingController);
+}
+
 describe('Get Account', () => {
-  let service: AuthenticationService;
-  let remoteService: HttpTestingController
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [AuthenticationService],
-      imports: [HttpClientTestingModule],
-    });
-
-    service = TestBed.get(AuthenticationService)
-    remoteService = TestBed.get(HttpTestingController)
-  })
+  beforeEach(setUp);
 
   afterEach(() => {
     remoteService.verify();
@@ -24,7 +27,7 @@ describe('Get Account', () => {
     //expect:
     const accountId = 'c83bf90';
     const token = 'aGVsbG8sIHdvcmxkCg==';
-    service.getAccount(token).subscribe(account => {
+    accountService.getAccount(token).subscribe(account => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
       expect(account.roles).toContain('CONTRIBUTOR');
@@ -46,7 +49,7 @@ describe('Get Account', () => {
   it('should return empty object if the User is not registered', (done) => {
     //expect:
     const token = 'bWFnaWMgc3RyaW5nCg==';
-    service.getAccount(token).subscribe(account => {
+    accountService.getAccount(token).subscribe(account => {
       expect(account).toEqual({});
     });
 
@@ -68,4 +71,4 @@ describe('Get Account', () => {
     return request;
   };
 
-})
+});
