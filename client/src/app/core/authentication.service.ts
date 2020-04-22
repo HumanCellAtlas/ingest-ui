@@ -26,7 +26,11 @@ export class AuthenticationService {
     return this.http
       .post(url, {}, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
-        return Observable.throwError(new DuplicateAccount());
+        let serviceError = new Error(error.message);
+        if ([403, 409].includes(error.status)) {
+          serviceError = new DuplicateAccount();
+        }
+        return Observable.throwError(serviceError);
       });
   }
 

@@ -2,6 +2,7 @@ import {AuthenticationService, DuplicateAccount} from "./authentication.service"
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
+import {HttpErrorResponse} from "@angular/common/http";
 
 let accountService: AuthenticationService;
 let remoteService: HttpTestingController
@@ -109,21 +110,41 @@ describe('Account Registration', () => {
     done();
   });
 
-  function testForError(errorType, httpStatus: number, statusText?: string | 'error') {
+  it('should throw an error when registration results in conflict (409)', (done) => {
+    testForError(DuplicateAccount, 409, 'conflict');
+    done();
+  });
+
+  it('should rethrow any other error', (done) => {
+    testForError(Error, 400, 'client error',
+      (error) => {
+        expect(error.message).toContain('client error');
+      });
+    done();
+  });
+
+  function testForError(errorType, httpStatus: number, statusText?: string | 'error', postCondition?) {
     //expect:
     const token = 'dG9rZW4K';
+    let sourceError;
     accountService.register(token).subscribe(
       (success) => {
         fail('Registration is expected to throw an error.');
       },
       (error) => {
         expect(error).toEqual(jasmine.any(errorType));
+        sourceError = error;
       }
     );
 
     //given:
     const request = expectAuthorisedRequest(token, 'POST');
     request.flush(null, { status: httpStatus, statusText: statusText });
+
+    //and:
+    if (postCondition) {
+      postCondition(sourceError);
+    }
   }
 
 });
