@@ -1,4 +1,4 @@
-import {AuthenticationService} from "./authentication.service";
+import {AuthenticationService, DuplicateAccount} from "./authentication.service";
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
@@ -76,6 +76,10 @@ describe('Account Registration', () => {
 
   beforeEach(setUp);
 
+  afterEach(() => {
+    remoteService.verify();
+  });
+
   it('should return Account data after registration', (done) => {
     //expect:
     const accountId = '72f9001';
@@ -98,7 +102,26 @@ describe('Account Registration', () => {
 
     //and:
     done();
-    remoteService.verify();
+  });
+
+  it('should throw an error when the User is already registered (403)', (done) => {
+    //expect:
+    const token = 'dG9rZW4K';
+    accountService.register(token).subscribe(
+      (success) => {
+        fail('Registration is expected to throw an error.');
+      },
+      (error) => {
+        expect(error).toEqual(jasmine.any(DuplicateAccount));
+      }
+    );
+
+    //given:
+    const request = expectAuthorisedRequest(token, 'POST');
+    request.flush(null, { status: 403, statusText: 'forbidden' });
+
+    //and:
+    done();
   });
 
 });
