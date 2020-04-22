@@ -1,7 +1,8 @@
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,15 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {}
 
   getAccount(token: string): Observable<any> {
-    let url = `${environment.INGEST_API_URL}/auth/account`;
-    let headers = {
+    const url = `${environment.INGEST_API_URL}/auth/account`;
+    const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get(url, { headers: headers });
+    return this.http
+      .get(url, {headers: headers})
+      .catch((error: HttpErrorResponse) => {
+        return Observable.of({});
+      });
   }
 
 }
