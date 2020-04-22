@@ -11,19 +11,20 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
+  private readonly URL = `${environment.INGEST_API_URL}/auth/account`;
+
   getAccount(token: string): Observable<any> {
-    const url = `${environment.INGEST_API_URL}/auth/account`;
     const headers = {
       Authorization: `Bearer ${token}`,
     };
     return this.http
-      .get(url, {headers: headers})
+      .get(this.URL, {headers: headers})
       .catch((error: HttpErrorResponse) => {
         return Observable.of({});
       });
   }
 
   register(token: string): Observable<any> {
-    return Observable.of({});
+    return this.http.post(this.URL, {});
   }
 }

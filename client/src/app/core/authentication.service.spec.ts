@@ -1,6 +1,7 @@
 import {AuthenticationService} from "./authentication.service";
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
+import {environment} from "../../environments/environment";
 
 let accountService: AuthenticationService;
 let remoteService: HttpTestingController
@@ -79,13 +80,30 @@ describe('Account Registration', () => {
 
   it('should return Account data after registration', (done) => {
     //expect:
+    const accountId = '72f9001';
+    const providerReference = '127ee11';
     const token = 'ZW5jb2RlZCBzdHJpbmcK';
     accountService.register(token).subscribe(account => {
       expect(account).toBeTruthy();
+      expect(account.id).toEqual(accountId);
+      expect(account.providerReference).toEqual(providerReference);
+      expect(account.roles).toContain('CONTRIBUTOR');
     });
+
+    //given:
+    const request = remoteService.expectOne(req => req.url.startsWith(environment.INGEST_API_URL));
+    expect(request.request.method).toEqual('POST');
+
+    //and:
+    request.flush({
+      'id': accountId,
+      'providerReference': providerReference,
+      'roles': ['CONTRIBUTOR'],
+    })
 
     //and:
     done();
+    remoteService.verify();
   });
 
 });
