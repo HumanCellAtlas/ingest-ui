@@ -105,6 +105,11 @@ describe('Account Registration', () => {
   });
 
   it('should throw an error when the User is already registered (403)', (done) => {
+    testForError(DuplicateAccount, 403, 'Forbidden');
+    done();
+  });
+
+  function testForError(errorType, httpStatus: number, statusText?: string | 'error') {
     //expect:
     const token = 'dG9rZW4K';
     accountService.register(token).subscribe(
@@ -112,16 +117,13 @@ describe('Account Registration', () => {
         fail('Registration is expected to throw an error.');
       },
       (error) => {
-        expect(error).toEqual(jasmine.any(DuplicateAccount));
+        expect(error).toEqual(jasmine.any(errorType));
       }
     );
 
     //given:
     const request = expectAuthorisedRequest(token, 'POST');
-    request.flush(null, { status: 403, statusText: 'forbidden' });
-
-    //and:
-    done();
-  });
+    request.flush(null, { status: httpStatus, statusText: statusText });
+  }
 
 });
