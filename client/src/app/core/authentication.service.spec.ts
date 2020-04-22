@@ -16,14 +16,15 @@ describe('Get Account', () => {
     remoteService = TestBed.get(HttpTestingController)
   })
 
-  it('should return an Account', (done) => {
+  it('should return an Account if the User is registered', (done) => {
     //expect:
     let accountId = 'c83bf90';
     let token = 'aGVsbG8sIHdvcmxkCg==';
     service.getAccount(token).subscribe(account => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
-    })
+      expect(account.roles).toContain('CONTRIBUTOR');
+    });
 
     //given:
     const request = remoteService.expectOne(req => {
@@ -36,6 +37,9 @@ describe('Get Account', () => {
     and:
     request.flush({
       'id': accountId,
+      'roles': [
+        'CONTRIBUTOR'
+      ],
     });
 
     //and:
