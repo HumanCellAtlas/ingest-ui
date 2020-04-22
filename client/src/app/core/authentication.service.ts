@@ -23,4 +23,7 @@ export class AuthenticationService {
       });
   }
 
+  register(token: string): Observable<any> {
+    return Observable.of({});
+  }
 }

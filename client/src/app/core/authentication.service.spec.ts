@@ -72,3 +72,20 @@ describe('Get Account', () => {
   };
 
 });
+
+describe('Account Registration', () => {
+
+  beforeEach(setUp);
+
+  it('should return Account data after registration', (done) => {
+    //expect:
+    const token = 'ZW5jb2RlZCBzdHJpbmcK';
+    accountService.register(token).subscribe(account => {
+      expect(account).toBeTruthy();
+    });
+
+    //and:
+    done();
+  });
+
+});
