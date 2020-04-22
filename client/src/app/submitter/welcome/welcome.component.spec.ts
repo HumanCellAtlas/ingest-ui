@@ -24,7 +24,6 @@ describe('WelcomeComponent', () => {
       imports: [RouterTestingModule],
       declarations: [
         WelcomeComponent,
-        NewSubmissionComponent,
       ],
       providers: [
         {provide: AaiService, useValue: mockAaiSvc},
