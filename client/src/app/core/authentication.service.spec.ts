@@ -59,11 +59,9 @@ describe('Get Account', () => {
   });
 
   function expectRemoteRequest(token: string, httpMethod?: string): TestRequest {
-    const request = remoteService.expectOne(req => {
-      let authorization = req.headers.get('Authorization');
-      let hasCorrectAuthorization = authorization && authorization === `Bearer ${token}`;
-      return req.url.startsWith('http') && hasCorrectAuthorization;
-    });
+    const request = remoteService.expectOne(req => req.url.startsWith('http'));
+    const authorization = request.request.headers.get('Authorization');
+    expect(authorization).toEqual(`Bearer ${token}`);
     if (httpMethod) {
       expect(request.request.method).toEqual(httpMethod);
     }
