@@ -6,6 +6,7 @@ import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
+import * as project from './project.json';
 
 @Component({
   selector: 'app-project-form',
@@ -15,6 +16,8 @@ import {Project} from '../../shared/models/project';
 export class ProjectFormComponent implements OnInit {
   projectSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
+  projectJsonSchema: any = (project as any).default;
+
   projectResource: Project;
   projectContent: object;
   projectNewContent: object;

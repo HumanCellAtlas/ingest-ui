@@ -1,4 +1,4 @@
-export interface JsonSchemaFormConfig {
+export interface MetadataFormConfig {
   ignoreFields?: string[];
   removeEmptyFields?: boolean;
 }

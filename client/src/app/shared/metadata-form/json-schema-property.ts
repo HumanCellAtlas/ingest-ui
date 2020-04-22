@@ -4,4 +4,5 @@ export interface JsonSchemaProperty extends JsonSchema {
   user_friendly: string;
   example: string;
   items?: object;
+  guidelines?: 'string';
 }

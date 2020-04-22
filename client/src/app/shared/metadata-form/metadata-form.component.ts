@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
-import * as jsonSchema from './test-json-schema.json';
 import {JsonSchemaProperty} from './json-schema-property';
-import {JsonSchemaFormConfig} from './json-schema-form-config';
+import {MetadataFormConfig} from './metadata-form-config';
+
 
 @Component({
   selector: 'app-metadata-form',
@@ -12,6 +12,8 @@ import {JsonSchemaFormConfig} from './json-schema-form-config';
   styleUrls: ['./metadata-form.component.css']
 })
 export class MetadataFormComponent implements OnInit {
+  @Input()
+  name: string;
 
   @Input()
   schema: JsonSchema;
@@ -20,13 +22,16 @@ export class MetadataFormComponent implements OnInit {
   layout: object;
 
   @Input()
-  config: JsonSchemaFormConfig;
+  config: MetadataFormConfig;
 
   form: FormGroup;
+
+  formConfig: object;
 
   propertiesMap: Map<string, JsonSchemaProperty>;
 
   payLoad = '';
+
 
   constructor(private metadataFormService: MetadataFormService) {
   }
@@ -36,8 +41,8 @@ export class MetadataFormComponent implements OnInit {
       ignoreFields: ['describedBy', 'schema_version'],
       removeEmptyFields: true
     };
-    this.schema = (jsonSchema as any).default;
-    this.form = this.metadataFormService.toFormGroup(this.schema);
+    this.formConfig = this.metadataFormService.buildFormConfig('project', this.schema);
+    this.form = this.formConfig['project']['formControl'];
     console.log('contributors', this.form.controls.contributors);
   }
 
@@ -46,4 +51,21 @@ export class MetadataFormComponent implements OnInit {
     console.log('clean form data', this.metadataFormService.cleanFormData(this.form.value));
   }
 
+  removeFormControl(control: AbstractControl, i: number) {
+    const formArray = control as FormArray;
+    formArray.removeAt(i);
+  }
+
+  // addFormControl(control: AbstractControl, ) {
+  //   const formArray = control as FormArray;
+  //   const count = formArray.length;
+  //
+  //   const newFormGroup: FormGroup = this.fb.group({
+  //     firstName: ['', Validators.required],
+  //     lastName: ['', Validators.required],
+  //     email: ['', Validators.pattern(emailRegex)]
+  //   })
+  //
+  //   usersArray.insert(arraylen, newUsergroup);
+  // }
 }

@@ -65,6 +65,28 @@ describe('MetadataFormService', () => {
     });
   });
 
+  describe('getFormGroupConfig', () => {
+    it('return config', () => {
+      // given
+      const testSchema = (jsonSchema as any).default;
+
+      // when
+      service.buildFormConfig('project', testSchema);
+
+      // then
+      console.log(service.config);
+      expect(service.config).toBeTruthy();
+
+      const formGroup = service.config['project']['formControl'];
+      expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
+      expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
+      expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
+      expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
+
+    });
+  });
+
+
   describe('copy', () => {
     it('return copy', () => {
       // given

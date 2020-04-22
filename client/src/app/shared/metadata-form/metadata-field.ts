@@ -4,16 +4,24 @@ import {JsonSchemaProperty} from './json-schema-property';
 export class MetadataField {
   schema: JsonSchemaProperty;
   key: string;
-  is_required: boolean;
+  isRequired: boolean;
+  isDisabled: boolean;
+  isHidden: boolean;
+
 
   constructor(options: {
-    schema: JsonSchemaProperty;
-    key: string;
-    isRequired: boolean;
+    schema: JsonSchemaProperty,
+    key: string,
+    isRequired: boolean,
+    isDisabled?: boolean
+    isHidden?: boolean
   }) {
     this.schema = options.schema;
     this.key = options.key;
-    this.is_required = options.isRequired;
+    this.isRequired = options.isRequired;
+    this.isDisabled = options.isDisabled === undefined ? false : options.isDisabled;
+    this.isHidden = options.isHidden === undefined ? false : options.isHidden;
+
   }
 
   isObjectList(): boolean {
