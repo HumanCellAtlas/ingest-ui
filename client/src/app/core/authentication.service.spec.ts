@@ -19,13 +19,18 @@ describe('Get Account', () => {
   it('should return an Account', (done) => {
     //expect:
     let accountId = 'c83bf90';
-    service.getAccount().subscribe(account => {
+    let token = 'aGVsbG8sIHdvcmxkCg==';
+    service.getAccount(token).subscribe(account => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
     })
 
     //given:
-    const request = remoteService.expectOne('/test');
+    const request = remoteService.expectOne(req => {
+      let authorization = req.headers.get('Authorization');
+      let hasCorrectAuthorization = authorization && authorization === `Bearer ${token}`;
+      return req.url.startsWith('http') && hasCorrectAuthorization;
+    });
     expect(request.request.method).toEqual('GET');
 
     and:
