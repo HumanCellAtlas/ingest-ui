@@ -1,4 +1,5 @@
 export interface MetadataFormConfig {
-  ignoreFields?: string[];
+  hideFields?: string[];
   removeEmptyFields?: boolean;
+  disableFields?: string[];
 }

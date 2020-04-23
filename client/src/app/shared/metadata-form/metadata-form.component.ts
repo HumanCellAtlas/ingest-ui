@@ -30,20 +30,17 @@ export class MetadataFormComponent implements OnInit {
 
   propertiesMap: Map<string, JsonSchemaProperty>;
 
-  payLoad = '';
-
 
   constructor(private metadataFormService: MetadataFormService) {
   }
 
   ngOnInit(): void {
     this.config = {
-      ignoreFields: ['describedBy', 'schema_version'],
+      hideFields: ['describedBy', 'schema_version', 'schema_type'],
       removeEmptyFields: true
     };
-    this.formConfig = this.metadataFormService.buildFormConfig('project', this.schema);
+    this.formConfig = this.metadataFormService.buildFormConfig('project', this.schema, this.config);
     this.form = this.formConfig['project']['formControl'];
-    console.log('contributors', this.form.controls.contributors);
   }
 
   onSubmit() {
@@ -56,16 +53,12 @@ export class MetadataFormComponent implements OnInit {
     formArray.removeAt(i);
   }
 
-  // addFormControl(control: AbstractControl, ) {
-  //   const formArray = control as FormArray;
-  //   const count = formArray.length;
-  //
-  //   const newFormGroup: FormGroup = this.fb.group({
-  //     firstName: ['', Validators.required],
-  //     lastName: ['', Validators.required],
-  //     email: ['', Validators.pattern(emailRegex)]
-  //   })
-  //
-  //   usersArray.insert(arraylen, newUsergroup);
-  // }
+  addFormControl(formControlName: string) {
+    const config = this.formConfig[formControlName];
+    const formArray = config['formControl'] as FormArray;
+    const count = formArray.length;
+
+    const formGroup: FormGroup = this.metadataFormService.toFormGroup(config['field']['schema']['items']);
+    formArray.insert(count, formGroup);
+  }
 }

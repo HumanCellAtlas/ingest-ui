@@ -100,7 +100,6 @@ export class ProjectFormComponent implements OnInit {
       const content: object = {};
       content['describedBy'] = schemaUrl;
       content['schema_type'] = 'project';
-      console.log('New Project', content);
       this.projectContent = content;
     });
   }

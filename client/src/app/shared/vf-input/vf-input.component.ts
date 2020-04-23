@@ -31,6 +31,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   value: string;
 
+  @Input()
   disabled: boolean;
 
   @ViewChild('input') input;

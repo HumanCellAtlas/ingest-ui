@@ -12,6 +12,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTabsModule} from "@angular/material/tabs";
 import { VfInputComponent } from './vf-input/vf-input.component';
 import {RouterModule} from "@angular/router";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import {RouterModule} from "@angular/router";
     ReactiveFormsModule,
     MatTabsModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    MatIconModule,
+    MatButtonModule
   ],
   declarations: [
     ClipboardDirective,
