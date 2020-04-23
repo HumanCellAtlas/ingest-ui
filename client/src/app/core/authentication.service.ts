@@ -12,13 +12,13 @@ export class AuthenticationService {
 
   private readonly BASE_URL = `${environment.INGEST_API_URL}/auth`;
 
-  getAccount(token: string): Observable<any> {
+  getAccount(token: string): Promise<any> {
     const url = `${this.BASE_URL}/account`;
     return this.http
       .get(url, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
         return Observable.of({});
-      });
+      }).toPromise();
   }
 
   register(token: string): Observable<any> {

@@ -39,7 +39,7 @@ describe('Get Account', () => {
     //expect:
     const accountId = 'c83bf90';
     const token = 'aGVsbG8sIHdvcmxkCg==';
-    accountService.getAccount(token).subscribe(account => {
+    accountService.getAccount(token).then(account => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
       expect(account.roles).toContain('CONTRIBUTOR');
@@ -59,7 +59,7 @@ describe('Get Account', () => {
   it('should return empty object if the User is not registered', (done) => {
     //expect:
     const token = 'bWFnaWMgc3RyaW5nCg==';
-    accountService.getAccount(token).subscribe(account => {
+    accountService.getAccount(token).then(account => {
       expect(account).toEqual({});
     });
 
