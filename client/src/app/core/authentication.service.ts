@@ -21,7 +21,7 @@ export class AuthenticationService {
       }).toPromise();
   }
 
-  register(token: string): Observable<any> {
+  register(token: string): Promise<any> {
     const url = `${this.BASE_URL}/registration`;
     return this.http
       .post(url, {}, {headers: this.authoriseHeader(token)})
@@ -31,7 +31,7 @@ export class AuthenticationService {
           serviceError = new DuplicateAccount();
         }
         return Observable.throwError(serviceError);
-      });
+      }).toPromise();
   }
 
   private authoriseHeader(token: string) {

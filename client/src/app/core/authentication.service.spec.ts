@@ -2,7 +2,6 @@ import {AuthenticationService, DuplicateAccount} from "./authentication.service"
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
-import {HttpErrorResponse} from "@angular/common/http";
 
 let accountService: AuthenticationService;
 let remoteService: HttpTestingController
@@ -86,7 +85,7 @@ describe('Account Registration', () => {
     const accountId = '72f9001';
     const providerReference = '127ee11';
     const token = 'ZW5jb2RlZCBzdHJpbmcK';
-    accountService.register(token).subscribe(account => {
+    accountService.register(token).then(account => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
       expect(account.providerReference).toEqual(providerReference);
@@ -126,25 +125,20 @@ describe('Account Registration', () => {
   function testForError(errorType, httpStatus: number, statusText?: string | 'error', postCondition?) {
     //expect:
     const token = 'dG9rZW4K';
-    let sourceError;
-    accountService.register(token).subscribe(
-      (success) => {
+    accountService.register(token)
+      .then(() => {
         fail('Registration is expected to throw an error.');
-      },
-      (error) => {
+      })
+      .catch((error) => {
         expect(error).toEqual(jasmine.any(errorType));
-        sourceError = error;
-      }
-    );
+        if (postCondition) {
+          postCondition(error);
+        }
+      });
 
     //given:
     const request = expectAuthorisedRequest(token, 'POST');
     request.flush(null, { status: httpStatus, statusText: statusText });
-
-    //and:
-    if (postCondition) {
-      postCondition(sourceError);
-    }
   }
 
 });
