@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
-import {JsonSchemaProperty} from './json-schema-property';
 import {MetadataFormConfig} from './metadata-form-config';
 
 
@@ -24,23 +23,24 @@ export class MetadataFormComponent implements OnInit {
   @Input()
   config: MetadataFormConfig;
 
+  @Input()
+  value: object;
+
   form: FormGroup;
 
   formConfig: object;
-
-  propertiesMap: Map<string, JsonSchemaProperty>;
-
 
   constructor(private metadataFormService: MetadataFormService) {
   }
 
   ngOnInit(): void {
-    this.config = {
-      hideFields: ['describedBy', 'schema_version', 'schema_type'],
-      removeEmptyFields: true
-    };
     this.formConfig = this.metadataFormService.buildFormConfig('project', this.schema, this.config);
     this.form = this.formConfig['project']['formControl'];
+
+    // if (this.value) {
+    //   this.form.setValue(this.value);
+    // }
+
   }
 
   onSubmit() {

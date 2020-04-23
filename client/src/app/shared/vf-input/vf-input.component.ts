@@ -23,8 +23,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   isRequired: boolean;
 
-  @Input()
-  type: string;
+  inputType: string;
 
   @Input()
   example: string;
@@ -34,7 +33,15 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   disabled: boolean;
 
+  @Input()
+  dataType: string;
+
   @ViewChild('input') input;
+
+  INPUT_TYPE = {
+    'string': 'text',
+    'boolean': 'checkbox'
+  };
 
   constructor() {
   }
@@ -46,6 +53,8 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit(): void {
+    this.inputType = this.INPUT_TYPE[this.dataType];
+    console.log(this.label, this.inputType);
   }
 
   registerOnChange(fn: (text: string) => void): void {
@@ -65,6 +74,11 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   }
 
   change($event) {
-    this.onChange($event.target.value);
+    if (this.inputType === 'text') {
+      this.onChange($event.target.value);
+    }
+    if (this.inputType === 'checkbox') {
+      this.onChange($event.target.checked);
+    }
   }
 }

@@ -7,6 +7,7 @@ import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as project from './project.json';
+import {MetadataFormConfig} from "../../shared/metadata-form/metadata-form-config";
 
 @Component({
   selector: 'app-project-form',
@@ -28,6 +29,13 @@ export class ProjectFormComponent implements OnInit {
   formOptions: any = {
     addSubmit: true,
     defaultWidgetOptions: {feedback: true}
+  };
+  config: MetadataFormConfig = {
+    hideFields: ['describedBy', 'schema_version', 'schema_type'],
+    removeEmptyFields: true,
+    customFieldType: {
+      'project.project_core.project_description': 'textarea'
+    }
   };
 
   constructor(private route: ActivatedRoute,

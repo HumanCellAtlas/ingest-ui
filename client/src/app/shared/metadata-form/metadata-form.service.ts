@@ -3,7 +3,7 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {JsonSchemaProperty} from './json-schema-property';
 import {JsonSchema} from './json-schema';
 import {MetadataField} from './metadata-field';
-import {MetadataFormConfig} from "./metadata-form-config";
+import {MetadataFormConfig} from './metadata-form-config';
 
 
 @Injectable({
@@ -71,8 +71,6 @@ export class MetadataFormService {
   // TODO try to refactor
   buildFormConfig(parentKey: string, jsonSchema: JsonSchema, config?: MetadataFormConfig): object {
     const group: any = {};
-
-    console.log('config', config);
 
     if (this.config[parentKey] === undefined) {
       this.config[parentKey] = {};

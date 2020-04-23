@@ -7,32 +7,33 @@
         <div [formGroup]="formConfig['project.project_core']['formControl']">
           <ng-container
             *ngFor="let child of formConfig['project.project_core']['children']">
+            <ng-container *ngIf="['string', 'boolean'].indexOf(formConfig[child]['field']['schema']['type']) >= 0">
+              <app-vf-input *ngIf="!formConfig[child]['field']['isHidden']"
+                            [formControlName]="formConfig[child]['field']['key']"
+                            [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
+                            [dataType]="formConfig[child]['field']['schema']['type']"
+                            [example]="formConfig[child]['field']['schema']['example']"
+                            [helperText]="formConfig[child]['field']['schema']['guidelines']"
+                            [isRequired]="formConfig[child]['field']['isRequired']">
 
-            <app-vf-input *ngIf="!formConfig[child]['field']['isHidden'] && formConfig[child]['field']['schema']['type'] === 'string'"
+              </app-vf-input>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <ng-container
+          *ngFor="let child of formConfig['project']['children']">
+          <ng-container *ngIf="['string', 'boolean'].indexOf(formConfig[child]['field']['schema']['type']) >= 0">
+            <app-vf-input *ngIf="!formConfig[child]['field']['isHidden']"
                           [formControlName]="formConfig[child]['field']['key']"
                           [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
-                          [type]="'text'"
+                          [dataType]="formConfig[child]['field']['schema']['type']"
                           [example]="formConfig[child]['field']['schema']['example']"
                           [helperText]="formConfig[child]['field']['schema']['guidelines']"
                           [isRequired]="formConfig[child]['field']['isRequired']">
 
             </app-vf-input>
           </ng-container>
-        </div>
-
-        <ng-container
-          *ngFor="let child of formConfig['project']['children']">
-
-          <app-vf-input *ngIf="!formConfig[child]['field']['isHidden'] && formConfig[child]['field']['schema']['type'] === 'string'"
-                        [formControlName]="formConfig[child]['field']['key']"
-                        [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
-                        [type]="'text'"
-                        [example]="formConfig[child]['field']['schema']['example']"
-                        [helperText]="formConfig[child]['field']['schema']['guidelines']"
-                        [isRequired]="formConfig[child]['field']['isRequired']">
-
-          </app-vf-input>
-
         </ng-container>
 
 
@@ -41,7 +42,7 @@
             *ngFor="let control of formConfig['project.array_express_accessions']['formControl']['controls'] ; let i = index">
             <app-vf-input [formControl]="control"
                           [label]="formConfig['project.array_express_accessions']['field']['schema']['user_friendly']?formConfig['project.array_express_accessions']['field']['schema']['user_friendly'] : formConfig['project.array_express_accessions']['field']['key']"
-                          [type]="'text'"
+                          [dataType]="formConfig['project.array_express_accessions']['field']['schema']['items']['type']"
                           [example]="formConfig['project.array_express_accessions']['field']['schema']['example']"
                           [helperText]="formConfig['project.array_express_accessions']['field']['schema']['guidelines']"
                           [isRequired]="formConfig['project.array_express_accessions']['field']['isRequired']">
@@ -56,7 +57,7 @@
             *ngFor="let control of formConfig['project.insdc_study_accessions']['formControl']['controls'] ; let i = index">
             <app-vf-input [formControl]="control"
                           [label]="formConfig['project.insdc_study_accessions']['field']['schema']['user_friendly']?formConfig['project.insdc_study_accessions']['field']['schema']['user_friendly'] : formConfig['project.insdc_study_accessions']['field']['key']"
-                          [type]="'text'"
+                          [dataType]="formConfig['project.insdc_study_accessions']['field']['schema']['items']['type']"
                           [example]="formConfig['project.insdc_study_accessions']['field']['schema']['example']"
                           [helperText]="formConfig['project.insdc_study_accessions']['field']['schema']['guidelines']"
                           [isRequired]="formConfig['project.insdc_study_accessions']['field']['isRequired']">
@@ -77,28 +78,33 @@
               <ng-container
                 *ngFor="let child of formConfig['project.contributors']['children']">
 
-                <app-vf-input *ngIf="!formConfig[child]['field']['isHidden'] && formConfig[child]['field']['schema']['type'] === 'string'"
-                              [formControlName]="formConfig[child]['field']['key']"
-                              [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
-                              [type]="'text'"
-                              [example]="formConfig[child]['field']['schema']['example']"
-                              [helperText]="formConfig[child]['field']['schema']['guidelines']"
-                              [isRequired]="formConfig[child]['field']['isRequired']">
+                <ng-container *ngIf="['string', 'boolean'].indexOf(formConfig[child]['field']['schema']['type']) >= 0">
+                  <app-vf-input *ngIf="!formConfig[child]['field']['isHidden']"
+                                [formControlName]="formConfig[child]['field']['key']"
+                                [dataType]="formConfig[child]['field']['schema']['type']"
+                                [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
+                                [example]="formConfig[child]['field']['schema']['example']"
+                                [helperText]="formConfig[child]['field']['schema']['guidelines']"
+                                [isRequired]="formConfig[child]['field']['isRequired']">
 
-                </app-vf-input>
+                  </app-vf-input>
+                </ng-container>
               </ng-container>
             </div>
 
-            <button color="warn" mat-icon-button (click)="removeFormControl(formConfig['project.contributors']['formControl'], i)">
+            <button color="warn" mat-icon-button
+                    (click)="removeFormControl(formConfig['project.contributors']['formControl'], i)">
               <mat-icon>remove_circle_outline</mat-icon>
-            </button> <span color="warn"> Remove </span>
+            </button>
+            Remove
             <hr class="vf-divider">
           </ng-container>
         </div>
 
         <button mat-icon-button (click)="addFormControl('project.contributors')">
           <mat-icon>add_circle_outline</mat-icon>
-        </button> Add
+        </button>
+        Add
       </div>
     </mat-tab>
 
@@ -111,26 +117,31 @@
               <ng-container
                 *ngFor="let child of formConfig['project.publications']['children']">
 
-                <app-vf-input *ngIf="!formConfig[child]['field']['isHidden'] && formConfig[child]['field']['schema']['type'] === 'string'"
-                              [formControlName]="formConfig[child]['field']['key']"
-                              [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
-                              [type]="'text'"
-                              [example]="formConfig[child]['field']['schema']['example']"
-                              [helperText]="formConfig[child]['field']['schema']['guidelines']"
-                              [isRequired]="formConfig[child]['field']['isRequired']">
+                <ng-container *ngIf="['string', 'boolean'].indexOf(formConfig[child]['field']['schema']['type']) >= 0">
+                  <app-vf-input *ngIf="!formConfig[child]['field']['isHidden']"
+                                [formControlName]="formConfig[child]['field']['key']"
+                                [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
+                                [dataType]="formConfig[child]['field']['schema']['type']"
+                                [example]="formConfig[child]['field']['schema']['example']"
+                                [helperText]="formConfig[child]['field']['schema']['guidelines']"
+                                [isRequired]="formConfig[child]['field']['isRequired']">
 
-                </app-vf-input>
+                  </app-vf-input>
+                </ng-container>
               </ng-container>
             </div>
 
-            <button mat-icon-button (click)="removeFormControl(formConfig['project.publications']['formControl'], i)">
+            <button color="warn" mat-icon-button
+                    (click)="removeFormControl(formConfig['project.publications']['formControl'], i)">
               <mat-icon>remove_circle_outline</mat-icon>
-            </button> Remove
+            </button>
+            Remove
             <hr class="vf-divider">
           </ng-container>
           <button mat-icon-button (click)="addFormControl('project.publications')">
             <mat-icon>add_circle_outline</mat-icon>
-          </button> Add
+          </button>
+          Add
         </div>
       </div>
     </mat-tab>
@@ -142,24 +153,29 @@
             *ngFor="let funderFormGroup of formConfig['project.funders']['formControl']['controls'] ; let i = index">
             <div [formGroup]="funderFormGroup">
               <ng-container *ngFor="let child of formConfig['project.funders']['children']">
-                <app-vf-input *ngIf="!formConfig[child]['field']['isHidden'] && formConfig[child]['field']['schema']['type'] === 'string'"
-                              [formControlName]="formConfig[child]['field']['key']"
-                              [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
-                              [type]="'text'"
-                              [example]="formConfig[child]['field']['schema']['example']"
-                              [helperText]="formConfig[child]['field']['schema']['guidelines']"
-                              [isRequired]="formConfig[child]['field']['isRequired']">
-                </app-vf-input>
+                <ng-container *ngIf="['string', 'boolean'].indexOf(formConfig[child]['field']['schema']['type']) >= 0">
+                  <app-vf-input *ngIf="!formConfig[child]['field']['isHidden']"
+                                [formControlName]="formConfig[child]['field']['key']"
+                                [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
+                                [dataType]="formConfig[child]['field']['schema']['type']"
+                                [example]="formConfig[child]['field']['schema']['example']"
+                                [helperText]="formConfig[child]['field']['schema']['guidelines']"
+                                [isRequired]="formConfig[child]['field']['isRequired']">
+                  </app-vf-input>
+                </ng-container>
               </ng-container>
             </div>
-            <button mat-icon-button (click)="removeFormControl(formConfig['project.funders']['formControl'], i)">
+            <button color="warn" mat-icon-button
+                    (click)="removeFormControl(formConfig['project.funders']['formControl'], i)">
               <mat-icon>remove_circle_outline</mat-icon>
-            </button> Remove
+            </button>
+            Remove
             <hr class="vf-divider">
           </ng-container>
           <button mat-icon-button (click)="addFormControl('project.funders')">
             <mat-icon>add_circle_outline</mat-icon>
-          </button> Add
+          </button>
+          Add
         </div>
       </div>
     </mat-tab>

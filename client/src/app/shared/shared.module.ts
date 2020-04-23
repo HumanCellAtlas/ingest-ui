@@ -14,6 +14,7 @@ import { VfInputComponent } from './vf-input/vf-input.component';
 import {RouterModule} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {MatButtonModule} from "@angular/material/button";
     FormsModule,
     RouterModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule
   ],
   declarations: [
     ClipboardDirective,
