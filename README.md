@@ -24,10 +24,10 @@ Currently working with the ff versions:
 
 ```
 $ node --version
-v12.7.0
+v12.16.2
 
 $ npm --version
-6.10.0
+6.14.4
 
 $ ng --version
 
@@ -39,21 +39,35 @@ $ ng --version
                 |___/
     
 
-Angular CLI: 8.1.0
-Node: 12.7.0
+Angular CLI: 9.1.1
+Node: 12.16.2
 OS: darwin x64
-Angular: undefined
-... 
 
-Package                      Version
-------------------------------------------------------
-@angular-devkit/architect    0.801.0 (cli-only)
-@angular-devkit/core         8.1.0 (cli-only)
-@angular-devkit/schematics   8.1.0 (cli-only)
-@schematics/angular          8.1.0 (cli-only)
-@schematics/update           0.801.0 (cli-only)
-rxjs                         6.5.2
+Angular: 9.1.2
+... animations, common, compiler, compiler-cli, core, forms
+... language-service, platform-browser, platform-browser-dynamic
+... router
+Ivy Workspace: Yes
 
+Package                           Version
+-----------------------------------------------------------
+@angular-devkit/architect         0.901.1
+@angular-devkit/build-angular     0.901.1
+@angular-devkit/build-optimizer   0.901.1
+@angular-devkit/build-webpack     0.901.1
+@angular-devkit/core              9.1.1
+@angular-devkit/schematics        9.1.1
+@angular/cdk                      9.2.1
+@angular/cli                      9.1.1
+@angular/flex-layout              9.0.0-beta.29
+@angular/material                 9.2.1
+@ngtools/webpack                  9.1.1
+@schematics/angular               9.1.1
+@schematics/update                0.901.1
+rxjs                              6.5.5
+typescript                        3.8.3
+webpack                           4.42.0
+    
 ```
 
 ## Development server
