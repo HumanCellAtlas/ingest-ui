@@ -45,31 +45,6 @@ export class ProjectFormComponent implements OnInit {
               private schemaService: SchemaService) {
   }
 
-  get prettyValidationErrors() {
-    if (!this.formValidationErrors) {
-      return null;
-    }
-    const errorArray = [];
-    for (const error of this.formValidationErrors) {
-      errorArray.push(error.message);
-    }
-    return errorArray.join('<br>');
-  }
-
-  get postValidationErrors() {
-    if (!this.projectResource) {
-      return null;
-    }
-    if (this.projectResource.validationState !== 'Invalid') {
-      return null;
-    }
-    const errorArray = [];
-    for (const error of this.projectResource.validationErrors) {
-      errorArray.push(error.message);
-    }
-    return errorArray.join('<br>');
-  }
-
   ngOnInit() {
     this.alertService.warn(null, 'This page is work in progress.', false, false);
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
@@ -81,9 +56,24 @@ export class ProjectFormComponent implements OnInit {
     if (projectUuid) {
       this.createMode = false;
       this.setProjectContent(projectUuid);
-    } else {
-      this.setEmptyProjectContent();
     }
+    this.projectContent = {};
+    this.setSchema(this.projectContent);
+  }
+
+  displayPostValidationErrors() {
+    if (!this.projectResource) {
+      return null;
+    }
+    if (this.projectResource.validationState !== 'Invalid') {
+      return null;
+    }
+    const errorArray = [];
+    for (const error of this.projectResource.validationErrors) {
+      errorArray.push(error.message);
+    }
+    this.alertService.error('JSON Validation Error', errorArray.join('<br>'));
+    return errorArray.join('<br>');
   }
 
   setProjectContent(projectUuid) {
@@ -100,23 +90,25 @@ export class ProjectFormComponent implements OnInit {
           });
         }
         this.projectContent = projectResource.content;
+        this.displayPostValidationErrors();
       });
   }
 
-  setEmptyProjectContent() {
+  setSchema(obj: object) {
+    console.log('setting schema for empty projectContent');
     this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
-      const content: object = {};
-      content['describedBy'] = schemaUrl;
-      content['schema_type'] = 'project';
-      this.projectContent = content;
+      obj['describedBy'] = schemaUrl;
+      obj['schema_type'] = 'project';
+      console.log('setting schema for empty projectContent', this.projectContent);
     });
   }
 
-  onSave() {
+  onSave(formValue: object) {
     this.alertService.clear();
     if (this.createMode) {
-      console.log('Creating project', this.projectNewContent);
-      this.ingestService.postProject(this.projectNewContent).subscribe(resource => {
+      console.log('Creating project', formValue);
+      Object.assign(formValue, this.projectContent);
+      this.ingestService.postProject(formValue).subscribe(resource => {
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
@@ -124,17 +116,18 @@ export class ProjectFormComponent implements OnInit {
         error => {
           this.alertService.error('Error', error.message);
         });
-    } else {
-      console.log('Updating project', this.projectNewContent);
-      this.ingestService.patchProject(this.projectResource, this.projectNewContent).subscribe(resource => {
-          console.log('project updated', resource);
-          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-          this.alertService.success('Success', 'Project has been successfully updated!', true);
-        },
-        error => {
-          this.alertService.error('Error', error.message);
-        });
     }
+    //  else {
+    //   console.log('Updating project', this.projectNewContent);
+    //   this.ingestService.patchProject(this.projectResource, this.projectNewContent).subscribe(resource => {
+    //       console.log('project updated', resource);
+    //       this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
+    //       this.alertService.success('Success', 'Project has been successfully updated!', true);
+    //     },
+    //     error => {
+    //       this.alertService.error('Error', error.message);
+    //     });
+    // }
   }
 
   validationErrors(data: any) {
@@ -147,5 +140,9 @@ export class ProjectFormComponent implements OnInit {
 
   onChanges($event) {
     this.projectNewContent = $event;
+  }
+
+  onSubmit(formValue: object) {
+    console.log('project json', formValue);
   }
 }

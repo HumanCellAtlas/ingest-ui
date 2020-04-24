@@ -1,4 +1,4 @@
-<form class="vf-form" [formGroup]="formConfig['project']['formControl']">
+<form class="vf-form" [formGroup]="formConfig['project']['formControl']" (submit)="onSubmit($event)">
   <mat-tab-group>
     <mat-tab label="Project">
       <div class="vf-u-margin__top--xxl">
@@ -92,18 +92,18 @@
               </ng-container>
             </div>
 
-            <button color="warn" mat-icon-button
+            <a color="warn" mat-icon-button
                     (click)="removeFormControl(formConfig['project.contributors']['formControl'], i)">
               <mat-icon>remove_circle_outline</mat-icon>
-            </button>
+            </a>
             Remove
             <hr class="vf-divider">
           </ng-container>
         </div>
 
-        <button mat-icon-button (click)="addFormControl('project.contributors')">
+        <a mat-icon-button (click)="addFormControl('project.contributors')">
           <mat-icon>add_circle_outline</mat-icon>
-        </button>
+        </a>
         Add
       </div>
     </mat-tab>
@@ -131,16 +131,16 @@
               </ng-container>
             </div>
 
-            <button color="warn" mat-icon-button
+            <a color="warn" mat-icon-button
                     (click)="removeFormControl(formConfig['project.publications']['formControl'], i)">
               <mat-icon>remove_circle_outline</mat-icon>
-            </button>
+            </a>
             Remove
             <hr class="vf-divider">
           </ng-container>
-          <button mat-icon-button (click)="addFormControl('project.publications')">
+          <a mat-icon-button (click)="addFormControl('project.publications')">
             <mat-icon>add_circle_outline</mat-icon>
-          </button>
+          </a>
           Add
         </div>
       </div>
@@ -165,16 +165,16 @@
                 </ng-container>
               </ng-container>
             </div>
-            <button color="warn" mat-icon-button
+            <a color="warn" mat-icon-button
                     (click)="removeFormControl(formConfig['project.funders']['formControl'], i)">
               <mat-icon>remove_circle_outline</mat-icon>
-            </button>
+            </a>
             Remove
             <hr class="vf-divider">
           </ng-container>
-          <button mat-icon-button (click)="addFormControl('project.funders')">
+          <a mat-icon-button (click)="addFormControl('project.funders')">
             <mat-icon>add_circle_outline</mat-icon>
-          </button>
+          </a>
           Add
         </div>
       </div>
@@ -184,6 +184,6 @@
 
 
   <a class="vf-button vf-button--tertiary vf-button--sm" routerLink="/projects">Cancel</a>
-  <button (click)="onSubmit()" class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
+  <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
 
 </form>

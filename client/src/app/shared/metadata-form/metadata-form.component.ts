@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
@@ -11,24 +11,23 @@ import {MetadataFormConfig} from './metadata-form-config';
   styleUrls: ['./metadata-form.component.css']
 })
 export class MetadataFormComponent implements OnInit {
-  @Input()
-  name: string;
+  @Input() name: string;
 
-  @Input()
-  schema: JsonSchema;
+  @Input() schema: JsonSchema;
 
-  @Input()
-  layout: object;
+  @Input() layout: object;
 
-  @Input()
-  config: MetadataFormConfig;
+  @Input() config: MetadataFormConfig;
 
-  @Input()
-  data: object;
+  @Input() data: object;
+
+  @Output() save = new EventEmitter<object>();
 
   form: FormGroup;
 
   formConfig: object = {};
+
+  value: object;
 
   constructor(private metadataFormService: MetadataFormService) {
 
@@ -37,11 +36,16 @@ export class MetadataFormComponent implements OnInit {
   ngOnInit(): void {
     this.metadataFormService.initializeFormConfig( this.formConfig, 'project', this.schema, this.config);
     this.form = this.formConfig['project']['formControl'];
+    // this.form.setValue(this.data);
   }
 
-  onSubmit() {
+  onSubmit(e) {
+    e.preventDefault();
     console.log('form data', this.form.value);
-    console.log('clean form data', this.metadataFormService.cleanFormData(this.form.value));
+    console.log('$event', e);
+    const formData = this.metadataFormService.cleanFormData(this.form.value);
+    console.log('clean form data', formData );
+    this.save.emit(formData);
   }
 
   removeFormControl(control: AbstractControl, i: number) {
