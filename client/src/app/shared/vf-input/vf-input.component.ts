@@ -54,7 +54,6 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
     this.inputType = this.INPUT_TYPE[this.dataType];
-    console.log(this.label, this.inputType);
   }
 
   registerOnChange(fn: (text: string) => void): void {

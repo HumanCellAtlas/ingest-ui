@@ -65,13 +65,14 @@ describe('MetadataFormService', () => {
     });
   });
 
-  describe('getFormGroupConfig', () => {
+  describe('initializeFormConfig', () => {
     it('return config', () => {
       // given
       const testSchema = (jsonSchema as any).default;
 
       // when
-      const config = service.buildFormConfig('project', testSchema);
+      const formConfig = {};
+      const config = service.initializeFormConfig(formConfig, 'project', testSchema);
 
       // then
       console.log(config);

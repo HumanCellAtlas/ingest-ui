@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {JsonSchemaProperty} from './json-schema-property';
 import {JsonSchema} from './json-schema';
 import {MetadataField} from './metadata-field';
@@ -69,23 +69,23 @@ export class MetadataFormService {
   }
 
   // TODO try to refactor
-  buildFormConfig(parentKey: string, jsonSchema: JsonSchema, config?: MetadataFormConfig): object {
+  initializeFormConfig(formConfig: object, parentKey: string, jsonSchema: JsonSchema, config?: MetadataFormConfig): object {
     const group: any = {};
 
-    if (this.config[parentKey] === undefined) {
-      this.config[parentKey] = {};
+    if (formConfig[parentKey] === undefined) {
+      formConfig[parentKey] = {};
     }
-    if (this.config[parentKey]['children'] === undefined) {
-      this.config[parentKey]['children'] = [];
+    if (formConfig[parentKey]['children'] === undefined) {
+      formConfig[parentKey]['children'] = [];
     }
 
     this.getFieldMap(jsonSchema, config).forEach((field: MetadataField, key: string) => {
       const configKey = parentKey ? parentKey + '.' + key : key;
 
-      this.config[parentKey]['children'].push(configKey);
+      formConfig[parentKey]['children'].push(configKey);
 
-      if (this.config[configKey] === undefined) {
-        this.config[configKey] = {};
+      if (formConfig[configKey] === undefined) {
+        formConfig[configKey] = {};
       }
 
       if (field.isScalar()) {
@@ -93,9 +93,10 @@ export class MetadataFormService {
           : new FormControl();
         group[field.key] = formControl;
 
-        this.config[configKey]['field'] = field;
-        this.config[configKey]['type'] = FormControl;
-        this.config[configKey]['parent'] = parentKey;
+        formConfig[configKey]['field'] = field;
+        formConfig[configKey]['type'] = FormControl;
+        formConfig[configKey]['parent'] = parentKey;
+        formConfig[configKey]['formControl'] = formControl;
 
       } else if (field.isScalarList()) {
         const formControl = field.isRequired ? new FormControl(undefined, Validators.required)
@@ -103,37 +104,39 @@ export class MetadataFormService {
         const formArray = new FormArray([formControl]);
         group[field.key] = formArray;
 
-        this.config[configKey]['field'] = field;
-        this.config[configKey]['type'] = FormArray;
-        this.config[configKey]['parent'] = parentKey;
-        this.config[configKey]['formControl'] = formArray;
+        formConfig[configKey]['field'] = field;
+        formConfig[configKey]['type'] = FormArray;
+        formConfig[configKey]['parent'] = parentKey;
+        formConfig[configKey]['formControl'] = formArray;
 
       } else if (field.isObject()) {
-        this.buildFormConfig(configKey, field.schema as JsonSchema, config);
-        const formGroup = this.config[configKey]['formControl'];
+        this.initializeFormConfig(formConfig, configKey, field.schema as JsonSchema, config);
+        const formGroup = formConfig[configKey]['formControl'];
         group[field.key] = formGroup;
 
-        this.config[configKey]['formControl'] = formGroup;
-        this.config[configKey]['field'] = field;
-        this.config[configKey]['type'] = FormGroup;
-        this.config[configKey]['parent'] = parentKey;
+        formConfig[configKey]['formControl'] = formGroup;
+        formConfig[configKey]['field'] = field;
+        formConfig[configKey]['type'] = FormGroup;
+        formConfig[configKey]['parent'] = parentKey;
 
       } else if (field.isObjectList()) {
-        this.buildFormConfig(configKey, field.schema.items as JsonSchema, config);
-        const formGroup = this.config[configKey]['formControl'];
+        this.initializeFormConfig(formConfig, configKey, field.schema.items as JsonSchema, config);
+        const formGroup = formConfig[configKey]['formControl'];
         const formArray = new FormArray([formGroup]);
         group[field.key] = formArray;
 
-        this.config[configKey]['formControl'] = formArray;
-        this.config[configKey]['field'] = field;
-        this.config[configKey]['type'] = FormArray;
-        this.config[configKey]['parent'] = parentKey;
+        formConfig[configKey]['formControl'] = formArray;
+        formConfig[configKey]['field'] = field;
+        formConfig[configKey]['type'] = FormArray;
+        formConfig[configKey]['parent'] = parentKey;
       }
     });
 
-    this.config[parentKey]['formControl'] = new FormGroup(group);
+    formConfig[parentKey]['formControl'] = new FormGroup(group);
 
-    return this.config;
+    return formConfig;
+
+
   }
 
   cleanFormData(formData: any): object {

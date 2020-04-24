@@ -6,5 +6,12 @@
 <br/>
 <br/>
 
+<p *ngIf="!projectContent && !createMode">Loading project...</p>
 
-<app-metadata-form [schema]="projectJsonSchema" [value]="projectContent" [config]="config" name="project"></app-metadata-form>
+<ng-container *ngIf="projectContent || createMode">
+<app-metadata-form name="project"
+ [schema]="projectJsonSchema"
+ [data]="projectContent"
+ [config]="config">
+</app-metadata-form>
+</ng-container>
