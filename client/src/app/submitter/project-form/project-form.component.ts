@@ -7,7 +7,7 @@ import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as project from './project.json';
-import {MetadataFormConfig} from "../../shared/metadata-form/metadata-form-config";
+import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 
 @Component({
   selector: 'app-project-form',
@@ -49,16 +49,37 @@ export class ProjectFormComponent implements OnInit {
     this.alertService.warn(null, 'This page is work in progress.', false, false);
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     this.projectResource = null;
-    this.projectContent = null;
     this.projectNewContent = null;
     this.formIsValid = null;
     this.formValidationErrors = null;
+    this.projectContent = {};
     if (projectUuid) {
       this.createMode = false;
       this.setProjectContent(projectUuid);
+    } else {
+      this.setSchema(this.projectContent);
     }
-    this.projectContent = {};
-    this.setSchema(this.projectContent);
+
+
+  }
+
+  setProjectContent(projectUuid) {
+    this.ingestService.getProjectByUuid(projectUuid)
+      .map(data => data as Project)
+      .subscribe(projectResource => {
+        console.log('load project resource', projectResource);
+        this.projectResource = projectResource;
+        if (!projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
+          this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
+            projectResource.content['describedBy'] = schemaUrl;
+            projectResource.content['schema_type'] = 'project';
+            console.log('Patched Project content', projectResource.content);
+          });
+        }
+        this.projectContent = projectResource.content;
+        console.log('projectContent', this.projectContent);
+        this.displayPostValidationErrors();
+      });
   }
 
   displayPostValidationErrors() {
@@ -76,30 +97,10 @@ export class ProjectFormComponent implements OnInit {
     return errorArray.join('<br>');
   }
 
-  setProjectContent(projectUuid) {
-    this.ingestService.getProjectByUuid(projectUuid)
-      .map(data => data as Project)
-      .subscribe(projectResource => {
-        console.log('load project resource', projectResource);
-        this.projectResource = projectResource;
-        if (!projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
-          this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
-            projectResource.content['describedBy'] = schemaUrl;
-            projectResource.content['schema_type'] = 'project';
-            console.log('Patched Project content', projectResource.content);
-          });
-        }
-        this.projectContent = projectResource.content;
-        this.displayPostValidationErrors();
-      });
-  }
-
   setSchema(obj: object) {
-    console.log('setting schema for empty projectContent');
     this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
       obj['describedBy'] = schemaUrl;
       obj['schema_type'] = 'project';
-      console.log('setting schema for empty projectContent', this.projectContent);
     });
   }
 

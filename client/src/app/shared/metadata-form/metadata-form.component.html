@@ -1,4 +1,4 @@
-<form class="vf-form" [formGroup]="formConfig['project']['formControl']" (submit)="onSubmit($event)">
+<form *ngIf="done" class="vf-form" [formGroup]="formConfig['project']['formControl']" (submit)="onSubmit($event)">
   <mat-tab-group>
     <mat-tab label="Project">
       <div class="vf-u-margin__top--xxl">

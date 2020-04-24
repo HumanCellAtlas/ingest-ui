@@ -8,7 +8,7 @@
 
 <p *ngIf="!projectContent && !createMode">Loading project...</p>
 
-<ng-container *ngIf="projectContent || createMode">
+<ng-container *ngIf="projectResource || createMode">
   <app-metadata-form name="project"
                      [schema]="projectJsonSchema"
                      [data]="projectContent"

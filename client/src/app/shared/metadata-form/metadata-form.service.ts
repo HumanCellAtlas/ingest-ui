@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AbstractControl, FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {JsonSchemaProperty} from './json-schema-property';
 import {JsonSchema} from './json-schema';
 import {MetadataField} from './metadata-field';
@@ -15,27 +15,56 @@ export class MetadataFormService {
   constructor() {
   }
 
-  toFormGroup(jsonSchema: JsonSchema, config?: MetadataFormConfig): FormGroup {
+  toFormGroup(jsonSchema: JsonSchema, config?: MetadataFormConfig, data?: object): FormGroup {
     const group: any = {};
-
     this.getFieldMap(jsonSchema, config).forEach((field: MetadataField, key: string) => {
+      const subData = data !== undefined ? data[key] : undefined;
       if (field.isScalar()) {
-        const formControl = field.isRequired ? new FormControl(undefined, Validators.required)
-          : new FormControl();
+        const formControl = this.toFormControl(field, subData);
         group[field.key] = formControl;
       } else if (field.isScalarList()) {
-        const formControl = field.isRequired ? new FormControl(undefined, Validators.required)
-          : new FormControl();
-        group[field.key] = new FormArray([formControl]);
+        const formArray = this.toFormControlArray(field, subData);
+        group[field.key] = formArray;
       } else if (field.isObject()) {
-        group[field.key] = this.toFormGroup(field.schema as JsonSchema);
+        group[field.key] = this.toFormGroup(field.schema as JsonSchema, config, subData);
       } else if (field.isObjectList()) {
-        const formGroup = this.toFormGroup(field.schema.items as JsonSchema);
-        group[field.key] = new FormArray([formGroup]);
+        group[field.key] = this.toFormGroupArray(field.schema.items as JsonSchema, config, subData);
       }
     });
 
     return new FormGroup(group);
+  }
+
+  toFormControl(field: MetadataField, data?: any) {
+    const formControl = field.isRequired ? new FormControl(data, Validators.required)
+      : new FormControl(data);
+    return formControl;
+  }
+
+  toFormGroupArray(jsonSchema: JsonSchema, config?: MetadataFormConfig, data?: any[]): FormArray {
+    const controlData = [];
+    if (data && data.length > 0) {
+      for (const elem of data) {
+        const elemFormControl = this.toFormGroup(jsonSchema as JsonSchema, config, elem);
+        controlData.push(elemFormControl);
+      }
+    } else {
+      controlData.push(this.toFormGroup(jsonSchema as JsonSchema, config, undefined));
+    }
+    return new FormArray(controlData);
+  }
+
+  toFormControlArray(field, data?: any) {
+    const controlData = [];
+    if (data && data.length > 0) {
+      for (const elem of data) {
+        const elemFormControl = this.toFormControl(field, elem);
+        controlData.push(elemFormControl);
+      }
+    } else {
+      controlData.push(this.toFormControl(field, undefined));
+    }
+    return new FormArray(controlData);
   }
 
   getFieldMap(jsonSchema: JsonSchema, config?: MetadataFormConfig): Map<string, MetadataField> {
@@ -69,7 +98,7 @@ export class MetadataFormService {
   }
 
   // TODO try to refactor
-  initializeFormConfig(formConfig: object, parentKey: string, jsonSchema: JsonSchema, config?: MetadataFormConfig): object {
+  initializeFormConfig(formConfig: object, parentKey: string, jsonSchema: JsonSchema, config?: MetadataFormConfig, data?: object): object {
     const group: any = {};
 
     if (formConfig[parentKey] === undefined) {
@@ -81,7 +110,7 @@ export class MetadataFormService {
 
     this.getFieldMap(jsonSchema, config).forEach((field: MetadataField, key: string) => {
       const configKey = parentKey ? parentKey + '.' + key : key;
-
+      const subData = data && data[key] ? data[key] : undefined;
       formConfig[parentKey]['children'].push(configKey);
 
       if (formConfig[configKey] === undefined) {
@@ -89,29 +118,24 @@ export class MetadataFormService {
       }
 
       if (field.isScalar()) {
-        const formControl = field.isRequired ? new FormControl(undefined, Validators.required)
-          : new FormControl();
+        const formControl = this.toFormControl(field, subData);
         group[field.key] = formControl;
-
         formConfig[configKey]['field'] = field;
         formConfig[configKey]['type'] = FormControl;
         formConfig[configKey]['parent'] = parentKey;
         formConfig[configKey]['formControl'] = formControl;
 
       } else if (field.isScalarList()) {
-        const formControl = field.isRequired ? new FormControl(undefined, Validators.required)
-          : new FormControl();
-        const formArray = new FormArray([formControl]);
+        const formArray = this.toFormControlArray(field, subData);
         group[field.key] = formArray;
-
         formConfig[configKey]['field'] = field;
         formConfig[configKey]['type'] = FormArray;
         formConfig[configKey]['parent'] = parentKey;
         formConfig[configKey]['formControl'] = formArray;
 
       } else if (field.isObject()) {
-        this.initializeFormConfig(formConfig, configKey, field.schema as JsonSchema, config);
-        const formGroup = formConfig[configKey]['formControl'];
+        this.initializeFormConfig(formConfig, configKey, field.schema as JsonSchema, config, subData);
+        const formGroup = this.toFormGroup(field.schema as JsonSchema, config, subData);
         group[field.key] = formGroup;
 
         formConfig[configKey]['formControl'] = formGroup;
@@ -120,11 +144,9 @@ export class MetadataFormService {
         formConfig[configKey]['parent'] = parentKey;
 
       } else if (field.isObjectList()) {
-        this.initializeFormConfig(formConfig, configKey, field.schema.items as JsonSchema, config);
-        const formGroup = formConfig[configKey]['formControl'];
-        const formArray = new FormArray([formGroup]);
+        this.initializeFormConfig(formConfig, configKey, field.schema.items as JsonSchema, config, subData);
+        const formArray = this.toFormGroupArray(field.schema.items as JsonSchema, config, subData);
         group[field.key] = formArray;
-
         formConfig[configKey]['formControl'] = formArray;
         formConfig[configKey]['field'] = field;
         formConfig[configKey]['type'] = FormArray;
@@ -135,7 +157,6 @@ export class MetadataFormService {
     formConfig[parentKey]['formControl'] = new FormGroup(group);
 
     return formConfig;
-
 
   }
 

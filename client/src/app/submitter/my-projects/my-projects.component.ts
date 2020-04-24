@@ -5,7 +5,7 @@ import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
 import {AaiService} from '../../aai/aai.service';
 import {Profile} from 'oidc-client';
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-my-projects',

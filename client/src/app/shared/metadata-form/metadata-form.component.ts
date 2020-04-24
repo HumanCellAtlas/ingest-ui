@@ -29,14 +29,17 @@ export class MetadataFormComponent implements OnInit {
 
   value: object;
 
+  done: boolean;
+
   constructor(private metadataFormService: MetadataFormService) {
 
   }
 
   ngOnInit(): void {
-    this.metadataFormService.initializeFormConfig( this.formConfig, 'project', this.schema, this.config);
+    this.metadataFormService.initializeFormConfig( this.formConfig, 'project', this.schema, this.config, this.data);
+    this.done = true;
+    console.log('form config', this.formConfig);
     this.form = this.formConfig['project']['formControl'];
-    // this.form.setValue(this.data);
   }
 
   onSubmit(e) {

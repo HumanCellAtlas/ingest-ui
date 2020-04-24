@@ -1,5 +1,6 @@
 import {MetadataFormService} from './metadata-form.service';
 import * as jsonSchema from './test-json-schema.json';
+import * as json from './test-json.json';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
 
 describe('MetadataFormService', () => {
@@ -55,7 +56,6 @@ describe('MetadataFormService', () => {
       const formGroup = service.toFormGroup(testSchema);
 
       // then
-      console.log(formGroup);
       expect(formGroup).toBeTruthy();
       expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
       expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
@@ -75,7 +75,6 @@ describe('MetadataFormService', () => {
       const config = service.initializeFormConfig(formConfig, 'project', testSchema);
 
       // then
-      console.log(config);
       expect(config).toBeTruthy();
 
       const formGroup = config['project']['formControl'];
@@ -85,70 +84,99 @@ describe('MetadataFormService', () => {
       expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
 
     });
-  });
+
+    describe('initializeFormConfig with data', () => {
+      it('return config with data', () => {
+        // given
+        const testSchema = (jsonSchema as any).default;
+        const testData = (json as any).default;
+        // when
+        const formConfig = {};
+        const config = service.initializeFormConfig(formConfig, 'project', testSchema, {}, testData);
+
+        // then
+        expect(config).toBeTruthy();
+
+        const formGroup = config['project']['formControl'];
+        expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
+        expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
+        expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
+        expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
 
 
-  describe('copy', () => {
-    it('return copy', () => {
-      // given
-      const obj = {
-        'k1': 'v1',
-        'k2': {
-          'k3': null,
-          'k4': null,
-          'k5': [],
-          'k0': {}
-        },
-        'k6': ['v2', 'v3'],
-        'k7': {
-          'k8': 'v4',
-          'k9': null,
-          'k10': null
-        },
-        'k11': [{
-          'k12': 'v5',
-          'k13': 'v6',
-        }, {
-          'k14': 'v7'
-        }],
-        'k15': [{}, {}],
-        'k16': [null, null],
-        'k17': {
-          'k18': 8,
-          'k19': null
-        },
-        'k20': {
-          'k21': 'v9',
-          'k22': null
-        }
-      };
+        console.log('formGroup.value', formGroup.value);
+        console.log('testData', service.cleanFormData(testData));
+        console.log('formGroup.value clean', service.cleanFormData(formGroup.value));
 
-      // when
-      const copy = service.copyValues(obj);
+        expect(service.cleanFormData(formGroup.value))
+          .toEqual(service.cleanFormData(testData));
 
-      const expected = {
-        'k1': 'v1',
-        'k6': ['v2', 'v3'],
-        'k7': {
-          'k8': 'v4',
-        },
-        'k11': [{
-          'k12': 'v5',
-          'k13': 'v6',
-        }, {
-          'k14': 'v7'
-        }],
-        'k17': {
-          'k18': 8
-        },
-        'k20': {
-          'k21': 'v9'
-        }
-      };
+      });
 
-      // then
-      expect(copy).toEqual(expected);
+    });
+
+
+    describe('copy', () => {
+      it('return copy', () => {
+        // given
+        const obj = {
+          'k1': 'v1',
+          'k2': {
+            'k3': null,
+            'k4': null,
+            'k5': [],
+            'k0': {}
+          },
+          'k6': ['v2', 'v3'],
+          'k7': {
+            'k8': 'v4',
+            'k9': null,
+            'k10': null
+          },
+          'k11': [{
+            'k12': 'v5',
+            'k13': 'v6',
+          }, {
+            'k14': 'v7'
+          }],
+          'k15': [{}, {}],
+          'k16': [null, null],
+          'k17': {
+            'k18': 8,
+            'k19': null
+          },
+          'k20': {
+            'k21': 'v9',
+            'k22': null
+          }
+        };
+
+        // when
+        const copy = service.copyValues(obj);
+
+        const expected = {
+          'k1': 'v1',
+          'k6': ['v2', 'v3'],
+          'k7': {
+            'k8': 'v4',
+          },
+          'k11': [{
+            'k12': 'v5',
+            'k13': 'v6',
+          }, {
+            'k14': 'v7'
+          }],
+          'k17': {
+            'k18': 8
+          },
+          'k20': {
+            'k21': 'v9'
+          }
+        };
+
+        // then
+        expect(copy).toEqual(expected);
+      });
     });
   });
-
 });

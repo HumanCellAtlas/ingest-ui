@@ -36,6 +36,9 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   dataType: string;
 
+  @Input()
+  error: string;
+
   @ViewChild('input') input;
 
   INPUT_TYPE = {
