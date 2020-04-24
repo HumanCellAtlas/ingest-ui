@@ -1,6 +1,6 @@
 import {Profile, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import {Injectable} from '@angular/core';
-import {from, Observable, Subject, throwError} from 'rxjs';
+import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
@@ -25,18 +25,16 @@ export function getClientSettings(): UserManagerSettings {
 })
 export class AaiService {
 
+  public user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   private manager = new UserManager(getClientSettings());
   private user: User = null;
-  private user$: Subject<User>;
 
   constructor(private http: HttpClient,
               private alertService: AlertService,
               private router: Router) {
 
-    this.user$ = new Subject<User>();
-    this.getUser().subscribe(user => {
-      this.user$.next(user);
-      this.user = user;
+    this.user$.subscribe(usr => {
+      this.user = usr;
     });
   }
 
@@ -45,7 +43,10 @@ export class AaiService {
   }
 
   getUser(): Observable<User> {
-    return from(this.manager.getUser());
+    return from(this.manager.getUser()).map(user => {
+      this.user$.next(user);
+      return user;
+    });
   }
 
   isUserLoggedIn(): Observable<boolean> {
