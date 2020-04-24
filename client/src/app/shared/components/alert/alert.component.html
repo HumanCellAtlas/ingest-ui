@@ -1,7 +1,7 @@
 <div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
+  <ng-container *ngIf="alert.dismissible"><a class="vf-u-padding__top--sm vf-u-float__right" (click)="removeAlert(alert)">&times;</a></ng-container>
   <div>
-    <ng-container *ngIf="alert.dismissible"><p align="right"><a class="close" (click)="removeAlert(alert)">&times;</a></p></ng-container>
-    <p><b>{{alert.title}}</b></p>
-    <div [innerHtml]="alert.message"></div>
+    <p class="vf-u-type__text-heading--5" >{{alert.title}}</p>
+    <div class="vf-u-padding__top--sm " [innerHtml]="alert.message"></div>
   </div>
 </div>

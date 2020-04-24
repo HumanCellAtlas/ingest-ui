@@ -1,11 +1,12 @@
-$danger-color: rgba(217, 83, 79, 0.5);
-$info-color: rgba(91, 192, 222, 0.56);
-$success-color: rgba(37, 199, 193, 0.4);
-$warning-color: rgba(240, 173, 78, 0.51);
+$danger-color: rgba(217, 83, 79, 0.37);
+$info-color: rgba(91, 192, 222, 0.45);
+$success-color: rgba(37, 199, 193, 0.31);
+$warning-color: rgba(240, 173, 78, 0.33);
 
 .alert-banner{
   padding: 5px 20px 25px;
   margin: 0 0 30px 0;
+  border-radius: 10px;
 }
 
 .error{
