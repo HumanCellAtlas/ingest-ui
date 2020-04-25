@@ -45,7 +45,6 @@ export class MetadataFormComponent implements OnInit {
   onSubmit(e) {
     e.preventDefault();
     console.log('form data', this.form.value);
-    console.log('$event', e);
     const formData = this.metadataFormService.cleanFormData(this.form.value);
     console.log('clean form data', formData );
     this.save.emit(formData);

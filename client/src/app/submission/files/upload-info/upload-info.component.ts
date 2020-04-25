@@ -30,7 +30,6 @@ export class UploadInfoComponent implements OnInit {
   public logSuccess( value: string ) : void {
 
     console.group( "Clipboard Success" );
-    console.log( value );
     console.groupEnd();
 
   }

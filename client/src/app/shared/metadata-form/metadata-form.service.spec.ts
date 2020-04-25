@@ -380,11 +380,6 @@ describe('MetadataFormService', () => {
         expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
         expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
 
-
-        console.log('formGroup.value', formGroup.value);
-        console.log('testData', service.cleanFormData(testData));
-        console.log('formGroup.value clean', service.cleanFormData(formGroup.value));
-
         expect(service.cleanFormData(formGroup.value))
           .toEqual(service.cleanFormData(testData));
 
