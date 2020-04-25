@@ -2,6 +2,7 @@ import {AuthenticationService, DuplicateAccount} from "./authentication.service"
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
+import {Account} from "./security.data";
 
 let accountService: AuthenticationService;
 let remoteService: HttpTestingController
@@ -38,7 +39,7 @@ describe('Get Account', () => {
     //expect:
     const accountId = 'c83bf90';
     const token = 'aGVsbG8sIHdvcmxkCg==';
-    accountService.getAccount(token).then(account => {
+    accountService.getAccount(token).then((account: Account) => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
       expect(account.roles).toContain('CONTRIBUTOR');
@@ -58,8 +59,8 @@ describe('Get Account', () => {
   it('should return empty object if the User is not registered', (done) => {
     //expect:
     const token = 'bWFnaWMgc3RyaW5nCg==';
-    accountService.getAccount(token).then(account => {
-      expect(account).toEqual({});
+    accountService.getAccount(token).then((account: Account) => {
+      expect(account).toEqual(<Account>{});
     });
 
     //given:

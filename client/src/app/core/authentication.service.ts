@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {CoreSecurity} from "./security.module";
+import {Account} from "./security.data";
 
 @Injectable({
   providedIn: CoreSecurity,
@@ -13,12 +14,12 @@ export class AuthenticationService {
 
   private readonly BASE_URL = `${environment.INGEST_API_URL}/auth`;
 
-  getAccount(token: string): Promise<any> {
+  getAccount(token: string): Promise<Account> {
     const url = `${this.BASE_URL}/account`;
     return this.http
-      .get(url, {headers: this.authoriseHeader(token)})
+      .get<Account>(url, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
-        return Observable.of({});
+        return Observable.of(<Account>{});
       }).toPromise();
   }
 
