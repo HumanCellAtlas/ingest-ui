@@ -19,7 +19,7 @@ export class AuthenticationService {
     return this.http
       .get<Account>(url, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
-        return Observable.of(<Account>{});
+        return Observable.throwError(<Account>{});
       }).toPromise();
   }
 

@@ -35,7 +35,7 @@ describe('Get Account', () => {
     remoteService.verify();
   });
 
-  it('should return an Account if the User is registered', fakeAsync(() => {
+  it('should resolve to an Account if the User is registered', fakeAsync(() => {
     {
       //expect:
       const accountId = 'c83bf90';
@@ -55,12 +55,16 @@ describe('Get Account', () => {
     }
   }));
 
-  it('should return empty object if the User is not registered', fakeAsync(() => {
+  it('should reject with an empty Account if the User is not registered', fakeAsync(() => {
     //expect:
     const token = 'bWFnaWMgc3RyaW5nCg==';
-    accountService.getAccount(token).then((account: Account) => {
-      expect(account).toEqual(<Account>{});
-    });
+    accountService.getAccount(token)
+      .then(() => {
+        fail('service is expected to reject for unregistered User');
+      })
+      .catch((account: Account) => {
+        expect(account).toEqual(<Account>{});
+      });
 
     //given:
     const request = expectAuthorisedRequest(token, 'GET');
