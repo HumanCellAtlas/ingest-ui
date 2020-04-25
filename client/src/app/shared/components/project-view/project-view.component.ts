@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../models/project';
-import * as layout from '../../../submitter/project-form/layout.json';
-import * as schema from '../../../submitter/project-form/flat-modified-schema.json';
 import {AlertService} from '../../services/alert.service';
 
 @Component({
@@ -11,23 +9,14 @@ import {AlertService} from '../../services/alert.service';
 })
 export class ProjectViewComponent implements OnInit {
   @Input() project: Project;
-  projectLayout: any = (layout as any).default;
-  projectSchema: any = (schema as any).default;
-  options: object = {
-    addSubmit: false,
-    defautWidgetOptions: {
-      readonly: true,
-      addable: false,
-      orderable: false,
-      removable: false
-    }
-  };
+  title: string;
+  subtitle: string;
 
   constructor(private alertService: AlertService) {
   }
 
   ngOnInit() {
-    this.alertService.warn(null, 'This page is work in progress.', false, false);
+    this.alertService.warn(null, 'This page is work in progress.', false, true);
     this.displayPostValidationErrors();
   }
 
@@ -46,7 +35,7 @@ export class ProjectViewComponent implements OnInit {
         errorArray.push(error.message);
       }
     }
-    this.alertService.error('JSON Validation Error', errorArray.join('<br>'));
+    this.alertService.error('JSON Validation Error', errorArray.join('<br>'), false, false);
     return errorArray.join('<br>');
   }
 

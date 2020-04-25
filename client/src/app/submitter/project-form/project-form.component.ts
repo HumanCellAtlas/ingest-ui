@@ -8,6 +8,7 @@ import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as project from './project.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
+import {LoaderService} from "../../shared/services/loader.service";
 
 @Component({
   selector: 'app-project-form',
@@ -20,7 +21,7 @@ export class ProjectFormComponent implements OnInit {
   projectJsonSchema: any = (project as any).default;
 
   projectResource: Project;
-  projectContent: object;
+  schemaFields: object;
   projectNewContent: object;
 
   createMode = true;
@@ -37,47 +38,52 @@ export class ProjectFormComponent implements OnInit {
       'project.project_core.project_description': 'textarea'
     }
   };
+  title: string;
+  subtitle: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private ingestService: IngestService,
               private alertService: AlertService,
+              private loaderService: LoaderService,
               private schemaService: SchemaService) {
   }
 
   ngOnInit() {
-    this.alertService.warn(null, 'This page is work in progress.', false, false);
+    this.alertService.warn(null, 'This page is work in progress.', false, true);
+
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     this.projectResource = null;
     this.projectNewContent = null;
     this.formIsValid = null;
     this.formValidationErrors = null;
-    this.projectContent = {};
+    this.schemaFields = {};
+
     if (projectUuid) {
       this.createMode = false;
       this.setProjectContent(projectUuid);
     } else {
-      this.setSchema(this.projectContent);
+      this.setSchema(this.schemaFields);
     }
 
-
+    this.title = this.createMode ? 'New Project' : 'Edit Project';
+    this.subtitle = this.createMode ? 'Please provide initial information about your HCA project.\n' +
+      '  You will be able to edit this information as your project develops.' : '';
   }
 
   setProjectContent(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
       .map(data => data as Project)
       .subscribe(projectResource => {
-        console.log('load project resource', projectResource);
         this.projectResource = projectResource;
-        if (!projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
+        if (projectResource && projectResource.content &&
+          !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
           this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
             projectResource.content['describedBy'] = schemaUrl;
             projectResource.content['schema_type'] = 'project';
-            console.log('Patched Project content', projectResource.content);
           });
         }
-        this.projectContent = projectResource.content;
-        console.log('projectContent', this.projectContent);
+        this.schemaFields = projectResource.content;
         this.displayPostValidationErrors();
       });
   }
@@ -93,7 +99,7 @@ export class ProjectFormComponent implements OnInit {
     for (const error of this.projectResource.validationErrors) {
       errorArray.push(error.message);
     }
-    this.alertService.error('JSON Validation Error', errorArray.join('<br>'));
+    this.alertService.error('JSON Validation Error', errorArray.join('<br>'), false, false);
     return errorArray.join('<br>');
   }
 
@@ -105,45 +111,33 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onSave(formValue: object) {
+    this.loaderService.display(true);
     this.alertService.clear();
     if (this.createMode) {
       console.log('Creating project', formValue);
-      Object.assign(formValue, this.projectContent);
+      Object.assign(formValue, this.schemaFields);
       this.ingestService.postProject(formValue).subscribe(resource => {
+          this.loaderService.display(false);
           console.log('project created', resource);
           this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
           this.alertService.success('Success', 'Project has been successfully created!', true);
         },
         error => {
+          this.loaderService.display(false);
+          this.alertService.error('Error', error.message);
+        });
+    } else {
+      console.log('Updating project', formValue);
+      this.ingestService.patchProject(this.projectResource, formValue).subscribe(resource => {
+          this.loaderService.display(false);
+          console.log('project updated', resource);
+          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
+          this.alertService.success('Success', 'Project has been successfully updated!', true);
+        },
+        error => {
+          this.loaderService.display(false);
           this.alertService.error('Error', error.message);
         });
     }
-    //  else {
-    //   console.log('Updating project', this.projectNewContent);
-    //   this.ingestService.patchProject(this.projectResource, this.projectNewContent).subscribe(resource => {
-    //       console.log('project updated', resource);
-    //       this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-    //       this.alertService.success('Success', 'Project has been successfully updated!', true);
-    //     },
-    //     error => {
-    //       this.alertService.error('Error', error.message);
-    //     });
-    // }
-  }
-
-  validationErrors(data: any) {
-    this.formValidationErrors = data;
-  }
-
-  isValid(isValid: boolean) {
-    this.formIsValid = isValid;
-  }
-
-  onChanges($event) {
-    this.projectNewContent = $event;
-  }
-
-  onSubmit(formValue: object) {
-    console.log('project json', formValue);
   }
 }

@@ -1,17 +1,16 @@
-<h1 class="vf-text vf-text-heading--2">New Project</h1>
+<h1 class="vf-text vf-text-heading--2">{{title}}</h1>
 <p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
-  Please provide initial information about your HCA project.
-  You will be able to edit this information as your project develops.
+  {{subtitle}}
 </p>
 <br/>
 <br/>
 
-<p *ngIf="!projectContent && !createMode">Loading project...</p>
+<p *ngIf="!projectResource && !createMode">Loading project...</p>
 
 <ng-container *ngIf="projectResource || createMode">
   <app-metadata-form name="project"
                      [schema]="projectJsonSchema"
-                     [data]="projectContent"
+                     [data]="schemaFields"
                      [config]="config"
                      (save)="onSave($event)">
   </app-metadata-form>

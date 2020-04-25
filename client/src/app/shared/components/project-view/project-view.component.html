@@ -1,11 +1,12 @@
-<json-schema-form
-  *ngIf="project"
-  loadExternalAssets="true"
-  [schema]="projectSchema"
-  [layout]="projectLayout"
-  framework="material-design"
-  [(data)]="project.content"
-  [options]=options
->
-</json-schema-form>
+<h1 class="vf-text vf-text-heading--2">{{title}}</h1>
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
+  {{subtitle}}
+</p>
+<br/>
+<br/>
 
+<p *ngIf="!project">Loading project...</p>
+
+<ng-container *ngIf="project">
+project view is coming soon!
+</ng-container>

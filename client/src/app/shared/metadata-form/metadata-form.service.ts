@@ -6,9 +6,7 @@ import {MetadataField} from './metadata-field';
 import {MetadataFormConfig} from './metadata-form-config';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class MetadataFormService {
   config: object = {};
 
@@ -36,6 +34,7 @@ export class MetadataFormService {
   }
 
   toFormControl(field: MetadataField, data?: any) {
+
     const formControl = field.isRequired ? new FormControl(data, Validators.required)
       : new FormControl(data);
     return formControl;
@@ -98,7 +97,11 @@ export class MetadataFormService {
   }
 
   // TODO try to refactor
-  initializeFormConfig(formConfig: object, parentKey: string, jsonSchema: JsonSchema, config?: MetadataFormConfig, data?: object): object {
+  initializeFormConfig(formConfig: object,
+                       parentKey: string,
+                       jsonSchema: JsonSchema,
+                       config?: MetadataFormConfig,
+                       data?: object): object {
     const group: any = {};
 
     if (formConfig[parentKey] === undefined) {
