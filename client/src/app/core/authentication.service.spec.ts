@@ -86,7 +86,7 @@ describe('Account Registration', () => {
     const accountId = '72f9001';
     const providerReference = '127ee11';
     const token = 'ZW5jb2RlZCBzdHJpbmcK';
-    accountService.register(token).then(account => {
+    accountService.register(token).then((account: Account) => {
       expect(account).toBeTruthy();
       expect(account.id).toEqual(accountId);
       expect(account.providerReference).toEqual(providerReference);
@@ -95,10 +95,10 @@ describe('Account Registration', () => {
 
     //given:
     const request = expectAuthorisedRequest(token, 'POST');
-    request.flush({
-      'id': accountId,
-      'providerReference': providerReference,
-      'roles': ['CONTRIBUTOR'],
+    request.flush(<Account>{
+      id: accountId,
+      providerReference: providerReference,
+      roles: ['CONTRIBUTOR'],
     })
 
     //and:

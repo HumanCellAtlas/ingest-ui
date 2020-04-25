@@ -23,10 +23,10 @@ export class AuthenticationService {
       }).toPromise();
   }
 
-  register(token: string): Promise<any> {
+  register(token: string): Promise<Account> {
     const url = `${this.BASE_URL}/registration`;
     return this.http
-      .post(url, {}, {headers: this.authoriseHeader(token)})
+      .post<Account>(url, {}, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
         let serviceError = new Error(error.message);
         if ([403, 409].includes(error.status)) {
