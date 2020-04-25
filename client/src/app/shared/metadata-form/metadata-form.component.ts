@@ -3,6 +3,7 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
 import {MetadataFormConfig} from './metadata-form-config';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -31,12 +32,12 @@ export class MetadataFormComponent implements OnInit {
 
   done: boolean;
 
-  constructor(private metadataFormService: MetadataFormService) {
+  constructor(private metadataFormService: MetadataFormService, private router: Router) {
 
   }
 
   ngOnInit(): void {
-    this.metadataFormService.initializeFormConfig( this.formConfig, 'project', this.schema, this.config, this.data);
+    this.metadataFormService.initializeFormConfig(this.formConfig, 'project', this.schema, this.config, this.data);
     this.done = true;
     console.log('form config', this.formConfig);
     this.form = this.formConfig['project']['formControl'];
@@ -46,13 +47,16 @@ export class MetadataFormComponent implements OnInit {
     e.preventDefault();
     console.log('form data', this.form.value);
     const formData = this.metadataFormService.cleanFormData(this.form.value);
-    console.log('clean form data', formData );
+    console.log('clean form data', formData);
     this.save.emit(formData);
   }
 
   removeFormControl(control: AbstractControl, i: number) {
-    const formArray = control as FormArray;
-    formArray.removeAt(i);
+    if (confirm('Are you sure?')) {
+      const formArray = control as FormArray;
+      formArray.removeAt(i);
+    }
+
   }
 
   addFormControl(formControlName: string) {
@@ -62,5 +66,14 @@ export class MetadataFormComponent implements OnInit {
 
     const formGroup: FormGroup = this.metadataFormService.toFormGroup(config['field']['schema']['items']);
     formArray.insert(count, formGroup);
+  }
+
+  confirmCancel(e) {
+    if (confirm('Are you sure you want to cancel?')) {
+      this.router.navigate(['/projects']);
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
   }
 }
