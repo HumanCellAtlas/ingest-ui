@@ -8,7 +8,7 @@ import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as project from './project.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
-import {LoaderService} from "../../shared/services/loader.service";
+import {LoaderService} from '../../shared/services/loader.service';
 
 @Component({
   selector: 'app-project-form',

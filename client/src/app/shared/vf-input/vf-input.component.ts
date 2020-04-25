@@ -15,6 +15,9 @@ export const VF_INPUT_VALUE_ACCESSOR: any = {
 })
 export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
+  id: string;
+
+  @Input()
   label: string;
 
   @Input()

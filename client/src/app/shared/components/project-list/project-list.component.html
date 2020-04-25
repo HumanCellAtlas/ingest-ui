@@ -7,6 +7,7 @@
         <th>Short name</th>
         <th>Project title</th>
         <th>Last Updated</th>
+        <th>Contributor</th>
         <th align="center">State</th>
         <th>Actions</th>
       </tr>
@@ -19,13 +20,20 @@
         </td>
         <td>{{ project?.content?.project_core?.project_title }}</td>
         <td>{{project.updateDate | date: "medium"}}</td>
+
+        <td>
+          {{getContributors(project)}}
+        </td>
+
         <td align="center">
           <app-metadata-state [state]="project?.validationState"></app-metadata-state>
         </td>
+
         <td>
           <a routerLink="/projects/{{project?.uuid?.uuid}}" class="vf-link"><span
             title="{{project?.content?.project_core?.project_short_name}}">Edit</span></a>
         </td>
+
       </tr>
       <tr *ngIf="!projects">
         <td></td>

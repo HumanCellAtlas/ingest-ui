@@ -85,6 +85,7 @@
                                 [label]="formConfig[child]['field']['schema']['user_friendly']?formConfig[child]['field']['schema']['user_friendly'] : formConfig[child]['field']['key']"
                                 [example]="formConfig[child]['field']['schema']['example']"
                                 [helperText]="formConfig[child]['field']['schema']['guidelines']"
+                                [id]="child + '-' + i"
                                 [isRequired]="formConfig[child]['field']['isRequired']">
 
                   </app-vf-input>

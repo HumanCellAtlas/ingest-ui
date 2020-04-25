@@ -27,8 +27,8 @@
 
 <ng-container *ngIf="inputType ==='checkbox'">
   <div class="vf-form__item vf-form__item--checkbox">
-    <input type="checkbox" id="checkbox-01" [(ngModel)]="value" class="vf-form__checkbox" (change)="change($event)">
-    <label  for="checkbox-01" class="vf-form__label">{{label}} </label>
+    <input type="checkbox" id="{{id}}" [(ngModel)]="value" class="vf-form__checkbox" (change)="change($event)">
+    <label  for="{{id}}" class="vf-form__label">{{label}} </label>
   </div>
 
 
