@@ -52,37 +52,41 @@ describe('Complete Authentication', () =>{
     aaiService = TestBed.get(AaiService);
   });
 
-  function signInToAai() {
-    userManager.getUser.and.returnValue(Observable.of(user).toPromise());
-    userManager.signinRedirectCallback.and.returnValue(Observable.of(user).toPromise());
-  }
-
   it('should redirect home when the user is registered', async(() => {
     //given:
-    signInToAai();
+    signInToRemoteService();
 
     //and:
     authenticationService.getAccount.and.returnValue(Observable.of(<Account>{}).toPromise());
 
     //expect:
     aaiService.completeAuthentication().then(() => {
+      expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
+      expect(router.navigate).toHaveBeenCalledTimes(1);
       expect(router.navigate).toHaveBeenCalledWith(['/home']);
+      expect(aaiService.user$.getValue()).toBe(user);
     });
   }));
 
   it('should redirect to registration page when User has not registered yet', async(() => {
     //given:
-    signInToAai();
+    signInToRemoteService();
 
     //and:
     authenticationService.getAccount.and.returnValue(Promise.reject());
 
     //expect:
     aaiService.completeAuthentication().then(() => {
-      expect(router.navigate).toHaveBeenCalledWith(['/registration']);
       expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(['/registration']);
       expect(aaiService.user$.getValue()).toBe(user);
     });
   }));
+
+  function signInToRemoteService() {
+    userManager.getUser.and.returnValue(Observable.of(user).toPromise());
+    userManager.signinRedirectCallback.and.returnValue(Observable.of(user).toPromise());
+  }
 
 });

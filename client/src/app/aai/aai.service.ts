@@ -61,12 +61,15 @@ export class AaiService {
 
   completeAuthentication(): Promise<void> {
     return this.manager.signinRedirectCallback().then((user: User) => {
-      this.authenticationService.getAccount(user.access_token).catch(() => {
-        this.router.navigate(['/registration']);
-      });
       this.user = user;
       this.user$.next(user);
-      this.router.navigate(['/home']);
+      this.authenticationService.getAccount(user.access_token)
+        .then(() => {
+          this.router.navigate(['/home']);
+        })
+        .catch(() => {
+          this.router.navigate(['/registration']);
+        });
     }).catch(error => {
       this.alertService.error('Authentication Error',
         'An error occured during authentication. Please retry logging in. ' +
