@@ -20,7 +20,8 @@ export class GlobalHeaderComponent implements OnInit {
     });
   }
 
-  logout() {
+  logout(e) {
+    e.preventDefault();
     this.aai.logout();
   }
 

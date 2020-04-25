@@ -12,10 +12,9 @@
           </a>
         </li>
         <li class="vf-navigation__item">
-          <a type="submit"
-             class="vf-navigation__link"
-             *ngIf="isLoggedIn"
-             (click)="logout()">Sign out
+          <a class="vf-navigation__link"
+             *ngIf="isLoggedIn" href="#"
+             (click)="logout($event)">Sign out
           </a>
         </li>
       </ul>
