@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor() { }
+  termsAccepted: boolean = false;
 
-  ngOnInit() {
+  constructor() {}
+
+  ngOnInit() {}
+
+  acceptTerms() {
+    this.termsAccepted = !this.termsAccepted;
   }
-
 }
