@@ -140,4 +140,11 @@ export class ProjectFormComponent implements OnInit {
         });
     }
   }
+
+  onCancel($event: boolean) {
+    if ($event) {
+      this.router.navigate(['/projects']);
+    }
+
+  }
 }

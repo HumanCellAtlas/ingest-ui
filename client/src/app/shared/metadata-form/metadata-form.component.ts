@@ -3,7 +3,7 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
 import {MetadataFormConfig} from './metadata-form-config';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -23,6 +23,8 @@ export class MetadataFormComponent implements OnInit {
   @Input() data: object;
 
   @Output() save = new EventEmitter<object>();
+
+  @Output() cancel = new EventEmitter<boolean>();
 
   form: FormGroup;
 
@@ -70,7 +72,7 @@ export class MetadataFormComponent implements OnInit {
 
   confirmCancel(e) {
     if (confirm('Are you sure you want to cancel?')) {
-      this.router.navigate(['/projects']);
+      this.cancel.emit(e);
     }
     e.preventDefault();
     e.stopPropagation();

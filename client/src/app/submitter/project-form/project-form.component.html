@@ -12,6 +12,7 @@
                      [schema]="projectJsonSchema"
                      [data]="schemaFields"
                      [config]="config"
+                     (cancel)="onCancel($event)"
                      (save)="onSave($event)">
   </app-metadata-form>
 </ng-container>
