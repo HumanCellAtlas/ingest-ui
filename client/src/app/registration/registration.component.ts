@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from "../core/authentication.service";
+import {AaiService} from "../aai/aai.service";
+import {User} from "oidc-client";
 
 @Component({
   selector: 'app-registration',
@@ -9,11 +12,22 @@ export class RegistrationComponent implements OnInit {
 
   termsAccepted: boolean = false;
 
-  constructor() {}
+  constructor(private aaiService: AaiService,
+              private authenticationService: AuthenticationService) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   acceptTerms() {
     this.termsAccepted = !this.termsAccepted;
+  }
+
+  proceed() {
+    this.aaiService.getUser().subscribe((user: User) => {
+      if (this.termsAccepted) {
+        this.authenticationService.register(user.access_token);
+      }
+    })
   }
 }
