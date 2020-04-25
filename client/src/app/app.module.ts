@@ -67,6 +67,7 @@ import {SchemaService} from './shared/services/schema.service';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
 import {MaterialDesignFrameworkModule} from '@ajsf/material';
+import {AaiSecurity} from "./aai/aai.module";
 
 
 @NgModule({
@@ -123,7 +124,8 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MaterialDesignFrameworkModule
+    MaterialDesignFrameworkModule,
+    AaiSecurity,
   ],
   providers: [
     {
