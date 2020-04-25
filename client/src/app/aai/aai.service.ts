@@ -60,8 +60,10 @@ export class AaiService {
   }
 
   completeAuthentication(): Promise<void> {
-    return this.manager.signinRedirectCallback().then(user => {
-      this.authenticationService.getAccount('');
+    return this.manager.signinRedirectCallback().then((user: User) => {
+      this.authenticationService.getAccount(user.access_token).catch(() => {
+        this.router.navigate(['/registration']);
+      });
       this.user = user;
       this.user$.next(user);
       this.router.navigate(['/home']);

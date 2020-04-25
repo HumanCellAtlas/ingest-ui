@@ -1,13 +1,13 @@
 import {AaiService} from "./aai.service";
-import {fakeAsync, TestBed} from "@angular/core/testing";
+import {async, fakeAsync, TestBed} from "@angular/core/testing";
 import {AuthenticationService} from "../core/authentication.service";
-import {User, UserManager, UserSettings} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {AlertService} from "../shared/services/alert.service";
-import {RouterTestingModule} from "@angular/router/testing";
-import SpyObj = jasmine.SpyObj;
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
+import {Account} from "../core/security.data";
+import SpyObj = jasmine.SpyObj;
 
 describe('Complete Authentication', () =>{
 
@@ -52,20 +52,37 @@ describe('Complete Authentication', () =>{
     aaiService = TestBed.get(AaiService);
   });
 
-  it('should redirect home when the user is registered', fakeAsync(() => {
-    //given:
+  function signInToAai() {
     userManager.getUser.and.returnValue(Observable.of(user).toPromise());
     userManager.signinRedirectCallback.and.returnValue(Observable.of(user).toPromise());
+  }
+
+  it('should redirect home when the user is registered', async(() => {
+    //given:
+    signInToAai();
 
     //and:
-    authenticationService.getAccount.and.returnValue(Observable.of({}).toPromise());
+    authenticationService.getAccount.and.returnValue(Observable.of(<Account>{}).toPromise());
 
     //expect:
     aaiService.completeAuthentication().then(() => {
-      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['/home']);
     });
   }));
 
-  it('should redirect to registration page when User has not registered yet');
+  it('should redirect to registration page when User has not registered yet', async(() => {
+    //given:
+    signInToAai();
+
+    //and:
+    authenticationService.getAccount.and.returnValue(Promise.reject());
+
+    //expect:
+    aaiService.completeAuthentication().then(() => {
+      expect(router.navigate).toHaveBeenCalledWith(['/registration']);
+      expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
+      expect(aaiService.user$.getValue()).toBe(user);
+    });
+  }));
 
 });
