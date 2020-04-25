@@ -1,38 +1,25 @@
-import {Profile, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {Profile, User, UserManager} from 'oidc-client';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
-import {environment} from '../../environments/environment';
-
-export function getClientSettings(): UserManagerSettings {
-  return {
-    authority: environment.AAI_AUTHORITY,
-    client_id: environment.AAI_CLIENT_ID,
-    redirect_uri: window.location.origin + '/aai-callback',
-    post_logout_redirect_uri: window.location.origin,
-    response_type: 'token id_token',
-    scope: 'email openid profile',
-    filterProtocolClaims: true,
-    loadUserInfo: true,
-    userStore: new WebStorageStateStore({store: window.localStorage})
-  };
-}
+import {AuthenticationService} from "../core/authentication.service";
+import {AaiSecurity} from "./aai.module";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: AaiSecurity,
 })
 export class AaiService {
 
   public user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  private manager = new UserManager(getClientSettings());
-  private user: User = null;
+    private user: User = null;
 
   constructor(private http: HttpClient,
+              private manager: UserManager,
               private alertService: AlertService,
+              private authenticationService: AuthenticationService,
               private router: Router) {
-
     this.user$.subscribe(usr => {
       this.user = usr;
     });
@@ -74,6 +61,7 @@ export class AaiService {
 
   completeAuthentication(): Promise<void> {
     return this.manager.signinRedirectCallback().then(user => {
+      this.authenticationService.getAccount('');
       this.user = user;
       this.user$.next(user);
       this.router.navigate(['/home']);
@@ -96,4 +84,5 @@ export class AaiService {
   logout() {
     this.manager.signoutRedirect();
   }
+
 }
