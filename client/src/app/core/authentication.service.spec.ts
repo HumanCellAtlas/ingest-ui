@@ -1,5 +1,5 @@
 import {AuthenticationService, DuplicateAccount} from "./authentication.service";
-import {TestBed} from "@angular/core/testing";
+import {fakeAsync, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
 import {Account} from "./security.data";
@@ -35,28 +35,27 @@ describe('Get Account', () => {
     remoteService.verify();
   });
 
-  it('should return an Account if the User is registered', (done) => {
-    //expect:
-    const accountId = 'c83bf90';
-    const token = 'aGVsbG8sIHdvcmxkCg==';
-    accountService.getAccount(token).then((account: Account) => {
-      expect(account).toBeTruthy();
-      expect(account.id).toEqual(accountId);
-      expect(account.roles).toContain('CONTRIBUTOR');
-    });
+  it('should return an Account if the User is registered', fakeAsync(() => {
+    {
+      //expect:
+      const accountId = 'c83bf90';
+      const token = 'aGVsbG8sIHdvcmxkCg==';
+      accountService.getAccount(token).then((account: Account) => {
+        expect(account).toBeTruthy();
+        expect(account.id).toEqual(accountId);
+        expect(account.roles).toContain('CONTRIBUTOR');
+      });
 
-    //given:
-    const request = expectAuthorisedRequest(token, 'GET');
-    request.flush({
-      'id': accountId,
-      'roles': ['CONTRIBUTOR'],
-    });
+      //given:
+      const request = expectAuthorisedRequest(token, 'GET');
+      request.flush({
+        'id': accountId,
+        'roles': ['CONTRIBUTOR'],
+      });
+    }
+  }));
 
-    //and:
-    done();
-  });
-
-  it('should return empty object if the User is not registered', (done) => {
+  it('should return empty object if the User is not registered', fakeAsync(() => {
     //expect:
     const token = 'bWFnaWMgc3RyaW5nCg==';
     accountService.getAccount(token).then((account: Account) => {
@@ -66,10 +65,7 @@ describe('Get Account', () => {
     //given:
     const request = expectAuthorisedRequest(token, 'GET');
     request.flush(null, { status: 404, statusText: 'not found' });
-
-    //and:
-    done();
-  });
+  }));
 
 });
 
@@ -81,7 +77,7 @@ describe('Account Registration', () => {
     remoteService.verify();
   });
 
-  it('should return Account data after registration', (done) => {
+  it('should return Account data after registration', fakeAsync(() => {
     //expect:
     const accountId = '72f9001';
     const providerReference = '127ee11';
@@ -100,28 +96,22 @@ describe('Account Registration', () => {
       providerReference: providerReference,
       roles: ['CONTRIBUTOR'],
     })
+  }));
 
-    //and:
-    done();
-  });
-
-  it('should throw an error when the User is already registered (403)', (done) => {
+  it('should throw an error when the User is already registered (403)', fakeAsync(() => {
     testForError(DuplicateAccount, 403, 'Forbidden');
-    done();
-  });
+  }));
 
-  it('should throw an error when registration results in conflict (409)', (done) => {
+  it('should throw an error when registration results in conflict (409)', fakeAsync(() => {
     testForError(DuplicateAccount, 409, 'conflict');
-    done();
-  });
+  }));
 
-  it('should rethrow any other error', (done) => {
+  it('should rethrow any other error', fakeAsync(() => {
     testForError(Error, 400, 'client error',
       (error) => {
         expect(error.message).toContain('client error');
       });
-    done();
-  });
+  }));
 
   function testForError(errorType, httpStatus: number, statusText?: string | 'error', postCondition?) {
     //expect:
