@@ -14,7 +14,6 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let mockAaiSvc, mockRouterSvc, mockAlertSvc;
   let isAuthenticatedSpy: jasmine.Spy;
-  let getUserSpy: jasmine.Spy;
 
   beforeEach(() => {
     mockAaiSvc = jasmine.createSpyObj(['getUser', 'isUserLoggedIn', 'isUserLoggedInAndFromEBI', 'startAuthentication']);
@@ -41,7 +40,7 @@ describe('LoginComponent', () => {
     it('should redirect and authorise the user', () => {
       mockAaiSvc.isUserLoggedInAndFromEBI.and.returnValue(of(false));
       isAuthenticatedSpy = mockAaiSvc.isUserLoggedIn.and.returnValue(of(false));
-      getUserSpy = mockAaiSvc.getUser.and.returnValue(of(<User>{expired: false}));
+      mockAaiSvc.getUser.and.returnValue(of(<User>{expired: false}));
 
       component = new LoginComponent(mockAaiSvc, mockRouterSvc, mockAlertSvc);
       component.login();
