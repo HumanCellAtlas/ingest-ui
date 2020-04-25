@@ -68,6 +68,7 @@ import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
 import {MaterialDesignFrameworkModule} from '@ajsf/material';
 import {AaiSecurity} from "./aai/aai.module";
+import { RegistrationComponent } from './registration/registration.component';
 
 
 @NgModule({
@@ -93,7 +94,8 @@ import {AaiSecurity} from "./aai/aai.module";
     AlertComponent,
     AaiCallbackComponent,
     ProjectFormComponent,
-    MyProjectsComponent
+    MyProjectsComponent,
+    RegistrationComponent
   ],
   imports: [
     NgbModule.forRoot(),
