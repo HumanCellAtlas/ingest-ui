@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
 
 import {RegistrationComponent} from './registration.component';
-import {AuthenticationService} from "../core/authentication.service";
+import {AuthenticationService, DuplicateAccount} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 import {Observable} from "rxjs";
@@ -41,21 +41,41 @@ describe('Registration', () => {
   const accessToken = '78dea90';
   const user: User = <User>{access_token: accessToken};
 
-  it('should register through the service if terms are accepted', async(() => {
+  it('should register through the service if terms are accepted', fakeAsync(() => {
     //given:
     aaiService.getUser.and.returnValue(Observable.of(user));
     registration.termsAccepted = true;
 
     //and:
     const newAccount = <Account>{id: '11f1faa8', providerReference: '2367ded12'};
-    authenticationService.register.and.returnValue(Promise.resolve(newAccount));
+    const accountPromise = Promise.resolve(newAccount);
+    authenticationService.register.and.returnValue(accountPromise);
 
     //when:
     registration.proceed();
 
     //then:
+    flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
-    expect(registration.status.success).toBeTruthy();
+    expect(registration.status.success).toEqual(true);
+  }));
+
+  it('should set status when registration fails with account duplication', fakeAsync(() => {
+    //given:
+    aaiService.getUser.and.returnValue(Observable.of(user));
+    registration.termsAccepted = true;
+
+    //and:
+    const accountPromise = Promise.reject(new DuplicateAccount());
+    authenticationService.register.and.returnValue(accountPromise);
+
+    //when:
+    registration.proceed();
+
+    //then:
+    flushMicrotasks();
+    expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
+    expect(registration.status.success).toEqual(false);
   }));
 
   it('should NOT proceed if terms are not accepted', async(() => {
