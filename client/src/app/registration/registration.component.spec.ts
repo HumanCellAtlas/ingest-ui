@@ -5,6 +5,7 @@ import {AuthenticationService} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 import {Observable} from "rxjs";
+import {Account} from "../core/security.data";
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -22,7 +23,7 @@ function configureTestEnvironment(): void {
     declarations: [RegistrationComponent],
     providers: [
       {provide: AuthenticationService, useFactory: () => authenticationService},
-      {provide: AaiService, useFactory: () => aaiService},
+      {provide: AaiService, useFactory: () => aaiService}
     ]
   })
 }
@@ -45,11 +46,16 @@ describe('Registration', () => {
     aaiService.getUser.and.returnValue(Observable.of(user));
     registration.termsAccepted = true;
 
+    //and:
+    const newAccount = <Account>{id: '11f1faa8', providerReference: '2367ded12'};
+    authenticationService.register.and.returnValue(Promise.resolve(newAccount));
+
     //when:
     registration.proceed();
 
     //then:
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
+    expect(registration.status.success).toBeTruthy();
   }));
 
   it('should NOT proceed if terms are not accepted', async(() => {

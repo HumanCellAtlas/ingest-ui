@@ -3,6 +3,10 @@ import {AuthenticationService} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 
+interface RegistrationStatus {
+  success: boolean;
+}
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -11,6 +15,7 @@ import {User} from "oidc-client";
 export class RegistrationComponent implements OnInit {
 
   termsAccepted: boolean = false;
+  status: RegistrationStatus;
 
   constructor(private aaiService: AaiService,
               private authenticationService: AuthenticationService) {
@@ -23,6 +28,7 @@ export class RegistrationComponent implements OnInit {
     this.aaiService.getUser().subscribe((user: User) => {
       if (this.termsAccepted) {
         this.authenticationService.register(user.access_token);
+        this.status = <RegistrationStatus>{success: true};
       }
     })
   }
