@@ -19,10 +19,6 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
-  acceptTerms() {
-    this.termsAccepted = !this.termsAccepted;
-  }
-
   proceed() {
     this.aaiService.getUser().subscribe((user: User) => {
       if (this.termsAccepted) {

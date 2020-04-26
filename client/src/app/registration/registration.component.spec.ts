@@ -33,21 +33,6 @@ function setUp(): void {
   fixture.detectChanges();
 }
 
-describe('Accept Terms', () => {
-  beforeEach(async(configureTestEnvironment));
-  beforeEach(setUp);
-
-  it('can be toggled', () => {
-    expect(registration.termsAccepted).toBeFalsy();
-
-    registration.acceptTerms();
-    expect(registration.termsAccepted).toBeTruthy();
-
-    registration.acceptTerms();
-    expect(registration.termsAccepted).toBeFalsy();
-  });
-});
-
 describe('Registration', () => {
   beforeEach(async(configureTestEnvironment));
   beforeEach(setUp);
