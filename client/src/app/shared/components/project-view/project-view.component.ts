@@ -35,8 +35,8 @@ export class ProjectViewComponent implements OnInit {
         errorArray.push(error.message);
       }
     }
-    this.alertService.error('JSON Validation Error', errorArray.join('<br>'), false, false);
-    return errorArray.join('<br>');
+    const message = '<ul><li>' + errorArray.join('</li><li>') + '</li>';
+    this.alertService.error('JSON Validation Error', message, false, false);
   }
 
 

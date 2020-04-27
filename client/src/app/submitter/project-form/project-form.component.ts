@@ -103,8 +103,8 @@ export class ProjectFormComponent implements OnInit {
     for (const error of this.projectResource.validationErrors) {
       errorArray.push(error.userFriendlyMessage);
     }
-    this.alertService.error('JSON Validation Error', errorArray.join('<br>'), false, false);
-    return errorArray.join('<br>');
+    const message = '<ul><li>' + errorArray.join('</li><li>') + '</li>';
+    this.alertService.error('JSON Validation Error', message, false, false);
   }
 
   setSchema(obj: object) {
