@@ -5,6 +5,7 @@ import {User} from "oidc-client";
 
 interface RegistrationStatus {
   success: boolean;
+  message: string;
 }
 
 @Component({
@@ -34,6 +35,7 @@ export class RegistrationComponent implements OnInit {
           })
           .catch((error: DuplicateAccount) => {
             this.status.success = false;
+            this.status.message = error.message;
           });
       }
     })

@@ -66,7 +66,8 @@ describe('Registration', () => {
     registration.termsAccepted = true;
 
     //and:
-    const accountPromise = Promise.reject(new DuplicateAccount());
+    const error = new DuplicateAccount();
+    const accountPromise = Promise.reject(error);
     authenticationService.register.and.returnValue(accountPromise);
 
     //when:
@@ -76,6 +77,7 @@ describe('Registration', () => {
     flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
+    expect(registration.status.message).toEqual(error.message);
   }));
 
   it('should NOT proceed if terms are not accepted', async(() => {
