@@ -5,7 +5,7 @@ import {User} from "oidc-client";
 
 interface RegistrationStatus {
   success: boolean;
-  message: string;
+  errorCode: string;
 }
 
 @Component({
@@ -33,9 +33,9 @@ export class RegistrationComponent implements OnInit {
           .then(() => {
             this.status.success = true;
           })
-          .catch((error: RegistrationFailed) => {
+          .catch((failure: RegistrationFailed) => {
             this.status.success = false;
-            this.status.message = error.message;
+            this.status.errorCode = failure.errorCode;
           });
       }
     })

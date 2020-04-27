@@ -68,8 +68,8 @@ describe('Registration', () => {
     registration.termsAccepted = true;
 
     //and:
-    const error = <RegistrationFailed>{errorCode: RegistrationErrorCode.Duplication}
-    const accountPromise = Promise.reject(error);
+    const failure = <RegistrationFailed>{errorCode: RegistrationErrorCode.Duplication}
+    const accountPromise = Promise.reject(failure);
     authenticationService.register.and.returnValue(accountPromise);
 
     //when:
@@ -79,7 +79,7 @@ describe('Registration', () => {
     flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
-    expect(registration.status.message).toEqual(error.message);
+    expect(registration.status.errorCode).toEqual(failure.errorCode);
   }));
 
   it('should NOT proceed if terms are not accepted', async(() => {
