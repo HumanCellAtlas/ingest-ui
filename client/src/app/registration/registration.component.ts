@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, DuplicateAccount} from "../core/authentication.service";
+import {AuthenticationService, RegistrationFailed} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 
@@ -33,7 +33,7 @@ export class RegistrationComponent implements OnInit {
           .then(() => {
             this.status.success = true;
           })
-          .catch((error: DuplicateAccount) => {
+          .catch((error: RegistrationFailed) => {
             this.status.success = false;
             this.status.message = error.message;
           });

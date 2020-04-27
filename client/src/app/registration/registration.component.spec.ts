@@ -1,11 +1,12 @@
 import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
 
 import {RegistrationComponent} from './registration.component';
-import {AuthenticationService, DuplicateAccount} from "../core/authentication.service";
+import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 import {Observable} from "rxjs";
 import {Account} from "../core/security.data";
+import {FormsModule} from "@angular/forms";
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -21,6 +22,7 @@ function configureTestEnvironment(): void {
 
   TestBed.configureTestingModule({
     declarations: [RegistrationComponent],
+    imports: [FormsModule],
     providers: [
       {provide: AuthenticationService, useFactory: () => authenticationService},
       {provide: AaiService, useFactory: () => aaiService}
@@ -66,7 +68,7 @@ describe('Registration', () => {
     registration.termsAccepted = true;
 
     //and:
-    const error = new DuplicateAccount();
+    const error = <RegistrationFailed>{errorCode: RegistrationErrorCode.Duplication}
     const accountPromise = Promise.reject(error);
     authenticationService.register.and.returnValue(accountPromise);
 

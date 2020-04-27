@@ -28,9 +28,12 @@ export class AuthenticationService {
     return this.http
       .post<Account>(url, {}, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
-        let serviceError = new Error(error.message);
+        const serviceError = <RegistrationFailed>{};
         if ([403, 409].includes(error.status)) {
-          serviceError = new DuplicateAccount();
+          serviceError.errorCode = RegistrationErrorCode.Duplication;
+        } else {
+          serviceError.errorCode = RegistrationErrorCode.ServiceError;
+          serviceError.message = error.message;
         }
         return Observable.throwError(serviceError);
       }).toPromise();
@@ -44,9 +47,16 @@ export class AuthenticationService {
 
 }
 
-export class DuplicateAccount implements Error {
+export enum RegistrationErrorCode {
+  Duplication = 'registration.error.duplicateAccounts',
+  ServiceError = 'registration.error.serviceError',
+  Unknown = 'registration.error.unknown'
+}
 
-  readonly name: string = 'DuplicateAccount';
-  readonly message: string = 'Operation failed due to duplicate Accounts.';
+export class RegistrationFailed implements Error {
+
+  name: string = 'RegistrationFailed';
+  message: string = 'Account registration failed';
+  errorCode: RegistrationErrorCode = RegistrationErrorCode.Unknown;
 
 }

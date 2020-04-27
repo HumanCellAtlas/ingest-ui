@@ -1,4 +1,4 @@
-import {AuthenticationService, DuplicateAccount} from "./authentication.service";
+import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "./authentication.service";
 import {fakeAsync, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
@@ -103,29 +103,29 @@ describe('Account Registration', () => {
   }));
 
   it('should throw an error when the User is already registered (403)', fakeAsync(() => {
-    testForError(DuplicateAccount, 403, 'Forbidden');
+    testForError(RegistrationErrorCode.Duplication, 403, 'Forbidden');
   }));
 
   it('should throw an error when registration results in conflict (409)', fakeAsync(() => {
-    testForError(DuplicateAccount, 409, 'conflict');
+    testForError(RegistrationErrorCode.Duplication, 409, 'conflict');
   }));
 
   it('should rethrow any other error', fakeAsync(() => {
-    testForError(Error, 400, 'client error',
+    testForError(RegistrationErrorCode.ServiceError, 400, 'client error',
       (error) => {
         expect(error.message).toContain('client error');
       });
   }));
 
-  function testForError(errorType, httpStatus: number, statusText?: string | 'error', postCondition?) {
+  function testForError(errorCode, httpStatus: number, statusText?: string | 'error', postCondition?) {
     //expect:
     const token = 'dG9rZW4K';
     accountService.register(token)
       .then(() => {
         fail('Registration is expected to throw an error.');
       })
-      .catch((error) => {
-        expect(error).toEqual(jasmine.any(errorType));
+      .catch((error: RegistrationFailed) => {
+        expect(error.errorCode).toEqual(errorCode);
         if (postCondition) {
           postCondition(error);
         }
