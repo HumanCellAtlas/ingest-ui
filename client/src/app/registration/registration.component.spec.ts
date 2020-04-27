@@ -60,6 +60,7 @@ describe('Registration', () => {
     flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(true);
+    expect(registration.status.message).not.toBe(undefined);
   }));
 
   it('should set status when registration fails with account duplication', fakeAsync(() => {
@@ -79,7 +80,7 @@ describe('Registration', () => {
     flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
-    expect(registration.status.errorCode).toEqual(failure.errorCode);
+    expect(registration.status.message).not.toBe(undefined);
   }));
 
   it('should NOT proceed if terms are not accepted', async(() => {

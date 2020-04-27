@@ -1,11 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, RegistrationFailed} from "../core/authentication.service";
+import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 
+const messages = {
+  success: 'Your account was successfully created. Click OK to return to the home page.',
+  error: {
+    [RegistrationErrorCode.Duplication]:
+      'An account using your profile is already registered. Please check with the administrator for help.',
+    [RegistrationErrorCode.ServiceError]:
+      'Registration failed due to a service error. Please check back again, or contact support.'
+  }
+}
+
 interface RegistrationStatus {
   success: boolean;
-  errorCode: string;
+  message: string;
 }
 
 @Component({
@@ -32,10 +42,11 @@ export class RegistrationComponent implements OnInit {
         this.authenticationService.register(user.access_token)
           .then(() => {
             this.status.success = true;
+            this.status.message = messages.success;
           })
           .catch((failure: RegistrationFailed) => {
             this.status.success = false;
-            this.status.errorCode = failure.errorCode;
+            this.status.message = messages.error[failure.errorCode];
           });
       }
     })
