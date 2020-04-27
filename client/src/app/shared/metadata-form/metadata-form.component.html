@@ -94,8 +94,9 @@
             </div>
 
             <a color="warn" mat-icon-button
-                    (click)="removeFormControl(form['project.contributors']['formControl'], i)">
-              <mat-icon>remove_circle_outline</mat-icon> Remove
+               (click)="removeFormControl(form['project.contributors']['formControl'], i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+              Remove
             </a>
 
             <hr class="vf-divider">
@@ -103,7 +104,8 @@
         </div>
 
         <a mat-icon-button (click)="addFormControl('project.contributors')">
-          <mat-icon>add_circle_outline</mat-icon> Add
+          <mat-icon>add_circle_outline</mat-icon>
+          Add
         </a>
 
       </div>
@@ -130,16 +132,28 @@
                   </app-vf-input>
                 </ng-container>
               </ng-container>
+              <div formArrayName="authors">
+                <app-vf-input [formControl]="publicationFormGroup['controls']['authors']['controls'][0]"
+                              [label]="form['project.publications.authors']['field']['schema']['user_friendly']?form['project.publications.authors']['field']['schema']['user_friendly'] : form['project.publications.authors']['field']['key']"
+                              [dataType]="form['project.publications.authors']['field']['schema']['items']['type']"
+                              [example]="form['project.publications.authors']['field']['schema']['example']"
+                              [helperText]="form['project.publications.authors']['field']['schema']['guidelines']"
+                              [isRequired]="form['project.publications.authors']['field']['isRequired']">
+
+                </app-vf-input>
+              </div>
             </div>
 
             <a color="warn" mat-icon-button
-                    (click)="removeFormControl(form['project.publications']['formControl'], i)">
-              <mat-icon>remove_circle_outline</mat-icon> Remove
+               (click)="removeFormControl(form['project.publications']['formControl'], i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+              Remove
             </a>
             <hr class="vf-divider">
           </ng-container>
           <a mat-icon-button (click)="addFormControl('project.publications')">
-            <mat-icon>add_circle_outline</mat-icon> Add
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
           </a>
         </div>
       </div>
@@ -165,14 +179,16 @@
               </ng-container>
             </div>
             <a color="warn" mat-icon-button
-                    (click)="removeFormControl(form['project.funders']['formControl'], i)">
-              <mat-icon>remove_circle_outline</mat-icon> Remove
+               (click)="removeFormControl(form['project.funders']['formControl'], i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+              Remove
             </a>
 
             <hr class="vf-divider">
           </ng-container>
           <a mat-icon-button (click)="addFormControl('project.funders')">
-            <mat-icon>add_circle_outline</mat-icon> Add
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
           </a>
 
         </div>
