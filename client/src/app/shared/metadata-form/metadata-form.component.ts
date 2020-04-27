@@ -3,7 +3,6 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
 import {MetadataFormConfig} from './metadata-form-config';
-import {Router} from '@angular/router';
 
 
 @Component({
@@ -26,29 +25,29 @@ export class MetadataFormComponent implements OnInit {
 
   @Output() cancel = new EventEmitter<boolean>();
 
-  form: FormGroup;
+  formGroup: FormGroup;
 
-  formConfig: object = {};
+  form: object = {};
 
   value: object;
 
   done: boolean;
 
-  constructor(private metadataFormService: MetadataFormService, private router: Router) {
-
+  constructor(private metadataFormService: MetadataFormService) {
   }
 
   ngOnInit(): void {
-    this.metadataFormService.initializeFormConfig(this.formConfig, 'project', this.schema, this.config, this.data);
+    // this.form = this.metadataFormService.buildForm('project', this.schema, this.data, this.config);
+    this.metadataFormService.initializeFormConfig(this.form, 'project', this.schema, this.config, this.data);
     this.done = true;
-    console.log('form config', this.formConfig);
-    this.form = this.formConfig['project']['formControl'];
+    console.log('form config', this.form);
+    this.formGroup = this.form['project']['formControl'];
   }
 
   onSubmit(e) {
     e.preventDefault();
-    console.log('form data', this.form.value);
-    const formData = this.metadataFormService.cleanFormData(this.form.value);
+    console.log('form data', this.formGroup.value);
+    const formData = this.metadataFormService.cleanFormData(this.formGroup.value);
     console.log('clean form data', formData);
     this.save.emit(formData);
   }
@@ -62,7 +61,7 @@ export class MetadataFormComponent implements OnInit {
   }
 
   addFormControl(formControlName: string) {
-    const config = this.formConfig[formControlName];
+    const config = this.form[formControlName];
     const formArray = config['formControl'] as FormArray;
     const count = formArray.length;
 

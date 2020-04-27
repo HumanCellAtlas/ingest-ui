@@ -42,6 +42,7 @@ export class ProjectComponent implements OnInit {
     this.ingestService.getProject(id).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
+      console.error(error);
       this.alertService.error('Project Not Found', `Project could not be found.`, true, true);
       this.router.navigate([`/projects`]);
     });
@@ -52,6 +53,7 @@ export class ProjectComponent implements OnInit {
     this.ingestService.getProjectByUuid(uuid).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
+      console.error(error);
       this.alertService.error('Project Not Found', `Project ${uuid} was not found.`, true, true);
       this.router.navigate([`/projects`]);
     });

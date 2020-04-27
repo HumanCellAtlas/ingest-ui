@@ -1,4 +1,4 @@
-import {MetadataField} from './metadata-field';
+import {Metadata} from './metadata';
 import * as jsonSchema from './test-json-schema.json';
 import {JsonSchemaProperty} from './json-schema-property';
 
@@ -16,7 +16,7 @@ describe('MetadataField', () => {
         } as unknown as JsonSchemaProperty;
 
         // when
-        const field = new MetadataField({isRequired: false, key: 'describedBy', schema: scalar});
+        const field = new Metadata({isRequired: false, key: 'describedBy', schema: scalar});
 
         // then
         expect(field.isScalar()).toEqual(true);
@@ -39,7 +39,7 @@ describe('MetadataField', () => {
         } as JsonSchemaProperty;
 
         // when
-        const field = new MetadataField({isRequired: false, key: 'array_express_accessions', schema: scalarList});
+        const field = new Metadata({isRequired: false, key: 'array_express_accessions', schema: scalarList});
 
         // then
         expect(field.isScalarList()).toEqual(true);
@@ -89,7 +89,7 @@ describe('MetadataField', () => {
         } as JsonSchemaProperty;
 
         // when
-        const field = new MetadataField({isRequired: true, key: 'array_express_accessions', schema: obj});
+        const field = new Metadata({isRequired: true, key: 'array_express_accessions', schema: obj});
 
         // then
         expect(field.isObject()).toEqual(true);
@@ -141,7 +141,7 @@ describe('MetadataField', () => {
           'user_friendly': 'Contributors'
         } as JsonSchemaProperty;
 
-        const field = new MetadataField({isRequired: true, key: 'array_express_accessions', schema: objectList});
+        const field = new Metadata({isRequired: true, key: 'array_express_accessions', schema: objectList});
 
         // then
         expect(field.isObjectList()).toEqual(true);

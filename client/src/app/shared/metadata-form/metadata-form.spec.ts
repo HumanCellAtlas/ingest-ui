@@ -1,31 +1,33 @@
-import {MetadataFormService} from './metadata-form.service';
 import * as jsonSchema from './test-json-schema.json';
 import * as json from './test-json.json';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Metadata} from './metadata';
 import {JsonSchema} from './json-schema';
 import {JsonSchemaProperty} from './json-schema-property';
-import {MetadataFormHelper} from './metadata-form';
+import {MetadataForm, MetadataFormHelper} from './metadata-form';
+import {MetadataFormService} from './metadata-form.service';
 
-describe('MetadataFormService', () => {
+describe('MetadataFormBuilder', () => {
 
-  let service: MetadataFormService;
+  let metadataFormBuilder: MetadataFormHelper;
+  let metadataFormSvc: MetadataFormService;
   let testSchema: JsonSchema;
 
   beforeEach(() => {
-    service = new MetadataFormService();
     testSchema = (jsonSchema as any).default;
+    metadataFormBuilder = new MetadataFormHelper({});
+    metadataFormSvc = new MetadataFormService();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(metadataFormBuilder).toBeTruthy();
   });
 
   describe('getFieldMap', () => {
     it('return list of Property objects from non-nested schema', () => {
       // given testSchema
       // when
-      const fieldMap = service.getFieldMap(testSchema);
+      const fieldMap = metadataFormBuilder.getFieldMap(testSchema);
 
       // then
       const actual_properties = Array.from(fieldMap.keys());
@@ -54,7 +56,7 @@ describe('MetadataFormService', () => {
     it('return a FormGroup object', () => {
       // given testSchema
       // when
-      const formGroup = service.toFormGroup(testSchema);
+      const formGroup = metadataFormBuilder.toFormGroup(testSchema);
 
       // then
       expect(formGroup).toBeTruthy();
@@ -67,20 +69,20 @@ describe('MetadataFormService', () => {
 
     it('return a FormGroup object with initialised data', () => {
       // given
-      const schema = service.getProperty('contributors', testSchema).items as JsonSchema;
+      const schema = metadataFormBuilder.getProperty('contributors', testSchema).items as JsonSchema;
       const data = {
         'name': 'Nathan Smith',
         'institution': 'MRCN',
         'corresponding_contributor': false
       };
       // when
-      const formGroup = service.toFormGroup(schema as JsonSchema, {}, data);
+      const formGroup = metadataFormBuilder.toFormGroup(schema as JsonSchema, data);
 
       // then
       expect(formGroup instanceof FormGroup).toEqual(true);
       expect(Object.keys(formGroup.controls).length).toEqual(12);
       expect(formGroup.controls['name'] instanceof FormControl).toEqual(true);
-      expect(service.cleanFormData(formGroup.value)).toEqual(data);
+      expect(metadataFormSvc.cleanFormData(formGroup.value)).toEqual(data);
     });
 
   });
@@ -95,7 +97,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field);
+      const formControl = metadataFormBuilder.toFormControl(field);
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -114,7 +116,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field);
+      const formControl = metadataFormBuilder.toFormControl(field);
       // then
       expect(formControl instanceof FormControl).toEqual(true);
       expect(formControl.value).toEqual(null);
@@ -132,7 +134,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field, 'string');
+      const formControl = metadataFormBuilder.toFormControl(field, 'string');
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -150,7 +152,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field, '');
+      const formControl = metadataFormBuilder.toFormControl(field, '');
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -168,7 +170,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field, []);
+      const formControl = metadataFormBuilder.toFormControl(field, []);
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -186,7 +188,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field, {});
+      const formControl = metadataFormBuilder.toFormControl(field, {});
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -204,7 +206,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field, 100);
+      const formControl = metadataFormBuilder.toFormControl(field, 100);
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -222,7 +224,7 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formControl = service.toFormControl(field, false);
+      const formControl = metadataFormBuilder.toFormControl(field, false);
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
@@ -233,20 +235,20 @@ describe('MetadataFormService', () => {
   describe('toFormGroupArray', () => {
     it('return a FormArray of FormGroup', () => {
       // given
-      const schema = service.getProperty('contributors', testSchema);
+      const schema = metadataFormBuilder.getProperty('contributors', testSchema);
 
       // when
-      const formArray = service.toFormGroupArray(schema.items as JsonSchema, {}, undefined);
+      const formArray = metadataFormBuilder.toFormGroupArray(schema.items as JsonSchema, undefined);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
       expect(formArray.controls[0] instanceof FormGroup).toEqual(true);
-      expect(service.cleanFormData(formArray.value)).toEqual([]);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
     });
 
     it('return a FormArray of FormGroup with data', () => {
       // given
-      const schema = service.getProperty('contributors', testSchema);
+      const schema = metadataFormBuilder.getProperty('contributors', testSchema);
       const data = [
         {
           'name': 'Nathan Smith',
@@ -265,19 +267,19 @@ describe('MetadataFormService', () => {
         }
       ];
       // when
-      const formArray = service.toFormGroupArray(schema.items as JsonSchema, {}, data);
+      const formArray = metadataFormBuilder.toFormGroupArray(schema.items as JsonSchema, data);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
       expect(formArray.controls[0] instanceof FormGroup).toEqual(true);
-      expect(service.cleanFormData(formArray.value)).toEqual(data);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(data);
     });
   });
 
   describe('toFormControlArray', () => {
     it('return a FormArray of FormControl', () => {
       // given
-      const schema = service.getProperty('insdc_study_accessions', testSchema);
+      const schema = metadataFormBuilder.getProperty('insdc_study_accessions', testSchema);
       const field: Metadata = new Metadata({
         schema: schema,
         key: 'project',
@@ -287,17 +289,17 @@ describe('MetadataFormService', () => {
       });
 
       // when
-      const formArray = service.toFormControlArray(field, undefined);
+      const formArray = metadataFormBuilder.toFormControlArray(field, undefined);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
       expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(service.cleanFormData(formArray.value)).toEqual([]);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
     });
 
     it('return a FormArray of FormControl with initialised data', () => {
       // given
-      const schema = service.getProperty('insdc_study_accessions', testSchema);
+      const schema = metadataFormBuilder.getProperty('insdc_study_accessions', testSchema);
       const field: Metadata = new Metadata({
         schema: schema,
         key: 'project',
@@ -307,12 +309,12 @@ describe('MetadataFormService', () => {
       });
       const data = ['string1', 'string2', 'string3'];
       // when
-      const formArray = service.toFormControlArray(field, data);
+      const formArray = metadataFormBuilder.toFormControlArray(field, data);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
       expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(service.cleanFormData(formArray.value)).toEqual(data);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(data);
     });
 
     it('return a FormArray of FormControl with initialised boolean data array', () => {
@@ -337,12 +339,12 @@ describe('MetadataFormService', () => {
       });
       const data = [false, false, false];
       // when
-      const formArray = service.toFormControlArray(field, data);
+      const formArray = metadataFormBuilder.toFormControlArray(field, data);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
       expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(service.cleanFormData(formArray.value)).toEqual(data);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(data);
     });
   });
 
@@ -350,12 +352,10 @@ describe('MetadataFormService', () => {
     it('return config', () => {
       // given testSchema
       // when
-      const formConfig = {};
-      const config = service.initializeFormConfig(formConfig, 'project', testSchema);
-
+      const metadataForm = metadataFormBuilder.initForm(new MetadataForm('project', testSchema));
+      const config = metadataForm.content;
       // then
       expect(config).toBeTruthy();
-
       const formGroup = config['project']['formControl'];
       expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
       expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
@@ -369,9 +369,8 @@ describe('MetadataFormService', () => {
         // given
         const testData = (json as any).default;
         // when
-        const formConfig = {};
-        const config = service.initializeFormConfig(formConfig, 'project', testSchema, {}, testData);
-
+        const metadataForm = metadataFormBuilder.initForm(new MetadataForm('project', testSchema, testData));
+        const config = metadataForm.content;
         // then
         expect(config).toBeTruthy();
 
@@ -381,75 +380,12 @@ describe('MetadataFormService', () => {
         expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
         expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
 
-        expect(service.cleanFormData(formGroup.value))
-          .toEqual(service.cleanFormData(testData));
+        expect(metadataFormSvc.cleanFormData(formGroup.value))
+          .toEqual(metadataFormSvc.cleanFormData(testData));
 
       });
 
     });
 
-
-    describe('copy', () => {
-      it('return copy', () => {
-        // given
-        const obj = {
-          'k1': 'v1',
-          'k2': {
-            'k3': null,
-            'k4': null,
-            'k5': [],
-            'k0': {}
-          },
-          'k6': ['v2', 'v3'],
-          'k7': {
-            'k8': 'v4',
-            'k9': null,
-            'k10': null
-          },
-          'k11': [{
-            'k12': 'v5',
-            'k13': 'v6',
-          }, {
-            'k14': 'v7'
-          }],
-          'k15': [{}, {}],
-          'k16': [null, null],
-          'k17': {
-            'k18': 8,
-            'k19': null
-          },
-          'k20': {
-            'k21': 'v9',
-            'k22': null
-          }
-        };
-
-        // when
-        const copy = service.copyValues(obj);
-
-        const expected = {
-          'k1': 'v1',
-          'k6': ['v2', 'v3'],
-          'k7': {
-            'k8': 'v4',
-          },
-          'k11': [{
-            'k12': 'v5',
-            'k13': 'v6',
-          }, {
-            'k14': 'v7'
-          }],
-          'k17': {
-            'k18': 8
-          },
-          'k20': {
-            'k21': 'v9'
-          }
-        };
-
-        // then
-        expect(copy).toEqual(expected);
-      });
-    });
   });
 });

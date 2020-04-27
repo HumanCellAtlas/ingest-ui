@@ -75,17 +75,21 @@ export class ProjectFormComponent implements OnInit {
     this.ingestService.getProjectByUuid(projectUuid)
       .map(data => data as Project)
       .subscribe(projectResource => {
-        this.projectResource = projectResource;
-        if (projectResource && projectResource.content &&
-          !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
-          this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
-            projectResource.content['describedBy'] = schemaUrl;
-            projectResource.content['schema_type'] = 'project';
-          });
-        }
-        this.schemaFields = projectResource.content;
-        this.displayPostValidationErrors();
-      });
+          console.log('get project', projectResource);
+          this.projectResource = projectResource;
+          if (projectResource && projectResource.content &&
+            !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
+            this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
+              projectResource.content['describedBy'] = schemaUrl;
+              projectResource.content['schema_type'] = 'project';
+            });
+          }
+          this.schemaFields = projectResource.content;
+          this.displayPostValidationErrors();
+        },
+        error => {
+          this.alertService.error('Project could not be retrieved.', error.message);
+        });
   }
 
   displayPostValidationErrors() {
@@ -97,7 +101,7 @@ export class ProjectFormComponent implements OnInit {
     }
     const errorArray = [];
     for (const error of this.projectResource.validationErrors) {
-      errorArray.push(error.message);
+      errorArray.push(error.userFriendlyMessage);
     }
     this.alertService.error('JSON Validation Error', errorArray.join('<br>'), false, false);
     return errorArray.join('<br>');

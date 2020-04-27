@@ -2,20 +2,21 @@ import {Injectable} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {JsonSchemaProperty} from './json-schema-property';
 import {JsonSchema} from './json-schema';
-import {MetadataField} from './metadata-field';
+import {Metadata} from './metadata';
 import {MetadataFormConfig} from './metadata-form-config';
+import {MetadataForm, MetadataFormHelper} from './metadata-form';
 
 
 @Injectable({providedIn: 'root'})
 export class MetadataFormService {
-  config: object = {};
+  helper: MetadataFormHelper;
 
   constructor() {
+    this.helper = new MetadataFormHelper();
   }
-
   toFormGroup(jsonSchema: JsonSchema, config?: MetadataFormConfig, data?: object): FormGroup {
     const group: any = {};
-    this.getFieldMap(jsonSchema, config).forEach((field: MetadataField, key: string) => {
+    this.getFieldMap(jsonSchema, config).forEach((field: Metadata, key: string) => {
       const subData = data !== undefined ? data[key] : undefined;
       if (field.isScalar()) {
         const formControl = this.toFormControl(field, subData);
@@ -33,7 +34,7 @@ export class MetadataFormService {
     return new FormGroup(group);
   }
 
-  toFormControl(field: MetadataField, data?: any) {
+  toFormControl(field: Metadata, data?: any) {
 
     const formControl = field.isRequired ? new FormControl(data, Validators.required)
       : new FormControl(data);
@@ -66,8 +67,8 @@ export class MetadataFormService {
     return new FormArray(controlData);
   }
 
-  getFieldMap(jsonSchema: JsonSchema, config?: MetadataFormConfig): Map<string, MetadataField> {
-    const metadataFieldMap = new Map<string, MetadataField>();
+  getFieldMap(jsonSchema: JsonSchema, config?: MetadataFormConfig): Map<string, Metadata> {
+    const metadataFieldMap = new Map<string, Metadata>();
     if (jsonSchema === null || jsonSchema === undefined) {
       return metadataFieldMap;
     }
@@ -79,7 +80,7 @@ export class MetadataFormService {
       const isRequired = requiredFields.indexOf(key) >= 0;
       const isHidden = hiddenFields.indexOf(key) >= 0;
       const isDisabled = disabledFields.indexOf(key) >= 0;
-      const metadataField = new MetadataField({
+      const metadataField = new Metadata({
         isRequired: isRequired,
         isHidden: isHidden,
         isDisabled: isDisabled,
@@ -111,7 +112,7 @@ export class MetadataFormService {
       formConfig[parentKey]['children'] = [];
     }
 
-    this.getFieldMap(jsonSchema, config).forEach((field: MetadataField, key: string) => {
+    this.getFieldMap(jsonSchema, config).forEach((field: Metadata, key: string) => {
       const configKey = parentKey ? parentKey + '.' + key : key;
       const subData = data && data[key] ? data[key] : undefined;
       formConfig[parentKey]['children'].push(configKey);

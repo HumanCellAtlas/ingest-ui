@@ -1,27 +1,32 @@
 import {JsonSchemaProperty} from './json-schema-property';
 
 
-export class MetadataField {
+export class Metadata {
   schema: JsonSchemaProperty;
   key: string;
   isRequired: boolean;
   isDisabled: boolean;
   isHidden: boolean;
 
+  parent: string;
+  children?: string[];
 
   constructor(options: {
     schema: JsonSchemaProperty,
     key: string,
     isRequired: boolean,
     isDisabled?: boolean
-    isHidden?: boolean
+    isHidden?: boolean,
+
+    parent?: string
+    children?: string[]
   }) {
     this.schema = options.schema;
     this.key = options.key;
     this.isRequired = options.isRequired;
     this.isDisabled = options.isDisabled === undefined ? false : options.isDisabled;
     this.isHidden = options.isHidden === undefined ? false : options.isHidden;
-
+    this.children = [];
   }
 
   isObjectList(): boolean {
@@ -43,4 +48,11 @@ export class MetadataField {
     return this.schema.type === 'array' && ['array', 'object'].indexOf(items['type']) < 0;
   }
 
+  addChild(key: string) {
+    this.children.push(key);
+  }
+
+  setParent(key: string) {
+    this.parent = key;
+  }
 }
