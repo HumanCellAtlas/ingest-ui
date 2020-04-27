@@ -7,4 +7,9 @@
   </span>
 
   <input type="button" name="register" value="Register" [disabled]="!termsAccepted" (click)="proceed()">
+
+  <div *ngIf="status" id="registration-message">
+    <p>{{status.message}}</p>
+    <input *ngIf="status.success" type="button" name="ok" value="OK" />
+  </div>
 </div>
