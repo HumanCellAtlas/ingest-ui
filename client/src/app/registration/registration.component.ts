@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "../core/authentication.service";
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
+import {Router} from "@angular/router";
 
 const messages = {
   success: 'Your account was successfully created. Click OK to return to the home page.',
@@ -29,7 +30,8 @@ export class RegistrationComponent implements OnInit {
   status: RegistrationStatus;
 
   constructor(private aaiService: AaiService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private router: Router) {
   }
 
   ngOnInit() {

@@ -10,6 +10,6 @@
 
   <div *ngIf="status" id="registration-message">
     <p>{{status.message}}</p>
-    <input *ngIf="status.success" type="button" name="ok" value="OK" />
+    <input *ngIf="status.success" type="button" name="ok" value="OK" (click)="router.navigate(['/home'])"/>
   </div>
 </div>

@@ -7,8 +7,10 @@ import {User} from "oidc-client";
 import {Observable} from "rxjs";
 import {Account} from "../core/security.data";
 import {FormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import createSpy = jasmine.createSpy;
 
 let registration: RegistrationComponent;
 let fixture: ComponentFixture<RegistrationComponent>;
@@ -25,7 +27,8 @@ function configureTestEnvironment(): void {
     imports: [FormsModule],
     providers: [
       {provide: AuthenticationService, useFactory: () => authenticationService},
-      {provide: AaiService, useFactory: () => aaiService}
+      {provide: AaiService, useFactory: () => aaiService},
+      {provide: Router, useValue: createSpy('Router')}
     ]
   })
 }
