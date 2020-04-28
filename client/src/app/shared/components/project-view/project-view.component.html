@@ -8,5 +8,11 @@
 <p *ngIf="!project">Loading project...</p>
 
 <ng-container *ngIf="project">
-project view is coming soon!
+  <mat-card>
+    <app-metadata-form name="project"
+                       [schema]="projectJsonSchema"
+                       [data]="project.content"
+                       [config]="config">
+    </app-metadata-form>
+  </mat-card>
 </ng-container>

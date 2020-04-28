@@ -37,7 +37,6 @@ export class MetadataFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.form = this.metadataFormService.buildForm('project', this.schema, this.data, this.config);
     this.metadataFormService.initializeFormConfig(this.form, 'project', this.schema, this.config, this.data);
     this.done = true;
     console.log('form config', this.form);

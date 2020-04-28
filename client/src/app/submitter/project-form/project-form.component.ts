@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import * as schema from './flat-modified-schema.json';
 import * as layout from './layout.json';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
-import * as project from './project.json';
+import * as schema from './schema.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 import {LoaderService} from '../../shared/services/loader.service';
 
@@ -16,12 +15,13 @@ import {LoaderService} from '../../shared/services/loader.service';
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit {
-  projectSchema: any = (schema as any).default;
+
+  projectJsonSchema: any = (schema as any).default;
   projectLayout: any = (layout as any).default;
-  projectJsonSchema: any = (project as any).default;
+
 
   projectResource: Project;
-  schemaFields: object;
+  projectContent: object;
   projectNewContent: object;
 
   createMode = true;
@@ -57,13 +57,13 @@ export class ProjectFormComponent implements OnInit {
     this.projectNewContent = null;
     this.formIsValid = null;
     this.formValidationErrors = null;
-    this.schemaFields = {};
+    this.projectContent = {};
 
     if (projectUuid) {
       this.createMode = false;
       this.setProjectContent(projectUuid);
     } else {
-      this.setSchema(this.schemaFields);
+      this.setSchema(this.projectContent);
     }
 
     this.title = this.createMode ? 'New Project' : 'Edit Project';
@@ -84,7 +84,7 @@ export class ProjectFormComponent implements OnInit {
               projectResource.content['schema_type'] = 'project';
             });
           }
-          this.schemaFields = projectResource.content;
+          this.projectContent = projectResource.content;
           this.displayPostValidationErrors();
         },
         error => {
@@ -119,7 +119,7 @@ export class ProjectFormComponent implements OnInit {
     this.alertService.clear();
     if (this.createMode) {
       console.log('Creating project', formValue);
-      Object.assign(formValue, this.schemaFields);
+      Object.assign(formValue, this.projectContent);
       this.ingestService.postProject(formValue).subscribe(resource => {
           this.loaderService.display(false);
           console.log('project created', resource);

@@ -3,5 +3,6 @@ export interface MetadataFormConfig {
   removeEmptyFields?: boolean;
   disableFields?: string[];
   customFieldType?: object;
+  viewMode?: boolean;
 }
 

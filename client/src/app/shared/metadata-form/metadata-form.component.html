@@ -30,6 +30,7 @@
                           [dataType]="form[child]['field']['schema']['type']"
                           [example]="form[child]['field']['schema']['example']"
                           [helperText]="form[child]['field']['schema']['guidelines']"
+
                           [isRequired]="form[child]['field']['isRequired']">
 
             </app-vf-input>
@@ -45,6 +46,7 @@
                           [dataType]="form['project.array_express_accessions']['field']['schema']['items']['type']"
                           [example]="form['project.array_express_accessions']['field']['schema']['example']"
                           [helperText]="form['project.array_express_accessions']['field']['schema']['guidelines']"
+
                           [isRequired]="form['project.array_express_accessions']['field']['isRequired']">
 
             </app-vf-input>
@@ -60,6 +62,7 @@
                           [dataType]="form['project.insdc_study_accessions']['field']['schema']['items']['type']"
                           [example]="form['project.insdc_study_accessions']['field']['schema']['example']"
                           [helperText]="form['project.insdc_study_accessions']['field']['schema']['guidelines']"
+
                           [isRequired]="form['project.insdc_study_accessions']['field']['isRequired']">
 
             </app-vf-input>
@@ -86,6 +89,7 @@
                                 [example]="form[child]['field']['schema']['example']"
                                 [helperText]="form[child]['field']['schema']['guidelines']"
                                 [id]="child + '-' + i"
+
                                 [isRequired]="form[child]['field']['isRequired']">
 
                   </app-vf-input>
@@ -93,20 +97,23 @@
               </ng-container>
             </div>
 
-            <a color="warn" mat-icon-button
-               (click)="removeFormControl(form['project.contributors']['formControl'], i)">
-              <mat-icon>remove_circle_outline</mat-icon>
-              Remove
-            </a>
-
+            <ng-container *ngIf="!config.viewMode">
+              <a color="warn" mat-icon-button
+                 (click)="removeFormControl(form['project.contributors']['formControl'], i)">
+                <mat-icon>remove_circle_outline</mat-icon>
+                Remove
+              </a>
+            </ng-container>
             <hr class="vf-divider">
           </ng-container>
         </div>
 
-        <a mat-icon-button (click)="addFormControl('project.contributors')">
-          <mat-icon>add_circle_outline</mat-icon>
-          Add
-        </a>
+        <ng-container *ngIf="!config.viewMode">
+          <a mat-icon-button (click)="addFormControl('project.contributors')">
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
+          </a>
+        </ng-container>
 
       </div>
     </mat-tab>
@@ -127,18 +134,21 @@
                                 [dataType]="form[child]['field']['schema']['type']"
                                 [example]="form[child]['field']['schema']['example']"
                                 [helperText]="form[child]['field']['schema']['guidelines']"
+
                                 [isRequired]="form[child]['field']['isRequired']">
 
                   </app-vf-input>
                 </ng-container>
               </ng-container>
               <div formArrayName="authors">
-                <ng-container *ngFor="let author of publicationFormGroup['controls']['authors']['controls']; let i = index">
+                <ng-container
+                  *ngFor="let author of publicationFormGroup['controls']['authors']['controls']; let i = index">
                   <app-vf-input [formControl]="author"
                                 [label]="form['project.publications.authors']['field']['schema']['user_friendly']?form['project.publications.authors']['field']['schema']['user_friendly'] : form['project.publications.authors']['field']['key']"
                                 [dataType]="form['project.publications.authors']['field']['schema']['items']['type']"
                                 [example]="form['project.publications.authors']['field']['schema']['example']"
                                 [helperText]="form['project.publications.authors']['field']['schema']['guidelines']"
+
                                 [isRequired]="form['project.publications.authors']['field']['isRequired']">
 
                   </app-vf-input>
@@ -146,17 +156,21 @@
               </div>
             </div>
 
-            <a color="warn" mat-icon-button
-               (click)="removeFormControl(form['project.publications']['formControl'], i)">
-              <mat-icon>remove_circle_outline</mat-icon>
-              Remove
-            </a>
+            <ng-container *ngIf="!config.viewMode">
+              <a color="warn" mat-icon-button
+                 (click)="removeFormControl(form['project.publications']['formControl'], i)">
+                <mat-icon>remove_circle_outline</mat-icon>
+                Remove
+              </a>
+            </ng-container>
             <hr class="vf-divider">
           </ng-container>
-          <a mat-icon-button (click)="addFormControl('project.publications')">
-            <mat-icon>add_circle_outline</mat-icon>
-            Add
-          </a>
+          <ng-container *ngIf="!config.viewMode">
+            <a mat-icon-button (click)="addFormControl('project.publications')">
+              <mat-icon>add_circle_outline</mat-icon>
+              Add
+            </a>
+          </ng-container>
         </div>
       </div>
     </mat-tab>
@@ -175,32 +189,36 @@
                                 [dataType]="form[child]['field']['schema']['type']"
                                 [example]="form[child]['field']['schema']['example']"
                                 [helperText]="form[child]['field']['schema']['guidelines']"
+
                                 [isRequired]="form[child]['field']['isRequired']">
                   </app-vf-input>
                 </ng-container>
               </ng-container>
             </div>
-            <a color="warn" mat-icon-button
-               (click)="removeFormControl(form['project.funders']['formControl'], i)">
-              <mat-icon>remove_circle_outline</mat-icon>
-              Remove
-            </a>
-
+            <ng-container *ngIf="!config.viewMode">
+              <a color="warn" mat-icon-button
+                 (click)="removeFormControl(form['project.funders']['formControl'], i)">
+                <mat-icon>remove_circle_outline</mat-icon>
+                Remove
+              </a>
+            </ng-container>
             <hr class="vf-divider">
           </ng-container>
-          <a mat-icon-button (click)="addFormControl('project.funders')">
-            <mat-icon>add_circle_outline</mat-icon>
-            Add
-          </a>
 
+          <ng-container *ngIf="!config.viewMode">
+            <a mat-icon-button (click)="addFormControl('project.funders')">
+              <mat-icon>add_circle_outline</mat-icon>
+              Add
+            </a>
+          </ng-container>
         </div>
       </div>
     </mat-tab>
 
   </mat-tab-group>
 
-
-  <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
-  <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
-
+  <ng-container *ngIf="!config.viewMode">
+    <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
+    <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
+  </ng-container>
 </form>

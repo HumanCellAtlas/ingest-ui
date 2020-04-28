@@ -15,7 +15,7 @@
     </ng-container>
 
     <label class="vf-form__label">{{label}}</label>
-    <input #input [attr.disabled]="disabled" type="{{inputType}}" class="vf-form__input"
+    <input #input [attr.disabled]="disabled ? disabled : null" type="{{inputType}}" class="vf-form__input"
            placeholder="{{example}}" [(ngModel)]="value" (change)="change($event)">
     <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
     <p class="vf-form__helper">{{helperText}}</p>

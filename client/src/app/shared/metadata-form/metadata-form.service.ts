@@ -14,6 +14,7 @@ export class MetadataFormService {
   constructor() {
     this.helper = new MetadataFormHelper();
   }
+
   toFormGroup(jsonSchema: JsonSchema, config?: MetadataFormConfig, data?: object): FormGroup {
     const group: any = {};
     this.getFieldMap(jsonSchema, config).forEach((field: Metadata, key: string) => {
@@ -35,9 +36,9 @@ export class MetadataFormService {
   }
 
   toFormControl(field: Metadata, data?: any) {
-
-    const formControl = field.isRequired ? new FormControl(data, Validators.required)
-      : new FormControl(data);
+    const state = {value: data, disabled: field.isDisabled};
+    const formControl = field.isRequired ? new FormControl(state, Validators.required)
+      : new FormControl(state);
     return formControl;
   }
 
@@ -76,10 +77,10 @@ export class MetadataFormService {
       const property = this.getProperty(key, jsonSchema);
       const requiredFields = jsonSchema.required ? jsonSchema.required : [];
       const hiddenFields = config && config.hideFields ? config.hideFields : [];
-      const disabledFields = config && config.disableFields ? config.hideFields : [];
+      const disabledFields = config && config.disableFields ? config.disableFields : [];
       const isRequired = requiredFields.indexOf(key) >= 0;
       const isHidden = hiddenFields.indexOf(key) >= 0;
-      const isDisabled = disabledFields.indexOf(key) >= 0;
+      const isDisabled = config && config.viewMode || disabledFields.indexOf(key) >= 0;
       const metadataField = new Metadata({
         isRequired: isRequired,
         isHidden: isHidden,
@@ -221,4 +222,6 @@ export class MetadataFormService {
     }
     return false;
   }
+
+
 }

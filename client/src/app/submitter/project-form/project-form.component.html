@@ -10,7 +10,7 @@
 <ng-container *ngIf="projectResource || createMode">
   <app-metadata-form name="project"
                      [schema]="projectJsonSchema"
-                     [data]="schemaFields"
+                     [data]="projectContent"
                      [config]="config"
                      (cancel)="onCancel($event)"
                      (save)="onSave($event)">
