@@ -133,14 +133,16 @@
                 </ng-container>
               </ng-container>
               <div formArrayName="authors">
-                <app-vf-input [formControl]="publicationFormGroup['controls']['authors']['controls'][0]"
-                              [label]="form['project.publications.authors']['field']['schema']['user_friendly']?form['project.publications.authors']['field']['schema']['user_friendly'] : form['project.publications.authors']['field']['key']"
-                              [dataType]="form['project.publications.authors']['field']['schema']['items']['type']"
-                              [example]="form['project.publications.authors']['field']['schema']['example']"
-                              [helperText]="form['project.publications.authors']['field']['schema']['guidelines']"
-                              [isRequired]="form['project.publications.authors']['field']['isRequired']">
+                <ng-container *ngFor="let author of publicationFormGroup['controls']['authors']['controls']; let i = index">
+                  <app-vf-input [formControl]="author"
+                                [label]="form['project.publications.authors']['field']['schema']['user_friendly']?form['project.publications.authors']['field']['schema']['user_friendly'] : form['project.publications.authors']['field']['key']"
+                                [dataType]="form['project.publications.authors']['field']['schema']['items']['type']"
+                                [example]="form['project.publications.authors']['field']['schema']['example']"
+                                [helperText]="form['project.publications.authors']['field']['schema']['guidelines']"
+                                [isRequired]="form['project.publications.authors']['field']['isRequired']">
 
-                </app-vf-input>
+                  </app-vf-input>
+                </ng-container>
               </div>
             </div>
 
