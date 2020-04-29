@@ -125,8 +125,8 @@
 
   </mat-tab-group>
 
-
-  <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
-  <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
-
+  <ng-container *ngIf="!config.viewMode">
+    <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
+    <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
+  </ng-container>
 </form>

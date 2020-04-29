@@ -50,8 +50,6 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.alertService.warn(null, 'This page is work in progress.', false, true);
-
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     this.projectResource = null;
     this.projectNewContent = null;

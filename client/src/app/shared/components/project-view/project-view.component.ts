@@ -28,7 +28,6 @@ export class ProjectViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.alertService.warn(null, 'This page is work in progress.', false, true);
     this.displayPostValidationErrors();
   }
 
