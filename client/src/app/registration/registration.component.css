@@ -1,0 +1,17 @@
+#registration-content {
+  width: 800px;
+  margin: 5px auto;
+  text-align: center;
+}
+
+.message-box {
+  border: 1px solid #999;
+  border-radius: 10px;
+  width: 335px;
+  margin: 5px auto;
+  padding: 15px;
+}
+
+.registration-message {
+  color: #999;
+}

@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {AaiService} from './aai.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {AaiSecurity} from "./aai.module";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: AaiSecurity,
 })
 export class OidcInterceptor implements HttpInterceptor {
   constructor(private aai: AaiService) {}

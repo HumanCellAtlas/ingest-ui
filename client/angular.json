@@ -26,6 +26,14 @@
             "scripts": []
           },
           "configurations": {
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/local/environment.ts"
+                }
+              ]
+            },
             "testing": {
               "fileReplacements": [
                 {
@@ -100,6 +108,9 @@
             "browserTarget": "ingest-ui:build"
           },
           "configurations": {
+            "local": {
+              "browserTarget": "ingest-ui:build:local"
+            },
             "testing": {
               "browserTarget": "ingest-ui:build:testing"
             },

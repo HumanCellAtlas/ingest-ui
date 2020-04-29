@@ -18,6 +18,7 @@
       "dom"
     ],
     "module": "esnext",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "resolveJsonModule": true
   }
 }
