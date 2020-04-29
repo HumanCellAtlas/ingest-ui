@@ -1,1 +1,24 @@
-<p>metadata-field works!</p>
+<ng-container *ngIf="metadata.isScalar()">
+  <app-vf-input *ngIf="!metadata.isHidden"
+                [formControl]="control"
+                [label]="metadata.schema.user_friendly?metadata.schema.user_friendly : metadata.key"
+                [dataType]="metadata.schema.type"
+                [example]="metadata.schema.example"
+                [helperText]="metadata.schema.guidelines"
+                [isRequired]="metadata.isRequired">
+  </app-vf-input>
+</ng-container>
+
+<ng-container *ngIf="metadata.isScalarList()">
+  <ng-container *ngFor="let ctr of control['controls'] ; let i = index">
+    <app-vf-input *ngIf="!metadata.isHidden"
+                  [formControl]="ctr"
+                  [label]="metadata.schema.user_friendly?metadata.schema.user_friendly : metadata.key"
+                  [dataType]="metadata.schema.items.type"
+                  [example]="metadata.schema.example"
+                  [helperText]="metadata.schema.guidelines"
+                  [isRequired]="metadata.isRequired">
+    </app-vf-input>
+  </ng-container>
+
+</ng-container>

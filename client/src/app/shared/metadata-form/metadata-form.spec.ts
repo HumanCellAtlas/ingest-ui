@@ -101,11 +101,11 @@ describe('MetadataFormBuilder', () => {
 
       // then
       expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual(null);
+      expect(formControl.value).toEqual(undefined);
       expect(formControl.validator).toEqual(null);
     });
 
-    it('return a toFormControl object with validator', () => {
+    it('return a toFormControl object with undefined value and validator', () => {
       // given
       const field: Metadata = new Metadata({
         schema: undefined,
@@ -119,7 +119,7 @@ describe('MetadataFormBuilder', () => {
       const formControl = metadataFormBuilder.toFormControl(field);
       // then
       expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual(null);
+      expect(formControl.value).toEqual(undefined);
       expect(formControl.validator).toEqual(Validators.required);
     });
 
@@ -348,43 +348,58 @@ describe('MetadataFormBuilder', () => {
     });
   });
 
-  describe('initializeFormConfig', () => {
-    it('return config', () => {
+  describe('new MetadataForm', () => {
+    it('return FormGroup obj', () => {
       // given testSchema
       // when
-      const metadataForm = metadataFormBuilder.initForm(new MetadataForm('project', testSchema));
-      const config = metadataForm.content;
+      const metadataForm = new MetadataForm('project', testSchema);
+      const formGroup = metadataForm.formGroup;      // then
+      expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
+      expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
+      expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
+      expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
+      expect(metadataFormSvc.cleanFormData(formGroup.value))
+        .toEqual({});
+
+    });
+
+    it('return FormGroup obj with data', () => {
+      // given
+      const testData = (json as any).default;
+      // when
+      const metadataForm = new MetadataForm('project', testSchema, testData);
+      const formGroup = metadataForm.formGroup;
       // then
-      expect(config).toBeTruthy();
-      const formGroup = config['project']['formControl'];
       expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
       expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
       expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
       expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
 
+      expect(metadataFormSvc.cleanFormData(formGroup.value))
+        .toEqual(metadataFormSvc.cleanFormData(testData));
+
     });
 
-    describe('initializeFormConfig with data', () => {
-      it('return config with data', () => {
-        // given
-        const testData = (json as any).default;
-        // when
-        const metadataForm = metadataFormBuilder.initForm(new MetadataForm('project', testSchema, testData));
-        const config = metadataForm.content;
-        // then
-        expect(config).toBeTruthy();
+    it('return metadataRegistry', () => {
+      // given
+      const testData = (json as any).default;
+      // when
+      const metadataForm = new MetadataForm('project', testSchema, testData);
+      const metadataRegistry = metadataForm.metadataRegistry;
+      // then
 
-        const formGroup = config['project']['formControl'];
-        expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
-        expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
-        expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
-        expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
+      console.log('metadataRegistry', metadataRegistry);
+    });
 
-        expect(metadataFormSvc.cleanFormData(formGroup.value))
-          .toEqual(metadataFormSvc.cleanFormData(testData));
+    it('return metadataRegistry with config', () => {
+      // given
+      const testData = (json as any).default;
+      // when
+      const metadataForm = new MetadataForm('project', testSchema, testData);
+      const metadataRegistry = metadataForm.metadataRegistry;
+      // then
 
-      });
-
+      console.log('metadataRegistry', metadataRegistry);
     });
 
   });

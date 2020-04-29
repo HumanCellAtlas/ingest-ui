@@ -3,6 +3,8 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
 import {MetadataFormConfig} from './metadata-form-config';
+import {MetadataForm} from './metadata-form';
+import {Metadata} from "./metadata";
 
 
 @Component({
@@ -27,7 +29,10 @@ export class MetadataFormComponent implements OnInit {
 
   formGroup: FormGroup;
 
+  metadataForm: MetadataForm;
+
   form: object = {};
+
 
   value: object;
 
@@ -37,18 +42,18 @@ export class MetadataFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.metadataFormService.initializeFormConfig(this.form, 'project', this.schema, this.config, this.data);
+    this.metadataForm = this.metadataFormService.createForm('project', this.schema, this.data, this.config);
+    console.log('metadataForm', this.metadataForm);
+    this.formGroup = this.metadataForm.formGroup;
     this.done = true;
-    console.log('form config', this.form);
-    this.formGroup = this.form['project']['formControl'];
+
   }
 
   onSubmit(e) {
     e.preventDefault();
-    console.log('form data', this.formGroup.value);
-    const formData = this.metadataFormService.cleanFormData(this.formGroup.value);
+    const formData = this.metadataFormService.cleanFormData(this.metadataForm.formGroup.value);
     console.log('clean form data', formData);
-    this.save.emit(formData);
+    // this.save.emit(formData);
   }
 
   removeFormControl(control: AbstractControl, i: number) {
@@ -59,12 +64,11 @@ export class MetadataFormComponent implements OnInit {
 
   }
 
-  addFormControl(formControlName: string) {
-    const config = this.form[formControlName];
-    const formArray = config['formControl'] as FormArray;
+  addFormControl(metadata: Metadata, formControl: AbstractControl) {
+    const formArray = formControl as FormArray;
     const count = formArray.length;
 
-    const formGroup: FormGroup = this.metadataFormService.toFormGroup(config['field']['schema']['items']);
+    const formGroup: FormGroup = this.metadataForm.helper.toFormGroup(metadata.schema.items as JsonSchema);
     formArray.insert(count, formGroup);
   }
 

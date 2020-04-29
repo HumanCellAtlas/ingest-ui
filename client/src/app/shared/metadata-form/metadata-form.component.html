@@ -1,115 +1,85 @@
-<form *ngIf="done" class="vf-form" [formGroup]="form['project']['formControl']" (submit)="onSubmit($event)">
+<form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
   <mat-tab-group>
     <mat-tab label="Project">
       <div class="vf-u-margin__top--xxl">
 
-
-        <div [formGroup]="form['project.project_core']['formControl']">
-          <ng-container
-            *ngFor="let child of form['project.project_core']['children']">
-            <ng-container *ngIf="['string', 'boolean'].indexOf(form[child]['field']['schema']['type']) >= 0">
-              <app-vf-input *ngIf="!form[child]['field']['isHidden']"
-                            [formControlName]="form[child]['field']['key']"
-                            [label]="form[child]['field']['schema']['user_friendly']?form[child]['field']['schema']['user_friendly'] : form[child]['field']['key']"
-                            [dataType]="form[child]['field']['schema']['type']"
-                            [example]="form[child]['field']['schema']['example']"
-                            [helperText]="form[child]['field']['schema']['guidelines']"
-                            [isRequired]="form[child]['field']['isRequired']">
-
-              </app-vf-input>
-            </ng-container>
-          </ng-container>
-        </div>
-
-        <ng-container
-          *ngFor="let child of form['project']['children']">
-          <ng-container *ngIf="['string', 'boolean'].indexOf(form[child]['field']['schema']['type']) >= 0">
-            <app-vf-input *ngIf="!form[child]['field']['isHidden']"
-                          [formControlName]="form[child]['field']['key']"
-                          [label]="form[child]['field']['schema']['user_friendly']?form[child]['field']['schema']['user_friendly'] : form[child]['field']['key']"
-                          [dataType]="form[child]['field']['schema']['type']"
-                          [example]="form[child]['field']['schema']['example']"
-                          [helperText]="form[child]['field']['schema']['guidelines']"
-
-                          [isRequired]="form[child]['field']['isRequired']">
-
-            </app-vf-input>
+        <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.project_core'].children">
+          <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
+                        [control]="metadataForm.formGroup['controls']['project_core']['controls'][metadataForm.metadataRegistry[child].key]">
           </ng-container>
         </ng-container>
 
 
-        <div formArrayName="array_express_accessions">
-          <ng-container
-            *ngFor="let control of form['project.array_express_accessions']['formControl']['controls'] ; let i = index">
-            <app-vf-input [formControl]="control"
-                          [label]="form['project.array_express_accessions']['field']['schema']['user_friendly']?form['project.array_express_accessions']['field']['schema']['user_friendly'] : form['project.array_express_accessions']['field']['key']"
-                          [dataType]="form['project.array_express_accessions']['field']['schema']['items']['type']"
-                          [example]="form['project.array_express_accessions']['field']['schema']['example']"
-                          [helperText]="form['project.array_express_accessions']['field']['schema']['guidelines']"
-
-                          [isRequired]="form['project.array_express_accessions']['field']['isRequired']">
-
-            </app-vf-input>
-
+        <ng-container *ngFor="let child of metadataForm.metadataRegistry['project'].children">
+          <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
+                        [control]="metadataForm.formGroup['controls'][metadataForm.metadataRegistry[child].key]">
           </ng-container>
-        </div>
+        </ng-container>
 
-        <div formArrayName="insdc_study_accessions">
-          <ng-container
-            *ngFor="let control of form['project.insdc_study_accessions']['formControl']['controls'] ; let i = index">
-            <app-vf-input [formControl]="control"
-                          [label]="form['project.insdc_study_accessions']['field']['schema']['user_friendly']?form['project.insdc_study_accessions']['field']['schema']['user_friendly'] : form['project.insdc_study_accessions']['field']['key']"
-                          [dataType]="form['project.insdc_study_accessions']['field']['schema']['items']['type']"
-                          [example]="form['project.insdc_study_accessions']['field']['schema']['example']"
-                          [helperText]="form['project.insdc_study_accessions']['field']['schema']['guidelines']"
-
-                          [isRequired]="form['project.insdc_study_accessions']['field']['isRequired']">
-
-            </app-vf-input>
-          </ng-container>
-        </div>
       </div>
     </mat-tab>
 
-
     <mat-tab label="Contributors">
-      <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-        <div formArrayName="contributors">
-          <ng-container
-            *ngFor="let contributorFormGroup of form['project.contributors']['formControl']['controls'] ; let i = index">
-            <div [formGroup]="contributorFormGroup">
-              <ng-container
-                *ngFor="let child of form['project.contributors']['children']">
+      <div class="vf-u-margin__top--xxl">
 
-                <ng-container *ngIf="['string', 'boolean'].indexOf(form[child]['field']['schema']['type']) >= 0">
-                  <app-vf-input *ngIf="!form[child]['field']['isHidden']"
-                                [formControlName]="form[child]['field']['key']"
-                                [dataType]="form[child]['field']['schema']['type']"
-                                [label]="form[child]['field']['schema']['user_friendly']?form[child]['field']['schema']['user_friendly'] : form[child]['field']['key']"
-                                [example]="form[child]['field']['schema']['example']"
-                                [helperText]="form[child]['field']['schema']['guidelines']"
-                                [id]="child + '-' + i"
-
-                                [isRequired]="form[child]['field']['isRequired']">
-
-                  </app-vf-input>
-                </ng-container>
-              </ng-container>
-            </div>
-
-            <ng-container *ngIf="!config.viewMode">
-              <a color="warn" mat-icon-button
-                 (click)="removeFormControl(form['project.contributors']['formControl'], i)">
-                <mat-icon>remove_circle_outline</mat-icon>
-                Remove
-              </a>
+        <ng-container
+          *ngFor="let control of metadataForm.formGroup['controls']['contributors']['controls'] ; let i = index">
+          <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.contributors'].children">
+            <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
+                          [control]="control['controls'][metadataForm.metadataRegistry[child].key]">
             </ng-container>
-            <hr class="vf-divider">
           </ng-container>
-        </div>
+
+          <ng-container *ngIf="!config.viewMode">
+            <a color="warn" mat-icon-button
+               (click)="removeFormControl(metadataForm.formGroup['controls']['contributors'], i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+              Remove
+            </a>
+          </ng-container>
+
+          <hr class="vf-divider">
+
+        </ng-container>
 
         <ng-container *ngIf="!config.viewMode">
-          <a mat-icon-button (click)="addFormControl('project.contributors')">
+          <a mat-icon-button
+             (click)="addFormControl(metadataForm.metadataRegistry['project.contributors'], metadataForm.formGroup['controls']['contributors'])">
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
+          </a>
+        </ng-container>
+
+
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Publications">
+      <div class="vf-u-margin__top--xxl">
+
+        <ng-container
+          *ngFor="let control of metadataForm.formGroup['controls']['publications']['controls'] ; let i = index">
+          <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.publications'].children">
+            <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
+                          [control]="control['controls'][metadataForm.metadataRegistry[child].key]">
+            </ng-container>
+          </ng-container>
+
+
+          <ng-container *ngIf="!config.viewMode">
+            <a color="warn" mat-icon-button
+               (click)="removeFormControl(metadataForm.formGroup['controls']['publications'], i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+              Remove
+            </a>
+          </ng-container>
+          <hr class="vf-divider">
+
+        </ng-container>
+
+        <ng-container *ngIf="!config.viewMode">
+          <a mat-icon-button
+             (click)="addFormControl(metadataForm.metadataRegistry['project.publications'], metadataForm.formGroup['controls']['publications'])">
             <mat-icon>add_circle_outline</mat-icon>
             Add
           </a>
@@ -118,107 +88,45 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Publications">
-      <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-        <div formArrayName="publications">
-          <ng-container
-            *ngFor="let publicationFormGroup of form['project.publications']['formControl']['controls'] ; let i = index">
-            <div [formGroup]="publicationFormGroup">
-              <ng-container
-                *ngFor="let child of form['project.publications']['children']">
-
-                <ng-container *ngIf="['string', 'boolean'].indexOf(form[child]['field']['schema']['type']) >= 0">
-                  <app-vf-input *ngIf="!form[child]['field']['isHidden']"
-                                [formControlName]="form[child]['field']['key']"
-                                [label]="form[child]['field']['schema']['user_friendly']?form[child]['field']['schema']['user_friendly'] : form[child]['field']['key']"
-                                [dataType]="form[child]['field']['schema']['type']"
-                                [example]="form[child]['field']['schema']['example']"
-                                [helperText]="form[child]['field']['schema']['guidelines']"
-
-                                [isRequired]="form[child]['field']['isRequired']">
-
-                  </app-vf-input>
-                </ng-container>
-              </ng-container>
-              <div formArrayName="authors">
-                <ng-container
-                  *ngFor="let author of publicationFormGroup['controls']['authors']['controls']; let i = index">
-                  <app-vf-input [formControl]="author"
-                                [label]="form['project.publications.authors']['field']['schema']['user_friendly']?form['project.publications.authors']['field']['schema']['user_friendly'] : form['project.publications.authors']['field']['key']"
-                                [dataType]="form['project.publications.authors']['field']['schema']['items']['type']"
-                                [example]="form['project.publications.authors']['field']['schema']['example']"
-                                [helperText]="form['project.publications.authors']['field']['schema']['guidelines']"
-
-                                [isRequired]="form['project.publications.authors']['field']['isRequired']">
-
-                  </app-vf-input>
-                </ng-container>
-              </div>
-            </div>
-
-            <ng-container *ngIf="!config.viewMode">
-              <a color="warn" mat-icon-button
-                 (click)="removeFormControl(form['project.publications']['formControl'], i)">
-                <mat-icon>remove_circle_outline</mat-icon>
-                Remove
-              </a>
-            </ng-container>
-            <hr class="vf-divider">
-          </ng-container>
-          <ng-container *ngIf="!config.viewMode">
-            <a mat-icon-button (click)="addFormControl('project.publications')">
-              <mat-icon>add_circle_outline</mat-icon>
-              Add
-            </a>
-          </ng-container>
-        </div>
-      </div>
-    </mat-tab>
-
     <mat-tab label="Funders">
-      <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-        <div formArrayName="funders">
-          <ng-container
-            *ngFor="let funderFormGroup of form['project.funders']['formControl']['controls'] ; let i = index">
-            <div [formGroup]="funderFormGroup">
-              <ng-container *ngFor="let child of form['project.funders']['children']">
-                <ng-container *ngIf="['string', 'boolean'].indexOf(form[child]['field']['schema']['type']) >= 0">
-                  <app-vf-input *ngIf="!form[child]['field']['isHidden']"
-                                [formControlName]="form[child]['field']['key']"
-                                [label]="form[child]['field']['schema']['user_friendly']?form[child]['field']['schema']['user_friendly'] : form[child]['field']['key']"
-                                [dataType]="form[child]['field']['schema']['type']"
-                                [example]="form[child]['field']['schema']['example']"
-                                [helperText]="form[child]['field']['schema']['guidelines']"
+      <div class="vf-u-margin__top--xxl">
 
-                                [isRequired]="form[child]['field']['isRequired']">
-                  </app-vf-input>
-                </ng-container>
-              </ng-container>
-            </div>
-            <ng-container *ngIf="!config.viewMode">
-              <a color="warn" mat-icon-button
-                 (click)="removeFormControl(form['project.funders']['formControl'], i)">
-                <mat-icon>remove_circle_outline</mat-icon>
-                Remove
-              </a>
+        <ng-container
+          *ngFor="let control of metadataForm.formGroup['controls']['funders']['controls'] ; let i = index">
+          <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.funders'].children">
+            <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
+                          [control]="control['controls'][metadataForm.metadataRegistry[child].key]">
             </ng-container>
-            <hr class="vf-divider">
           </ng-container>
 
           <ng-container *ngIf="!config.viewMode">
-            <a mat-icon-button (click)="addFormControl('project.funders')">
-              <mat-icon>add_circle_outline</mat-icon>
-              Add
+            <a color="warn" mat-icon-button
+               (click)="removeFormControl(metadataForm.formGroup['controls']['funders'], i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+              Remove
             </a>
           </ng-container>
-        </div>
+          <hr class="vf-divider">
+
+        </ng-container>
+
+
+        <ng-container *ngIf="!config.viewMode">
+          <a mat-icon-button
+             (click)="addFormControl(metadataForm.metadataRegistry['project.funders'], metadataForm.formGroup['controls']['funders'])">
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
+          </a>
+        </ng-container>
+
       </div>
     </mat-tab>
+
 
   </mat-tab-group>
 
-  <ng-container *ngIf="!config.viewMode">
-    <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
-    <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
-  </ng-container>
+
+  <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
+  <button class="vf-button vf-button--primary vf-button--sm">Save and Continue</button>
+
 </form>

@@ -6,15 +6,16 @@ import {SubmissionStateComponent} from './components/submission-state/submission
 import {CommonModule} from '@angular/common';
 import {MetadataStateComponent} from './components/metadata-state/metadata-state.component';
 import {MatChipsModule} from '@angular/material/chips';
-import { MetadataFormComponent } from './metadata-form/metadata-form.component';
-import { MetadataFieldComponent } from './metadata-field/metadata-field.component';
+import {MetadataFormComponent} from './metadata-form/metadata-form.component';
+import {MetadataFieldComponent} from './metadata-field/metadata-field.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatTabsModule} from "@angular/material/tabs";
-import { VfInputComponent } from './vf-input/vf-input.component';
-import {RouterModule} from "@angular/router";
-import {MatIconModule} from "@angular/material/icon";
-import {MatButtonModule} from "@angular/material/button";
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatTabsModule} from '@angular/material/tabs';
+import {VfInputComponent} from './vf-input/vf-input.component';
+import {RouterModule} from '@angular/router';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MetadataFieldDirective} from './metadata-field/metadata-field.directive';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MetadataFormComponent,
     MetadataFieldComponent,
     VfInputComponent,
+    MetadataFieldDirective,
   ],
   exports: [
     ClipboardDirective,
@@ -46,6 +48,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
   providers: [
     ClipboardService
   ],
+  entryComponents: [
+    MetadataFieldComponent
+  ]
 })
 export class SharedModule {
 }

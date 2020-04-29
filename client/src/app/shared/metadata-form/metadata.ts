@@ -1,5 +1,11 @@
 import {JsonSchemaProperty} from './json-schema-property';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 
+const FIELD_TYPE = {
+  string: 'input',
+  boolean: 'checkbox',
+  number: 'input'
+};
 
 export class Metadata {
   schema: JsonSchemaProperty;
@@ -11,10 +17,15 @@ export class Metadata {
   parent: string;
   children?: string[];
 
+  fieldType: string;
+  control: any;
+  parentMetadata: Metadata;
+
+
   constructor(options: {
     schema: JsonSchemaProperty,
     key: string,
-    isRequired: boolean,
+    isRequired?: boolean,
     isDisabled?: boolean
     isHidden?: boolean,
 
@@ -23,10 +34,11 @@ export class Metadata {
   }) {
     this.schema = options.schema;
     this.key = options.key;
-    this.isRequired = options.isRequired;
+    this.isRequired = options.isRequired === undefined ? false : options.isRequired;
     this.isDisabled = options.isDisabled === undefined ? false : options.isDisabled;
     this.isHidden = options.isHidden === undefined ? false : options.isHidden;
     this.children = [];
+    this.fieldType = this.schema && this.schema.type ? FIELD_TYPE[this.schema.type] : undefined;
   }
 
   isObjectList(): boolean {
@@ -55,4 +67,14 @@ export class Metadata {
   setParent(key: string) {
     this.parent = key;
   }
+
+  setParentMetadata(metadata: Metadata) {
+    this.parentMetadata = metadata;
+  }
+
+  setControl(control: FormGroup | FormArray | FormControl) {
+    this.control = control;
+  }
+
 }
+

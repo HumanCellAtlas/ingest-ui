@@ -5,100 +5,96 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {JsonSchemaProperty} from './json-schema-property';
 
 export class MetadataForm {
-  content: object;
+  metadataRegistry: object;
   key: string;
   jsonSchema: JsonSchema;
   data: any;
+  config: MetadataFormConfig;
+  helper: MetadataFormHelper;
+  formGroup: FormGroup;
 
-  constructor(key: string, jsonSchema: JsonSchema, data?: any) {
+  constructor(key: string, jsonSchema: JsonSchema, data?: any, config?: MetadataFormConfig) {
     this.key = key;
     this.jsonSchema = jsonSchema;
     this.data = data;
-    this.content = {};
+    this.metadataRegistry = {};
+    this.config = config;
+    this.helper = new MetadataFormHelper(config);
+    this.initForm(this);
   }
 
   get(key: string): Metadata | undefined {
-    return this.content[key];
+    return this.metadataRegistry[key];
   }
+
+  initForm(form: MetadataForm): MetadataForm {
+    this.formGroup = this.helper.toFormGroup(form.jsonSchema as JsonSchema, form.data);
+    this.buildMetadataRegistry('project', form.jsonSchema as JsonSchema);
+    return form;
+  }
+
+  buildMetadataRegistry(parentKey: string, jsonSchema: JsonSchema): void {
+    const formConfig = this.metadataRegistry;
+    const config = this.config;
+
+    let parentMetadata;
+    if (formConfig[parentKey] === undefined) {
+      parentMetadata = new Metadata({
+        key: parentKey,
+        schema: jsonSchema as JsonSchemaProperty
+      });
+      formConfig[parentKey] = parentMetadata;
+    } else {
+      parentMetadata = formConfig[parentKey];
+    }
+    for (const key of Object.keys(jsonSchema.properties)) {
+      let metadata: Metadata;
+      const configKey = parentKey ? parentKey + '.' + key : key;
+      if (formConfig[configKey] === undefined) {
+        const property = this.helper.getProperty(key, jsonSchema);
+        const requiredFields = jsonSchema.required ? jsonSchema.required : [];
+        const hiddenFields = this.config && this.config.hideFields ? this.config.hideFields : [];
+        const disabledFields = this.config && this.config.disableFields ? this.config.disableFields : [];
+        const isRequired = requiredFields.indexOf(key) >= 0;
+        const isHidden = hiddenFields.indexOf(key) >= 0;
+        const isDisabled = config && config.viewMode || disabledFields.indexOf(key) >= 0;
+        metadata = new Metadata({
+          isRequired: isRequired,
+          isHidden: isHidden,
+          isDisabled: isDisabled,
+          key: key,
+          schema: property
+        });
+        formConfig[configKey] = metadata;
+      } else {
+        metadata = formConfig[configKey];
+      }
+
+      parentMetadata.addChild(configKey);
+      metadata.setParent(parentKey);
+      metadata.setParentMetadata(parentMetadata);
+
+      if (metadata.isScalar()) {
+      } else if (metadata.isScalarList()) {
+
+      } else if (metadata.isObject()) {
+        this.buildMetadataRegistry(configKey, metadata.schema as JsonSchema);
+
+      } else if (metadata.isObjectList()) {
+        this.buildMetadataRegistry(configKey, metadata.schema.items as JsonSchema);
+
+      }
+    }
+
+  }
+
 }
 
 export class MetadataFormHelper {
-  content: object;
   config: MetadataFormConfig;
 
   constructor(config?: MetadataFormConfig) {
     this.config = config;
-  }
-
-  initForm(form: MetadataForm): MetadataForm {
-    this.content = form.content
-    this._build(form.key, form.jsonSchema, form.data);
-    return form;
-  }
-
-  _build(parentKey: string, jsonSchema: JsonSchema, data?: object): object {
-    const group: any = {};
-
-    const formConfig = this.content;
-
-    if (formConfig[parentKey] === undefined) {
-      formConfig[parentKey] = {};
-    }
-    if (formConfig[parentKey]['children'] === undefined) {
-      formConfig[parentKey]['children'] = [];
-    }
-
-    this.getFieldMap(jsonSchema).forEach((field: Metadata, key: string) => {
-      const configKey = parentKey ? parentKey + '.' + key : key;
-      const subData = data && data[key] ? data[key] : undefined;
-      field.addChild(configKey);
-      field.setParent(parentKey);
-      formConfig[parentKey]['children'].push(configKey);
-
-
-      if (formConfig[configKey] === undefined) {
-        formConfig[configKey] = {};
-      }
-
-      if (formConfig[configKey]['field'] === undefined) {
-        formConfig[configKey] = {};
-      }
-
-      formConfig[configKey]['parent'] = parentKey;
-      if (field.isScalar()) {
-        const formControl = this.toFormControl(field, subData);
-        group[field.key] = formControl;
-
-        formConfig[configKey]['field'] = field;
-        formConfig[configKey]['formControl'] = formControl;
-
-      } else if (field.isScalarList()) {
-        const formArray = this.toFormControlArray(field, subData);
-        group[field.key] = formArray;
-        formConfig[configKey]['field'] = field;
-        formConfig[configKey]['formControl'] = formArray;
-
-      } else if (field.isObject()) {
-        this._build(configKey, field.schema as JsonSchema, subData);
-        const formGroup = this.toFormGroup(field.schema as JsonSchema, subData);
-        group[field.key] = formGroup;
-
-        formConfig[configKey]['formControl'] = formGroup;
-        formConfig[configKey]['field'] = field;
-
-      } else if (field.isObjectList()) {
-        this._build(configKey, field.schema.items as JsonSchema, subData);
-        const formArray = this.toFormGroupArray(field.schema.items as JsonSchema, subData);
-        group[field.key] = formArray;
-        formConfig[configKey]['formControl'] = formArray;
-        formConfig[configKey]['field'] = field;
-      }
-    });
-
-    formConfig[parentKey]['formControl'] = new FormGroup(group);
-
-    return formConfig;
-
   }
 
 
@@ -112,7 +108,7 @@ export class MetadataFormHelper {
       const disabledFields = config && config.disableFields ? config.hideFields : [];
       const isRequired = requiredFields.indexOf(key) >= 0;
       const isHidden = hiddenFields.indexOf(key) >= 0;
-      const isDisabled = disabledFields.indexOf(key) >= 0;
+      const isDisabled = config && config.viewMode || disabledFields.indexOf(key) >= 0;
       const metadataField = new Metadata({
         isRequired: isRequired,
         isHidden: isHidden,
@@ -152,8 +148,9 @@ export class MetadataFormHelper {
   }
 
   toFormControl(field: Metadata, data?: any) {
-    const formControl = field.isRequired ? new FormControl(data, Validators.required)
-      : new FormControl(data);
+    const state = {value: data, disabled: field.isDisabled};
+    const formControl = field.isRequired ? new FormControl(state, Validators.required)
+      : new FormControl(state);
     return formControl;
   }
 
@@ -170,7 +167,7 @@ export class MetadataFormHelper {
     return new FormArray(controlData);
   }
 
-  toFormControlArray(field, data?: any) {
+  toFormControlArray(field: Metadata, data?: any) {
     const controlData = [];
     if (data && data.length > 0) {
       for (const elem of data) {
