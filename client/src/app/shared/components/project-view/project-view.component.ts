@@ -25,7 +25,12 @@ export class ProjectViewComponent implements OnInit {
           'title': 'Project',
           'items': [
             'project.project_core',
-            'project'
+            'project.array_express_accessions',
+            'project.biostudies_accessions',
+            'project.geo_series_accessions',
+            'project.insdc_project_accessions',
+            'project.insdc_study_accessions',
+            'project.supplementary_links'
           ]
         },
         {
@@ -48,7 +53,6 @@ export class ProjectViewComponent implements OnInit {
         }
       ]
     }
-
   };
 
   constructor(private alertService: AlertService) {
