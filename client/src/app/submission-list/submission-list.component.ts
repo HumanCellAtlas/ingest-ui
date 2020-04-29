@@ -43,6 +43,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   pageEvent: PageEvent;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  upload: boolean = false;
 
   constructor(private ingestService: IngestService,
               private router: Router,
@@ -227,6 +228,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
           this.loaderService.display(false);
         });
     }
+  }
+
+  onSwitchUpload() {
+    this.upload = !this.upload;
   }
 }
 
