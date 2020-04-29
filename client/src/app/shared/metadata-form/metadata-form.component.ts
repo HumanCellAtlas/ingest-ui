@@ -53,7 +53,7 @@ export class MetadataFormComponent implements OnInit {
     e.preventDefault();
     const formData = this.metadataFormService.cleanFormData(this.metadataForm.formGroup.value);
     console.log('clean form data', formData);
-    // this.save.emit(formData);
+    this.save.emit(formData);
   }
 
   removeFormControl(control: AbstractControl, i: number) {

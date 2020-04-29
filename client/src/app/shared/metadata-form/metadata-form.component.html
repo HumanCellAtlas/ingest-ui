@@ -1,12 +1,13 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
 
   <mat-tab-group>
-
     <ng-container *ngFor="let tab of config.layout['tabs']">
       <mat-tab [label]="tab['title']">
         <div class="vf-u-margin__top--xxl">
           <ng-container *ngFor="let item of tab['items']">
-            <ng-container *ngIf="metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
+
+            <ng-container
+              *ngIf="metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
               <ng-container appMetadataField [metadata]="metadataForm.get(item)"
                             [control]="metadataForm.formGroup['controls'][metadataForm.get(item).key]">
 
@@ -42,7 +43,6 @@
                 </a>
               </ng-container>
             </ng-container>
-
           </ng-container>
         </div>
       </mat-tab>
