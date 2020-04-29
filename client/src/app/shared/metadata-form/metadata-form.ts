@@ -29,46 +29,52 @@ export class MetadataForm {
 
   initForm(form: MetadataForm): MetadataForm {
     this.formGroup = this.helper.toFormGroup(form.jsonSchema as JsonSchema, form.data);
-    this.buildMetadataRegistry('project', form.jsonSchema as JsonSchema);
+    this.buildMetadataRegistry(form.key, form.jsonSchema as JsonSchema);
     return form;
   }
 
   buildMetadataRegistry(parentKey: string, jsonSchema: JsonSchema): void {
-    const formConfig = this.metadataRegistry;
-    const config = this.config;
+    const registry = this.metadataRegistry;
 
     let parentMetadata;
-    if (formConfig[parentKey] === undefined) {
+    if (registry[parentKey] === undefined) {
       parentMetadata = new Metadata({
         key: parentKey,
         schema: jsonSchema as JsonSchemaProperty
       });
-      formConfig[parentKey] = parentMetadata;
+      registry[parentKey] = parentMetadata;
     } else {
-      parentMetadata = formConfig[parentKey];
+      parentMetadata = registry[parentKey];
     }
+
     for (const key of Object.keys(jsonSchema.properties)) {
       let metadata: Metadata;
-      const configKey = parentKey ? parentKey + '.' + key : key;
-      if (formConfig[configKey] === undefined) {
+      const metadataKey = parentKey ? parentKey + '.' + key : key;
+      if (registry[metadataKey] === undefined) {
         metadata = this.helper.createMetadata(jsonSchema, key);
-        formConfig[configKey] = metadata;
+        registry[metadataKey] = metadata;
       } else {
-        metadata = formConfig[configKey];
+        metadata = registry[metadataKey];
       }
 
-      parentMetadata.addChild(configKey);
+      parentMetadata.addChild(metadataKey);
+      parentMetadata.addChildMetadata(metadata);
       metadata.setParent(parentKey);
       metadata.setParentMetadata(parentMetadata);
+
+      if (parentMetadata.isHidden) {
+        metadata.setHidden(true);
+      }
+
 
       if (metadata.isScalar()) {
       } else if (metadata.isScalarList()) {
 
       } else if (metadata.isObject()) {
-        this.buildMetadataRegistry(configKey, metadata.schema as JsonSchema);
+        this.buildMetadataRegistry(metadataKey, metadata.schema as JsonSchema);
 
       } else if (metadata.isObjectList()) {
-        this.buildMetadataRegistry(configKey, metadata.schema.items as JsonSchema);
+        this.buildMetadataRegistry(metadataKey, metadata.schema.items as JsonSchema);
 
       }
     }

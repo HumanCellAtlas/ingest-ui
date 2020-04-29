@@ -22,3 +22,16 @@
   </ng-container>
 
 </ng-container>
+
+<ng-container *ngIf="metadata.isObject()">
+  <ng-container *ngFor="let child of metadata.childrenMetadata">
+    <app-vf-input *ngIf="!child.isHidden"
+                  [formControl]="control['controls'][child.key]"
+                  [label]="child.schema.user_friendly ? child.schema.user_friendly : child.key"
+                  [dataType]="child.schema.type"
+                  [example]="child.schema.example"
+                  [helperText]="child.schema.guidelines"
+                  [isRequired]="child.isRequired">
+    </app-vf-input>
+  </ng-container>
+</ng-container>

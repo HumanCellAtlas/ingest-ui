@@ -16,12 +16,39 @@ export class ProjectViewComponent implements OnInit {
 
   projectJsonSchema: any = (schema as any).default;
   config: MetadataFormConfig = {
-    hideFields: ['describedBy', 'schema_version', 'schema_type'],
+    hideFields: ['describedBy', 'schema_version', 'schema_type', 'provenance'],
     removeEmptyFields: true,
-    customFieldType: {
-      'project.project_core.project_description': 'textarea'
-    },
-    viewMode: true
+    viewMode: true,
+    layout: {
+      'tabs': [
+        {
+          'title': 'Project',
+          'items': [
+            'project.project_core',
+            'project'
+          ]
+        },
+        {
+          'title': 'Contributors',
+          'items': [
+            'project.contributors'
+          ]
+        },
+        {
+          'title': 'Publications',
+          'items': [
+            'project.publications'
+          ]
+        },
+        {
+          'title': 'Funders',
+          'items': [
+            'project.funders'
+          ]
+        }
+      ]
+    }
+
   };
 
   constructor(private alertService: AlertService) {

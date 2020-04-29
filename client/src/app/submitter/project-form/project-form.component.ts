@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import * as layout from './layout.json';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
@@ -15,31 +14,63 @@ import {LoaderService} from '../../shared/services/loader.service';
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit {
+  title: string;
+  subtitle: string;
 
   projectJsonSchema: any = (schema as any).default;
-  projectLayout: any = (layout as any).default;
-
 
   projectResource: Project;
   projectContent: object;
-  projectNewContent: object;
 
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
-  formOptions: any = {
-    addSubmit: true,
-    defaultWidgetOptions: {feedback: true}
-  };
+
   config: MetadataFormConfig = {
-    hideFields: ['describedBy', 'schema_version', 'schema_type'],
+    hideFields: [
+      'describedBy',
+      'schema_version',
+      'schema_type',
+      'provenance'
+    ],
     removeEmptyFields: true,
-    customFieldType: {
-      'project.project_core.project_description': 'textarea'
+
+    layout: {
+      'tabs': [
+        {
+          'title': 'Project',
+          'items': [
+            'project.project_core',
+            'project.array_express_accessions',
+            'project.biostudies_accessions',
+            'project.geo_series_accessions',
+            'project.insdc_project_accessions',
+            'project.insdc_study_accessions',
+            'project.supplementary_links'
+          ]
+        },
+        {
+          'title': 'Contributors',
+          'items': [
+            'project.contributors'
+          ]
+        },
+        {
+          'title': 'Publications',
+          'items': [
+            'project.publications'
+          ]
+        },
+        {
+          'title': 'Funders',
+          'items': [
+            'project.funders'
+          ]
+        }
+      ]
     }
   };
-  title: string;
-  subtitle: string;
+
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -52,7 +83,6 @@ export class ProjectFormComponent implements OnInit {
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     this.projectResource = null;
-    this.projectNewContent = null;
     this.formIsValid = null;
     this.formValidationErrors = null;
     this.projectContent = {};

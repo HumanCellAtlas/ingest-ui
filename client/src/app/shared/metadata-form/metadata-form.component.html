@@ -1,128 +1,52 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
+
   <mat-tab-group>
-    <mat-tab label="Project">
-      <div class="vf-u-margin__top--xxl">
 
-        <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.project_core'].children">
-          <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
-                        [control]="metadataForm.formGroup['controls']['project_core']['controls'][metadataForm.metadataRegistry[child].key]">
-          </ng-container>
-        </ng-container>
+    <ng-container *ngFor="let tab of config.layout['tabs']">
+      <mat-tab [label]="tab['title']">
+        <div class="vf-u-margin__top--xxl">
+          <ng-container *ngFor="let item of tab['items']">
+            <ng-container *ngIf="metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
+              <ng-container appMetadataField [metadata]="metadataForm.get(item)"
+                            [control]="metadataForm.formGroup['controls'][metadataForm.get(item).key]">
 
-
-        <ng-container *ngFor="let child of metadataForm.metadataRegistry['project'].children">
-          <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
-                        [control]="metadataForm.formGroup['controls'][metadataForm.metadataRegistry[child].key]">
-          </ng-container>
-        </ng-container>
-
-      </div>
-    </mat-tab>
-
-    <mat-tab label="Contributors">
-      <div class="vf-u-margin__top--xxl">
-
-        <ng-container
-          *ngFor="let control of metadataForm.formGroup['controls']['contributors']['controls'] ; let i = index">
-          <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.contributors'].children">
-            <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
-                          [control]="control['controls'][metadataForm.metadataRegistry[child].key]">
+              </ng-container>
             </ng-container>
-          </ng-container>
 
-          <ng-container *ngIf="!config.viewMode">
-            <a color="warn" mat-icon-button
-               (click)="removeFormControl(metadataForm.formGroup['controls']['contributors'], i)">
-              <mat-icon>remove_circle_outline</mat-icon>
-              Remove
-            </a>
-          </ng-container>
+            <ng-container *ngIf="metadataForm.get(item).isObjectList()">
+              <ng-container
+                *ngFor="let control of metadataForm.formGroup['controls'][metadataForm.get(item).key]['controls'] ; let i = index">
+                <ng-container *ngFor="let child of metadataForm.get(item).childrenMetadata">
+                  <ng-container appMetadataField [metadata]="child"
+                                [control]="control['controls'][child.key]">
+                  </ng-container>
+                </ng-container>
 
-          <hr class="vf-divider">
+                <ng-container *ngIf="!config.viewMode">
+                  <a color="warn" mat-icon-button
+                     (click)="removeFormControl(metadataForm.formGroup['controls'][metadataForm.get(item).key], i)">
+                    <mat-icon>remove_circle_outline</mat-icon>
+                    Remove
+                  </a>
+                </ng-container>
 
-        </ng-container>
+                <hr class="vf-divider">
 
-        <ng-container *ngIf="!config.viewMode">
-          <a mat-icon-button
-             (click)="addFormControl(metadataForm.metadataRegistry['project.contributors'], metadataForm.formGroup['controls']['contributors'])">
-            <mat-icon>add_circle_outline</mat-icon>
-            Add
-          </a>
-        </ng-container>
+              </ng-container>
 
-
-      </div>
-    </mat-tab>
-
-    <mat-tab label="Publications">
-      <div class="vf-u-margin__top--xxl">
-
-        <ng-container
-          *ngFor="let control of metadataForm.formGroup['controls']['publications']['controls'] ; let i = index">
-          <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.publications'].children">
-            <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
-                          [control]="control['controls'][metadataForm.metadataRegistry[child].key]">
+              <ng-container *ngIf="!config.viewMode">
+                <a mat-icon-button
+                   (click)="addFormControl(metadataForm.get(item), metadataForm.formGroup['controls'][metadataForm.get(item).key])">
+                  <mat-icon>add_circle_outline</mat-icon>
+                  Add
+                </a>
+              </ng-container>
             </ng-container>
+
           </ng-container>
-
-
-          <ng-container *ngIf="!config.viewMode">
-            <a color="warn" mat-icon-button
-               (click)="removeFormControl(metadataForm.formGroup['controls']['publications'], i)">
-              <mat-icon>remove_circle_outline</mat-icon>
-              Remove
-            </a>
-          </ng-container>
-          <hr class="vf-divider">
-
-        </ng-container>
-
-        <ng-container *ngIf="!config.viewMode">
-          <a mat-icon-button
-             (click)="addFormControl(metadataForm.metadataRegistry['project.publications'], metadataForm.formGroup['controls']['publications'])">
-            <mat-icon>add_circle_outline</mat-icon>
-            Add
-          </a>
-        </ng-container>
-
-      </div>
-    </mat-tab>
-
-    <mat-tab label="Funders">
-      <div class="vf-u-margin__top--xxl">
-
-        <ng-container
-          *ngFor="let control of metadataForm.formGroup['controls']['funders']['controls'] ; let i = index">
-          <ng-container *ngFor="let child of metadataForm.metadataRegistry['project.funders'].children">
-            <ng-container appMetadataField [metadata]="metadataForm.metadataRegistry[child]"
-                          [control]="control['controls'][metadataForm.metadataRegistry[child].key]">
-            </ng-container>
-          </ng-container>
-
-          <ng-container *ngIf="!config.viewMode">
-            <a color="warn" mat-icon-button
-               (click)="removeFormControl(metadataForm.formGroup['controls']['funders'], i)">
-              <mat-icon>remove_circle_outline</mat-icon>
-              Remove
-            </a>
-          </ng-container>
-          <hr class="vf-divider">
-
-        </ng-container>
-
-
-        <ng-container *ngIf="!config.viewMode">
-          <a mat-icon-button
-             (click)="addFormControl(metadataForm.metadataRegistry['project.funders'], metadataForm.formGroup['controls']['funders'])">
-            <mat-icon>add_circle_outline</mat-icon>
-            Add
-          </a>
-        </ng-container>
-
-      </div>
-    </mat-tab>
-
-
+        </div>
+      </mat-tab>
+    </ng-container>
   </mat-tab-group>
 
   <ng-container *ngIf="!config.viewMode">

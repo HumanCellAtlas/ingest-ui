@@ -22,7 +22,7 @@ export class MetadataFieldDirective implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.metadata.isScalar() || this.metadata.isScalarList()) {
+    if (this.metadata.isScalar() || this.metadata.isScalarList() || this.metadata.isObject()) {
       const component = MetadataFieldComponent;
       const factory = this.resolver.resolveComponentFactory<any>(component);
       this.component = this.container.createComponent(factory);

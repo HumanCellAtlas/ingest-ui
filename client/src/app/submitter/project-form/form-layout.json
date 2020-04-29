@@ -1,0 +1,29 @@
+{
+  "tabs": [
+    {
+      "title": "Project",
+      "items": [
+        "project.project_core",
+        "project"
+      ]
+    },
+    {
+      "title": "Contributors",
+      "items": [
+        "project.contributors"
+      ]
+    },
+    {
+      "title": "Publications",
+      "items": [
+        "project.publications"
+      ]
+    },
+    {
+      "title": "Funders",
+      "items": [
+        "project.funders"
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ export class Metadata {
   fieldType: string;
   control: any;
   parentMetadata: Metadata;
+  childrenMetadata: Metadata[];
 
 
   constructor(options: {
@@ -38,6 +39,7 @@ export class Metadata {
     this.isDisabled = options.isDisabled === undefined ? false : options.isDisabled;
     this.isHidden = options.isHidden === undefined ? false : options.isHidden;
     this.children = [];
+    this.childrenMetadata = [];
     this.fieldType = this.schema && this.schema.type ? FIELD_TYPE[this.schema.type] : undefined;
   }
 
@@ -64,6 +66,10 @@ export class Metadata {
     this.children.push(key);
   }
 
+  addChildMetadata(metadata: Metadata) {
+    this.childrenMetadata.push(metadata);
+  }
+
   setParent(key: string) {
     this.parent = key;
   }
@@ -76,5 +82,9 @@ export class Metadata {
     this.control = control;
   }
 
+  setHidden(hidden: boolean): boolean {
+    this.isHidden = hidden
+    return hidden;
+  }
 }
 
