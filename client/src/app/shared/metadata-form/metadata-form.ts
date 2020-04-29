@@ -51,20 +51,7 @@ export class MetadataForm {
       let metadata: Metadata;
       const configKey = parentKey ? parentKey + '.' + key : key;
       if (formConfig[configKey] === undefined) {
-        const property = this.helper.getProperty(key, jsonSchema);
-        const requiredFields = jsonSchema.required ? jsonSchema.required : [];
-        const hiddenFields = this.config && this.config.hideFields ? this.config.hideFields : [];
-        const disabledFields = this.config && this.config.disableFields ? this.config.disableFields : [];
-        const isRequired = requiredFields.indexOf(key) >= 0;
-        const isHidden = hiddenFields.indexOf(key) >= 0;
-        const isDisabled = config && config.viewMode || disabledFields.indexOf(key) >= 0;
-        metadata = new Metadata({
-          isRequired: isRequired,
-          isHidden: isHidden,
-          isDisabled: isDisabled,
-          key: key,
-          schema: property
-        });
+        metadata = this.helper.createMetadata(jsonSchema, key);
         formConfig[configKey] = metadata;
       } else {
         metadata = formConfig[configKey];
@@ -97,31 +84,33 @@ export class MetadataFormHelper {
     this.config = config;
   }
 
-
   getFieldMap(jsonSchema: JsonSchema): Map<string, Metadata> {
     const config = this.config;
     const metadataFieldMap = new Map<string, Metadata>();
     for (const key of Object.keys(jsonSchema.properties)) {
-      const property = this.getProperty(key, jsonSchema);
-      const requiredFields = jsonSchema.required ? jsonSchema.required : [];
-      const hiddenFields = config && config.hideFields ? config.hideFields : [];
-      const disabledFields = config && config.disableFields ? config.hideFields : [];
-      const isRequired = requiredFields.indexOf(key) >= 0;
-      const isHidden = hiddenFields.indexOf(key) >= 0;
-      const isDisabled = config && config.viewMode || disabledFields.indexOf(key) >= 0;
-      const metadataField = new Metadata({
-        isRequired: isRequired,
-        isHidden: isHidden,
-        isDisabled: isDisabled,
-        key: key,
-        schema: property
-      });
-
+      const metadataField = this.createMetadata(jsonSchema, key);
       metadataFieldMap.set(key, metadataField);
     }
     return metadataFieldMap;
   }
 
+  createMetadata(jsonSchema: JsonSchema, key: string): Metadata {
+    const property = this.getProperty(key, jsonSchema);
+    const requiredFields = jsonSchema.required ? jsonSchema.required : [];
+    const hiddenFields = this.config && this.config.hideFields ? this.config.hideFields : [];
+    const disabledFields = this.config && this.config.disableFields ? this.config.hideFields : [];
+    const isRequired = requiredFields.indexOf(key) >= 0;
+    const isHidden = hiddenFields.indexOf(key) >= 0;
+    const isDisabled = this.config && this.config.viewMode || disabledFields.indexOf(key) >= 0;
+    const metadataField = new Metadata({
+      isRequired: isRequired,
+      isHidden: isHidden,
+      isDisabled: isDisabled,
+      key: key,
+      schema: property
+    });
+    return metadataField;
+  }
 
   getProperty(key: string, jsonSchema: JsonSchema): JsonSchemaProperty {
     return jsonSchema.properties[key];
@@ -179,4 +168,5 @@ export class MetadataFormHelper {
     }
     return new FormArray(controlData);
   }
+
 }
