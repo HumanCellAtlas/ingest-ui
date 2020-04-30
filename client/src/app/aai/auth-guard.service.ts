@@ -3,9 +3,10 @@ import {AaiService} from './aai.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {AaiSecurity} from "./aai.module";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: AaiSecurity,
 })
 export class AuthGuardService implements CanActivate {
 

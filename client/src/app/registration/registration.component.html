@@ -1,0 +1,23 @@
+<div id="registration-content">
+  <h1>Welcome to the Human Cell Atlas</h1>
+
+  <p>&nbsp;</p>
+  <span id="registration-terms">
+    <input type="checkbox" name="termsAccepted" [(ngModel)]="termsAccepted"/>
+    &nbsp; By ticking this box, you agree to the terms and condition.
+  </span>
+
+  <p>&nbsp;</p>
+  <input type="button" name="register" value="Register" [disabled]="!termsAccepted" (click)="proceed()">
+
+  <div *ngIf="status && status.message" id="registration-message">
+    <p>&nbsp;</p>
+    <div class="message-box">
+      <span class="registration-message">{{status.message}}</span><br/>
+      <div *ngIf="status.success">
+        <span>&nbsp;</span><br/>
+        <input type="button" name="ok" value="OK" (click)="router.navigate(['/home'])"/>
+      </div>
+    </div>
+  </div>
+</div>

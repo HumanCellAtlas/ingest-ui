@@ -1,4 +1,10 @@
-<div class="dashboard mat-typography" *ngIf="submissionEnvelopes || {}">
+<div align="right">
+  <button type="button" class="vf-button vf-button--sm {{upload ? '' : 'vf-button--primary'}}"  (click)="onSwitchUpload()">
+    {{upload ? "Cancel" : "Upload New Submission"}}
+  </button>
+</div>
+<app-upload *ngIf="upload"></app-upload>
+<div class="dashboard mat-typography" [hidden]="upload">
   <div>
     <table  id="submissions">
       <thead align="left">
@@ -55,11 +61,12 @@
 
   </div>
 
+  <mat-paginator [length]="currentPageInfo['totalElements']"
+                 [pageSize]="currentPageInfo['size']"
+                 [pageIndex]="currentPageInfo['number']"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="pageEvent = $event">
+  </mat-paginator>
+
 </div>
 
-<mat-paginator [length]="currentPageInfo['totalElements']"
-               [pageSize]="currentPageInfo['size']"
-               [pageIndex]="currentPageInfo['number']"
-               [pageSizeOptions]="pageSizeOptions"
-               (page)="pageEvent = $event">
-</mat-paginator>

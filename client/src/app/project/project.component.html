@@ -7,10 +7,10 @@
   </app-project-view>
   <br/>
   <div>
-    <a class="btn btn-success" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
+    <a class="vf-button vf-button--sm {{upload ? '' : 'vf-button--primary'}}" role="button" routerLink="/projects/{{project?.uuid?.uuid}}">Edit Project</a>
     <button
       *ngIf="canSubmit(project)"
-      type="button" class="btn btn-success"
+      type="button" class="vf-button vf-button--sm {{upload ? '' : 'vf-button--primary'}}"
       (click)="onSwitchUpload()">{{upload ? "Cancel" : "Submit to Project"}}</button>
     <button *ngIf="submissionEnvelopes && submissionEnvelopes.length === 0" mat-icon-button (click)="onDeleteProject()">
       <mat-icon>delete_forever</mat-icon>

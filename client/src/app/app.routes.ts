@@ -8,6 +8,7 @@ import {AuthGuardService} from './aai/auth-guard.service';
 import {ProjectFormComponent} from './submitter/project-form/project-form.component';
 import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
 import {SubmissionListComponent} from './submission-list/submission-list.component';
+import {RegistrationComponent} from "./registration/registration.component";
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
@@ -29,6 +30,8 @@ export const ROUTES: Routes = [
   {path: 'projects', component: MyProjectsComponent,  canActivate: [AuthGuardService]},
   {path: 'projects/new', component: ProjectFormComponent,  canActivate: [AuthGuardService]},
   {path: 'projects/:uuid', component: ProjectFormComponent,  canActivate: [AuthGuardService]},
+
+  {path: 'registration', component: RegistrationComponent},
 
   {path: '**', redirectTo: ''}
 ];

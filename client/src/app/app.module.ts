@@ -64,6 +64,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {AaiSecurity} from './aai/aai.module';
+import { RegistrationComponent } from './registration/registration.component';
 
 
 @NgModule({
@@ -90,7 +92,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     AaiCallbackComponent,
     ProjectFormComponent,
     MyProjectsComponent,
-    GlobalHeaderComponent
+    GlobalHeaderComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -120,7 +123,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MaterialDesignFrameworkModule
+    MaterialDesignFrameworkModule,
+    AaiSecurity,
   ],
   providers: [
     {
