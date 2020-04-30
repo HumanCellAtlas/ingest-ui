@@ -224,7 +224,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err.error.message);
-          console.log('error deleting submission', err);
+          console.error('error deleting submission', err);
           this.loaderService.display(false);
         });
     }

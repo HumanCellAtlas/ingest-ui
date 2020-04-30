@@ -1,28 +1,18 @@
-<div align="right">
-  <a *ngIf="createMode" routerLink="/projects" class="text-info">Cancel</a>
-  <a *ngIf="!createMode" routerLink="/projects/detail" [queryParams]="{uuid:projectResource?.uuid?.uuid}"
-     class="text-info">Cancel</a>
-</div>
+<h1 class="vf-text vf-text-heading--2">{{title}}</h1>
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
+  {{subtitle}}
+</p>
+<br/>
+<br/>
 
-<ng-container>
-  <json-schema-form
-    [framework]="'material-design'"
-    [schema]="projectSchema"
-    [layout]="projectLayout"
-    [data]="projectContent"
-    [options]="formOptions"
-    (onSubmit)="onSave()"
-    (isValid)="isValid($event)"
-    (onChanges)="onChanges($event)"
-    (validationErrors)="validationErrors($event)">
-  </json-schema-form>
-  <div>
-    <br/>
-    <span class="text-danger"
-          [innerHTML]="prettyValidationErrors"></span>
-    <br/>
-    <span class="text-danger"
-          [innerHTML]="postValidationErrors"></span>
-  </div>
+<p *ngIf="!projectResource && !createMode">Loading project...</p>
+
+<ng-container *ngIf="projectResource || createMode">
+  <app-metadata-form name="project"
+                     [schema]="projectJsonSchema"
+                     [data]="projectContent"
+                     [config]="config"
+                     (cancel)="onCancel($event)"
+                     (save)="onSave($event)">
+  </app-metadata-form>
 </ng-container>
-

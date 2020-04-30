@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../models/project';
-import * as layout from '../../../submitter/project-form/layout.json';
-import * as schema from '../../../submitter/project-form/flat-modified-schema.json';
+import {AlertService} from '../../services/alert.service';
+import * as schema from '../../../submitter/project-form/schema.json';
+import {MetadataFormConfig} from '../../metadata-form/metadata-form-config';
 
 @Component({
   selector: 'app-project-view',
@@ -10,22 +11,58 @@ import * as schema from '../../../submitter/project-form/flat-modified-schema.js
 })
 export class ProjectViewComponent implements OnInit {
   @Input() project: Project;
-  projectLayout: any = (layout as any).default;
-  projectSchema: any = (schema as any).default;
-  options: object = {
-    addSubmit: false,
-    defautWidgetOptions: {
-      readonly: true,
-      addable: false,
-      orderable: false,
-      removable: false
+  title: string;
+  subtitle: string;
+
+  projectJsonSchema: any = (schema as any).default;
+  config: MetadataFormConfig = {
+    hideFields: ['describedBy', 'schema_version', 'schema_type', 'provenance'],
+    removeEmptyFields: true,
+    viewMode: true,
+    layout: {
+      'tabs': [
+        {
+          'title': 'Project',
+          'items': [
+            'project.project_core',
+            'project.array_express_accessions',
+            'project.biostudies_accessions',
+            'project.geo_series_accessions',
+            'project.insdc_project_accessions',
+            'project.insdc_study_accessions',
+            'project.supplementary_links'
+          ]
+        },
+        {
+          'title': 'Contributors',
+          'items': [
+            'project.contributors'
+          ]
+        },
+        {
+          'title': 'Publications',
+          'items': [
+            'project.publications'
+          ]
+        },
+        {
+          'title': 'Funders',
+          'items': [
+            'project.funders'
+          ]
+        }
+      ]
     }
   };
 
-  constructor() {
+  constructor(private alertService: AlertService) {
   }
 
-  get postValidationErrors() {
+  ngOnInit() {
+    this.displayPostValidationErrors();
+  }
+
+  displayPostValidationErrors() {
     if (!this.project) {
       return null;
     }
@@ -34,15 +71,15 @@ export class ProjectViewComponent implements OnInit {
     }
     const errorArray = [];
     for (const error of this.project.validationErrors) {
-      if(error.userFriendlyMessage)
+      if (error.userFriendlyMessage) {
         errorArray.push(error.userFriendlyMessage);
-      else
+      } else {
         errorArray.push(error.message);
+      }
     }
-    return errorArray.join('<br>');
+    const message = '<ul><li>' + errorArray.join('</li><li>') + '</li>';
+    this.alertService.error('JSON Validation Error', message, false, false);
   }
 
-  ngOnInit() {
-  }
 
 }

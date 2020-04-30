@@ -213,7 +213,10 @@ export class SubmissionComponent implements OnInit {
       .subscribe(
         data => {
           this.submissionErrors = data['_embedded'] ? data['_embedded']['submissionErrors'] : [];
-          this.alertService.clear();
+          if (this.submissionErrors.length > 0) {
+            this.alertService.clear();
+          }
+
           if (this.submissionErrors.length > this.MAX_ERRORS) {
             const link = this.submissionEnvelope._links.submissionEnvelopeErrors.href;
             const message = `Cannot show more than ${this.MAX_ERRORS} errors.`;
@@ -250,7 +253,7 @@ export class SubmissionComponent implements OnInit {
           if (err instanceof HttpErrorResponse && err.status == 404) {
             // do nothing, the endpoint throws error when no submission manifest is found
           } else {
-            console.log(err);
+            console.error(err);
           }
         });
   }

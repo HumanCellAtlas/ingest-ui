@@ -25,4 +25,10 @@ export class ProjectListComponent implements OnInit {
   ngOnInit() {
   }
 
+  getContributors(project: Project) {
+    let contributors = project && project.content && project.content['contributors'];
+    contributors = contributors ? project.content['contributors'] : [];
+    const correspondents = contributors.filter(contributor => contributor['corresponding_contributor'] === true);
+    return correspondents.map(c => c['name']).join(' | ');
+  }
 }

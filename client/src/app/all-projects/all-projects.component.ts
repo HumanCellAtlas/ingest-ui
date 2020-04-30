@@ -89,7 +89,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.getCurrentPageInfo(this.pagination);
         },
         error: err => {
-          console.log('err', err);
+          console.error('err', err);
         }
       });
   }
@@ -114,7 +114,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         },
         error: err => {
-          console.log('err', err);
+          console.error('err', err);
         }
       });
   }

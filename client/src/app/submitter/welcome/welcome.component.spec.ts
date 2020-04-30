@@ -6,8 +6,8 @@ import {IngestService} from '../../shared/services/ingest.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {AaiService} from '../../aai/aai.service';
-import {of} from "rxjs";
-import {Profile} from "oidc-client";
+import {of} from 'rxjs';
+import {Profile} from 'oidc-client';
 
 
 describe('WelcomeComponent', () => {
@@ -23,7 +23,7 @@ describe('WelcomeComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [
-        WelcomeComponent,
+        WelcomeComponent
       ],
       providers: [
         {provide: AaiService, useValue: mockAaiSvc},

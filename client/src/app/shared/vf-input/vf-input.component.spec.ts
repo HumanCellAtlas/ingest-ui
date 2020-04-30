@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GlobalHeaderComponent } from './global-header.component';
+import { VfInputComponent } from './vf-input.component';
 
-describe('GlobalHeaderComponent', () => {
-  let component: GlobalHeaderComponent;
-  let fixture: ComponentFixture<GlobalHeaderComponent>;
+describe('VfInputFieldComponent', () => {
+  let component: VfInputComponent;
+  let fixture: ComponentFixture<VfInputComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GlobalHeaderComponent ]
+      declarations: [ VfInputComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GlobalHeaderComponent);
+    fixture = TestBed.createComponent(VfInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

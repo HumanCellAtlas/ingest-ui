@@ -42,6 +42,7 @@ export class ProjectComponent implements OnInit {
     this.ingestService.getProject(id).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
+      console.error(error);
       this.alertService.error('Project Not Found', `Project could not be found.`, true, true);
       this.router.navigate([`/projects`]);
     });
@@ -52,6 +53,7 @@ export class ProjectComponent implements OnInit {
     this.ingestService.getProjectByUuid(uuid).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
+      console.error(error);
       this.alertService.error('Project Not Found', `Project ${uuid} was not found.`, true, true);
       this.router.navigate([`/projects`]);
     });
@@ -106,7 +108,7 @@ export class ProjectComponent implements OnInit {
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err.error.message);
-          console.log('error deleting submission', err);
+          console.error('error deleting submission', err);
           this.loaderService.display(false);
         });
     }
@@ -133,7 +135,7 @@ export class ProjectComponent implements OnInit {
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err.error.message);
-          console.log('error deleting project', err);
+          console.error('error deleting project', err);
           this.loaderService.display(false);
         });
     }
