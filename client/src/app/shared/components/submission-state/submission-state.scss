@@ -1,0 +1,45 @@
+/*
+ * Mimic standard (non-basic) MD chip styles as a base for chips. Add additional classes to chips for styling of chips
+ * in different states.
+ */
+
+$danger-color: #d9534f;
+$info-color: #5bc0de;
+$success-color: #25c7c1;
+$warning-color: #f0ad4e;
+$primary-color: #0275d8;
+$secondary-color: #292b2c;
+
+.mat-basic-chip {
+  align-items: center;
+  border-radius: 24px;
+  color: #ffffff;
+  cursor: default;
+  display: inline-flex;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+  padding: 7px 12px;
+  /* TODO applying BS naming convention for coloring chips, revisit once ingest-UI UI design is complete. Also revisit use of CSS variables. */
+  &.danger {
+    background-color: $danger-color;
+  }
+  &.info {
+    background-color: $info-color;
+  }
+  &.secondary {
+    background-color: $secondary-color;
+  }
+  &.success {
+    background-color: $success-color;
+  }
+  &.success-invert {
+    border: 1px solid $success-color;
+    color: $success-color;
+  }
+  &.warning {
+    background-color: $warning-color;
+  }
+  &.warning-invert {
+    border: 1px solid $warning-color;
+    color: $warning-color;
+  }
+}

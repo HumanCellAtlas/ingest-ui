@@ -5,25 +5,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatIconModule,
-  MatInputModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatTooltipModule
-} from '@angular/material';
-
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
@@ -67,7 +48,23 @@ import {SchemaService} from './shared/services/schema.service';
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
 import {MaterialDesignFrameworkModule} from '@ajsf/material';
-import {AaiSecurity} from "./aai/aai.module";
+import {GlobalHeaderComponent} from './global-header/global-header.component';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatCardModule} from '@angular/material/card';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSelectModule} from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {AaiSecurity} from './aai/aai.module';
 import { RegistrationComponent } from './registration/registration.component';
 
 
@@ -95,10 +92,10 @@ import { RegistrationComponent } from './registration/registration.component';
     AaiCallbackComponent,
     ProjectFormComponent,
     MyProjectsComponent,
+    GlobalHeaderComponent,
     RegistrationComponent
   ],
   imports: [
-    NgbModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpClientModule,

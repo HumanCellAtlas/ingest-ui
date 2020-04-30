@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Profile} from 'oidc-client';
 import {AaiService} from '../aai/aai.service';
 
 @Component({
@@ -9,16 +8,12 @@ import {AaiService} from '../aai/aai.service';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent implements OnInit {
-  userInfo: Profile
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 
 
-  constructor(public aai: AaiService) {
+  constructor(private aai: AaiService) {
     this.aai.getUserSubject().subscribe(user => {
       this.isLoggedIn = user && !user.expired;
-      if (user) {
-        this.userInfo = user.profile;
-      }
     });
   }
 

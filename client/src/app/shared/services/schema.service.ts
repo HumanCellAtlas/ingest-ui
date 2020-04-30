@@ -5,24 +5,23 @@ import {IngestService} from './ingest.service';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Observable, of} from 'rxjs';
 
-
 @Injectable()
 export class SchemaService {
   API_URL: string = environment.SCHEMA_API_URL;
   latestSchemaMap: Map<string, MetadataSchema>;
 
-
   constructor(private http: HttpClient, private ingestService: IngestService) {
     console.log('schema api url', this.API_URL);
   }
 
-  public getLatestSchema(concreteType: string): Observable<MetadataSchema> {
+  public getUrlOfLatestSchema(concreteType: string): Observable<string> {
     return this.getLatestSchemas().map(schemaMap => {
-      let schema: MetadataSchema = schemaMap.get(concreteType);
-      if (schema['_links']['json-schema']['href'].includes('humancellatlas.orgtype')) {
-        schema['_links']['json-schema']['href'] = schema['_links']['json-schema']['href'].replace('humancellatlas.orgtype','humancellatlas.org/type');
+      const schema: MetadataSchema = schemaMap.get(concreteType);
+      const schemaUrl = schema['_links']['json-schema']['href'];
+      if (schemaUrl.includes('humancellatlas.orgtype')) {
+        return schemaUrl.replace('humancellatlas.orgtype', 'humancellatlas.org/type');
       }
-      return schema;
+      return schemaUrl;
     });
   }
 
@@ -41,5 +40,4 @@ export class SchemaService {
       return schemaMap;
     });
   }
-
 }

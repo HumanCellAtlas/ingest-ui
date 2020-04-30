@@ -1,7 +1,3 @@
-body {
-  padding-top: 5rem;
-}
-
 .starter-template {
   padding: 3rem 1.5rem;
   text-align: center;
@@ -13,3 +9,36 @@ body {
 
 // Default MD theme TODO revisit - customize once ingest-ui UI design is completed 	// Default MD theme TODO revisit - customize once ingest-ui UI design is completed
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+$grey-color: #f2f2f2;
+$dark-grey-color: #d4d4d4;
+
+
+.dashboard {
+  table{
+    border-spacing: 2px;
+    width: 100%;
+  }
+
+  thead {
+    th {
+      background-color: $dark-grey-color;
+      padding: 10px;
+      font-weight: 300;
+    }
+  }
+
+  tbody {
+    tr:nth-child(even) {
+      background-color: $grey-color;
+    }
+
+    td {
+      padding: 10px;
+      font-weight: 300;
+    }
+
+  }
+}
+
+

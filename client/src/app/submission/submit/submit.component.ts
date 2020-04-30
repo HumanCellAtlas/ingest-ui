@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IngestService} from "../../shared/services/ingest.service";
+import {Component, Input} from '@angular/core';
+import {IngestService} from '../../shared/services/ingest.service';
 
 @Component({
   selector: 'app-submit',
@@ -22,26 +22,23 @@ export class SubmitComponent {
   }
 
   completeSubmission() {
-    if(!this.triggersAnalysisCheck){
+    if (!this.triggersAnalysisCheck) {
       this.ingestService.patch(this.submissionUrl, {triggersAnalysis: false}).subscribe(
         (response) => {
-          console.log('patched submission');
-          console.log("Response is: ", response);
+          console.log('Response is: ', response);
           this.ingestService.submit(this.submitLink);
         },
         (error) => {
-          console.error("An error occurred, ", error);
+          console.error('An error occurred, ', error);
         });
-    }
-    else{
-      console.log('complete submission');
+    } else {
       this.ingestService.submit(this.submitLink);
     }
   }
 
-  getLinkingProgress(manifest){
-    if(manifest){
-      let percentage =  manifest['actualLinks']/manifest['expectedLinks'] * 100;
+  getLinkingProgress(manifest) {
+    if (manifest) {
+      const percentage = manifest['actualLinks'] / manifest['expectedLinks'] * 100;
       return percentage | 0;
     }
     return 100;

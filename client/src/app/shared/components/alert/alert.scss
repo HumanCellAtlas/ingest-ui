@@ -1,0 +1,38 @@
+$danger-color: rgba(217, 83, 79, 0.37);
+$info-color: rgba(91, 192, 222, 0.45);
+$success-color: rgba(37, 199, 193, 0.31);
+$warning-color: rgba(240, 173, 78, 0.33);
+
+.alert-banner {
+  padding:1em 1em 2em;
+  margin: 0 0 1em 0;
+  border-radius: 5px;
+}
+
+.error {
+  @extend .alert-banner;
+  background-color: $danger-color;
+}
+
+.success {
+  @extend .alert-banner;
+  background-color: $success-color;
+}
+
+.warning {
+  @extend .alert-banner;
+  background-color: $warning-color;
+}
+
+.info {
+  @extend .alert-banner;
+  background-color: $info-color;
+}
+
+.alert-close-btn:hover {
+  color: honeydew;
+}
+
+.mat-icon {
+  font-size: 1em;
+}

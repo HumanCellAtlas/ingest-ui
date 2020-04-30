@@ -1,17 +1,18 @@
-<json-schema-form
-  *ngIf="project"
-  loadExternalAssets="true"
-  [schema]="projectSchema"
-  [layout]="projectLayout"
-  framework="material-design"
-  [(data)]="project.content"
-  [options]=options
->
-</json-schema-form>
-
-<span class="text-danger"
-      [innerHTML]="postValidationErrors">
-</span>
+<h1 class="vf-text vf-text-heading--2">{{title}}</h1>
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
+  {{subtitle}}
+</p>
 <br/>
 <br/>
 
+<p *ngIf="!project">Loading project...</p>
+
+<ng-container *ngIf="project">
+  <mat-card>
+    <app-metadata-form name="project"
+                       [schema]="projectJsonSchema"
+                       [data]="project.content"
+                       [config]="config">
+    </app-metadata-form>
+  </mat-card>
+</ng-container>

@@ -4,9 +4,9 @@ import {LoginComponent} from './login.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {Router} from '@angular/router';
 import {AaiService} from '../aai/aai.service';
-import {AlertService} from "../shared/services/alert.service";
-import {of} from "rxjs";
-import {User} from "oidc-client";
+import {AlertService} from '../shared/services/alert.service';
+import {of} from 'rxjs';
+import {User} from 'oidc-client';
 
 
 describe('LoginComponent', () => {

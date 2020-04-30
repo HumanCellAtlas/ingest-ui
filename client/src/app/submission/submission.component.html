@@ -2,8 +2,8 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <h1 class="mat-headline">Submission</h1>
     <mat-chip-list selectable="false">
-      <mat-basic-chip *ngIf="projectUuid" ><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}" class="text-info">Back to Project</a></mat-basic-chip>
-      <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;<span class="oi oi-external-link"></span></a></mat-basic-chip>
+      <mat-basic-chip  ><a *ngIf="projectUuid" [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}" class="text-info">Back to Project</a></mat-basic-chip>
+      <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;</a></mat-basic-chip>
       <mat-basic-chip>
         <button mat-raised-button *ngIf="submissionEnvelope && submissionEnvelope.open" (click)="onDeleteSubmission(submissionEnvelope)">
           <mat-icon>delete_forever</mat-icon>
@@ -12,7 +12,7 @@
       <mat-basic-chip *ngIf="isLinkingDone">
         <button mat-raised-button color="basic" (click)="downloadFile()"><span>Download spreadsheet</span></button>
       </mat-basic-chip>
-      <mat-basic-chip [ngClass]="getSubmissionStateChipClassName(submissionState)">{{submissionState}}</mat-basic-chip>
+      <app-submission-state [state]="submissionState">{{submissionState}}</app-submission-state>
     </mat-chip-list>
   </div>
   <div>
@@ -24,7 +24,6 @@
       <mat-tab label="Metadata">
         <ng-template matTabContent>
           <app-metadata
-            [projectUuid]="projectUuid"
             [submissionEnvelopeId]="submissionEnvelopeId"
             [manifest]="manifest">
           </app-metadata>

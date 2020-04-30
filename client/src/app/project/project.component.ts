@@ -31,36 +31,18 @@ export class ProjectComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private loaderService: LoaderService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.initProject();
-  }
-
-  private initProject() {
-    this.route.queryParamMap.subscribe(queryParams => {
-      this.projectUuid = queryParams.get('uuid');
-    });
-
-    this.projectId = this.route.snapshot.paramMap.get('id');
-
-    if (this.projectId) {
-      this.getProject(this.projectId);
-    }
-
-    if (this.projectUuid) {
-      this.getProjectByUuid(this.projectUuid);
-    }
-
-    if (!this.projectId && !this.projectUuid) {
-      this.router.navigate([`/projects`]);
-    }
   }
 
   getProject(id) {
     this.ingestService.getProject(id).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
+      console.error(error);
       this.alertService.error('Project Not Found', `Project could not be found.`, true, true);
       this.router.navigate([`/projects`]);
     });
@@ -71,6 +53,7 @@ export class ProjectComponent implements OnInit {
     this.ingestService.getProjectByUuid(uuid).subscribe(projectData => {
       this.setProjectData(projectData);
     }, error => {
+      console.error(error);
       this.alertService.error('Project Not Found', `Project ${uuid} was not found.`, true, true);
       this.router.navigate([`/projects`]);
     });
@@ -90,6 +73,7 @@ export class ProjectComponent implements OnInit {
   getProjectName() {
     return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
   }
+
   getSubmissionId(submissionEnvelope) {
     const links = submissionEnvelope['_links'];
     return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
@@ -124,7 +108,7 @@ export class ProjectComponent implements OnInit {
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err.error.message);
-          console.log('error deleting submission', err);
+          console.error('error deleting submission', err);
           this.loaderService.display(false);
         });
     }
@@ -151,7 +135,7 @@ export class ProjectComponent implements OnInit {
         err => {
           this.alertService.clear();
           this.alertService.error(messageOnError, err.error.message);
-          console.log('error deleting project', err);
+          console.error('error deleting project', err);
           this.loaderService.display(false);
         });
     }
@@ -160,5 +144,32 @@ export class ProjectComponent implements OnInit {
   onSwitchUpload() {
     this.upload = !this.upload;
 
+  }
+
+  canSubmit(project: Project) {
+    return !(project.hasOpenSubmission ||
+      project.validationState === 'Invalid' ||
+      (project.validationErrors && project.validationErrors.length > 0)
+    );
+  }
+
+  private initProject() {
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.projectUuid = queryParams.get('uuid');
+    });
+
+    this.projectId = this.route.snapshot.paramMap.get('id');
+
+    if (this.projectId) {
+      this.getProject(this.projectId);
+    }
+
+    if (this.projectUuid) {
+      this.getProjectByUuid(this.projectUuid);
+    }
+
+    if (!this.projectId && !this.projectUuid) {
+      this.router.navigate([`/projects`]);
+    }
   }
 }

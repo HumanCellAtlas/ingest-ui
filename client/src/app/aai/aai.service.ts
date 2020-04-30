@@ -4,8 +4,8 @@ import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
-import {AuthenticationService} from "../core/authentication.service";
-import {AaiSecurity} from "./aai.module";
+import {AuthenticationService} from '../core/authentication.service';
+import {AaiSecurity} from './aai.module';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -13,13 +13,14 @@ import {AaiSecurity} from "./aai.module";
 export class AaiService {
 
   public user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-    private user: User = null;
+  private user: User = null;
 
   constructor(private http: HttpClient,
               private manager: UserManager,
               private alertService: AlertService,
               private authenticationService: AuthenticationService,
               private router: Router) {
+
     this.user$.subscribe(usr => {
       this.user = usr;
     });

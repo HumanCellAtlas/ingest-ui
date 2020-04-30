@@ -1,0 +1,49 @@
+{
+  "describedBy": "https://schema.dev.data.humancellatlas.org/type/project/15.0.0/project",
+  "schema_type": "project",
+  "project_core": {
+    "project_short_name": "Phoebe Proto-Molecule",
+    "project_title": "Sequencing of Phoebe core samples",
+    "project_description": "Core samples from Saturn's 9th moon Phoebe appear to contain silicate samples. \nThe Martian government have co-sponsored a joint scientific venture with Protogen to creating a long-term research project at Phoebe Station to sequence these samples."
+  },
+  "contributors": [{
+    "name": "Nathan Smith",
+    "institution": "MRCN",
+    "corresponding_contributor": false
+  },
+    {
+      "name": "Jules-Pierre Mao",
+      "institution": "Protogen",
+      "corresponding_contributor": false
+    },
+    {
+      "name": "Lawrence Strickland",
+      "institution": "Protogen",
+      "corresponding_contributor": true
+    }
+  ],
+  "publications": [{
+    "authors": [
+      "Corey JSA",
+      "Franck T",
+      "Abraham D"
+    ],
+    "title": "Leviathan Wakes",
+    "url": "https://expanse.fandom.com/wiki/Leviathan_Wakes"
+  },
+    {
+      "authors": [
+        "Fergus M",
+        "Ostby H",
+        "McDonough T"
+      ],
+      "title": "The Expanse",
+      "url": "https://expanse.fandom.com/wiki/Season_1"
+    }
+  ],
+  "funders": [{
+    "grant_title": "Silicate Sample Sequencing of Phoebe Core",
+    "grant_id": "MRCN/SY/978-0-316-12908-4",
+    "organization": "MCRN Extra-Martian Geological Council"
+  }]
+}

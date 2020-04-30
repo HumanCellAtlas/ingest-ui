@@ -17,6 +17,7 @@ export class AuthGuardService implements CanActivate {
     return this.aai.isUserLoggedInAndFromEBI().pipe(
       map(isLoggedIn => {
         if (!isLoggedIn) {
+          this.aai.user$.next(null);
           return this.router.parseUrl('/login');
         }
         return true;
