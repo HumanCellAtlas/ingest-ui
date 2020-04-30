@@ -1,91 +1,34 @@
-[
-  {
-    "type": "tabs",
-    "tabs": [
-      {
-        "title": "Project",
-        "notitle": true,
-        "items": [
-          {
-            "key": "project_core",
-            "notitle": true,
-            "items": [
-              "project_core.project_title",
-              {
-                "key": "project_core.project_description",
-                "type": "textarea"
-              },
-              "project_core.project_short_name"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Contributors",
-        "notitle": true,
-        "items": [
-          {
-            "key": "contributors",
-            "notitle": true,
-            "items": [
-              "contributors[].name",
-              "contributors[].email",
-              "contributors[].phone",
-              "contributors[].institution",
-              "contributors[].laboratory",
-              "contributors[].address",
-              "contributors[].country",
-              "contributors[].orcid_id",
-              "contributors[].project_role.ontology",
-              "contributors[].corresponding_contributor"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Publications",
-        "notitle": true,
-        "items": [
-          {
-            "key": "publications",
-            "notitle": true,
-            "items": [
-              "publications[].title",
-              {
-                "key": "publications[].authors",
-                "notitle": true,
-                "minItems": 1,
-                "items": [
-                  {
-                    "key": "publications[].authors[]",
-                    "title": "Author",
-                    "description": "An author associated with the publication.",
-                    "required": true
-                  }
-                ]
-              },
-              "publications[].doi",
-              "publications[].pmid",
-              "publications[].url"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Funders",
-        "notitle": true,
-        "items": [
-          {
-            "key": "funders",
-            "notitle": true,
-            "items": [
-              "funders[].grant_title",
-              "funders[].grant_id",
-              "funders[].organization"
-            ]
-          }
-        ]
-      }
-    ]
-  }
-]
+{
+  "tabs": [
+    {
+      "title": "Project",
+      "items": [
+        "project.project_core",
+        "project.array_express_accessions",
+        "project.biostudies_accessions",
+        "project.geo_series_accessions",
+        "project.insdc_project_accessions",
+        "project.insdc_study_accessions",
+        "project.supplementary_links"
+      ]
+    },
+    {
+      "title": "Contributors",
+      "items": [
+        "project.contributors"
+      ]
+    },
+    {
+      "title": "Publications",
+      "items": [
+        "project.publications"
+      ]
+    },
+    {
+      "title": "Funders",
+      "items": [
+        "project.funders"
+      ]
+    }
+  ]
+}

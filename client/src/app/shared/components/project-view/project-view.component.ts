@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../models/project';
 import {AlertService} from '../../services/alert.service';
 import * as schema from '../../../submitter/project-form/schema.json';
+import * as layout from '../../../submitter/project-form/layout.json';
 import {MetadataFormConfig} from '../../metadata-form/metadata-form-config';
 
 @Component({
@@ -15,44 +16,13 @@ export class ProjectViewComponent implements OnInit {
   subtitle: string;
 
   projectJsonSchema: any = (schema as any).default;
+  formLayout: any = (layout as any).default;
+
   config: MetadataFormConfig = {
     hideFields: ['describedBy', 'schema_version', 'schema_type', 'provenance'],
     removeEmptyFields: true,
     viewMode: true,
-    layout: {
-      'tabs': [
-        {
-          'title': 'Project',
-          'items': [
-            'project.project_core',
-            'project.array_express_accessions',
-            'project.biostudies_accessions',
-            'project.geo_series_accessions',
-            'project.insdc_project_accessions',
-            'project.insdc_study_accessions',
-            'project.supplementary_links'
-          ]
-        },
-        {
-          'title': 'Contributors',
-          'items': [
-            'project.contributors'
-          ]
-        },
-        {
-          'title': 'Publications',
-          'items': [
-            'project.publications'
-          ]
-        },
-        {
-          'title': 'Funders',
-          'items': [
-            'project.funders'
-          ]
-        }
-      ]
-    }
+    layout: this.formLayout
   };
 
   constructor(private alertService: AlertService) {

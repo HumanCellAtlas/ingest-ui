@@ -5,6 +5,7 @@ import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as schema from './schema.json';
+import * as layout from './layout.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 import {LoaderService} from '../../shared/services/loader.service';
 
@@ -17,7 +18,8 @@ export class ProjectFormComponent implements OnInit {
   title: string;
   subtitle: string;
 
-  projectJsonSchema: any = (schema as any).default;
+  projectSchema: any = (schema as any).default;
+  formLayout: any = (layout as any).default;
 
   projectResource: Project;
   projectContent: object;
@@ -35,40 +37,7 @@ export class ProjectFormComponent implements OnInit {
     ],
     removeEmptyFields: true,
 
-    layout: {
-      'tabs': [
-        {
-          'title': 'Project',
-          'items': [
-            'project.project_core',
-            'project.array_express_accessions',
-            'project.biostudies_accessions',
-            'project.geo_series_accessions',
-            'project.insdc_project_accessions',
-            'project.insdc_study_accessions',
-            'project.supplementary_links'
-          ]
-        },
-        {
-          'title': 'Contributors',
-          'items': [
-            'project.contributors'
-          ]
-        },
-        {
-          'title': 'Publications',
-          'items': [
-            'project.publications'
-          ]
-        },
-        {
-          'title': 'Funders',
-          'items': [
-            'project.funders'
-          ]
-        }
-      ]
-    }
+    layout: this.formLayout
   };
 
 
