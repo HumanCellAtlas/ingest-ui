@@ -4,7 +4,7 @@ import {MetadataFormService} from './metadata-form.service';
 import {JsonSchema} from './json-schema';
 import {MetadataFormConfig} from './metadata-form-config';
 import {MetadataForm} from './metadata-form';
-import {Metadata} from "./metadata";
+import {Metadata} from './metadata';
 
 
 @Component({
