@@ -3,7 +3,9 @@
     {
       "title": "Project",
       "items": [
-        "project.project_core",
+        "project.project_core.project_title",
+        "project.project_core.project_description",
+        "project.project_core.project_short_name",
         "project.array_express_accessions",
         "project.biostudies_accessions",
         "project.geo_series_accessions",

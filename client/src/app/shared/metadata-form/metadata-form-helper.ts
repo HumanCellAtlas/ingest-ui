@@ -4,6 +4,12 @@ import {Metadata} from './metadata';
 import {JsonSchemaProperty} from './json-schema-property';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
+const INPUT_TYPE = {
+  string: 'text',
+  boolean: 'checkbox',
+  integer: 'number'
+};
+
 export class MetadataFormHelper {
   config: MetadataFormConfig;
 
@@ -28,12 +34,16 @@ export class MetadataFormHelper {
     const isRequired = requiredFields.indexOf(key) >= 0;
     const isHidden = hiddenFields.indexOf(key) >= 0;
     const isDisabled = this.config && this.config.viewMode || disabledFields.indexOf(key) >= 0;
+    const inputType = this.config && this.config.inputType && this.config.inputType[key] ?
+      this.config.inputType[key] : INPUT_TYPE[property.type]
+
     const metadataField = new Metadata({
       isRequired: isRequired,
       isHidden: isHidden,
       isDisabled: isDisabled,
       key: key,
-      schema: property
+      schema: property,
+      inputType: inputType
     });
     return metadataField;
   }

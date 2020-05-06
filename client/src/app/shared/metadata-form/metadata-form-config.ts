@@ -4,5 +4,6 @@ export interface MetadataFormConfig {
   disableFields?: string[];
   viewMode?: boolean;
   layout?: object;
+  inputType?: object;
 }
 

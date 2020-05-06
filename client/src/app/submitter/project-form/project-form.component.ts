@@ -37,7 +37,10 @@ export class ProjectFormComponent implements OnInit {
     ],
     removeEmptyFields: true,
 
-    layout: this.formLayout
+    layout: this.formLayout,
+    inputType: {
+      'project_description': 'textarea'
+    }
   };
 
 
