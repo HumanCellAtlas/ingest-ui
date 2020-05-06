@@ -8,6 +8,7 @@ import * as schema from './schema.json';
 import * as layout from './layout.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 import {LoaderService} from '../../shared/services/loader.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-project-form',
@@ -93,6 +94,37 @@ export class ProjectFormComponent implements OnInit {
         });
   }
 
+  onSave(formValue: object) {
+    this.loaderService.display(true);
+    this.alertService.clear();
+    this.createOrSaveProject(formValue).subscribe(project => {
+        this.updateProjectContent(project);
+        this.loaderService.display(false);
+        this.incrementTab();
+      },
+      error => {
+        this.loaderService.display(false);
+        this.alertService.error('Error', error.message);
+      });
+  }
+
+  onCancel($event: boolean) {
+    if ($event) {
+      if (this.createMode) {
+        this.router.navigate(['/projects']);
+      } else {
+        this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+      }
+    }
+
+  }
+
+  private updateProjectContent(projectResource: Project) {
+    this.createMode = false;
+    this.projectResource = projectResource;
+    this.projectContent = this.projectResource.content;
+  }
+
   displayPostValidationErrors() {
     if (!this.projectResource) {
       return null;
@@ -115,55 +147,24 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  onSave(formValue: object) {
-    this.loaderService.display(true);
-    this.alertService.clear();
-    if (this.createMode) {
-      console.log('Creating project', formValue);
-      //Object.assign(formValue, this.projectContent);
-      this.ingestService.postProject(formValue).subscribe(resource => {
-          this.loaderService.display(false);
-          console.log('project created', resource);
-          this.createMode = false;
-          this.projectResource = resource as Project;
-          this.projectContent = this.projectResource.content;
-          this.formTabIndex++;
-          if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
-            this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
-          }
-        },
-        error => {
-          this.loaderService.display(false);
-          this.alertService.error('Error', error.message);
-        });
-    } else {
-      console.log('Updating project', formValue);
-      this.ingestService.patchProject(this.projectResource, formValue).subscribe(resource => {
-          this.loaderService.display(false);
-          console.log('project updated', resource);
-          this.projectResource = resource as Project;
-          this.projectContent = this.projectResource.content;
-          this.formTabIndex++;
-          if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
-            this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
-          }
-        },
-        error => {
-          this.loaderService.display(false);
-          this.alertService.error('Error', error.message);
-        });
+  private incrementTab() {
+    this.formTabIndex++;
+    if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
+      this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
     }
   }
 
-  onCancel($event: boolean) {
-    if ($event) {
-      this.router.navigate(['/projects']);
+  private createOrSaveProject(formValue: object): Observable<Project> {
+    if (this.createMode) {
+      console.log('Creating project', formValue);
+      return this.ingestService.postProject(formValue).map(proj => proj as Project);
+    } else {
+      console.log('Updating project', formValue);
+      return this.ingestService.patchProject(this.projectResource, formValue).map(proj => proj as Project);
     }
-
   }
 
   onTabChange($event: number) {
     this.formTabIndex = $event;
-    console.log('formTabIndex', this.formTabIndex);
   }
 }
