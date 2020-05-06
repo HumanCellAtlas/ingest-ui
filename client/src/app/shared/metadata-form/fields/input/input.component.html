@@ -1,5 +1,6 @@
 <ng-container *ngIf="metadata.isScalar()">
   <app-vf-input *ngIf="!metadata.isHidden"
+                [id]="id"
                 [formControl]="control"
                 [label]="metadata.schema.user_friendly?metadata.schema.user_friendly : metadata.key"
                 [dataType]="metadata.schema.type"
@@ -12,6 +13,7 @@
 <ng-container *ngIf="metadata.isObject()">
   <ng-container *ngFor="let child of metadata.childrenMetadata">
     <app-vf-input *ngIf="!child.isHidden"
+                  [id]="id + '-' + child.key"
                   [formControl]="control['controls'][child.key]"
                   [label]="child.schema.user_friendly ? child.schema.user_friendly : child.key"
                   [dataType]="child.schema.type"

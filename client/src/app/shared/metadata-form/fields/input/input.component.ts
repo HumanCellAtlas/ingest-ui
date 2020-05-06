@@ -11,6 +11,7 @@ import {MetadataFormHelper} from '../../metadata-form-helper';
 export class InputComponent implements OnInit {
   metadata: Metadata;
   control: AbstractControl;
+  id: string;
 
   formHelper: MetadataFormHelper;
 

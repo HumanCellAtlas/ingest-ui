@@ -20,6 +20,7 @@ export class MetadataFieldDirective implements OnInit {
 
   @Input() metadata: Metadata;
   @Input() control: AbstractControl;
+  @Input() id: string;
 
   component;
 
@@ -34,18 +35,21 @@ export class MetadataFieldDirective implements OnInit {
       this.component = this.container.createComponent(factory);
       this.component.instance.metadata = this.metadata;
       this.component.instance.control = this.control;
+      this.component.instance.id = this.id;
     } else if (this.metadata.isObject()) {
       const component = InputComponent;
       const factory = this.resolver.resolveComponentFactory<any>(component);
       this.component = this.container.createComponent(factory);
       this.component.instance.metadata = this.metadata;
       this.component.instance.control = this.control;
+      this.component.instance.id = this.id;
     } else if (this.metadata.isScalarList()) {
       const component = TextListInputComponent;
       const factory = this.resolver.resolveComponentFactory<any>(component);
       this.component = this.container.createComponent(factory);
       this.component.instance.metadata = this.metadata;
       this.component.instance.control = this.control;
+      this.component.instance.id = this.id;
     }
   }
 

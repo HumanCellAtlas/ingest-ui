@@ -1,4 +1,4 @@
-import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 export const VF_INPUT_VALUE_ACCESSOR: any = {
@@ -41,8 +41,6 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   error: string;
-
-  @ViewChild('input') input;
 
   INPUT_TYPE = {
     'string': 'text',

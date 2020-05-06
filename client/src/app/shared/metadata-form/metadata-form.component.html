@@ -8,7 +8,7 @@
 
             <ng-container
               *ngIf="metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
-              <ng-container appMetadataField [metadata]="metadataForm.get(item)"
+              <ng-container appMetadataField [id]="item" [metadata]="metadataForm.get(item)"
                             [control]="metadataForm.getControl(item)">
 
               </ng-container>
@@ -18,7 +18,7 @@
               <ng-container
                 *ngFor="let control of metadataForm.getControl(item)['controls'] ; let i = index">
                 <ng-container *ngFor="let child of metadataForm.get(item).childrenMetadata">
-                  <ng-container appMetadataField [metadata]="child"
+                  <ng-container appMetadataField [id]="item + '-' + i + '-' + child.key" [metadata]="child"
                                 [control]="control['controls'][child.key]">
                   </ng-container>
                 </ng-container>

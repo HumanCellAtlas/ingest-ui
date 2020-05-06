@@ -11,6 +11,8 @@ import {MetadataFormHelper} from '../../metadata-form-helper';
 export class TextListInputComponent implements OnInit {
   metadata: Metadata;
   control: AbstractControl;
+  id: string;
+  
   formHelper: MetadataFormHelper;
 
   label: string;
