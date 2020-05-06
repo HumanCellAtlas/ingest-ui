@@ -56,6 +56,10 @@ export class ProjectFormComponent implements OnInit {
 
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
+    if (this.route.snapshot.paramMap.has('tab')) {
+      this.formTabIndex = +this.route.snapshot.paramMap.get('tab');
+    }
+
     this.projectResource = null;
     this.formIsValid = null;
     this.formValidationErrors = null;

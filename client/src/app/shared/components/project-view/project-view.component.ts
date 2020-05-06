@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Project} from '../../models/project';
 import {AlertService} from '../../services/alert.service';
 import * as schema from '../../../submitter/project-form/schema.json';
@@ -12,6 +12,7 @@ import {MetadataFormConfig} from '../../metadata-form/metadata-form-config';
 })
 export class ProjectViewComponent implements OnInit {
   @Input() project: Project;
+  @Output() tabChange = new EventEmitter<number>();
   title: string;
   subtitle: string;
 
@@ -52,4 +53,7 @@ export class ProjectViewComponent implements OnInit {
   }
 
 
+  onTabChange(tabIndex: number) {
+    this.tabChange.emit(tabIndex);
+  }
 }
