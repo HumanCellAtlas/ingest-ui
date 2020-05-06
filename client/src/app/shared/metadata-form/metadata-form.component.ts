@@ -23,16 +23,19 @@ export class MetadataFormComponent implements OnInit {
 
   @Input() data: object;
 
+  @Input() selectedTabIndex: number = 0;
+
   @Output() save = new EventEmitter<object>();
 
   @Output() cancel = new EventEmitter<boolean>();
+
+  @Output() tabChange = new EventEmitter<number>();
 
   formGroup: FormGroup;
 
   metadataForm: MetadataForm;
 
   form: object = {};
-
 
   value: object;
 
@@ -79,5 +82,9 @@ export class MetadataFormComponent implements OnInit {
     e.preventDefault();
     e.stopPropagation();
     return false;
+  }
+
+  onSelectedIndexChange(tabIndex: number) {
+    this.tabChange.emit(tabIndex);
   }
 }

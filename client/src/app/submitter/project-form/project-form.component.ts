@@ -27,6 +27,7 @@ export class ProjectFormComponent implements OnInit {
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
+  formTabIndex: number = 0;
 
   config: MetadataFormConfig = {
     hideFields: [
@@ -119,12 +120,17 @@ export class ProjectFormComponent implements OnInit {
     this.alertService.clear();
     if (this.createMode) {
       console.log('Creating project', formValue);
-      Object.assign(formValue, this.projectContent);
+      //Object.assign(formValue, this.projectContent);
       this.ingestService.postProject(formValue).subscribe(resource => {
           this.loaderService.display(false);
           console.log('project created', resource);
-          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-          this.alertService.success('Success', 'Project has been successfully created!', true);
+          this.createMode = false;
+          this.projectResource = resource as Project;
+          this.projectContent = this.projectResource.content;
+          this.formTabIndex++;
+          if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
+            this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+          }
         },
         error => {
           this.loaderService.display(false);
@@ -135,8 +141,12 @@ export class ProjectFormComponent implements OnInit {
       this.ingestService.patchProject(this.projectResource, formValue).subscribe(resource => {
           this.loaderService.display(false);
           console.log('project updated', resource);
-          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-          this.alertService.success('Success', 'Project has been successfully updated!', true);
+          this.projectResource = resource as Project;
+          this.projectContent = this.projectResource.content;
+          this.formTabIndex++;
+          if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
+            this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+          }
         },
         error => {
           this.loaderService.display(false);
@@ -150,5 +160,10 @@ export class ProjectFormComponent implements OnInit {
       this.router.navigate(['/projects']);
     }
 
+  }
+
+  onTabChange($event: number) {
+    this.formTabIndex = $event;
+    console.log('formTabIndex', this.formTabIndex);
   }
 }

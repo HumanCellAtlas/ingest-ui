@@ -1,6 +1,6 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
 
-  <mat-tab-group>
+  <mat-tab-group (selectedIndexChange)="onSelectedIndexChange($event)" [selectedIndex]="this.selectedTabIndex">
     <ng-container *ngFor="let tab of config.layout['tabs']">
       <mat-tab [label]="tab['title']">
         <div class="vf-u-margin__top--xxl">

@@ -12,7 +12,9 @@
                      [schema]="projectSchema"
                      [data]="projectContent"
                      [config]="config"
+                     (save)="onSave($event)"
                      (cancel)="onCancel($event)"
-                     (save)="onSave($event)">
+                     (tabChange)="onTabChange($event)"
+                     [selectedTabIndex]="formTabIndex">
   </app-metadata-form>
 </ng-container>
