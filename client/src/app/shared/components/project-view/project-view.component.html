@@ -10,8 +10,9 @@
 <ng-container *ngIf="project">
   <mat-card>
     <app-metadata-form name="project"
-                       [schema]="projectJsonSchema"
-                       [data]="project.content"
+                       [schema]="projectIngestSchema"
+                       [data]="project"
+                       (tabChange)="onTabChange($event)"
                        [config]="config">
     </app-metadata-form>
   </mat-card>
