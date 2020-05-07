@@ -5,42 +5,43 @@
       <mat-tab [label]="tab['title']">
         <div class="vf-u-margin__top--xxl">
           <ng-container *ngFor="let item of tab['items']">
-
             <ng-container
-              *ngIf="metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
-              <ng-container appMetadataField [id]="item" [metadata]="metadataForm.get(item)"
-                            [control]="metadataForm.getControl(item)">
-
-              </ng-container>
-            </ng-container>
-
-            <ng-container *ngIf="metadataForm.get(item).isObjectList()">
+              *ngIf="metadataForm.get(item)">
               <ng-container
-                *ngFor="let control of metadataForm.getControl(item)['controls'] ; let i = index">
-                <ng-container *ngFor="let child of metadataForm.get(item).childrenMetadata">
-                  <ng-container appMetadataField [id]="item + '-' + i + '-' + child.key" [metadata]="child"
-                                [control]="control['controls'][child.key]">
+                *ngIf="metadataForm.get(item) && metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
+                <ng-container appMetadataField [id]="item" [metadata]="metadataForm.get(item)"
+                              [control]="metadataForm.getControl(item)">
+
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="metadataForm.get(item).isObjectList()">
+                <ng-container
+                  *ngFor="let control of metadataForm.getControl(item)['controls'] ; let i = index">
+                  <ng-container *ngFor="let child of metadataForm.get(item).childrenMetadata">
+                    <ng-container appMetadataField [id]="item + '-' + i + '-' + child.key" [metadata]="child"
+                                  [control]="control['controls'][child.key]">
+                    </ng-container>
                   </ng-container>
+
+                  <ng-container *ngIf="!config.viewMode">
+                    <a color="warn" mat-icon-button
+                       (click)="removeFormControl(metadataForm.getControl(item), i)">
+                      <mat-icon>remove_circle_outline</mat-icon>
+                      Remove
+                    </a>
+                  </ng-container>
+
+                  <hr class="vf-divider">
+
                 </ng-container>
 
                 <ng-container *ngIf="!config.viewMode">
-                  <a color="warn" mat-icon-button
-                     (click)="removeFormControl(metadataForm.getControl(item), i)">
-                    <mat-icon>remove_circle_outline</mat-icon>
-                    Remove
+                  <a mat-icon-button
+                     (click)="addFormControl(metadataForm.get(item), metadataForm.getControl(item))">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    Add
                   </a>
                 </ng-container>
-
-                <hr class="vf-divider">
-
-              </ng-container>
-
-              <ng-container *ngIf="!config.viewMode">
-                <a mat-icon-button
-                   (click)="addFormControl(metadataForm.get(item), metadataForm.getControl(item))">
-                  <mat-icon>add_circle_outline</mat-icon>
-                  Add
-                </a>
               </ng-container>
             </ng-container>
           </ng-container>
