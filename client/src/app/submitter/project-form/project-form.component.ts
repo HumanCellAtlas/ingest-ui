@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IngestService} from '../../shared/services/ingest.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
-import * as schema from './schema.json';
+import * as metadataSchema from './project-metadata-schema.json';
+import * as ingestSchema from './project-ingest-schema.json';
 import * as layout from './layout.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 import {LoaderService} from '../../shared/services/loader.service';
 import {Observable} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
+import {MatTabGroup} from '@angular/material/tabs';
 
 @Component({
   selector: 'app-project-form',
@@ -19,16 +22,20 @@ export class ProjectFormComponent implements OnInit {
   title: string;
   subtitle: string;
 
-  projectSchema: any = (schema as any).default;
+  projectMetadataSchema: any = (metadataSchema as any).default;
+  projectIngestSchema: any = (ingestSchema as any).default;
+
   formLayout: any = (layout as any).default;
 
   projectResource: Project;
   projectContent: object;
 
+  projectFormData: object;
+
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
-  formTabIndex: number = 0;
+  formTabIndex = 0;
 
   config: MetadataFormConfig = {
     hideFields: [
@@ -45,6 +52,9 @@ export class ProjectFormComponent implements OnInit {
     }
   };
 
+  patch: object = {};
+
+  @ViewChild('mf') formTabGroup: MatTabGroup;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -55,6 +65,8 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.projectIngestSchema['properties']['content'] = this.projectMetadataSchema;
+
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     if (this.route.snapshot.paramMap.has('tab')) {
       this.formTabIndex = +this.route.snapshot.paramMap.get('tab');
@@ -64,24 +76,28 @@ export class ProjectFormComponent implements OnInit {
     this.formIsValid = null;
     this.formValidationErrors = null;
     this.projectContent = {};
+    this.projectFormData = {
+      content: {}
+    };
 
     if (projectUuid) {
       this.createMode = false;
       this.setProjectContent(projectUuid);
     } else {
-      this.setSchema(this.projectContent);
+      this.setSchema(this.projectFormData['content']);
     }
 
     this.title = this.createMode ? 'New Project' : 'Edit Project';
     this.subtitle = this.createMode ? 'Please provide initial information about your HCA project.\n' +
       '  You will be able to edit this information as your project develops.' : '';
+
   }
 
   setProjectContent(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
       .map(data => data as Project)
       .subscribe(projectResource => {
-          console.log('get project', projectResource);
+          console.log('Retrieved project', projectResource);
           this.projectResource = projectResource;
           if (projectResource && projectResource.content &&
             !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
@@ -91,6 +107,7 @@ export class ProjectFormComponent implements OnInit {
             });
           }
           this.projectContent = projectResource.content;
+          this.projectFormData = this.projectResource;
           this.displayPostValidationErrors();
         },
         error => {
@@ -102,6 +119,7 @@ export class ProjectFormComponent implements OnInit {
     this.loaderService.display(true);
     this.alertService.clear();
     this.createOrSaveProject(formValue).subscribe(project => {
+        console.log('Project saved', project);
         this.updateProjectContent(project);
         this.loaderService.display(false);
         this.incrementTab();
@@ -123,11 +141,10 @@ export class ProjectFormComponent implements OnInit {
 
   }
 
-  private updateProjectContent(projectResource: Project) {
-    this.createMode = false;
-    this.projectResource = projectResource;
-    this.projectContent = this.projectResource.content;
+  onTabChange($event: number) {
+    this.formTabIndex = $event;
   }
+
 
   displayPostValidationErrors() {
     if (!this.projectResource) {
@@ -151,6 +168,12 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
+  private updateProjectContent(projectResource: Project) {
+    this.createMode = false;
+    this.projectResource = projectResource;
+    this.projectContent = this.projectResource.content;
+  }
+
   private incrementTab() {
     this.formTabIndex++;
     if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
@@ -159,16 +182,17 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private createOrSaveProject(formValue: object): Observable<Project> {
+    console.log('formValue', formValue);
     if (this.createMode) {
-      console.log('Creating project', formValue);
-      return this.ingestService.postProject(formValue).map(proj => proj as Project);
+      this.patch = formValue;
+      return this.ingestService.postProject(this.patch).pipe(concatMap(createdProject => {
+        return this.ingestService.patchProject(createdProject, this.patch) // save fields outside content
+          .map(project => project as Project);
+      }));
     } else {
-      console.log('Updating project', formValue);
-      return this.ingestService.patchProject(this.projectResource, formValue).map(proj => proj as Project);
+      this.patch = formValue;
+      return this.ingestService.patchProject(this.projectResource, this.patch)
+        .map(project => project as Project);
     }
-  }
-
-  onTabChange($event: number) {
-    this.formTabIndex = $event;
   }
 }

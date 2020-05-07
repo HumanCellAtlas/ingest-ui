@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Project} from '../../models/project';
 import {AlertService} from '../../services/alert.service';
-import * as schema from '../../../submitter/project-form/schema.json';
+import * as schema from '../../../submitter/project-form/project-ingest-schema.json';
 import * as layout from '../../../submitter/project-form/layout.json';
 import {MetadataFormConfig} from '../../metadata-form/metadata-form-config';
 
@@ -50,10 +50,5 @@ export class ProjectViewComponent implements OnInit {
     }
     const message = '<ul><li>' + errorArray.join('</li><li>') + '</li>';
     this.alertService.error('JSON Validation Error', message, false, false);
-  }
-
-
-  onTabChange(tabIndex: number) {
-    this.tabChange.emit(tabIndex);
   }
 }

@@ -3,33 +3,40 @@
     {
       "title": "Project",
       "items": [
-        "project.project_core.project_title",
-        "project.project_core.project_description",
-        "project.project_core.project_short_name",
-        "project.array_express_accessions",
-        "project.biostudies_accessions",
-        "project.geo_series_accessions",
-        "project.insdc_project_accessions",
-        "project.insdc_study_accessions",
-        "project.supplementary_links"
+        "project.content.project_core.project_title",
+        "project.content.project_core.project_description",
+        "project.content.project_core.project_short_name",
+        "project.content.array_express_accessions",
+        "project.content.biostudies_accessions",
+        "project.content.geo_series_accessions",
+        "project.content.insdc_project_accessions",
+        "project.content.insdc_study_accessions",
+        "project.content.supplementary_links"
       ]
     },
     {
       "title": "Contributors",
       "items": [
-        "project.contributors"
+        "project.content.contributors"
       ]
     },
     {
       "title": "Publications",
       "items": [
-        "project.publications"
+        "project.content.publications"
       ]
     },
     {
       "title": "Funders",
       "items": [
-        "project.funders"
+        "project.content.funders"
+      ]
+    },
+    {
+      "title": "Data",
+      "items": [
+        "project.releaseDate",
+        "project.accessionDate"
       ]
     }
   ]

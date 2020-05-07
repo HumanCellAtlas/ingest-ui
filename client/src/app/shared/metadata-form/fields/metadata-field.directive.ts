@@ -4,6 +4,7 @@ import {InputComponent} from './input/input.component';
 import {AbstractControl} from '@angular/forms';
 import {TextListInputComponent} from './text-list-input/text-list-input.component';
 import {TextAreaComponent} from './text-area/text-area.component';
+import {DateInputComponent} from "./date-input/date-input.component";
 
 const components = {
   text: InputComponent,
@@ -30,7 +31,8 @@ export class MetadataFieldDirective implements OnInit {
 
   ngOnInit(): void {
     if (this.metadata.isScalar()) {
-      const component = this.metadata.inputType ? components[this.metadata.inputType] : InputComponent;
+      let component = this.metadata.inputType ? components[this.metadata.inputType] : InputComponent;
+      component = this.metadata.schema.format === 'date-time' ? DateInputComponent : component;
       const factory = this.resolver.resolveComponentFactory<any>(component);
       this.component = this.container.createComponent(factory);
       this.component.instance.metadata = this.metadata;

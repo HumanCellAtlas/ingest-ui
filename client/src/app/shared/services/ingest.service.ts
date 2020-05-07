@@ -102,9 +102,10 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
   }
 
-  public patchProject(projectResource, projectContent): Observable<Object> {
+  public patchProject(projectResource, patch): Observable<Object> {
     const projectLink: string = projectResource['_links']['self']['href'];
-    return this.http.patch(projectLink, {content: projectContent, validationState: 'Draft'});
+    patch['validationState'] = 'Draft';
+    return this.http.patch(projectLink, patch);
   }
 
   public getSubmissionProject(submissionId): Observable<Object> {

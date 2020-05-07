@@ -4,7 +4,7 @@ import {Metadata} from '../../metadata';
 import {MetadataFormHelper} from '../../metadata-form-helper';
 
 @Component({
-  selector: 'app-metadata-field',
+  selector: 'app-input-field',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css']
 })
