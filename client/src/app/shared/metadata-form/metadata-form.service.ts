@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {JsonSchemaProperty} from './json-schema-property';
 import {JsonSchema} from './json-schema';
-import {Metadata} from './metadata';
 import {MetadataFormConfig} from './metadata-form-config';
-import {MetadataForm, MetadataFormHelper} from './metadata-form';
+import {MetadataForm} from './metadata-form';
+import {MetadataFormHelper} from './metadata-form-helper';
 
 
 @Injectable({providedIn: 'root'})

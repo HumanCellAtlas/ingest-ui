@@ -1,4 +1,4 @@
-import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 export const VF_INPUT_VALUE_ACCESSOR: any = {
@@ -31,7 +31,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   example: string;
 
-  value: string;
+  value: any;
 
   @Input()
   disabled: boolean;
@@ -42,11 +42,10 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   error: string;
 
-  @ViewChild('input') input;
-
   INPUT_TYPE = {
     'string': 'text',
-    'boolean': 'checkbox'
+    'boolean': 'checkbox',
+    'integer': 'number'
   };
 
   constructor() {
@@ -81,6 +80,9 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   change($event) {
     if (this.inputType === 'text') {
       this.onChange($event.target.value);
+    }
+    if (this.inputType === 'number') {
+      this.onChange($event.target.valueAsNumber);
     }
     if (this.inputType === 'checkbox') {
       this.onChange($event.target.checked);

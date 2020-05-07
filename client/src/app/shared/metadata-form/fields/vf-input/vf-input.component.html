@@ -1,0 +1,21 @@
+<ng-container *ngIf="inputType ==='text' || inputType ==='number'">
+
+  <div class="vf-form__item">
+    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+
+    <label *ngIf="label" class="vf-form__label">{{label}}</label>
+    <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}" class="vf-form__input"
+           placeholder="{{example}}" [(ngModel)]="value" (change)="change($event)">
+    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+    <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+
+  </div>
+</ng-container>
+
+
+<ng-container *ngIf="inputType ==='checkbox'">
+  <div class="vf-form__item vf-form__item--checkbox">
+    <input type="checkbox" id="{{id}}" [(ngModel)]="value" class="vf-form__checkbox" (change)="change($event)">
+    <label *ngIf="label" for="{{id}}" class="vf-form__label">{{label}} </label>
+  </div>
+</ng-container>

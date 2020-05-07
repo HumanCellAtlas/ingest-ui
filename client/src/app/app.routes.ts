@@ -8,7 +8,7 @@ import {AuthGuardService} from './aai/auth-guard.service';
 import {ProjectFormComponent} from './submitter/project-form/project-form.component';
 import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
 import {SubmissionListComponent} from './submission-list/submission-list.component';
-import {RegistrationComponent} from "./registration/registration.component";
+import {RegistrationComponent} from './registration/registration.component';
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
@@ -20,16 +20,17 @@ export const ROUTES: Routes = [
   {path: 'submissions/:tab/upload', component: SubmissionComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/detail/:id', component: SubmissionComponent,  canActivate: [AuthGuardService]},
   {path: 'submissions/detail/:id/:tab', component: SubmissionComponent,  canActivate: [AuthGuardService]},
-  {path: 'submissions/detail', component: SubmissionComponent,  canActivate: [AuthGuardService]},
+  {path: 'submissions/detail', component: SubmissionComponent, canActivate: [AuthGuardService]},
 
-  {path: 'projects/detail/:projectUuid/submissions/:tab', component: SubmissionComponent,  canActivate: [AuthGuardService]},
-  {path: 'projects/detail/:id', component: ProjectComponent,  canActivate: [AuthGuardService]},
-  {path: 'projects/detail', component: ProjectComponent,  canActivate: [AuthGuardService]},
-  {path: 'projects/all', component: AllProjectsComponent,  canActivate: [AuthGuardService]},
+  {path: 'projects/detail/:projectUuid/submissions/:tab', component: SubmissionComponent, canActivate: [AuthGuardService]},
+  {path: 'projects/detail/:id', component: ProjectComponent, canActivate: [AuthGuardService]},
+  {path: 'projects/detail', component: ProjectComponent, canActivate: [AuthGuardService]},
+  {path: 'projects/all', component: AllProjectsComponent, canActivate: [AuthGuardService]},
 
-  {path: 'projects', component: MyProjectsComponent,  canActivate: [AuthGuardService]},
-  {path: 'projects/new', component: ProjectFormComponent,  canActivate: [AuthGuardService]},
-  {path: 'projects/:uuid', component: ProjectFormComponent,  canActivate: [AuthGuardService]},
+  {path: 'projects', component: MyProjectsComponent, canActivate: [AuthGuardService]},
+  {path: 'projects/new', component: ProjectFormComponent, canActivate: [AuthGuardService]},
+  {path: 'projects/:uuid', component: ProjectFormComponent, canActivate: [AuthGuardService]},
+  {path: 'projects/:uuid/:tab', component: ProjectFormComponent, canActivate: [AuthGuardService]},
 
   {path: 'registration', component: RegistrationComponent},
 

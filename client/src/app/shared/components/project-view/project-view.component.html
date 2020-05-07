@@ -12,6 +12,7 @@
     <app-metadata-form name="project"
                        [schema]="projectJsonSchema"
                        [data]="project.content"
+                       (tabChange)="onTabChange($event)"
                        [config]="config">
     </app-metadata-form>
   </mat-card>

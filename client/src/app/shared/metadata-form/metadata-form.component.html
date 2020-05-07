@@ -1,6 +1,6 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
 
-  <mat-tab-group>
+  <mat-tab-group (selectedIndexChange)="onSelectedIndexChange($event)" [selectedIndex]="this.selectedTabIndex">
     <ng-container *ngFor="let tab of config.layout['tabs']">
       <mat-tab [label]="tab['title']">
         <div class="vf-u-margin__top--xxl">
@@ -8,24 +8,24 @@
 
             <ng-container
               *ngIf="metadataForm.get(item).isObject() || metadataForm.get(item).isScalarList() || metadataForm.get(item).isScalar()">
-              <ng-container appMetadataField [metadata]="metadataForm.get(item)"
-                            [control]="metadataForm.formGroup['controls'][metadataForm.get(item).key]">
+              <ng-container appMetadataField [id]="item" [metadata]="metadataForm.get(item)"
+                            [control]="metadataForm.getControl(item)">
 
               </ng-container>
             </ng-container>
 
             <ng-container *ngIf="metadataForm.get(item).isObjectList()">
               <ng-container
-                *ngFor="let control of metadataForm.formGroup['controls'][metadataForm.get(item).key]['controls'] ; let i = index">
+                *ngFor="let control of metadataForm.getControl(item)['controls'] ; let i = index">
                 <ng-container *ngFor="let child of metadataForm.get(item).childrenMetadata">
-                  <ng-container appMetadataField [metadata]="child"
+                  <ng-container appMetadataField [id]="item + '-' + i + '-' + child.key" [metadata]="child"
                                 [control]="control['controls'][child.key]">
                   </ng-container>
                 </ng-container>
 
                 <ng-container *ngIf="!config.viewMode">
                   <a color="warn" mat-icon-button
-                     (click)="removeFormControl(metadataForm.formGroup['controls'][metadataForm.get(item).key], i)">
+                     (click)="removeFormControl(metadataForm.getControl(item), i)">
                     <mat-icon>remove_circle_outline</mat-icon>
                     Remove
                   </a>
@@ -37,7 +37,7 @@
 
               <ng-container *ngIf="!config.viewMode">
                 <a mat-icon-button
-                   (click)="addFormControl(metadataForm.get(item), metadataForm.formGroup['controls'][metadataForm.get(item).key])">
+                   (click)="addFormControl(metadataForm.get(item), metadataForm.getControl(item))">
                   <mat-icon>add_circle_outline</mat-icon>
                   Add
                 </a>

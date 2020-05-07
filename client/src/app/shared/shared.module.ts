@@ -7,15 +7,18 @@ import {CommonModule} from '@angular/common';
 import {MetadataStateComponent} from './components/metadata-state/metadata-state.component';
 import {MatChipsModule} from '@angular/material/chips';
 import {MetadataFormComponent} from './metadata-form/metadata-form.component';
-import {MetadataFieldComponent} from './metadata-field/metadata-field.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
-import {VfInputComponent} from './vf-input/vf-input.component';
+import {VfInputComponent} from './metadata-form/fields/vf-input/vf-input.component';
 import {RouterModule} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MetadataFieldDirective} from './metadata-field/metadata-field.directive';
+import {MetadataFieldDirective} from './metadata-form/fields/metadata-field.directive';
+import {InputComponent} from './metadata-form/fields/input/input.component';
+import { TextListInputComponent } from './metadata-form/fields/text-list-input/text-list-input.component';
+import { TextAreaComponent } from './metadata-form/fields/text-area/text-area.component';
+import { VfAsteriskComponent } from './metadata-form/fields/vf-asterisk/vf-asterisk.component';
 
 
 @NgModule({
@@ -35,9 +38,12 @@ import {MetadataFieldDirective} from './metadata-field/metadata-field.directive'
     SubmissionStateComponent,
     MetadataStateComponent,
     MetadataFormComponent,
-    MetadataFieldComponent,
+    InputComponent,
     VfInputComponent,
     MetadataFieldDirective,
+    TextListInputComponent,
+    TextAreaComponent,
+    VfAsteriskComponent,
   ],
   exports: [
     ClipboardDirective,
@@ -49,7 +55,8 @@ import {MetadataFieldDirective} from './metadata-field/metadata-field.directive'
     ClipboardService
   ],
   entryComponents: [
-    MetadataFieldComponent
+    InputComponent,
+    TextListInputComponent
   ]
 })
 export class SharedModule {

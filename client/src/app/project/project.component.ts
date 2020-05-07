@@ -24,6 +24,7 @@ export class ProjectComponent implements OnInit {
   projectId: string;
   projectUuid: string;
   upload: boolean = false;
+  selectedProjectTab: number = 0;
 
   constructor(
     private alertService: AlertService,
@@ -171,5 +172,9 @@ export class ProjectComponent implements OnInit {
     if (!this.projectId && !this.projectUuid) {
       this.router.navigate([`/projects`]);
     }
+  }
+
+  projectTabChange(tab: number) {
+    this.selectedProjectTab = tab;
   }
 }

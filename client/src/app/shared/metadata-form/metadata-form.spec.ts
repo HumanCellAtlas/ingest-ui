@@ -1,405 +1,213 @@
 import * as jsonSchema from './test-json-schema.json';
 import * as json from './test-json.json';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Metadata} from './metadata';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {JsonSchema} from './json-schema';
 import {JsonSchemaProperty} from './json-schema-property';
-import {MetadataForm, MetadataFormHelper} from './metadata-form';
+import {MetadataForm} from './metadata-form';
 import {MetadataFormService} from './metadata-form.service';
+import {MetadataFormConfig} from './metadata-form-config';
 
-describe('MetadataFormBuilder', () => {
-
-  let metadataFormBuilder: MetadataFormHelper;
-  let metadataFormSvc: MetadataFormService;
+describe('MetadataForm', () => {
   let testSchema: JsonSchema;
+  let metadataFormSvc: MetadataFormService;
 
   beforeEach(() => {
     testSchema = (jsonSchema as any).default;
-    metadataFormBuilder = new MetadataFormHelper({});
     metadataFormSvc = new MetadataFormService();
   });
 
-  it('should be created', () => {
-    expect(metadataFormBuilder).toBeTruthy();
+  it('return FormGroup obj', () => {
+    // given testSchema
+
+    // when
+    const metadataForm = new MetadataForm('project', testSchema);
+    const formGroup = metadataForm.formGroup;
+
+    // then
+    expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
+    expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
+    expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
+    expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
+    expect(metadataFormSvc.cleanFormData(formGroup.value))
+      .toEqual({});
+
   });
 
-  describe('getFieldMap', () => {
-    it('return list of Property objects from non-nested schema', () => {
-      // given testSchema
-      // when
-      const fieldMap = metadataFormBuilder.getFieldMap(testSchema);
+  it('return FormGroup obj with data', () => {
+    // given
+    const testData = (json as any).default;
 
-      // then
-      const actual_properties = Array.from(fieldMap.keys());
+    // when
+    const metadataForm = new MetadataForm('project', testSchema, testData);
+    const formGroup = metadataForm.formGroup;
 
-      const expected_properties = [
+    // then
+    expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
+    expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
+    expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
+    expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
+
+    expect(metadataFormSvc.cleanFormData(formGroup.value))
+      .toEqual(metadataFormSvc.cleanFormData(testData));
+
+  });
+
+  it('return metadataRegistry', () => {
+    // given
+    const testData = (json as any).default;
+
+    // when
+    const metadataForm = new MetadataForm('project', testSchema, testData);
+    const metadataRegistry = metadataForm.metadataRegistry;
+
+    // then
+    expect(metadataRegistry).toBeTruthy();
+    expect(metadataForm.get('project').schema).toEqual(testSchema as JsonSchemaProperty);
+  });
+
+  it('return metadataRegistry with config', () => {
+    // given
+    const testData = (json as any).default;
+    const config: MetadataFormConfig = {
+      hideFields: [
         'describedBy',
-        'schema_type',
         'schema_version',
-        'array_express_accessions',
-        'biostudies_accessions',
-        'geo_series_accessions',
-        'insdc_project_accessions',
-        'insdc_study_accessions',
-        'supplementary_links',
-        'contributors',
-        'funders',
-        'publications'
-      ];
+        'schema_type',
+        'provenance'
+      ],
+      removeEmptyFields: true
+    };
 
-      expected_properties.forEach(prop => expect(actual_properties).toContain(prop));
+    // when
+    const metadataForm = new MetadataForm('project', testSchema, testData, config);
+    const metadataRegistry = metadataForm.metadataRegistry;
 
-    });
+    // then
+    expect(metadataRegistry).toBeTruthy();
+    expect(metadataForm.get('project.describedBy').isHidden).toEqual(true);
+    expect(metadataForm.get('project.schema_version').isHidden).toEqual(true);
+    expect(metadataForm.get('project.schema_type').isHidden).toEqual(true);
+    expect(metadataForm.get('project.provenance').isHidden).toEqual(true);
   });
 
-  describe('toFormGroup', () => {
-    it('return a FormGroup object', () => {
-      // given testSchema
+  describe('getControl', () => {
+    let metadataForm: MetadataForm;
+    let testData: object;
+
+    beforeEach(() => {
+      testData = (json as any).default;
+      metadataForm = new MetadataForm('project', testSchema, testData);
+    });
+
+    it('return form group given a level 0 key', () => {
+      // given metadataForm
+
       // when
-      const formGroup = metadataFormBuilder.toFormGroup(testSchema);
+      const projectControl = metadataForm.getControl('project');
 
       // then
-      expect(formGroup).toBeTruthy();
-      expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
-      expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
-      expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
-      expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
-    });
-
-
-    it('return a FormGroup object with initialised data', () => {
-      // given
-      const schema = metadataFormBuilder.getProperty('contributors', testSchema).items as JsonSchema;
-      const data = {
-        'name': 'Nathan Smith',
-        'institution': 'MRCN',
-        'corresponding_contributor': false
-      };
-      // when
-      const formGroup = metadataFormBuilder.toFormGroup(schema as JsonSchema, data);
-
-      // then
-      expect(formGroup instanceof FormGroup).toEqual(true);
-      expect(Object.keys(formGroup.controls).length).toEqual(12);
-      expect(formGroup.controls['name'] instanceof FormControl).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formGroup.value)).toEqual(data);
-    });
-
-  });
-
-  describe('toFormControl', () => {
-    it('return a toFormControl object', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: false
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field);
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual(undefined);
-      expect(formControl.validator).toEqual(null);
-    });
-
-    it('return a toFormControl object with undefined value and validator', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field);
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual(undefined);
-      expect(formControl.validator).toEqual(Validators.required);
-    });
-
-    it('return a toFormControl object with string data', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field, 'string');
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual('string');
-    });
-
-    it('return a toFormControl object with blank string', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field, '');
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual('');
-    });
-
-    it('return a toFormControl object with empty array', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field, []);
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual([]);
-    });
-
-    it('return a toFormControl object with empty object', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field, {});
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual({});
-    });
-
-    it('return a toFormControl object with number data', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field, 100);
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual(100);
-    });
-
-    it('return a toFormControl object with boolean data', () => {
-      // given
-      const field: Metadata = new Metadata({
-        schema: undefined,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formControl = metadataFormBuilder.toFormControl(field, false);
-
-      // then
-      expect(formControl instanceof FormControl).toEqual(true);
-      expect(formControl.value).toEqual(false);
-    });
-  });
-
-  describe('toFormGroupArray', () => {
-    it('return a FormArray of FormGroup', () => {
-      // given
-      const schema = metadataFormBuilder.getProperty('contributors', testSchema);
-
-      // when
-      const formArray = metadataFormBuilder.toFormGroupArray(schema.items as JsonSchema, undefined);
-
-      // then
-      expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormGroup).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
-    });
-
-    it('return a FormArray of FormGroup with data', () => {
-      // given
-      const schema = metadataFormBuilder.getProperty('contributors', testSchema);
-      const data = [
-        {
-          'name': 'Nathan Smith',
-          'institution': 'MRCN',
-          'corresponding_contributor': false
-        },
-        {
-          'name': 'Jules-Pierre Mao',
-          'institution': 'Protogen',
-          'corresponding_contributor': false
-        },
-        {
-          'name': 'Lawrence Strickland',
-          'institution': 'Protogen',
-          'corresponding_contributor': true
-        }
-      ];
-      // when
-      const formArray = metadataFormBuilder.toFormGroupArray(schema.items as JsonSchema, data);
-
-      // then
-      expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormGroup).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(data);
-    });
-  });
-
-  describe('toFormControlArray', () => {
-    it('return a FormArray of FormControl', () => {
-      // given
-      const schema = metadataFormBuilder.getProperty('insdc_study_accessions', testSchema);
-      const field: Metadata = new Metadata({
-        schema: schema,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-
-      // when
-      const formArray = metadataFormBuilder.toFormControlArray(field, undefined);
-
-      // then
-      expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
-    });
-
-    it('return a FormArray of FormControl with initialised data', () => {
-      // given
-      const schema = metadataFormBuilder.getProperty('insdc_study_accessions', testSchema);
-      const field: Metadata = new Metadata({
-        schema: schema,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-      const data = ['string1', 'string2', 'string3'];
-      // when
-      const formArray = metadataFormBuilder.toFormControlArray(field, data);
-
-      // then
-      expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(data);
-    });
-
-    it('return a FormArray of FormControl with initialised boolean data array', () => {
-      // given
-      const schema = {
-        'description': '',
-        'example': '',
-        'guidelines': '',
-        'items': {
-          'type': 'boolean'
-        },
-        'type': 'array',
-        'user_friendly': ''
-      } as JsonSchemaProperty;
-
-      const field: Metadata = new Metadata({
-        schema: schema,
-        key: 'project',
-        isRequired: true,
-        isDisabled: true,
-        isHidden: true
-      });
-      const data = [false, false, false];
-      // when
-      const formArray = metadataFormBuilder.toFormControlArray(field, data);
-
-      // then
-      expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(data);
-    });
-  });
-
-  describe('new MetadataForm', () => {
-    it('return FormGroup obj', () => {
-      // given testSchema
-      // when
-      const metadataForm = new MetadataForm('project', testSchema);
-      const formGroup = metadataForm.formGroup;      // then
-      expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
-      expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
-      expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
-      expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formGroup.value))
-        .toEqual({});
-
-    });
-
-    it('return FormGroup obj with data', () => {
-      // given
-      const testData = (json as any).default;
-      // when
-      const metadataForm = new MetadataForm('project', testSchema, testData);
       const formGroup = metadataForm.formGroup;
-      // then
-      expect(formGroup.get('array_express_accessions') instanceof FormArray).toEqual(true);
-      expect(formGroup.get('schema_type') instanceof FormControl).toEqual(true);
-      expect(formGroup.get('contributors') instanceof FormArray).toEqual(true);
-      expect(formGroup.get('project_core') instanceof FormGroup).toEqual(true);
 
-      expect(metadataFormSvc.cleanFormData(formGroup.value))
-        .toEqual(metadataFormSvc.cleanFormData(testData));
-
+      expect(projectControl).toEqual(formGroup);
+      expect(projectControl instanceof FormGroup).toEqual(true);
     });
 
-    it('return metadataRegistry', () => {
-      // given
-      const testData = (json as any).default;
-      // when
-      const metadataForm = new MetadataForm('project', testSchema, testData);
-      const metadataRegistry = metadataForm.metadataRegistry;
-      // then
+    it('return form control given a level 1 key - scalar value', () => {
+      // given metadataForm
 
-      console.log('metadataRegistry', metadataRegistry);
+      // when
+      const control = metadataForm.getControl('project.describedBy');
+
+      // then
+      const formGroup = metadataForm.formGroup;
+
+      expect(control).toEqual(formGroup['controls']['describedBy']);
+      expect(control instanceof FormControl).toEqual(true);
+      expect(control.value).toEqual('https://schema.dev.data.humancellatlas.org/type/project/15.0.0/project');
     });
 
-    it('return metadataRegistry with config', () => {
-      // given
-      const testData = (json as any).default;
-      // when
-      const metadataForm = new MetadataForm('project', testSchema, testData);
-      const metadataRegistry = metadataForm.metadataRegistry;
-      // then
+    it('return form group given a level 1 key - scalar value', () => {
+      // given metadataForm
 
-      console.log('metadataRegistry', metadataRegistry);
+      // when
+      const control = metadataForm.getControl('project.project_core');
+
+      // then
+      const formGroup = metadataForm.formGroup;
+      const formData = metadataFormSvc.cleanFormData(control.value);
+
+      expect(control).toEqual(formGroup['controls']['project_core']);
+      expect(control instanceof FormGroup).toEqual(true);
+      expect(formData).toEqual(testData['project_core']);
+    });
+
+    it('return form control given level 2 - scalar value', () => {
+      // given metadataForm
+
+      // when
+      const control = metadataForm.getControl('project.project_core.project_title');
+
+      // then
+      const formGroup = metadataForm.formGroup;
+      const projectCore = formGroup['controls']['project_core'];
+
+      expect(control).toEqual(projectCore['controls']['project_title']);
+      expect(control instanceof FormControl).toEqual(true);
+      expect(control.value).toEqual('Sequencing of Phoebe core samples');
+    });
+
+    it('return form array given a level 1 key - array', () => {
+      // given metadataForm
+
+      // when
+      const control = metadataForm.getControl('project.publications');
+
+      // then
+      const formGroup = metadataForm.formGroup;
+      const publications = formGroup['controls']['publications'];
+
+      expect(control).toEqual(publications);
+      expect(control instanceof FormArray).toEqual(true);
+      expect(metadataFormSvc.cleanFormData(control.value)).toEqual([{
+        'authors': [
+          'Corey JSA',
+          'Franck T',
+          'Abraham D'
+        ],
+        'title': 'Leviathan Wakes',
+        'url': 'https://expanse.fandom.com/wiki/Leviathan_Wakes'
+      },
+        {
+          'authors': [
+            'Fergus M',
+            'Ostby H',
+            'McDonough T'
+          ],
+          'title': 'The Expanse',
+          'url': 'https://expanse.fandom.com/wiki/Season_1'
+        }
+      ]);
+    });
+
+
+    it('return form array given a level 2 key - array, with root control', () => {
+      // given metadataForm
+      const formGroup = metadataForm.formGroup;
+      const publications = formGroup['controls']['publications'];
+
+      // when
+      const control = metadataForm.getControl('.authors', publications['controls'][0]);
+      console.log('publications', publications);
+      console.log('.authors', control);
+
+      // then
+      expect(control).toEqual( publications['controls'][0]['controls']['authors']);
+      expect(control instanceof FormArray).toEqual(true);
+      expect(metadataFormSvc.cleanFormData(control.value)).toEqual([
+        'Corey JSA',
+        'Franck T',
+        'Abraham D'
+      ]);
     });
 
   });

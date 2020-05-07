@@ -5,8 +5,10 @@ import {AlertService} from '../../shared/services/alert.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as schema from './schema.json';
+import * as layout from './layout.json';
 import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 import {LoaderService} from '../../shared/services/loader.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-project-form',
@@ -17,7 +19,8 @@ export class ProjectFormComponent implements OnInit {
   title: string;
   subtitle: string;
 
-  projectJsonSchema: any = (schema as any).default;
+  projectSchema: any = (schema as any).default;
+  formLayout: any = (layout as any).default;
 
   projectResource: Project;
   projectContent: object;
@@ -25,6 +28,7 @@ export class ProjectFormComponent implements OnInit {
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
+  formTabIndex: number = 0;
 
   config: MetadataFormConfig = {
     hideFields: [
@@ -35,39 +39,9 @@ export class ProjectFormComponent implements OnInit {
     ],
     removeEmptyFields: true,
 
-    layout: {
-      'tabs': [
-        {
-          'title': 'Project',
-          'items': [
-            'project.project_core',
-            'project.array_express_accessions',
-            'project.biostudies_accessions',
-            'project.geo_series_accessions',
-            'project.insdc_project_accessions',
-            'project.insdc_study_accessions',
-            'project.supplementary_links'
-          ]
-        },
-        {
-          'title': 'Contributors',
-          'items': [
-            'project.contributors'
-          ]
-        },
-        {
-          'title': 'Publications',
-          'items': [
-            'project.publications'
-          ]
-        },
-        {
-          'title': 'Funders',
-          'items': [
-            'project.funders'
-          ]
-        }
-      ]
+    layout: this.formLayout,
+    inputType: {
+      'project_description': 'textarea'
     }
   };
 
@@ -82,6 +56,10 @@ export class ProjectFormComponent implements OnInit {
 
   ngOnInit() {
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
+    if (this.route.snapshot.paramMap.has('tab')) {
+      this.formTabIndex = +this.route.snapshot.paramMap.get('tab');
+    }
+
     this.projectResource = null;
     this.formIsValid = null;
     this.formValidationErrors = null;
@@ -120,6 +98,37 @@ export class ProjectFormComponent implements OnInit {
         });
   }
 
+  onSave(formValue: object) {
+    this.loaderService.display(true);
+    this.alertService.clear();
+    this.createOrSaveProject(formValue).subscribe(project => {
+        this.updateProjectContent(project);
+        this.loaderService.display(false);
+        this.incrementTab();
+      },
+      error => {
+        this.loaderService.display(false);
+        this.alertService.error('Error', error.message);
+      });
+  }
+
+  onCancel($event: boolean) {
+    if ($event) {
+      if (this.createMode) {
+        this.router.navigate(['/projects']);
+      } else {
+        this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+      }
+    }
+
+  }
+
+  private updateProjectContent(projectResource: Project) {
+    this.createMode = false;
+    this.projectResource = projectResource;
+    this.projectContent = this.projectResource.content;
+  }
+
   displayPostValidationErrors() {
     if (!this.projectResource) {
       return null;
@@ -142,41 +151,24 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  onSave(formValue: object) {
-    this.loaderService.display(true);
-    this.alertService.clear();
-    if (this.createMode) {
-      console.log('Creating project', formValue);
-      Object.assign(formValue, this.projectContent);
-      this.ingestService.postProject(formValue).subscribe(resource => {
-          this.loaderService.display(false);
-          console.log('project created', resource);
-          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-          this.alertService.success('Success', 'Project has been successfully created!', true);
-        },
-        error => {
-          this.loaderService.display(false);
-          this.alertService.error('Error', error.message);
-        });
-    } else {
-      console.log('Updating project', formValue);
-      this.ingestService.patchProject(this.projectResource, formValue).subscribe(resource => {
-          this.loaderService.display(false);
-          console.log('project updated', resource);
-          this.router.navigateByUrl(`/projects/detail?uuid=${resource['uuid']['uuid']}`);
-          this.alertService.success('Success', 'Project has been successfully updated!', true);
-        },
-        error => {
-          this.loaderService.display(false);
-          this.alertService.error('Error', error.message);
-        });
+  private incrementTab() {
+    this.formTabIndex++;
+    if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
+      this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
     }
   }
 
-  onCancel($event: boolean) {
-    if ($event) {
-      this.router.navigate(['/projects']);
+  private createOrSaveProject(formValue: object): Observable<Project> {
+    if (this.createMode) {
+      console.log('Creating project', formValue);
+      return this.ingestService.postProject(formValue).map(proj => proj as Project);
+    } else {
+      console.log('Updating project', formValue);
+      return this.ingestService.patchProject(this.projectResource, formValue).map(proj => proj as Project);
     }
+  }
 
+  onTabChange($event: number) {
+    this.formTabIndex = $event;
   }
 }
