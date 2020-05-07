@@ -20,9 +20,9 @@ import { TextListInputComponent } from './metadata-form/fields/text-list-input/t
 import { TextAreaComponent } from './metadata-form/fields/text-area/text-area.component';
 import { VfAsteriskComponent } from './metadata-form/fields/vf-asterisk/vf-asterisk.component';
 import { DateInputComponent } from './metadata-form/fields/date-input/date-input.component';
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
