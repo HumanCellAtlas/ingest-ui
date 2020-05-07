@@ -33,7 +33,7 @@
       ]
     },
     {
-      "title": "Data",
+      "title": "Dates",
       "items": [
         "project.releaseDate",
         "project.accessionDate"
