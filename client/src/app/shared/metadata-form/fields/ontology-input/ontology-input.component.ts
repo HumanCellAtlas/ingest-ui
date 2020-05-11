@@ -75,8 +75,11 @@ export class OntologyInputComponent implements OnInit {
   }
 
   updateControl() {
-    if (typeof this.searchControl.value === 'string') {
-      this.searchControl.setValue(this.control.value.ontology ? this.control.value : ''); // reset if has previous value
+    if (typeof this.searchControl.value === 'string' && this.searchControl.value) {
+      this.searchControl.setValue(this.control.value.ontology ? this.control.value : ''); // reset to previous value
+    } else if (typeof this.searchControl.value === 'string' && !this.searchControl.value) { // reset if cleared
+      this.searchControl.setValue('');
+      this.control.reset();
     } else {
       const value: OlsDoc = this.searchControl.value;
       this.control.patchValue(value);
