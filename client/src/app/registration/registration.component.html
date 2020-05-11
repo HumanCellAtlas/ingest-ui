@@ -12,7 +12,7 @@
   </span>
 
   <p>&nbsp;</p>
-  <input type="button" name="register" value="Register" [disabled]="!termsAccepted" (click)="proceed()">
+  <button mat-raised-button color="primary" [disabled]="!termsAccepted" (click)="proceed()">Register</button>
 
   <div *ngIf="status && status.message" id="registration-message">
     <p>&nbsp;</p>
