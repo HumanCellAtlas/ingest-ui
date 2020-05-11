@@ -1,4 +1,5 @@
 <div class="vf-form__item">
+  <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
   <label *ngIf="label" class="vf-form__label">{{label}}</label>
   <input type="text"
          placeholder="{{example}}"
@@ -11,4 +12,5 @@
       {{displayOntology(option)}}
     </mat-option>
   </mat-autocomplete>
+  <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
 </div>

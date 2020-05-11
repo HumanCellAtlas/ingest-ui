@@ -47,7 +47,11 @@ export class OntologyInputComponent implements OnInit {
   ngOnInit() {
     const userFriendly = this.metadata.schema.user_friendly ? this.metadata.schema.user_friendly : undefined;
     this.label = userFriendly ? userFriendly : this.metadata.key;
-    this.helperText = this.metadata.schema.guidelines;
+
+    const guidelines = this.metadata.schema.guidelines;
+    const description = this.metadata.schema.description;
+    this.helperText = guidelines ? guidelines : description;
+
     this.isRequired = this.metadata.isRequired;
     this.example = this.metadata.schema.example;
     this.disabled = this.metadata.isDisabled;
@@ -77,7 +81,6 @@ export class OntologyInputComponent implements OnInit {
       const value: OlsDoc = this.searchControl.value;
       this.control.patchValue(value);
     }
-    console.log('updated control value', this.control.value);
   }
 
   private createSearchParams(schema: JsonSchema) {
