@@ -3,7 +3,7 @@
   <mat-tab-group (selectedIndexChange)="onSelectedIndexChange($event)" [selectedIndex]="this.selectedTabIndex">
     <ng-container *ngFor="let tab of config.layout['tabs']">
       <mat-tab [label]="tab['title']">
-        <div class="vf-u-margin__top--xxl">
+        <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
           <ng-container *ngFor="let item of tab['items']">
             <ng-container
               *ngIf="metadataForm.get(item)">
@@ -39,7 +39,7 @@
                   <a mat-icon-button
                      (click)="addFormControl(metadataForm.get(item), metadataForm.getControl(item))">
                     <mat-icon>add_circle_outline</mat-icon>
-                    Add
+                    Add a {{singularize(metadataForm.get(item).key)}}
                   </a>
                 </ng-container>
               </ng-container>
