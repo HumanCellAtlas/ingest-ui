@@ -2,7 +2,7 @@ import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "
 import {fakeAsync, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
-import {Account} from "./security.data";
+import {Account} from "../shared/models/account";
 
 let accountService: AuthenticationService;
 let remoteService: HttpTestingController
