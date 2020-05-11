@@ -49,11 +49,8 @@ export class AaiService {
     return Observable.forkJoin(this.isUserLoggedIn(), this.isUserFromEBI()).map(results => results[0] && results[1]);
   }
 
-  getAuthorizationHeaderValue(): string {
-    if (this.user) {
-      return `${this.user.token_type} ${this.user.access_token}`;
-    }
-    throw new Error('No user was found!');
+  getAuthorizationHeaderValue(): Observable<string> {
+    return this.getUser().map(user => `${user.token_type} ${user.access_token}`);
   }
 
   startAuthentication(): Promise<void> {
