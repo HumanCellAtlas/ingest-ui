@@ -4,7 +4,8 @@ import {InputComponent} from './input/input.component';
 import {AbstractControl} from '@angular/forms';
 import {TextListInputComponent} from './text-list-input/text-list-input.component';
 import {TextAreaComponent} from './text-area/text-area.component';
-import {DateInputComponent} from "./date-input/date-input.component";
+import {DateInputComponent} from './date-input/date-input.component';
+import {OntologyInputComponent} from './ontology-input/ontology-input.component';
 
 const components = {
   text: InputComponent,
@@ -30,29 +31,37 @@ export class MetadataFieldDirective implements OnInit {
   }
 
   ngOnInit(): void {
+    let component;
+
     if (this.metadata.isScalar()) {
-      let component = this.metadata.inputType ? components[this.metadata.inputType] : InputComponent;
+
+      component = this.metadata.inputType ? components[this.metadata.inputType] : InputComponent;
       component = this.metadata.schema.format === 'date-time' ? DateInputComponent : component;
-      const factory = this.resolver.resolveComponentFactory<any>(component);
-      this.component = this.container.createComponent(factory);
-      this.component.instance.metadata = this.metadata;
-      this.component.instance.control = this.control;
-      this.component.instance.id = this.id;
+
     } else if (this.metadata.isObject()) {
-      const component = InputComponent;
-      const factory = this.resolver.resolveComponentFactory<any>(component);
-      this.component = this.container.createComponent(factory);
-      this.component.instance.metadata = this.metadata;
-      this.component.instance.control = this.control;
-      this.component.instance.id = this.id;
+      component = InputComponent;
+      if (this.metadata.schema.$id.indexOf('/module/ontology/') >= 0) {
+        component = OntologyInputComponent;
+      }
+
     } else if (this.metadata.isScalarList()) {
-      const component = TextListInputComponent;
-      const factory = this.resolver.resolveComponentFactory<any>(component);
-      this.component = this.container.createComponent(factory);
-      this.component.instance.metadata = this.metadata;
-      this.component.instance.control = this.control;
-      this.component.instance.id = this.id;
+
+      component = TextListInputComponent;
+
+    } else {
+      component = InputComponent;
+    }
+
+    if (component) {
+      this.createAndInitComponent(component);
     }
   }
 
+  private createAndInitComponent(component) {
+    const factory = this.resolver.resolveComponentFactory<any>(component);
+    this.component = this.container.createComponent(factory);
+    this.component.instance.metadata = this.metadata;
+    this.component.instance.control = this.control;
+    this.component.instance.id = this.id;
+  }
 }

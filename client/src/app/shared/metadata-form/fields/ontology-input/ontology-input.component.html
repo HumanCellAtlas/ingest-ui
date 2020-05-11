@@ -1,0 +1,14 @@
+<div class="vf-form__item">
+  <label *ngIf="label" class="vf-form__label">{{label}}</label>
+  <input type="text"
+         placeholder="{{example}}"
+         matInput
+         [formControl]="searchControl"
+         [matAutocomplete]="auto" class="vf-form__input"
+         (focusout)="updateControl()">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOntology" (optionSelected)="updateControl()">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{displayOntology(option)}}
+    </mat-option>
+  </mat-autocomplete>
+</div>

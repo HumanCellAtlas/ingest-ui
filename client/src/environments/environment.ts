@@ -12,5 +12,7 @@ export const environment = {
   DOMAIN_WHITELIST: 'localhost:8080,localhost:5000',
   // AAI
   AAI_CLIENT_ID: '',
-  AAI_AUTHORITY: 'https://login.elixir-czech.org/oidc'
+  AAI_AUTHORITY: 'https://login.elixir-czech.org/oidc',
+
+  OLS_URL: 'https://ontology.staging.archive.data.humancellatlas.org'
 };
