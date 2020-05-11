@@ -86,8 +86,6 @@ export class MetadataFormHelper {
         const elemFormControl = this.toFormGroup(jsonSchema as JsonSchema, elem);
         controlData.push(elemFormControl);
       }
-    } else {
-      controlData.push(this.toFormGroup(jsonSchema as JsonSchema, undefined));
     }
     return new FormArray(controlData);
   }

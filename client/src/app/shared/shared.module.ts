@@ -19,6 +19,10 @@ import {InputComponent} from './metadata-form/fields/input/input.component';
 import { TextListInputComponent } from './metadata-form/fields/text-list-input/text-list-input.component';
 import { TextAreaComponent } from './metadata-form/fields/text-area/text-area.component';
 import { VfAsteriskComponent } from './metadata-form/fields/vf-asterisk/vf-asterisk.component';
+import { DateInputComponent } from './metadata-form/fields/date-input/date-input.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -31,7 +35,10 @@ import { VfAsteriskComponent } from './metadata-form/fields/vf-asterisk/vf-aster
     RouterModule,
     MatIconModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: [
     ClipboardDirective,
@@ -44,6 +51,7 @@ import { VfAsteriskComponent } from './metadata-form/fields/vf-asterisk/vf-aster
     TextListInputComponent,
     TextAreaComponent,
     VfAsteriskComponent,
+    DateInputComponent,
   ],
   exports: [
     ClipboardDirective,

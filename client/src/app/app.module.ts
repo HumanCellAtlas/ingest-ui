@@ -66,6 +66,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {AaiSecurity} from './aai/aai.module';
 import { RegistrationComponent } from './registration/registration.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -125,6 +126,7 @@ import { RegistrationComponent } from './registration/registration.component';
     MatRadioModule,
     MaterialDesignFrameworkModule,
     AaiSecurity,
+    MatDatepickerModule,
   ],
   providers: [
     {

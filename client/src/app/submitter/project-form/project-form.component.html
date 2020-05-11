@@ -8,13 +8,16 @@
 <p *ngIf="!projectResource && !createMode">Loading project...</p>
 
 <ng-container *ngIf="projectResource || createMode">
+
   <app-metadata-form name="project"
-                     [schema]="projectSchema"
-                     [data]="projectContent"
+                     [schema]="projectIngestSchema"
+                     [data]="projectFormData"
                      [config]="config"
-                     (save)="onSave($event)"
                      (cancel)="onCancel($event)"
                      (tabChange)="onTabChange($event)"
-                     [selectedTabIndex]="formTabIndex">
+                     [selectedTabIndex]="formTabIndex"
+                     (save)="onSave($event)">
   </app-metadata-form>
+
+
 </ng-container>

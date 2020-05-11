@@ -5,7 +5,7 @@ import {JsonSchema} from './json-schema';
 import {MetadataFormConfig} from './metadata-form-config';
 import {MetadataForm} from './metadata-form';
 import {Metadata} from './metadata';
-
+import pluralize from 'pluralize';
 
 @Component({
   selector: 'app-metadata-form',
@@ -86,5 +86,9 @@ export class MetadataFormComponent implements OnInit {
 
   onSelectedIndexChange(tabIndex: number) {
     this.tabChange.emit(tabIndex);
+  }
+
+  singularize(word: string) {
+    return pluralize.singular(word);
   }
 }

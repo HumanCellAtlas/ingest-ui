@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "A ingest project entity contains information about the ingestion of the project.",
+  "name": "project",
+  "properties": {
+    "releaseDate": {
+      "guidelines": "Enter date of when to release the project.",
+      "type": "string",
+      "format": "date-time",
+      "user_friendly": "Release date"
+    },
+    "accessionDate": {
+      "guidelines": "Enter the date of when to accession the project.",
+      "type": "string",
+      "format": "date-time",
+      "user_friendly": "Accession Date"
+    },
+    "content": {}
+  },
+  "required": [],
+  "title": "Ingest Project",
+  "type": "object"
+}

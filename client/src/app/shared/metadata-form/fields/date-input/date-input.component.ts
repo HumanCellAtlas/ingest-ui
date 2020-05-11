@@ -1,24 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {Metadata} from '../../metadata';
 import {AbstractControl} from '@angular/forms';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-text-area',
-  templateUrl: './text-area.component.html',
-  styleUrls: ['./text-area.component.css']
+  selector: 'app-date-input',
+  templateUrl: './date-input.component.html',
+  styleUrls: ['./date-input.component.css']
 })
-export class TextAreaComponent implements OnInit {
+export class DateInputComponent implements OnInit {
   metadata: Metadata;
   control: AbstractControl;
   id: string;
 
   label: string;
   helperText: string;
-  isRequired: boolean;
-  error: string;
-  example: string;
+  value: Date;
   disabled: boolean;
-  rows: number;
+
 
   constructor() {
   }
@@ -26,10 +25,13 @@ export class TextAreaComponent implements OnInit {
   ngOnInit(): void {
     this.label = this.metadata.schema.user_friendly ? this.metadata.schema.user_friendly : this.metadata.key;
     this.helperText = this.metadata.schema.guidelines;
-    this.isRequired = this.metadata.isRequired;
-    this.example = this.metadata.schema.example;
+    this.value = new Date(this.control.value);
     this.disabled = this.metadata.isDisabled;
-    this.rows = 3;
   }
 
+  onDateChanged($event: MatDatepickerInputEvent<any>) {
+    const value = $event.value as Date;
+    const date = value.toJSON();
+    this.control.setValue(date);
+  }
 }
