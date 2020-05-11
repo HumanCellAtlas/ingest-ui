@@ -45,6 +45,10 @@ export class IngestService {
     return this.http.get(`${this.API_URL}/user/projects`, {params: params});
   }
 
+  public getUserAccount(): Observable<any> {
+    return this.http.get(`${this.API_URL}/auth/account`)
+  }
+
   public deleteSubmission(submissionId) {
     return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`);
   }
