@@ -18,21 +18,18 @@ export const ROUTES: Routes = [
 
   {path: '', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
   {path: 'home', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
+  {path: 'registration', component: RegistrationComponent, canActivate: [UserIsLoggedIn]},
+  {path: 'projects', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
+  {path: 'projects/new', component: ProjectFormComponent, canActivate: [UserIsLoggedIn]},
+
+  {path: 'projects/all', component: AllProjectsComponent, canActivate: [UserIsLoggedIn, UserIsWrangler]},
   {path: 'submissions/list', component: SubmissionListComponent,  canActivate: [UserIsLoggedIn, UserIsWrangler]},
-  {path: 'submissions/:tab/upload', component: SubmissionComponent,  canActivate: [UserIsLoggedIn, UserIsWrangler]},
-  {path: 'submissions/detail/:id', component: SubmissionComponent,  canActivate: [UserIsLoggedIn, UserIsWrangler]},
-  {path: 'submissions/detail/:id/:tab', component: SubmissionComponent,  canActivate: [UserIsLoggedIn, UserIsWrangler]},
 
   {path: 'projects/detail/:id', component: ProjectComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
   {path: 'projects/detail', component: ProjectComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
-  {path: 'projects/all', component: AllProjectsComponent, canActivate: [UserIsLoggedIn, UserIsWrangler]},
-
-  {path: 'projects', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
-  {path: 'projects/new', component: ProjectFormComponent, canActivate: [UserIsLoggedIn]},
   {path: 'projects/:uuid', component: ProjectFormComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
   {path: 'projects/:uuid/:tab', component: ProjectFormComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
-
-  {path: 'registration', component: RegistrationComponent, canActivate: [UserIsLoggedIn]},
+  {path: 'submissions/detail', component: SubmissionComponent,  canActivate: [UserIsLoggedIn, WranglerOrOwner]},
 
   {path: '**', redirectTo: ''}
 ];
