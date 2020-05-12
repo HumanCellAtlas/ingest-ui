@@ -6,17 +6,11 @@ import {Metadata} from '../../metadata';
 import {OntologyService} from '../../../services/ontology.service';
 import {OlsDoc} from '../../../models/ols';
 import {JsonSchema} from '../../json-schema';
+import {Ontology} from './ontology';
 
 const OLS_RELATION = {
   'rdfs:subClassOf': 'allChildrenOf'
 };
-
-interface Ontology {
-  text: string;
-  ontology_label: string;
-  ontology: string;
-}
-
 
 @Component({
   selector: 'app-ontology-input',
@@ -80,7 +74,7 @@ export class OntologyInputComponent implements OnInit {
       if (!value) {
         this.control.reset();
       } else {
-        const originalValue = this.control.value.ontology ? this.control.value : ''
+        const originalValue = this.control.value.ontology ? this.control.value : '';
         this.searchControl.setValue(originalValue);
       }
 
@@ -91,6 +85,10 @@ export class OntologyInputComponent implements OnInit {
   }
 
   createSearchParams(schema: JsonSchema): object {
+    if (!schema) {
+      return {};
+    }
+
     const graphRestriction = schema.properties['ontology']['graph_restriction'];
     const ontologyClass: string = graphRestriction['classes'][0]; // TODO support only 1 class for now
     const ontologyRelation: string = graphRestriction['relations'][0]; // TODO support only 1 relation for now
@@ -120,7 +118,7 @@ export class OntologyInputComponent implements OnInit {
 
   createSearchControl(value: Ontology) {
     return new FormControl({
-      value: value.ontology ? value : '',
+      value: value && value.ontology ? value : '',
       disabled: this.metadata.isDisabled
     });
   }
