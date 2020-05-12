@@ -6,8 +6,8 @@
          matInput
          [formControl]="searchControl"
          [matAutocomplete]="auto" class="vf-form__input"
-         (focusout)="updateControl()">
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOntology" (optionSelected)="updateControl()">
+         (focusout)="updateControl(searchControl.value)">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOntology" (optionSelected)="updateControl(searchControl.value)">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
       {{displayOntology(option)}}
     </mat-option>

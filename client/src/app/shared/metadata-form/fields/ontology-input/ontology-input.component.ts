@@ -34,7 +34,6 @@ export class OntologyInputComponent implements OnInit {
   error: string;
   example: string;
   disabled: boolean;
-  value: Ontology;
 
   searchControl: FormControl;
   filteredOptions: Observable<Ontology[]>;
@@ -45,7 +44,7 @@ export class OntologyInputComponent implements OnInit {
   }
 
   ngOnInit() {
-    const userFriendly = this.metadata.schema.user_friendly ? this.metadata.schema.user_friendly : undefined;
+    const userFriendly = this.metadata.schema.user_friendly;
     this.label = userFriendly ? userFriendly : this.metadata.key;
 
     const guidelines = this.metadata.schema.guidelines;
@@ -53,16 +52,16 @@ export class OntologyInputComponent implements OnInit {
     this.helperText = guidelines ? guidelines : description;
 
     this.isRequired = this.metadata.isRequired;
+
     this.example = this.metadata.schema.example;
-    this.disabled = this.metadata.isDisabled;
 
-    this.createSearchParams(this.metadata.schema);
+    this.searchParams = this.createSearchParams(this.metadata.schema);
 
-    this.createSearchControl();
+    this.searchControl = this.createSearchControl(this.control.value);
 
     this.filteredOptions = this.searchControl.valueChanges
       .pipe(
-        startWith(this.value ? this.value : ''),
+        startWith(this.searchControl.value ? this.searchControl.value : ''),
         concatMap(value => this.olsLookup(value))
       );
   }
@@ -74,34 +73,41 @@ export class OntologyInputComponent implements OnInit {
     return ontology ? `${ontology.ontology_label} (${ontology.ontology})` : '';
   }
 
-  updateControl() {
-    if (typeof this.searchControl.value === 'string' && this.searchControl.value) {
-      this.searchControl.setValue(this.control.value.ontology ? this.control.value : ''); // reset to previous value
-    } else if (typeof this.searchControl.value === 'string' && !this.searchControl.value) { // reset if cleared
-      this.searchControl.setValue('');
-      this.control.reset();
+  updateControl(value: any) {
+    if (typeof value === 'string') {
+      value = value.trim();
+
+      if (!value) {
+        this.control.reset();
+      } else {
+        const originalValue = this.control.value.ontology ? this.control.value : ''
+        this.searchControl.setValue(originalValue);
+      }
+
     } else {
-      const value: OlsDoc = this.searchControl.value;
-      this.control.patchValue(value);
+      const optionValue: OlsDoc = this.searchControl.value;
+      this.control.patchValue(optionValue);
     }
   }
 
-  private createSearchParams(schema: JsonSchema) {
+  createSearchParams(schema: JsonSchema): object {
     const graphRestriction = schema.properties['ontology']['graph_restriction'];
     const ontologyClass: string = graphRestriction['classes'][0]; // TODO support only 1 class for now
     const ontologyRelation: string = graphRestriction['relations'][0]; // TODO support only 1 relation for now
 
-    this.searchParams = {
+    const searchParams = {
       groupField: 'iri',
       start: 0,
       ontology: 'efo'
     };
 
     const olsClass = ontologyClass.replace(':', '_');
-    this.searchParams[OLS_RELATION[ontologyRelation]] = `http://www.ebi.ac.uk/efo/${olsClass}`;
+    searchParams[OLS_RELATION[ontologyRelation]] = `http://www.ebi.ac.uk/efo/${olsClass}`;
+
+    return searchParams;
   }
 
-  private olsLookup(value: string | Ontology): Observable<Ontology[]> {
+  olsLookup(value: string | Ontology): Observable<Ontology[]> {
     const filterValue = typeof value === 'string' ? value.toLowerCase() : value.ontology_label ? value.ontology_label.toLowerCase() : '';
     this.searchParams['q'] = filterValue ? filterValue : '*';
     return this.ols.select(this.searchParams).map(result => {
@@ -112,10 +118,9 @@ export class OntologyInputComponent implements OnInit {
     });
   }
 
-  private createSearchControl() {
-    this.value = this.control.value as Ontology;
-    this.searchControl = new FormControl({
-      value: this.value.ontology ? this.value : '',
+  createSearchControl(value: Ontology) {
+    return new FormControl({
+      value: value.ontology ? value : '',
       disabled: this.metadata.isDisabled
     });
   }
