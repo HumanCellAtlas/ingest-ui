@@ -18,15 +18,14 @@ export class DateInputComponent implements OnInit {
   value: Date;
   disabled: boolean;
 
-
   constructor() {
   }
 
   ngOnInit(): void {
     this.label = this.metadata.schema.user_friendly ? this.metadata.schema.user_friendly : this.metadata.key;
     this.helperText = this.metadata.schema.guidelines;
-    this.value = new Date(this.control.value);
     this.disabled = this.metadata.isDisabled;
+    this.value = this.control.value ? new Date(this.control.value) : this.disabled ? undefined : new Date();
   }
 
   onDateChanged($event: MatDatepickerInputEvent<any>) {

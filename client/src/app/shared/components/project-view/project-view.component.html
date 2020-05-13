@@ -8,12 +8,10 @@
 <p *ngIf="!project">Loading project...</p>
 
 <ng-container *ngIf="project">
-  <mat-card>
-    <app-metadata-form name="project"
-                       [schema]="projectIngestSchema"
-                       [data]="project"
-                       (tabChange)="onTabChange($event)"
-                       [config]="config">
-    </app-metadata-form>
-  </mat-card>
+  <app-metadata-form name="project"
+                     [schema]="projectIngestSchema"
+                     [data]="project"
+                     (tabChange)="onTabChange($event)"
+                     [config]="config">
+  </app-metadata-form>
 </ng-container>

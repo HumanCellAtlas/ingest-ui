@@ -7,5 +7,7 @@ export const environment = {
   DOMAIN_WHITELIST: 'api.ingest.archive.data.humancellatlas.org,ingest.data.humancellatlas.org',
   // AAI
   AAI_CLIENT_ID: '',
-  AAI_AUTHORITY: 'https://login.elixir-czech.org/oidc'
+  AAI_AUTHORITY: 'https://login.elixir-czech.org/oidc',
+
+  OLS_URL: 'https://ontology.archive.data.humancellatlas.org'
 };
