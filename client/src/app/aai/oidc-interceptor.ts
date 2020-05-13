@@ -4,6 +4,7 @@ import {AaiService} from './aai.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {AaiSecurity} from "./aai.module";
+import {concatMap} from "rxjs/operators";
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -14,13 +15,16 @@ export class OidcInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const host = (new URL(request.url)).hostname
     if (environment.DOMAIN_WHITELIST.indexOf(host) > -1) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: this.aai.getAuthorizationHeaderValue()
-        }
-      });
+      return this.aai.getAuthorizationHeaderValue().pipe(concatMap(authHeader => {
+        const headerRequest = request.clone({
+          setHeaders: {
+            Authorization: authHeader
+          }
+        });
+        return next.handle(headerRequest);
+      }));
+    } else {
       return next.handle(request);
     }
-    return next.handle(request);
   }
 }

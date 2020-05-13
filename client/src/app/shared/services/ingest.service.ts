@@ -14,6 +14,7 @@ import {environment} from '../../../environments/environment';
 import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
 import {MetadataSchema} from '../models/metadata-schema';
+import {Account} from '../../core/account';
 
 
 @Injectable()
@@ -43,6 +44,14 @@ export class IngestService {
 
   public getUserProjects(params): Observable<any> {
     return this.http.get(`${this.API_URL}/user/projects`, {params: params});
+  }
+
+  public getUserAccount(): Observable<Account> {
+    return this.http.get(`${this.API_URL}/auth/account`).map( data => new Account({
+      id: data['id'],
+      providerReference: data['providerReference'],
+      roles: data['roles']
+    }));
   }
 
   public deleteSubmission(submissionId) {
@@ -113,8 +122,7 @@ export class IngestService {
       .map((data: ListResult<Object>) => {
         if (data._embedded && data._embedded.projects) {
           return _.values(data._embedded.projects)[0];
-        } // there should only be one project linked to the submission env
-        else {
+        } else {
           return null;
         }
       });

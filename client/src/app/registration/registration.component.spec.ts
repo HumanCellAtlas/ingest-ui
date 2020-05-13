@@ -1,16 +1,16 @@
 import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
 
 import {RegistrationComponent} from './registration.component';
-import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "../core/authentication.service";
-import {AaiService} from "../aai/aai.service";
-import {User} from "oidc-client";
-import {Observable} from "rxjs";
-import {Account} from "../core/security.data";
-import {FormsModule} from "@angular/forms";
-import {Router} from "@angular/router";
+import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from '../core/authentication.service';
+import {AaiService} from '../aai/aai.service';
+import {User} from 'oidc-client';
+import {Observable} from 'rxjs';
+import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import createSpy = jasmine.createSpy;
+import {Account} from '../core/account';
 
 let registration: RegistrationComponent;
 let fixture: ComponentFixture<RegistrationComponent>;
@@ -30,7 +30,7 @@ function configureTestEnvironment(): void {
       {provide: AaiService, useFactory: () => aaiService},
       {provide: Router, useValue: createSpy('Router')}
     ]
-  })
+  });
 }
 
 function setUp(): void {
@@ -47,19 +47,19 @@ describe('Registration', () => {
   const user: User = <User>{access_token: accessToken};
 
   it('should register through the service if terms are accepted', fakeAsync(() => {
-    //given:
+    // given:
     aaiService.getUser.and.returnValue(Observable.of(user));
     registration.termsAccepted = true;
 
-    //and:
-    const newAccount = <Account>{id: '11f1faa8', providerReference: '2367ded12'};
+    // and:
+    const newAccount = new Account({id: '11f1faa8', providerReference: '2367ded12'});
     const accountPromise = Promise.resolve(newAccount);
     authenticationService.register.and.returnValue(accountPromise);
 
-    //when:
+    // when:
     registration.proceed();
 
-    //then:
+    // then:
     flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(true);
@@ -67,19 +67,19 @@ describe('Registration', () => {
   }));
 
   it('should set status when registration fails with account duplication', fakeAsync(() => {
-    //given:
+    // given:
     aaiService.getUser.and.returnValue(Observable.of(user));
     registration.termsAccepted = true;
 
-    //and:
-    const failure = <RegistrationFailed>{errorCode: RegistrationErrorCode.Duplication}
+    // and:
+    const failure = <RegistrationFailed>{errorCode: RegistrationErrorCode.Duplication};
     const accountPromise = Promise.reject(failure);
     authenticationService.register.and.returnValue(accountPromise);
 
-    //when:
+    // when:
     registration.proceed();
 
-    //then:
+    // then:
     flushMicrotasks();
     expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
@@ -87,14 +87,14 @@ describe('Registration', () => {
   }));
 
   it('should NOT proceed if terms are not accepted', async(() => {
-    //given:
+    // given:
     aaiService.getUser.and.returnValue(Observable.of(user));
     registration.termsAccepted = false;
 
-    //when:
+    // when:
     registration.proceed();
 
-    //then:
+    // then:
     expect(authenticationService.register).not.toHaveBeenCalled();
   }));
 });

@@ -1,15 +1,15 @@
-import {AaiService} from "./aai.service";
-import {async, fakeAsync, TestBed} from "@angular/core/testing";
-import {AuthenticationService} from "../core/authentication.service";
-import {User, UserManager} from "oidc-client";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {AlertService} from "../shared/services/alert.service";
-import {Observable} from "rxjs";
-import {Router} from "@angular/router";
-import {Account} from "../core/security.data";
+import {AaiService} from './aai.service';
+import {async, TestBed} from '@angular/core/testing';
+import {AuthenticationService} from '../core/authentication.service';
+import {User, UserManager} from 'oidc-client';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {AlertService} from '../shared/services/alert.service';
+import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
+import {Account} from '../core/account';
 import SpyObj = jasmine.SpyObj;
 
-describe('Complete Authentication', () =>{
+describe('Complete Authentication', () => {
 
   let aaiService: AaiService;
 
@@ -30,11 +30,11 @@ describe('Complete Authentication', () =>{
     state: undefined,
     token_type: 'access',
     toStorageString: () => '',
-  }
+  };
 
   beforeEach(() => {
     authenticationService = jasmine.createSpyObj('AuthenticationService', ['getAccount']);
-    userManager = jasmine.createSpyObj('UserManager', ['getUser', 'signinRedirectCallback'])
+    userManager = jasmine.createSpyObj('UserManager', ['getUser', 'signinRedirectCallback']);
     alertService = jasmine.createSpyObj('AlertService', ['error']);
     router = jasmine.createSpyObj('Router', ['navigate']);
 
@@ -53,13 +53,17 @@ describe('Complete Authentication', () =>{
   });
 
   it('should redirect home when the user is registered', async(() => {
-    //given:
+    // given:
     signInToRemoteService();
 
-    //and:
-    authenticationService.getAccount.and.returnValue(Observable.of(<Account>{}).toPromise());
+    // and:
+    authenticationService.getAccount.and.returnValue(Observable.of(new Account({
+      id: '',
+      providerReference: '',
+      roles: []
+    })).toPromise());
 
-    //expect:
+    // expect:
     aaiService.completeAuthentication().then(() => {
       expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
       expect(router.navigate).toHaveBeenCalledTimes(1);
@@ -69,13 +73,13 @@ describe('Complete Authentication', () =>{
   }));
 
   it('should redirect to registration page when User has not registered yet', async(() => {
-    //given:
+    // given:
     signInToRemoteService();
 
-    //and:
+    // and:
     authenticationService.getAccount.and.returnValue(Promise.reject());
 
-    //expect:
+    // expect:
     aaiService.completeAuthentication().then(() => {
       expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
       expect(router.navigate).toHaveBeenCalledTimes(1);

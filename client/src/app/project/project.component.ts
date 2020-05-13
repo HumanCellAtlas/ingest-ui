@@ -25,6 +25,7 @@ export class ProjectComponent implements OnInit {
   projectUuid: string;
   upload: boolean = false;
   selectedProjectTab: number = 0;
+  userIsWrangler: boolean;
 
   constructor(
     private alertService: AlertService,
@@ -37,6 +38,9 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit() {
     this.initProject();
+    this.ingestService.getUserAccount().subscribe(account => {
+      this.userIsWrangler = account.isWrangler();
+    });
   }
 
   getProject(id) {
@@ -148,10 +152,10 @@ export class ProjectComponent implements OnInit {
   }
 
   canSubmit(project: Project) {
-    return !(project.hasOpenSubmission ||
-      project.validationState === 'Invalid' ||
-      (project.validationErrors && project.validationErrors.length > 0)
-    );
+    return this.userIsWrangler &&
+      !project.hasOpenSubmission &&
+      project.validationState.toUpperCase() != 'INVALID' &&
+      !(project.validationErrors && project.validationErrors.length > 0);
   }
 
   private initProject() {

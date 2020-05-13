@@ -1,11 +1,11 @@
-import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "./authentication.service";
-import {fakeAsync, TestBed} from "@angular/core/testing";
-import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
-import {environment} from "../../environments/environment";
-import {Account} from "./security.data";
+import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from './authentication.service';
+import {fakeAsync, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
+import {environment} from '../../environments/environment';
+import {Account} from './account';
 
 let accountService: AuthenticationService;
-let remoteService: HttpTestingController
+let remoteService: HttpTestingController;
 
 function setUp() {
   TestBed.configureTestingModule({
@@ -25,7 +25,7 @@ function expectAuthorisedRequest(token: string, httpMethod?: string): TestReques
     expect(request.request.method).toEqual(httpMethod);
   }
   return request;
-};
+}
 
 describe('Get Account', () => {
 
@@ -37,7 +37,7 @@ describe('Get Account', () => {
 
   it('should resolve to an Account if the User is registered', fakeAsync(() => {
     {
-      //expect:
+      // expect:
       const accountId = 'c83bf90';
       const token = 'aGVsbG8sIHdvcmxkCg==';
       accountService.getAccount(token).then((account: Account) => {
@@ -46,7 +46,7 @@ describe('Get Account', () => {
         expect(account.roles).toContain('CONTRIBUTOR');
       });
 
-      //given:
+      // given:
       const request = expectAuthorisedRequest(token, 'GET');
       request.flush({
         'id': accountId,
@@ -56,7 +56,7 @@ describe('Get Account', () => {
   }));
 
   it('should reject with an empty Account if the User is not registered', fakeAsync(() => {
-    //expect:
+    // expect:
     const token = 'bWFnaWMgc3RyaW5nCg==';
     accountService.getAccount(token)
       .then(() => {
@@ -66,7 +66,7 @@ describe('Get Account', () => {
         expect(account).toEqual(<Account>{});
       });
 
-    //given:
+    // given:
     const request = expectAuthorisedRequest(token, 'GET');
     request.flush(null, { status: 404, statusText: 'not found' });
   }));
@@ -82,7 +82,7 @@ describe('Account Registration', () => {
   });
 
   it('should return Account data after registration', fakeAsync(() => {
-    //expect:
+    // expect:
     const accountId = '72f9001';
     const providerReference = '127ee11';
     const token = 'ZW5jb2RlZCBzdHJpbmcK';
@@ -93,13 +93,13 @@ describe('Account Registration', () => {
       expect(account.roles).toContain('CONTRIBUTOR');
     });
 
-    //given:
+    // given:
     const request = expectAuthorisedRequest(token, 'POST');
     request.flush(<Account>{
       id: accountId,
       providerReference: providerReference,
       roles: ['CONTRIBUTOR'],
-    })
+    });
   }));
 
   it('should throw an error when the User is already registered (403)', fakeAsync(() => {
@@ -118,7 +118,7 @@ describe('Account Registration', () => {
   }));
 
   function testForError(errorCode, httpStatus: number, statusText?: string | 'error', postCondition?) {
-    //expect:
+    // expect:
     const token = 'dG9rZW4K';
     accountService.register(token)
       .then(() => {
@@ -131,7 +131,7 @@ describe('Account Registration', () => {
         }
       });
 
-    //given:
+    // given:
     const request = expectAuthorisedRequest(token, 'POST');
     request.flush(null, { status: httpStatus, statusText: statusText });
   }

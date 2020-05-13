@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {IngestService} from '../shared/services/ingest.service';
 import {AaiService} from '../aai/aai.service';
 
 @Component({
@@ -8,12 +9,18 @@ import {AaiService} from '../aai/aai.service';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent implements OnInit {
+  isWrangler: boolean;
   isLoggedIn: boolean;
 
 
-  constructor(private aai: AaiService) {
-    this.aai.getUserSubject().subscribe(user => {
-      this.isLoggedIn = user && !user.expired;
+  constructor(private aai: AaiService, private ingestService: IngestService) {
+    this.aai.isUserLoggedIn().subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+      if (loggedIn) {
+        this.ingestService.getUserAccount().subscribe(account => {
+          this.isWrangler = account.isWrangler();
+        });
+      }
     });
   }
 

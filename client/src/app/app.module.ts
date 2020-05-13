@@ -100,7 +100,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    HttpClientModule,
     RouterModule.forRoot(ROUTES),
     SharedModule,
     ReactiveFormsModule,
