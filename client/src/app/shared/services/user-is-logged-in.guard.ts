@@ -1,20 +1,18 @@
 import {Injectable} from '@angular/core';
+import {AaiService} from '../../aai/aai.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AaiSecurity} from '../../aai/aai.module';
-import {IngestService} from './ingest.service';
-import {Account} from '../../core/security.data';
 
 @Injectable({
   providedIn: AaiSecurity,
 })
-export class UserIsWrangler implements CanActivate {
+export class UserIsLoggedInGuard implements CanActivate {
 
-  constructor(private ingestService: IngestService, private router: Router) {
+  constructor(private aai: AaiService, private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    return this.ingestService.getUserAccount()
-      .map((acc: Account) => acc.roles.includes('WRANGLER') ? true : this.router.parseUrl('/home'));
+    return this.aai.isUserLoggedIn().map(loggedIn => loggedIn ? loggedIn : this.router.parseUrl('/login'));
   }
 }

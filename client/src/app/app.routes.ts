@@ -8,28 +8,28 @@ import {ProjectFormComponent} from './submitter/project-form/project-form.compon
 import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
 import {SubmissionListComponent} from './submission-list/submission-list.component';
 import {RegistrationComponent} from './registration/registration.component';
-import {UserIsLoggedIn} from "./shared/services/user-is-logged-in.service";
-import {UserIsWrangler} from "./shared/services/user-is-wrangler.service";
-import {WranglerOrOwner} from "./shared/services/wrangler-or-owner.service";
+import {UserIsLoggedInGuard} from './shared/services/user-is-logged-in.guard';
+import {UserIsWranglerGuard} from './shared/services/user-is-wrangler.guard';
+import {WranglerOrOwnerGuard} from './shared/services/wrangler-or-owner.guard';
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'aai-callback', component: AaiCallbackComponent},
 
-  {path: '', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
-  {path: 'home', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
-  {path: 'registration', component: RegistrationComponent, canActivate: [UserIsLoggedIn]},
-  {path: 'projects', component: MyProjectsComponent, canActivate: [UserIsLoggedIn]},
-  {path: 'projects/new', component: ProjectFormComponent, canActivate: [UserIsLoggedIn]},
+  {path: '', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
+  {path: 'home', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
+  {path: 'registration', component: RegistrationComponent, canActivate: [UserIsLoggedInGuard]},
+  {path: 'projects', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
+  {path: 'projects/new', component: ProjectFormComponent, canActivate: [UserIsLoggedInGuard]},
 
-  {path: 'projects/all', component: AllProjectsComponent, canActivate: [UserIsLoggedIn, UserIsWrangler]},
-  {path: 'submissions/list', component: SubmissionListComponent,  canActivate: [UserIsLoggedIn, UserIsWrangler]},
+  {path: 'projects/all', component: AllProjectsComponent, canActivate: [UserIsLoggedInGuard, UserIsWranglerGuard]},
+  {path: 'submissions/list', component: SubmissionListComponent,  canActivate: [UserIsLoggedInGuard, UserIsWranglerGuard]},
 
-  {path: 'projects/detail/:id', component: ProjectComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
-  {path: 'projects/detail', component: ProjectComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
-  {path: 'projects/:uuid', component: ProjectFormComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
-  {path: 'projects/:uuid/:tab', component: ProjectFormComponent, canActivate: [UserIsLoggedIn, WranglerOrOwner]},
-  {path: 'submissions/detail', component: SubmissionComponent,  canActivate: [UserIsLoggedIn, WranglerOrOwner]},
+  {path: 'projects/detail/:id', component: ProjectComponent, canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
+  {path: 'projects/detail', component: ProjectComponent, canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
+  {path: 'projects/:uuid', component: ProjectFormComponent, canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
+  {path: 'projects/:uuid/:tab', component: ProjectFormComponent, canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
+  {path: 'submissions/detail', component: SubmissionComponent,  canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
 
   {path: '**', redirectTo: ''}
 ];

@@ -5,10 +5,11 @@ import {AaiSecurity} from '../../aai/aai.module';
 import {IngestService} from './ingest.service';
 import {Project} from '../models/project';
 import {Account} from '../../core/security.data';
+
 @Injectable({
   providedIn: AaiSecurity,
 })
-export class WranglerOrOwner implements CanActivate {
+export class WranglerOrOwnerGuard implements CanActivate {
 
   constructor(private ingestService: IngestService, private router: Router) {
   }
@@ -45,8 +46,8 @@ export class WranglerOrOwner implements CanActivate {
   isOwner(account: Observable<Account>, project: Observable<Project>): Observable<boolean> {
     const userIds = new Array<Observable<any>>();
     userIds.push(account.map((userAccount: Account) => userAccount.id));
-    userIds.push(project.map((project: Project) => project.user));
+    userIds.push(project.map((p: Project) => p.user));
 
-    return Observable.forkJoin(userIds).map(input => input[0] == input[1]);
+    return Observable.forkJoin(userIds).map(input => input[0] === input[1]);
   }
 }
