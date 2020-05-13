@@ -3,7 +3,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {CoreSecurity} from "./security.module";
-import {Account} from "../shared/models/account";
+import {Account} from "./security.data";
 
 @Injectable({
   providedIn: CoreSecurity,

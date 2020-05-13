@@ -6,7 +6,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {AlertService} from "../shared/services/alert.service";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
-import {Account} from "../shared/models/account";
+import {Account} from "../core/security.data";
 import SpyObj = jasmine.SpyObj;
 
 describe('Complete Authentication', () =>{

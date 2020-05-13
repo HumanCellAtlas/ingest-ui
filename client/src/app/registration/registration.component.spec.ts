@@ -5,7 +5,7 @@ import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "
 import {AaiService} from "../aai/aai.service";
 import {User} from "oidc-client";
 import {Observable} from "rxjs";
-import {Account} from "../shared/models/account";
+import {Account} from "../core/security.data";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import SpyObj = jasmine.SpyObj;

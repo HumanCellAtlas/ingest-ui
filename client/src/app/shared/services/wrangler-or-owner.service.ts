@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {AaiSecurity} from "../../aai/aai.module";
 import {IngestService} from "./ingest.service";
 import {Project} from "../models/project";
-import {Account} from "../models/account";
+import {Account} from "../../core/security.data";
 @Injectable({
   providedIn: AaiSecurity,
 })

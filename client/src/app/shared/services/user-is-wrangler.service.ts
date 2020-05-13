@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Observable} from 'rxjs';
 import {AaiSecurity} from "../../aai/aai.module";
 import {IngestService} from "./ingest.service";
-import {Account} from "../models/account";
+import {Account} from "../../core/security.data";
 
 @Injectable({
   providedIn: AaiSecurity,
