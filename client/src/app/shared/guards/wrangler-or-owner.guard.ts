@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AaiSecurity} from '../../aai/aai.module';
-import {IngestService} from './ingest.service';
+import {IngestService} from '../services/ingest.service';
 import {Project} from '../models/project';
 import {Account} from '../../core/security.data';
 
@@ -14,6 +14,7 @@ export class WranglerOrOwnerGuard implements CanActivate {
   constructor(private ingestService: IngestService, private router: Router) {
   }
 
+  // TODO restriction to view project should be implemented in Ingest API
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     let accessChecks: Observable<boolean>;
     let getProject: Observable<any>;

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AaiSecurity} from '../../aai/aai.module';
-import {IngestService} from './ingest.service';
+import {IngestService} from '../services/ingest.service';
 import {Account} from '../../core/security.data';
 
 @Injectable({

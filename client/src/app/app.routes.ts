@@ -8,9 +8,9 @@ import {ProjectFormComponent} from './submitter/project-form/project-form.compon
 import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
 import {SubmissionListComponent} from './submission-list/submission-list.component';
 import {RegistrationComponent} from './registration/registration.component';
-import {UserIsLoggedInGuard} from './shared/services/user-is-logged-in.guard';
-import {UserIsWranglerGuard} from './shared/services/user-is-wrangler.guard';
-import {WranglerOrOwnerGuard} from './shared/services/wrangler-or-owner.guard';
+import {UserIsLoggedInGuard} from './shared/guards/user-is-logged-in.guard';
+import {UserIsWranglerGuard} from './shared/guards/user-is-wrangler.guard';
+import {WranglerOrOwnerGuard} from './shared/guards/wrangler-or-owner.guard';
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
