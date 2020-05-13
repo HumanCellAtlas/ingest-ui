@@ -1,9 +1,9 @@
-import {Observable} from "rxjs";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {environment} from "../../environments/environment";
-import {CoreSecurity} from "./security.module";
-import {Account} from "./security.data";
+import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
+import {CoreSecurity} from './security.module';
+import {Account} from './account';
 
 @Injectable({
   providedIn: CoreSecurity,
@@ -55,8 +55,8 @@ export enum RegistrationErrorCode {
 
 export class RegistrationFailed implements Error {
 
-  name: string = 'RegistrationFailed';
-  message: string = 'Account registration failed';
+  name = 'RegistrationFailed';
+  message = 'Account registration failed';
   errorCode: RegistrationErrorCode = RegistrationErrorCode.Unknown;
 
 }

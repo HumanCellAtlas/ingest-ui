@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {AaiSecurity} from '../../aai/aai.module';
 import {IngestService} from '../services/ingest.service';
 import {Project} from '../models/project';
-import {Account} from '../../core/security.data';
+import {Account} from '../../core/account';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -33,15 +33,15 @@ export class WranglerOrOwnerGuard implements CanActivate {
     return accessChecks.map(access => access ? access : this.router.parseUrl('/home'));
   }
 
-  isWranglerOrOwner(account: Observable<Account>, project: Observable<Project>): Observable<boolean> {
+  isWranglerOrOwner(account$: Observable<Account>, project$: Observable<Project>): Observable<boolean> {
     const canAccess = new Array<Observable<boolean>>();
-    canAccess.push(this.isWrangler(account));
-    canAccess.push(this.isOwner(account, project));
+    canAccess.push(this.isWrangler(account$));
+    canAccess.push(this.isOwner(account$, project$));
     return Observable.forkJoin(canAccess).map(access => access.includes(true));
   }
 
   isWrangler(account: Observable<Account>): Observable<boolean> {
-    return account.map(acc => acc.roles.includes('WRANGLER'));
+    return account.map(acc => acc.isWrangler());
   }
 
   isOwner(account: Observable<Account>, project: Observable<Project>): Observable<boolean> {

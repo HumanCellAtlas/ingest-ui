@@ -39,7 +39,7 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.initProject();
     this.ingestService.getUserAccount().subscribe(account => {
-      this.userIsWrangler = account.roles.includes('WRANGLER');
+      this.userIsWrangler = account.isWrangler();
     });
   }
 

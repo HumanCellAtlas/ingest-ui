@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {IngestService} from "../shared/services/ingest.service";
-import {AaiService} from "../aai/aai.service";
+import {IngestService} from '../shared/services/ingest.service';
+import {AaiService} from '../aai/aai.service';
 
 @Component({
   selector: 'app-navigation',
@@ -18,7 +18,7 @@ export class NavigationComponent implements OnInit {
       this.isLoggedIn = loggedIn;
       if (loggedIn) {
         this.ingestService.getUserAccount().subscribe(account => {
-          this.isWrangler = account.roles.includes('WRANGLER');
+          this.isWrangler = account.isWrangler();
         });
       }
     });
