@@ -1,5 +1,5 @@
 # base image
-FROM node:12-alpine
+FROM node:12.16.3-alpine
 
 # set working directory
 RUN mkdir /app
@@ -10,6 +10,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY ./client/package.json /app/package.json
+COPY ./client/package-lock.json /app/package-lock.json
 RUN npm install
 
 # add app
