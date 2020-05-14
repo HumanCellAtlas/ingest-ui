@@ -16,6 +16,82 @@
       "format": "date-time",
       "user_friendly": "Accession Date"
     },
+    "dataAccess": {
+      "description": "Data Access",
+      "guidelines": "At this time, the HCA is only accepting openly consented data. Do you have consent to share your data?",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Open Access",
+        "Managed Access",
+        "Unknown"
+      ],
+      "user_friendly":  "Data Access"
+    },
+    "identifyingOrganisms": {
+      "description": "Identifying Organism",
+      "guidelines": "What organ or organ system are you working on?",
+      "type": "string",
+      "enum": [
+        "Human",
+        "Mouse",
+        "Mouse and Human",
+        "Other"
+      ],
+      "user_friendly":  "Identifying Organism"
+    },
+    "technology": {
+      "description": "The general method for sequencing library construction.",
+      "type": "array",
+      "items": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "https://schema.dev.data.humancellatlas.org/module/ontology/1.2.5/library_construction_ontology",
+        "description": "A term that may be associated with a process-related ontology term.",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "title": "Library construction ontology",
+        "name": "library_construction_ontology",
+        "type": "object",
+        "properties": {
+          "text": {
+            "description": "The name of a library construction approach being used.",
+            "type": "string",
+            "user_friendly": "Library construction",
+            "example": "10X v2 sequencing; Smart-seq2"
+          },
+          "ontology": {
+            "description": "An ontology term identifier in the form prefix:accession.",
+            "type": "string",
+            "graph_restriction": {
+              "ontologies": [
+                "obo:efo"
+              ],
+              "classes": [
+                "OBI:0000711"
+              ],
+              "relations": [
+                "rdfs:subClassOf"
+              ],
+              "direct": false,
+              "include_self": false
+            },
+            "user_friendly": "Library construction ontology ID",
+            "example": "EFO:0009310; EFO:0008931"
+          },
+          "ontology_label": {
+            "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field.",
+            "type": "string",
+            "user_friendly": "Library construction ontology label",
+            "example": "10X v2 sequencing; Smart-seq2"
+          }
+        }
+      },
+      "user_friendly": "Technology"
+    },
     "content": {}
   },
   "required": [],

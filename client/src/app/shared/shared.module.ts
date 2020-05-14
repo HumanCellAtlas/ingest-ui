@@ -24,7 +24,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { OntologyInputComponent } from './metadata-form/fields/ontology-input/ontology-input.component';
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MultipleSelectComponent } from './metadata-form/fields/multiple-select/multiple-select.component';
+import {MatListModule} from '@angular/material/list';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -41,7 +44,9 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatListModule,
+    MatToolbarModule
   ],
   declarations: [
     ClipboardDirective,
@@ -56,6 +61,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     VfAsteriskComponent,
     DateInputComponent,
     OntologyInputComponent,
+    MultipleSelectComponent,
   ],
   exports: [
     ClipboardDirective,

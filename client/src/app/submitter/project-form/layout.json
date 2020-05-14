@@ -6,12 +6,21 @@
         "project.content.project_core.project_title",
         "project.content.project_core.project_description",
         "project.content.project_core.project_short_name",
+        "project.data_access",
+        "project.identifying_organisms",
+        "project.technology",
         "project.content.array_express_accessions",
         "project.content.biostudies_accessions",
         "project.content.geo_series_accessions",
         "project.content.insdc_project_accessions",
         "project.content.insdc_study_accessions",
         "project.content.supplementary_links"
+      ]
+    },
+    {
+      "title": "Technology",
+      "items": [
+        "project.technology"
       ]
     },
     {
@@ -33,7 +42,7 @@
       ]
     },
     {
-      "title": "Dates",
+      "title": "Data",
       "items": [
         "project.releaseDate",
         "project.accessionDate"

@@ -1,0 +1,33 @@
+<mat-form-field class="multi-select-combo-box-with-list-example-form">
+  <mat-chip-list #chipList>
+    <mat-chip
+      *ngFor="let fruit of fruits"
+      [selectable]="selectable"
+      [removable]="removable"
+      (removed)="remove(fruit)">
+      {{fruit}}
+      <mat-icon  matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input
+      placeholder="Fruits"
+      #fruitInput
+      (keydown)="onInputKeyboardNavigation($event)"
+      [formControl]="fruitCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete  #auto="matAutocomplete">
+    <mat-selection-list #fruitSelectionList (selectionChange)="onFruitSelectionChange($event)" (keydown)="onListKeyboardNavigation($event)">
+      <mat-list-option [id]="'multi-select-mat-list-option-'+ fruit.toLowerCase()" *ngFor="let fruit of filteredFruits | async" [selected]="isFruitSelected(fruit)" [value]="fruit">
+        {{fruit}}
+      </mat-list-option>
+      <mat-option [style.display]="'none'"></mat-option>
+    </mat-selection-list>
+  </mat-autocomplete>
+</mat-form-field>
+<mat-toolbar>
+  <span><strong>Selected Fruits ::</strong> {{fruits | json }}</span>
+</mat-toolbar>

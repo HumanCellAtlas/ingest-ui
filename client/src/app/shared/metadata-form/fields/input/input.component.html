@@ -23,3 +23,43 @@
     </app-vf-input>
   </ng-container>
 </ng-container>
+
+
+<ng-container *ngIf="metadata.isObjectList()">
+  <ng-container *ngFor="let control of control['controls'] ; let i = index">
+    <ng-container *ngFor="let child of metadata.childrenMetadata">
+
+    <app-vf-input *ngIf="!child.isHidden"
+                  [id]="id + '-' + child.key"
+                  [formControl]="control['controls'][child.key]"
+                  [label]="child.schema.user_friendly ? child.schema.user_friendly : child.key"
+                  [dataType]="child.schema.type"
+                  [example]="child.schema.example"
+                  [helperText]="child.schema.guidelines ? child.schema.guidelines : child.schema.description"
+                  [isRequired]="child.isRequired">
+    </app-vf-input>
+
+  </ng-container>
+    <ng-container *ngIf="!metadata.isDisabled">
+      <a color="warn" mat-icon-button
+         (click)="removeFormControl(metadataForm.getControl(item), i)">
+        <mat-icon>remove_circle_outline</mat-icon>
+        Remove
+      </a>
+    </ng-container>
+
+    <hr class="vf-divider">
+
+
+    <ng-container *ngIf="!metadata.isDisabled">
+      <a mat-icon-button
+         (click)="addFormControl(metadataForm.get(item), metadataForm.getControl(item))">
+        <mat-icon>add_circle_outline</mat-icon>
+        Add a {{singularize(metadataForm.get(item).key)}}
+      </a>
+    </ng-container>
+
+  </ng-container>
+
+
+</ng-container>

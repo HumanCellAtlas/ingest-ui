@@ -1,6 +1,5 @@
 import {JsonSchemaProperty} from './json-schema-property';
 
-
 export class Metadata {
   schema: JsonSchemaProperty;
   key: string;

@@ -59,22 +59,6 @@ export class MetadataFormComponent implements OnInit {
     this.save.emit(formData);
   }
 
-  removeFormControl(control: AbstractControl, i: number) {
-    if (confirm('Are you sure?')) {
-      const formArray = control as FormArray;
-      formArray.removeAt(i);
-    }
-
-  }
-
-  addFormControl(metadata: Metadata, formControl: AbstractControl) {
-    const formArray = formControl as FormArray;
-    const count = formArray.length;
-
-    const formGroup: FormGroup = this.metadataForm.helper.toFormGroup(metadata.schema.items as JsonSchema);
-    formArray.insert(count, formGroup);
-  }
-
   confirmCancel(e) {
     if (confirm('Are you sure you want to cancel?')) {
       this.cancel.emit(e);
@@ -88,7 +72,4 @@ export class MetadataFormComponent implements OnInit {
     this.tabChange.emit(tabIndex);
   }
 
-  singularize(word: string) {
-    return pluralize.singular(word);
-  }
 }
