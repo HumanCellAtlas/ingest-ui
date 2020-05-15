@@ -48,9 +48,11 @@ export class MetadataFieldComponent implements OnInit {
       component = metadata.schema.format === 'date-time' ? DateInputComponent : component;
 
     } else if (metadata.isScalarList()) {
-
-      component = TextListInputComponent;
-
+      if (metadata.schema.enum) {
+        component = MultipleSelectComponent;
+      } else {
+        component = TextListInputComponent;
+      }
     } else if (metadata.isObject()) {
 
       if (metadata.schema.$id.indexOf('/module/ontology/') >= 0) {

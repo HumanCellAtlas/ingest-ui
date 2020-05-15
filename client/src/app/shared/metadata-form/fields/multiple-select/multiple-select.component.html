@@ -1,33 +1,35 @@
-<mat-form-field class="multi-select-combo-box-with-list-example-form">
-  <mat-chip-list #chipList>
-    <mat-chip
-      *ngFor="let fruit of fruits"
-      [selectable]="selectable"
-      [removable]="removable"
-      (removed)="remove(fruit)">
-      {{fruit}}
-      <mat-icon  matChipRemove *ngIf="removable">cancel</mat-icon>
-    </mat-chip>
-    <input
-      placeholder="Fruits"
-      #fruitInput
-      (keydown)="onInputKeyboardNavigation($event)"
-      [formControl]="fruitCtrl"
-      [matAutocomplete]="auto"
-      [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      [matChipInputAddOnBlur]="addOnBlur"
-      (matChipInputTokenEnd)="add($event)">
-  </mat-chip-list>
-  <mat-autocomplete  #auto="matAutocomplete">
-    <mat-selection-list #fruitSelectionList (selectionChange)="onFruitSelectionChange($event)" (keydown)="onListKeyboardNavigation($event)">
-      <mat-list-option [id]="'multi-select-mat-list-option-'+ fruit.toLowerCase()" *ngFor="let fruit of filteredFruits | async" [selected]="isFruitSelected(fruit)" [value]="fruit">
-        {{fruit}}
-      </mat-list-option>
-      <mat-option [style.display]="'none'"></mat-option>
-    </mat-selection-list>
-  </mat-autocomplete>
-</mat-form-field>
-<mat-toolbar>
-  <span><strong>Selected Fruits ::</strong> {{fruits | json }}</span>
-</mat-toolbar>
+<div class="vf-form__item">
+  <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+  <label *ngIf="label" class="vf-form__label">{{label}}</label>
+  <mat-form-field class="multi-select-combo-box-with-list-example-form">
+    <mat-chip-list #chipList>
+      <mat-chip
+        *ngFor="let selectedValue of selectedValues"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(selectedValue)">
+        {{displayOntology(selectedValue)}}
+        <mat-icon  matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        #input
+        (keydown)="onInputKeyboardNavigation($event)"
+        [formControl]="searchControl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur">
+    </mat-chip-list>
+    <mat-autocomplete  #auto="matAutocomplete">
+      <mat-selection-list #selectionList (selectionChange)="onSelectionChange($event)" (keydown)="onListKeyboardNavigation($event)">
+        <mat-list-option [id]="'multi-select-mat-list-option-'+ option.ontology_label" *ngFor="let option of filteredValues | async" [selected]="isSelected(option)" [value]="option">
+          {{displayOntology(option)}}
+        </mat-list-option>
+        <mat-option [style.display]="'none'"></mat-option>
+      </mat-selection-list>
+    </mat-autocomplete>
+  </mat-form-field>
+  <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+</div>
+
+

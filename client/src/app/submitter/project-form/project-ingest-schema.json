@@ -33,7 +33,10 @@
     "identifyingOrganisms": {
       "description": "Identifying Organism",
       "guidelines": "What organ or organ system are you working on?",
-      "type": "string",
+      "type": "array",
+      "items":{
+        "type": "string"
+      },
       "enum": [
         "Human",
         "Mouse",

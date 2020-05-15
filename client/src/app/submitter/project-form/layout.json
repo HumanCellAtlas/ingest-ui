@@ -1,6 +1,16 @@
 {
   "tabs": [
     {
+      "title": "General Info",
+      "items": [
+        "project.dataAccess",
+        "project.identifyingOrganisms",
+        "project.technology",
+        "project.releaseDate",
+        "project.accessionDate"
+      ]
+    },
+    {
       "title": "Project",
       "items": [
         "project.content.project_core.project_title",
@@ -13,14 +23,6 @@
         "project.content.insdc_project_accessions",
         "project.content.insdc_study_accessions",
         "project.content.supplementary_links"
-      ]
-    },
-    {
-      "title": "Data",
-      "items": [
-        "project.dataAccess",
-        "project.identifyingOrganisms",
-        "project.technology"
       ]
     },
     {
@@ -39,13 +41,6 @@
       "title": "Funders",
       "items": [
         "project.content.funders"
-      ]
-    },
-    {
-      "title": "Submit",
-      "items": [
-        "project.releaseDate",
-        "project.accessionDate"
       ]
     }
   ]
