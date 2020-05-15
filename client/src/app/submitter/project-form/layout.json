@@ -6,9 +6,7 @@
         "project.content.project_core.project_title",
         "project.content.project_core.project_description",
         "project.content.project_core.project_short_name",
-        "project.data_access",
-        "project.identifying_organisms",
-        "project.technology",
+
         "project.content.array_express_accessions",
         "project.content.biostudies_accessions",
         "project.content.geo_series_accessions",
@@ -18,8 +16,10 @@
       ]
     },
     {
-      "title": "Technology",
+      "title": "Data",
       "items": [
+        "project.dataAccess",
+        "project.identifyingOrganisms",
         "project.technology"
       ]
     },
@@ -42,7 +42,7 @@
       ]
     },
     {
-      "title": "Data",
+      "title": "Submit",
       "items": [
         "project.releaseDate",
         "project.accessionDate"

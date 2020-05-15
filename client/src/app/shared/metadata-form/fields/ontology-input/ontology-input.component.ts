@@ -8,9 +8,6 @@ import {OlsDoc} from '../../../models/ols';
 import {JsonSchema} from '../../json-schema';
 import {Ontology} from './ontology';
 
-const OLS_RELATION = {
-  'rdfs:subClassOf': 'allChildrenOf'
-};
 
 @Component({
   selector: 'app-ontology-input',
@@ -34,7 +31,11 @@ export class OntologyInputComponent implements OnInit {
 
   searchParams: object;
 
-  constructor(private ols: OntologyService) {
+  OLS_RELATION: object = {
+    'rdfs:subClassOf': 'allChildrenOf'
+  };
+
+  constructor(protected ols: OntologyService) {
   }
 
   ngOnInit() {
@@ -100,7 +101,7 @@ export class OntologyInputComponent implements OnInit {
     };
 
     const olsClass = ontologyClass.replace(':', '_');
-    searchParams[OLS_RELATION[ontologyRelation]] = `http://www.ebi.ac.uk/efo/${olsClass}`;
+    searchParams[this.OLS_RELATION[ontologyRelation]] = `http://www.ebi.ac.uk/efo/${olsClass}`;
 
     return searchParams;
   }

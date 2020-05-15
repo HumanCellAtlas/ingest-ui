@@ -5,13 +5,12 @@
       <mat-tab [label]="tab['title']">
         <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
           <ng-container *ngFor="let item of tab['items']">
-            <ng-container
-              *ngIf="metadataForm.get(item)">
-              <ng-container appMetadataField [id]="item" [metadata]="metadataForm.get(item)"
-                            [control]="metadataForm.getControl(item)">
-
-              </ng-container>
-            </ng-container>
+            <app-metadata-field
+              *ngIf="metadataForm.get(item)"
+              [id]="item"
+              [metadata]="metadataForm.get(item)"
+              [control]="metadataForm.getControl(item)">
+            </app-metadata-field>
           </ng-container>
         </div>
       </mat-tab>

@@ -14,7 +14,7 @@ import {RouterModule} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MetadataFieldDirective} from './metadata-form/fields/metadata-field.directive';
+import {MetadataFieldDirective} from './metadata-form/metadata-field.directive';
 import {InputComponent} from './metadata-form/fields/input/input.component';
 import { TextListInputComponent } from './metadata-form/fields/text-list-input/text-list-input.component';
 import { TextAreaComponent } from './metadata-form/fields/text-area/text-area.component';
@@ -28,6 +28,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MultipleSelectComponent } from './metadata-form/fields/multiple-select/multiple-select.component';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { MetadataFieldComponent } from './metadata-form/metadata-field/metadata-field.component';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     DateInputComponent,
     OntologyInputComponent,
     MultipleSelectComponent,
+    MetadataFieldComponent,
   ],
   exports: [
     ClipboardDirective,

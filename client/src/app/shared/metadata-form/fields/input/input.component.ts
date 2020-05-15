@@ -3,7 +3,7 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {Metadata} from '../../metadata';
 import {MetadataFormHelper} from '../../metadata-form-helper';
 import pluralize from 'pluralize';
-import {JsonSchema} from "../../json-schema";
+import {JsonSchema} from '../../json-schema';
 
 @Component({
   selector: 'app-input-field',
