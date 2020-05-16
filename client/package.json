@@ -20,7 +20,6 @@
   },
   "private": true,
   "dependencies": {
-    "@ajsf/material": "^0.1.4",
     "@angular/animations": "9.1.2",
     "@angular/cdk": "^9.2.1",
     "@angular/common": "9.1.2",

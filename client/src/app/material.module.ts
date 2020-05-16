@@ -19,7 +19,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatRadioModule} from '@angular/material/radio';
-import {MaterialDesignFrameworkModule} from '@ajsf/material';
 
 
 @NgModule({
@@ -51,7 +50,6 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MaterialDesignFrameworkModule,
     MatDatepickerModule
   ],
   declarations: [],
@@ -83,7 +81,6 @@ import {MaterialDesignFrameworkModule} from '@ajsf/material';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MaterialDesignFrameworkModule,
     MatDatepickerModule
   ],
   providers: [],
