@@ -1,0 +1,16 @@
+<app-multiple-select
+  [id]="id"
+  [label]="label"
+  [isRequired]="isRequired"
+  [example]="example"
+  [helperText]="helperText"
+  [options$]="options$"
+  [value]="control.value"
+  (searchValueChanged)="this.searchControl.setValue($event)"
+  (valueAdded)="addFormControl($event)"
+  (valueRemoved)="removeFormControl($event)"
+>
+</app-multiple-select>
+
+
+

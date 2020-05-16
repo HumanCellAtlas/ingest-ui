@@ -1,0 +1,13 @@
+<app-select
+  [id]="id"
+  [label]="label"
+  [isRequired]="isRequired"
+  [example]="example"
+  [helperText]="helperText"
+  [options$]="options$"
+  [displayWith]="displayOntology"
+  [value]="control.value"
+  (searchValueChanged)="searchControl.setValue($event);"
+  (selectedValueChanged)="updateControl($event)"
+  (selectAborted)="updateControl($event)"
+></app-select>

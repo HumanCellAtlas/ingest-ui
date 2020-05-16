@@ -4,7 +4,7 @@ import {AlertService} from '../../services/alert.service';
 import * as metadataSchema from '../../../submitter/project-form/project-metadata-schema.json';
 import * as ingestSchema from '../../../submitter/project-form/project-ingest-schema.json';
 import * as layout from '../../../submitter/project-form/layout.json';
-import {MetadataFormConfig} from '../../metadata-form/metadata-form-config';
+import {MetadataFormConfig} from '../../../metadata-schema-form/models/metadata-form-config';
 
 
 @Component({

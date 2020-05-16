@@ -47,26 +47,11 @@ import {SchemaService} from './shared/services/schema.service';
 
 import {AaiCallbackComponent} from './aai-callback/aai-callback.component';
 import {OidcInterceptor} from './aai/oidc-interceptor';
-import {MaterialDesignFrameworkModule} from '@ajsf/material';
 import {GlobalHeaderComponent} from './global-header/global-header.component';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatCardModule} from '@angular/material/card';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatInputModule} from '@angular/material/input';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSortModule} from '@angular/material/sort';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSelectModule} from '@angular/material/select';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatTooltipModule} from '@angular/material/tooltip';
 import {AaiSecurity} from './aai/aai.module';
-import { RegistrationComponent } from './registration/registration.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {RegistrationComponent} from './registration/registration.component';
+import {MetadataSchemaFormModule} from './metadata-schema-form/metadata-schema-form.module';
+import {MaterialModule} from './material.module';
 
 
 @NgModule({
@@ -106,26 +91,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     NoopAnimationsModule,
     NgxDatatableModule,
     FlexLayoutModule,
-    MatCardModule,
-    MatChipsModule,
-    MatTabsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MaterialDesignFrameworkModule,
+    MaterialModule,
     AaiSecurity,
-    MatDatepickerModule,
+    MetadataSchemaFormModule
   ],
   providers: [
     {

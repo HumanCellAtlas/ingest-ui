@@ -7,11 +7,11 @@ import {Project} from '../../shared/models/project';
 import * as metadataSchema from './project-metadata-schema.json';
 import * as ingestSchema from './project-ingest-schema.json';
 import * as layout from './layout.json';
-import {MetadataFormConfig} from '../../shared/metadata-form/metadata-form-config';
 import {LoaderService} from '../../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {concatMap} from 'rxjs/operators';
 import {MatTabGroup} from '@angular/material/tabs';
+import {MetadataFormConfig} from '../../metadata-schema-form/models/metadata-form-config';
 
 @Component({
   selector: 'app-project-form',

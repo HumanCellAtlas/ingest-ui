@@ -6,29 +6,18 @@ import {SubmissionStateComponent} from './components/submission-state/submission
 import {CommonModule} from '@angular/common';
 import {MetadataStateComponent} from './components/metadata-state/metadata-state.component';
 import {MatChipsModule} from '@angular/material/chips';
-import {MetadataFormComponent} from './metadata-form/metadata-form.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
-import {VfInputComponent} from './metadata-form/fields/vf-input/vf-input.component';
 import {RouterModule} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MetadataFieldDirective} from './metadata-form/metadata-field.directive';
-import {InputComponent} from './metadata-form/fields/input/input.component';
-import { TextListInputComponent } from './metadata-form/fields/text-list-input/text-list-input.component';
-import { TextAreaComponent } from './metadata-form/fields/text-area/text-area.component';
-import { VfAsteriskComponent } from './metadata-form/fields/vf-asterisk/vf-asterisk.component';
-import { DateInputComponent } from './metadata-form/fields/date-input/date-input.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import { OntologyInputComponent } from './metadata-form/fields/ontology-input/ontology-input.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { MultipleSelectComponent } from './metadata-form/fields/multiple-select/multiple-select.component';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { MetadataFieldComponent } from './metadata-form/metadata-field/metadata-field.component';
 
 
 @NgModule({
@@ -52,31 +41,15 @@ import { MetadataFieldComponent } from './metadata-form/metadata-field/metadata-
   declarations: [
     ClipboardDirective,
     SubmissionStateComponent,
-    MetadataStateComponent,
-    MetadataFormComponent,
-    InputComponent,
-    VfInputComponent,
-    MetadataFieldDirective,
-    TextListInputComponent,
-    TextAreaComponent,
-    VfAsteriskComponent,
-    DateInputComponent,
-    OntologyInputComponent,
-    MultipleSelectComponent,
-    MetadataFieldComponent,
+    MetadataStateComponent
   ],
   exports: [
     ClipboardDirective,
     SubmissionStateComponent,
-    MetadataStateComponent,
-    MetadataFormComponent
+    MetadataStateComponent
   ],
   providers: [
     ClipboardService
-  ],
-  entryComponents: [
-    InputComponent,
-    TextListInputComponent
   ]
 })
 export class SharedModule {
