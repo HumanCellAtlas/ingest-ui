@@ -7,12 +7,15 @@
 @import '~@swimlane/ngx-datatable/themes/material.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 
-// Default MD theme TODO revisit - customize once ingest-ui UI design is completed 	// Default MD theme TODO revisit - customize once ingest-ui UI design is completed
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+// custom angular material theme
+@import '~@angular/material/theming';
+@include mat-core();
+@import 'hca-blue-app-theme';
+@include angular-material-theme($hca-blue-app-theme);
+
 
 $grey-color: #f2f2f2;
 $dark-grey-color: #d4d4d4;
-
 
 .dashboard {
   table{
