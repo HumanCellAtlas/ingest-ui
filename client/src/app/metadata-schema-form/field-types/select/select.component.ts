@@ -25,7 +25,7 @@ export class SelectComponent implements OnInit {
   error: string;
 
   @Input()
-  example: string;
+  placeholder: string;
 
   @Input()
   disabled: boolean;

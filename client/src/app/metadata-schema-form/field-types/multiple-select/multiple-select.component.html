@@ -1,19 +1,22 @@
 <div class="vf-form__item">
   <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-  <label *ngIf="label" class="vf-form__label">{{label}}</label>
+  <label *ngIf="label" class="vf-form__label" [innerHtml]="label"></label>
   <mat-form-field class="multi-select">
     <mat-chip-list #chipList>
       <mat-chip
         *ngFor="let selectedValue of selectedValues"
         [selectable]="selectable"
         [removable]="removable"
-        (removed)="remove(selectedValue)">
+        (removed)="removeValue(selectedValue)">
         {{ displayWith? displayWith(selectedValue): selectedValue}}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
         [id]="id"
+        matInput
+        *ngIf="!disabled"
         (keydown)="onInputKeyboardNavigation($event)"
+        [matAutocompleteDisabled]="disabled"
         [formControl]="searchControl"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"
@@ -27,11 +30,11 @@
                          *ngFor="let option of options$ | async" [selected]="isSelected(option)" [value]="option">
           {{displayWith ? displayWith(option) : option}}
         </mat-list-option>
-        <mat-option [style.display]="'none'"></mat-option>
       </mat-selection-list>
+      <mat-option [style.display]="'none'"></mat-option>
     </mat-autocomplete>
   </mat-form-field>
-  <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+  <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
 </div>
 
 

@@ -4,7 +4,7 @@
                 [formControl]="control"
                 [label]="metadata.schema.user_friendly?metadata.schema.user_friendly : metadata.key"
                 [dataType]="metadata.schema.type"
-                [example]="metadata.schema.example"
+                [placeholder]="metadata.schema.example"
                 [helperText]="metadata.schema.guidelines ? metadata.schema.guidelines : metadata.schema.description"
                 [isRequired]="metadata.isRequired">
   </app-vf-input>
@@ -17,7 +17,7 @@
                   [formControl]="control['controls'][child.key]"
                   [label]="child.schema.user_friendly ? child.schema.user_friendly : child.key"
                   [dataType]="child.schema.type"
-                  [example]="child.schema.example"
+                  [placeholder]="child.schema.example"
                   [helperText]="child.schema.guidelines ? child.schema.guidelines : child.schema.description"
                   [isRequired]="child.isRequired">
     </app-vf-input>

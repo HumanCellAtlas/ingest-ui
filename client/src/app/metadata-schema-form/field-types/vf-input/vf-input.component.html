@@ -5,7 +5,7 @@
 
     <label *ngIf="label" class="vf-form__label">{{label}}</label>
     <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}" class="vf-form__input"
-           placeholder="{{example}}" [(ngModel)]="value" (change)="change($event)">
+           placeholder="{{placeholder}}" [(ngModel)]="value" (change)="change($event)">
     <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
     <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
 

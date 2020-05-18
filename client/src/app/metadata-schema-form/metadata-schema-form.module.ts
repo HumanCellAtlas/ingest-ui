@@ -27,6 +27,7 @@ import {MetadataFieldComponent} from './metadata-field/metadata-field.component'
 import {SelectComponent} from './field-types/select/select.component';
 import {OntologyListInputComponent} from './metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enum-list-input.component';
+import {MaterialModule} from '../material.module';
 
 
 @NgModule({
@@ -37,15 +38,7 @@ import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enu
     MatTabsModule,
     FormsModule,
     RouterModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatListModule,
-    MatToolbarModule
+    MaterialModule
   ],
   declarations: [
     MetadataFormComponent,

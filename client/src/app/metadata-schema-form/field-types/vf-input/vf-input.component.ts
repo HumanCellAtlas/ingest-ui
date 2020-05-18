@@ -29,7 +29,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   inputType: string;
 
   @Input()
-  example: string;
+  placeholder: string;
 
   value: any;
 

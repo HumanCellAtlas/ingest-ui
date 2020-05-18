@@ -2,9 +2,10 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatSelectionList, MatSelectionListChange} from '@angular/material/list';
 import {COMMA, DOWN_ARROW, ENTER, ESCAPE, TAB} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Ontology} from '../../../shared/models/ontology';
+import {MetadataFormService} from '../../metadata-form.service';
 
 @Component({
   selector: 'app-multiple-select',
@@ -31,7 +32,7 @@ export class MultipleSelectComponent implements OnInit {
   error: string;
 
   @Input()
-  example: string;
+  placeholder: string;
 
   @Input()
   disabled: boolean;
@@ -56,19 +57,22 @@ export class MultipleSelectComponent implements OnInit {
   addOnBlur = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formControl = new FormControl();
-  selectedValues: any[] = this.value ? this.value : [];
+  selectedValues: any[];
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
   @ViewChild('input', {read: MatAutocompleteTrigger}) autoComplete;
-  @ViewChild('selectionList') fruitSelectionList: MatSelectionList;
+  @ViewChild('selectionList') selectionList: MatSelectionList;
 
   searchControl: FormControl;
 
-  constructor() {
+  constructor(private metadataFormService: MetadataFormService) {
   }
 
 
   ngOnInit() {
+    this.removable = this.disabled ? false : true;
+    const value = this.metadataFormService.cleanFormData(this.value);
+    this.selectedValues = value ? value : [];
     this.searchControl = this.createSearchControl();
     this.searchControl.valueChanges.subscribe(value => {
       this.onSearchValueChanged(value ? value : '');
@@ -84,7 +88,7 @@ export class MultipleSelectComponent implements OnInit {
   onInputKeyboardNavigation(event) {
     switch (event.keyCode) {
       case DOWN_ARROW:
-        this.fruitSelectionList.options.first.focus();
+        this.selectionList.options.first.focus();
         break;
       default:
     }
@@ -101,8 +105,8 @@ export class MultipleSelectComponent implements OnInit {
     }
   }
 
-  remove(ontology: Ontology): void {
-    const index = this.selectedValues.indexOf(ontology);
+  removeValue(value: any): void {
+    const index = this.selectedValues.indexOf(value);
     if (index >= 0) {
       this.selectedValues.splice(index, 1);
       this.valueRemoved.emit(index);
@@ -115,9 +119,9 @@ export class MultipleSelectComponent implements OnInit {
     this.formControl.setValue(null);
   }
 
-  addOntology(ontology: Ontology): void {
-    this.selectedValues.push(ontology);
-    this.valueAdded.emit(ontology);
+  addValue(value: any): void {
+    this.selectedValues.push(value);
+    this.valueAdded.emit(value);
   }
 
   isSelected(option: Ontology): boolean {
@@ -126,16 +130,15 @@ export class MultipleSelectComponent implements OnInit {
 
   updateSelectedValues(ontology: Ontology): void {
     if (this.isSelected(ontology)) {
-      this.remove(ontology);
+      this.removeValue(ontology);
     } else {
-      this.addOntology(ontology);
+      this.addValue(ontology);
     }
   }
 
   createSearchControl() {
-    return new FormControl({
-      value: this.value,
-      disabled: this.disabled
-    });
+    const state = {value: this.value, disabled: this.disabled};
+    const formControl = this.isRequired ? new FormControl(state, Validators.required) : new FormControl(state);
+    return formControl;
   }
 }

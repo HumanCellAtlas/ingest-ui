@@ -9,6 +9,7 @@ import {OntologyService} from '../../../shared/services/ontology.service';
 import {concatMap, startWith} from 'rxjs/operators';
 import {JsonSchema} from '../../models/json-schema';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-ontology-list-input',
@@ -36,6 +37,7 @@ export class OntologyListInputComponent implements OnInit {
   searchControl: AbstractControl;
 
   formHelper: MetadataFormHelper;
+  olsUrl: string = environment.OLS_URL;
 
   constructor(protected ols: OntologyService) {
     this.formHelper = new MetadataFormHelper();
@@ -46,13 +48,19 @@ export class OntologyListInputComponent implements OnInit {
     const userFriendly = this.metadata.schema.user_friendly;
     this.label = userFriendly ? userFriendly : this.metadata.key;
 
+    const ontologyReference = `Please note that if the search result is too large, not all options may be displayed. Please see <a href="${this.olsUrl}" target="_blank">Ontology Lookup Service</a> for reference.`;
     const guidelines = this.metadata.schema.guidelines;
     const description = this.metadata.schema.description;
     this.helperText = guidelines ? guidelines : description;
+    this.helperText = this.helperText + ' ' + ontologyReference;
+
+
 
     this.isRequired = this.metadata.isRequired;
 
     this.example = this.metadata.schema.example;
+
+    this.disabled = this.metadata.isDisabled || this.metadata.isDisabled;
 
     this.searchControl = this.createSearchControl(this.control.value);
 

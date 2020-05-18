@@ -17,7 +17,7 @@ export class MetadataFormService {
     return form;
   }
 
-  cleanFormData(formData: any): object {
+  cleanFormData(formData: any): any {
     if (!formData) {
       return formData;
     }

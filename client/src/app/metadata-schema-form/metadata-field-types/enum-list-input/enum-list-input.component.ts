@@ -6,7 +6,6 @@ import {Ontology} from '../../../shared/models/ontology';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatSelectionList} from '@angular/material/list';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
-import {OntologyService} from '../../../shared/services/ontology.service';
 import {map, startWith} from 'rxjs/operators';
 
 @Component({
@@ -37,7 +36,7 @@ export class EnumListInputComponent implements OnInit {
   formHelper: MetadataFormHelper;
   enumValues: string[];
 
-  constructor(protected ols: OntologyService) {
+  constructor() {
     this.formHelper = new MetadataFormHelper();
   }
 
@@ -51,6 +50,8 @@ export class EnumListInputComponent implements OnInit {
     this.helperText = guidelines ? guidelines : description;
 
     this.isRequired = this.metadata.isRequired;
+
+    this.disabled = this.metadata.isDisabled || this.metadata.isDisabled;
 
     this.example = this.metadata.schema.example;
 

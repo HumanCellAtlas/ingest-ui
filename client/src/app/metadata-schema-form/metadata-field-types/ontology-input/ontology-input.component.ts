@@ -4,8 +4,8 @@ import {concatMap, startWith} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Metadata} from '../../models/metadata';
 import {OntologyService} from '../../../shared/services/ontology.service';
-import {OlsDoc} from '../../../shared/models/ols';
 import {Ontology} from '../../../shared/models/ontology';
+import {environment} from '../../../../environments/environment';
 
 
 @Component({
@@ -27,6 +27,7 @@ export class OntologyInputComponent implements OnInit {
 
   searchControl: FormControl;
   options$: Observable<Ontology[]>;
+  olsUrl: string = environment.OLS_URL;
 
   constructor(private ols: OntologyService) {
   }
@@ -35,11 +36,15 @@ export class OntologyInputComponent implements OnInit {
     const userFriendly = this.metadata.schema.user_friendly;
     this.label = userFriendly ? userFriendly : this.metadata.key;
 
+    const ontologyReference = `Please note that if the search result is too large, not all options may be displayed. Please see <a href="${this.olsUrl}" target="_blank">Ontology Lookup Service</a> for reference.`;
     const guidelines = this.metadata.schema.guidelines;
     const description = this.metadata.schema.description;
     this.helperText = guidelines ? guidelines : description;
+    this.helperText = this.helperText + ' ' + ontologyReference;
 
     this.isRequired = this.metadata.isRequired;
+
+    this.disabled = this.metadata.isDisabled || this.metadata.isDisabled;
 
     this.example = this.metadata.schema.example;
 

@@ -69,5 +69,4 @@ export class MetadataFormComponent implements OnInit {
   onSelectedIndexChange(tabIndex: number) {
     this.tabChange.emit(tabIndex);
   }
-
 }
