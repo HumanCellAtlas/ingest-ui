@@ -52,7 +52,9 @@ import {AaiSecurity} from './aai/aai.module';
 import {RegistrationComponent} from './registration/registration.component';
 import {MetadataSchemaFormModule} from './metadata-schema-form/metadata-schema-form.module';
 import {MaterialModule} from './material.module';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
 
+const BROWSER_LOCALE = navigator.language;
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import {MaterialModule} from './material.module';
       useClass: OidcInterceptor,
       multi: true
     },
+    {provide: MAT_DATE_LOCALE, useValue: BROWSER_LOCALE},
     IngestService,
     BrokerService,
     FormBuilder,

@@ -19,6 +19,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 @NgModule({
@@ -28,7 +29,6 @@ import {MatRadioModule} from '@angular/material/radio';
     MatIconModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
@@ -50,7 +50,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [],
   exports: [
@@ -80,8 +81,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatButtonModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule,
-    MatDatepickerModule
+    MatRadioModule
   ],
   providers: [],
   entryComponents: []
