@@ -25,7 +25,7 @@ export class DateInputComponent implements OnInit {
     this.label = this.metadata.schema.user_friendly ? this.metadata.schema.user_friendly : this.metadata.key;
     this.helperText = this.metadata.schema.guidelines;
     this.disabled = this.metadata.isDisabled;
-    this.value = this.control.value ? new Date(this.control.value) : this.disabled ? undefined : new Date();
+    this.value = this.control.value ? new Date(this.control.value) : undefined;
   }
 
   onDateChanged($event: MatDatepickerInputEvent<any>) {
