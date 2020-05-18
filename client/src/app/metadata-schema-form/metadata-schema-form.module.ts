@@ -4,15 +4,6 @@ import {MatChipsModule} from '@angular/material/chips';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
 import {RouterModule} from '@angular/router';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatListModule} from '@angular/material/list';
-import {MatToolbarModule} from '@angular/material/toolbar';
 import {MetadataFormComponent} from './metadata-form/metadata-form.component';
 import {InputComponent} from './metadata-field-types/input/input.component';
 import {VfInputComponent} from './field-types/vf-input/vf-input.component';
@@ -28,6 +19,7 @@ import {SelectComponent} from './field-types/select/select.component';
 import {OntologyListInputComponent} from './metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enum-list-input.component';
 import {MaterialModule} from '../material.module';
+import {OntologyBaseComponent} from './metadata-field-types/ontology-base/ontology-base.component';
 
 
 @NgModule({
@@ -55,6 +47,7 @@ import {MaterialModule} from '../material.module';
     SelectComponent,
     OntologyListInputComponent,
     EnumListInputComponent,
+    OntologyBaseComponent
   ],
   exports: [
     MetadataFormComponent

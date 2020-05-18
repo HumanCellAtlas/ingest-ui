@@ -8,7 +8,6 @@ import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {MetadataFormService} from '../../metadata-form.service';
 import {OlsHttpResponse} from '../../../shared/models/ols';
 import {Ontology} from '../../../shared/models/ontology';
-import {of} from 'rxjs';
 
 describe('OntologyInputComponent', () => {
   let olsSvc: jasmine.SpyObj<OntologyService>;
@@ -94,86 +93,6 @@ describe('OntologyInputComponent', () => {
 
   });
 
-  it('should instantiate', () => {
-    const component = new OntologyInputComponent(olsSvc);
-    expect(component).toBeDefined();
-  });
-
-  describe('onInit', () => {
-    it('should initialise attributes based on metadata and control', () => {
-      // given
-      const component = new OntologyInputComponent(olsSvc);
-      component.metadata = metadata;
-      component.control = control;
-
-      // when
-      component.ngOnInit();
-
-      // then
-      expect(component.label).toEqual('project_role');
-      expect(component.helperText).toEqual(schema['description']);
-      expect(component.isRequired).toEqual(metadata.isRequired);
-      expect(component.searchControl.value).toEqual('');
-      expect(component.searchControl.disabled).toEqual(metadata.isDisabled);
-    });
-  });
-
-  describe('displayOntology', () => {
-    let component: OntologyInputComponent;
-
-    beforeEach(() => {
-      component = new OntologyInputComponent(olsSvc);
-      component.metadata = metadata;
-      component.control = control;
-      component.ngOnInit();
-    });
-
-    it('should return blank when input is blank string', () => {
-      // given
-      const input = '';
-
-      // when
-      const output = component.displayOntology(input);
-
-      // then
-      expect(output).toEqual('');
-    });
-
-    it('should return blank when input is string', () => {
-      // given
-      const input = 'notblank';
-
-      // when
-      const output = component.displayOntology(input);
-
-      // then
-      expect(output).toEqual('');
-    });
-
-    it('should return correct output format when input is an ontology object', () => {
-      // given
-      const input: Ontology = {ontology: 'EFO:123', ontology_label: 'label', text: 'text'};
-
-      // when
-      const output = component.displayOntology(input);
-
-      // then
-      expect(output).toEqual('label (EFO:123)');
-    });
-
-    it('should return blank string format when input is undefined', () => {
-      // given
-      const input = undefined;
-
-      // when
-      const output = component.displayOntology(input);
-
-      // then
-      expect(output).toEqual('');
-    });
-  });
-
-
   describe('updateControl', () => {
     let component: OntologyInputComponent;
 
@@ -249,101 +168,6 @@ describe('OntologyInputComponent', () => {
 
       // then
       expect(metadataSvc.cleanFormData(component.searchControl.value)).toEqual(ontology2);
-    });
-  });
-
-  describe('onSearchValueChanged', () => {
-    let component: OntologyInputComponent;
-
-    beforeEach(() => {
-      component = new OntologyInputComponent(olsSvc);
-      component.metadata = metadata;
-      component.control = control;
-      component.ngOnInit();
-    });
-
-    it('should set searchParams given a search string', () => {
-      // given
-      olsSvc.select.and.returnValue(of(olsResponse));
-
-      // when
-      const output = component.onSearchValueChanged('');
-
-      // then
-      expect(olsSvc.lookup).toHaveBeenCalledWith(metadata.schema, '');
-    });
-
-    it('should set ontology label as searchParams given an ontology object', () => {
-      // given
-      const ontology: Ontology = {ontology: 'EFO:0009736', ontology_label: 'principal investigator', text: 'text'};
-      olsSvc.select.and.returnValue(of(olsResponse));
-
-      // when
-      const output = component.onSearchValueChanged(ontology);
-
-      // then
-      expect(olsSvc.lookup).toHaveBeenCalledWith(metadata.schema, 'principal investigator');
-    });
-
-    it('should return list of ontology objects based on ols service select response', () => {
-      // given
-      const ontology: Ontology = {
-        ontology: 'EFO:0009736',
-        ontology_label: 'principal investigator',
-        text: 'principal investigator'
-      };
-
-      // when
-      component.onSearchValueChanged('');
-
-      // then
-      expect(olsSvc.lookup).toHaveBeenCalledWith(metadata.schema, '');
-
-    });
-  });
-
-  describe('createSearchControl', () => {
-    let component: OntologyInputComponent;
-
-    beforeEach(() => {
-      component = new OntologyInputComponent(olsSvc);
-      component.metadata = metadata;
-      component.control = control;
-      component.ngOnInit();
-    });
-
-    it('should return form control with given ontology value', () => {
-      // given
-      const ontology: Ontology = {
-        ontology: 'EFO:0009736',
-        ontology_label: 'principal investigator',
-        text: 'principal investigator'
-      };
-      // when
-      const output = component.createSearchControl(ontology);
-
-      // then
-      expect(output.value).toEqual(ontology);
-    });
-
-    it('should return form control with blank string given undefined', () => {
-      // given
-
-      // when
-      const output = component.createSearchControl(undefined);
-
-      // then
-      expect(output.value).toEqual('');
-    });
-
-    it('should return form control with blank string given empty object', () => {
-      // given
-
-      // when
-      const output = component.createSearchControl({ontology: '', ontology_label: '', text: ''});
-
-      // then
-      expect(output.value).toEqual('');
     });
   });
 });
