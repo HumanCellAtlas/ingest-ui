@@ -36,7 +36,9 @@ export class OntologyService {
       groupField: 'iri',
       start: 0,
       ontology: 'efo',
-      q: searchText ? searchText : '*'
+      q: searchText ? searchText : '*',
+      rows: 30 // TODO max result we have for project role and technology is 27,
+      // increasing the rows for now to let the users see all the options
     };
 
     if (!schema) {
