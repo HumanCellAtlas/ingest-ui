@@ -55,7 +55,7 @@ export class MetadataFormHelper {
   toFormGroup(jsonSchema: JsonSchema, data?: object): FormGroup {
     const group: any = {};
     this.getFieldMap(jsonSchema).forEach((field: Metadata, key: string) => {
-      const subData = data !== undefined ? data[key] : undefined;
+      const subData = data !== undefined ? data ? data[key] : null : undefined;
       if (field.isScalar()) {
         const formControl = this.toFormControl(field, subData);
         group[field.key] = formControl;
