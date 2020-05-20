@@ -108,6 +108,7 @@ export class ProjectFormComponent implements OnInit {
             this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
               projectResource.content['describedBy'] = schemaUrl;
               projectResource.content['schema_type'] = 'project';
+              this.schema = projectResource.content['describedBy'];
             });
           }
 
