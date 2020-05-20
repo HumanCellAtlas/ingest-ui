@@ -12,15 +12,11 @@
 
 <ng-container *ngIf="metadata.isObject()">
   <ng-container *ngFor="let child of metadata.childrenMetadata">
-    <app-vf-input *ngIf="!child.isHidden"
-                  [id]="id + '-' + child.key"
-                  [formControl]="control['controls'][child.key]"
-                  [label]="child.schema.user_friendly ? child.schema.user_friendly : child.key"
-                  [dataType]="child.schema.type"
-                  [placeholder]="child.schema.example"
-                  [helperText]="child.schema.guidelines ? child.schema.guidelines : child.schema.description"
-                  [isRequired]="child.isRequired">
-    </app-vf-input>
+    <app-metadata-field [id]="id + '-' + child.key"
+                        [metadata]="child"
+                        [control]="control['controls'][child.key]">
+
+    </app-metadata-field>
   </ng-container>
 </ng-container>
 
