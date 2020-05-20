@@ -9,9 +9,9 @@ import * as ingestSchema from './project-ingest-schema.json';
 import * as layout from './layout.json';
 import {LoaderService} from '../../shared/services/loader.service';
 import {Observable} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
 import {MatTabGroup} from '@angular/material/tabs';
 import {MetadataFormConfig} from '../../metadata-schema-form/models/metadata-form-config';
+import {concatMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-form',
@@ -55,6 +55,8 @@ export class ProjectFormComponent implements OnInit {
 
   patch: object = {};
 
+  schema: string;
+
   @ViewChild('mf') formTabGroup: MatTabGroup;
 
   constructor(private route: ActivatedRoute,
@@ -92,6 +94,7 @@ export class ProjectFormComponent implements OnInit {
     this.subtitle = this.createMode ? 'Please provide initial information about your HCA project.\n' +
       '  You will be able to edit this information as your project develops.' : '';
 
+
   }
 
   setProjectContent(projectUuid) {
@@ -107,6 +110,9 @@ export class ProjectFormComponent implements OnInit {
               projectResource.content['schema_type'] = 'project';
             });
           }
+
+          this.schema = projectResource.content['describedBy'];
+
           this.projectContent = projectResource.content;
           this.projectFormData = this.projectResource;
           this.displayPostValidationErrors();
@@ -166,6 +172,7 @@ export class ProjectFormComponent implements OnInit {
     this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
       obj['describedBy'] = schemaUrl;
       obj['schema_type'] = 'project';
+      this.schema = schemaUrl;
     });
   }
 
