@@ -56,7 +56,7 @@ export class MetadataFieldComponent implements OnInit {
       }
     } else if (metadata.isObject()) {
 
-      if (metadata.schema.$id.indexOf('/module/ontology/') >= 0) {
+      if (metadata.schema && metadata.schema.$id && metadata.schema.$id.indexOf('/module/ontology/') >= 0) {
         component = OntologyInputComponent;
       } else {
         component = InputComponent;
