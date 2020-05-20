@@ -106,7 +106,8 @@ describe('createSearchParams', () => {
         start: 0,
         ontology: 'efo',
         allChildrenOf: 'http://www.ebi.ac.uk/efo/EFO_0009736',
-        q: 'text'
+        q: 'text',
+        rows: 30
       });
     });
 
@@ -125,7 +126,8 @@ describe('createSearchParams', () => {
         groupField: 'iri',
         start: 0,
         ontology: 'efo',
-        q: '*'
+        q: '*',
+        rows: 30
       });
     });
 
