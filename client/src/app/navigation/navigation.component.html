@@ -2,14 +2,14 @@
   <div class="vf-component__container">
     <div class="vf-navigation vf-navigation--global">
       <nav class="vf-navigation  vf-navigation--main">
-        <ul class="vf-navigation__list | vf-list--inline"  *ngIf="isLoggedIn">
-          <li class="vf-navigation__item">
+        <ul class="vf-navigation__list | vf-list--inline"  *ngIf="isLoggedIn$ | async">
+          <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">
             <a class="vf-navigation__link" routerLink="/projects">My Projects</a>
           </li>
-          <li class="vf-navigation__item" *ngIf="isWrangler">
+          <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">
             <a class="vf-navigation__link" routerLink="/projects/all">All Projects</a>
           </li>
-          <li class="vf-navigation__item" *ngIf="isWrangler">
+          <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">
             <a class="vf-navigation__link" title="View all submissions" [routerLink]="['/submissions/list', {all: 1}]">All
               Submissions</a>
           </li>

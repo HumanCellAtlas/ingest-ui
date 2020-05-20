@@ -1,0 +1,51 @@
+@import '~@angular/material/theming';
+
+$hca-blue-palette: (
+  50 : #e4eff8,
+  100 : #bbd8ee,
+  200 : #8ebee3,
+  300 : #60a3d8,
+  400 : #3e90cf,
+  500 : #1c7cc7,
+  600 : #1974c1,
+  700 : #1469ba,
+  800 : #115fb3,
+  900 : #094ca6,
+  A100 : #d3e3ff,
+  A200 : #a0c3ff,
+  A400 : #6da4ff,
+  A700 : #5394ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+
+$hca-blue-app-primary:  mat-palette($hca-blue-palette);
+$hca-blue-app-accent: mat-palette($mat-blue-grey, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$hca-blue-app-warn: mat-palette($mat-red);
+
+$vf-typography: mat-typography-config(
+  $font-family: 'IBM Plex Sans,Helvetica,Arial,sans-serif;'
+);
+
+@include angular-material-typography($vf-typography);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$hca-blue-app-theme: mat-light-theme($hca-blue-app-primary, $hca-blue-app-accent, $hca-blue-app-warn);
+

@@ -3,7 +3,7 @@
 <div class="vf-body">
   <div></div>
   <div class="vf-component__container">
-    <app-navigation></app-navigation>
+    <app-navigation *ngIf="user$ | async"></app-navigation>
     <main>
       <br/>
       <alert></alert>

@@ -1,8 +1,0 @@
-<div><label class="vf-form__label">{{label}}</label>
-  <p *ngIf="helperText" class="vf-form__helper">{{helperText}} </p>
-  <mat-form-field>
-    <input matInput [disabled]="disabled" [matDatepicker]="picker" (dateChange)="onDateChanged($event)" [(ngModel)]="value">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</div>

@@ -1,0 +1,53 @@
+<ng-container *ngIf="metadata.isScalar()">
+  <app-vf-input *ngIf="!metadata.isHidden"
+                [id]="id"
+                [formControl]="control"
+                [label]="metadata.schema.user_friendly?metadata.schema.user_friendly : metadata.key"
+                [dataType]="metadata.schema.type"
+                [placeholder]="metadata.schema.example"
+                [helperText]="metadata.schema.guidelines ? metadata.schema.guidelines : metadata.schema.description"
+                [isRequired]="metadata.isRequired">
+  </app-vf-input>
+</ng-container>
+
+<ng-container *ngIf="metadata.isObject()">
+  <ng-container *ngFor="let child of metadata.childrenMetadata">
+    <app-metadata-field [id]="id + '-' + child.key"
+                        [metadata]="child"
+                        [control]="control['controls'][child.key]">
+
+    </app-metadata-field>
+  </ng-container>
+</ng-container>
+
+
+<ng-container *ngIf="metadata.isObjectList()">
+  <ng-container *ngFor="let formGroup of control['controls'] ; let i = index">
+    <ng-container *ngFor="let child of metadata.childrenMetadata">
+
+      <app-metadata-field [id]="id + '-' + i + '-' + child.key"
+                          [metadata]="child"
+                          [control]="formGroup['controls'][child.key]">
+        
+      </app-metadata-field>
+    </ng-container>
+
+    <ng-container *ngIf="!metadata.isDisabled">
+      <a color="warn" mat-icon-button
+         (click)="removeFormControl(control, i)">
+        <mat-icon>remove_circle_outline</mat-icon>
+        Remove
+      </a>
+    </ng-container>
+
+    <hr class="vf-divider">
+  </ng-container>
+  <ng-container *ngIf="!metadata.isDisabled">
+    <a mat-icon-button
+       (click)="addFormControl(metadata, control)">
+      <mat-icon>add_circle_outline</mat-icon>
+      Add a {{singularize(metadata.key)}}
+    </a>
+  </ng-container>
+
+</ng-container>

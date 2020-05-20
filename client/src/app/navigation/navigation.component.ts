@@ -1,6 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IngestService} from '../shared/services/ingest.service';
 import {AaiService} from '../aai/aai.service';
+import {Observable, of} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
+import {Account} from '../core/account';
 
 @Component({
   selector: 'app-navigation',
@@ -9,19 +12,20 @@ import {AaiService} from '../aai/aai.service';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent implements OnInit {
-  isWrangler: boolean;
-  isLoggedIn: boolean;
+  account$: Observable<Account>;
+  isLoggedIn$: Observable<boolean>;
 
 
   constructor(private aai: AaiService, private ingestService: IngestService) {
-    this.aai.isUserLoggedIn().subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
-      if (loggedIn) {
-        this.ingestService.getUserAccount().subscribe(account => {
-          this.isWrangler = account.isWrangler();
-        });
-      }
-    });
+    this.isLoggedIn$ = this.aai.isUserLoggedIn();
+    this.account$ = this.isLoggedIn$.pipe(
+      concatMap(loggedIn => {
+        if (loggedIn) {
+          return this.ingestService.getUserAccount();
+        }
+        return of(undefined);
+      })
+    );
   }
 
   ngOnInit() {
