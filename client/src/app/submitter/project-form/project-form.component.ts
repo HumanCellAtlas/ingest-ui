@@ -48,7 +48,8 @@ export class ProjectFormComponent implements OnInit {
 
     layout: this.formLayout,
     inputType: {
-      'project_description': 'textarea'
+      'project_description': 'textarea',
+      'notes': 'textarea'
     }
   };
 
