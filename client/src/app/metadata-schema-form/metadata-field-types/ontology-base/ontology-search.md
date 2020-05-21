@@ -108,7 +108,7 @@ https://ontology.staging.archive.data.humancellatlas.org/api/select?q=EFO_000201
 }
 ```
 
-2. Given `ontology.relations` `rdfs:subClassOf` and IRI from #1
+2. Given `ontology.relations` `rdfs:subClassOf` supply param `allChildrenOf` with value of IRI from #1.
 
 https://ontology.staging.archive.data.humancellatlas.org/api/select?groupField=iri&start=0&ontology=efo&q=*&rows=30&allChildrenOf=http://www.ebi.ac.uk/efo/EFO_0002012
 
