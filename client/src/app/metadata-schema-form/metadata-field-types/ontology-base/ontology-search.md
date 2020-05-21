@@ -1,29 +1,70 @@
 # Ontology Search
 
+HCA OLS URL : https://ontology.staging.archive.data.humancellatlas.org/ (staging)
+
+Example Project Role (Contributor Role) schema:
 
 ```
-
 {
-  "description": "An ontology term identifier in the form prefix:accession.",
-  "type": "string",
-  "graph_restriction": {
-    "ontologies": [
-      "obo:efo"
-    ],
-    "classes": [
-      "EFO:0002012"
-    ],
-    "relations": [
-      "rdfs:subClassOf"
-    ],
-    "direct": false,
-    "include_self": false
-  },
-  "example": "EFO:0009736; EFO:0009741",
-  "user_friendly": "Contributor role ontology ID"
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schema.dev.data.humancellatlas.org/module/ontology/1.0.0/contributor_role_ontology",
+	"description": "A term that describes the role of a contributor in the project.",
+	"additionalProperties": false,
+	"required": [
+		"text"
+	],
+	"title": "Contributor role ontology",
+	"name": "contributor_role_ontology",
+	"type": "object",
+	"properties": {
+		"describedBy": {
+			"description": "The URL reference to the schema.",
+			"pattern": "^(http|https)://schema.(.*?)humancellatlas.org/module/ontology/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/contributor_role_ontology",
+			"type": "string"
+		},
+		"schema_version": {
+			"description": "Version number in major.minor.patch format.",
+			"type": "string",
+			"pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+			"example": "4.6.1"
+		},
+		"text": {
+			"description": "The primary role of the contributor in the project.",
+			"type": "string",
+			"example": "principal investigator; experimental scientist",
+			"user_friendly": "Contributor role"
+		},
+		"ontology": {
+			"description": "An ontology term identifier in the form prefix:accession.",
+			"type": "string",
+			"graph_restriction": {
+				"ontologies": [
+					"obo:efo"
+				],
+				"classes": [
+					"EFO:0002012"
+				],
+				"relations": [
+					"rdfs:subClassOf"
+				],
+				"direct": false,
+				"include_self": false
+			},
+			"example": "EFO:0009736; EFO:0009741",
+			"user_friendly": "Contributor role ontology ID"
+		},
+		"ontology_label": {
+			"description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field.",
+			"type": "string",
+			"example": "principal investigator; experimental scientist",
+			"user_friendly": "Contributor role ontology label"
+		}
+	}
 }
 ```
+Given a `ontology.classes`  has value `EFO:0002012` :
 
+1. Find IRI of `EFO:0002012`
 https://ontology.staging.archive.data.humancellatlas.org/api/select?q=EFO_0002012
 
 ```
@@ -67,6 +108,7 @@ https://ontology.staging.archive.data.humancellatlas.org/api/select?q=EFO_000201
 }
 ```
 
+2. Given `ontology.relations` `rdfs:subClassOf` and IRI from #1
 
 https://ontology.staging.archive.data.humancellatlas.org/api/select?groupField=iri&start=0&ontology=efo&q=*&rows=30&allChildrenOf=http://www.ebi.ac.uk/efo/EFO_0002012
 
