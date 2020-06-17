@@ -101,7 +101,7 @@ export class SubmitComponent {
   }
 
   requestCleanup() {
-    this.ingestService.put(this.exportLink, undefined)
+    this.ingestService.put(this.cleanupLink, undefined)
       .subscribe(
         res => {
           setTimeout(() => {
