@@ -14,7 +14,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let project of projects">
-        <td></td>
+        <td><a href="{{project['_links']['self']['href']}}" target="_blank" class="vf-link"
+               title="click to see Ingest API resource">
+          <mat-icon [ngStyle]="{'color': 'lightgrey'}">link</mat-icon>
+        </a></td>
         <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="vf-link"><span
           title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a>
         </td>
