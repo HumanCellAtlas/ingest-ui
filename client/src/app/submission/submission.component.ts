@@ -35,7 +35,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   projectName: string;
   manifest: Object;
   submissionErrors: any[];
-  selectedIndex: any = 1;
+  selectedIndex: any = 0;
   private alive: boolean;
   private pollInterval: number;
   private MAX_ERRORS = 9;
@@ -112,7 +112,6 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.project = project;
       this.projectName = this.getProjectName();
       this.projectUuid = this.getProjectUuid();
-      this.selectedIndex = 0;
     }
   }
 
