@@ -249,13 +249,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           this.manifest = data;
           const actualLinks = this.manifest['actualLinks'];
           const expectedLinks = this.manifest['expectedLinks'];
-          if (!expectedLinks || (actualLinks == expectedLinks)) {
+          if (!expectedLinks || (actualLinks === expectedLinks)) {
             this.isLinkingDone = true;
           }
         }, err => {
           this.isLinkingDone = false;
-          if (err instanceof HttpErrorResponse && err.status == 404) {
+          if (err instanceof HttpErrorResponse && err.status === 404) {
             // do nothing, the endpoint throws error when no submission manifest is found
+            this.isLinkingDone = true;
           } else {
             console.error(err);
           }
