@@ -24,7 +24,6 @@ export class SubmitComponent {
   cleanup: boolean;
 
 
-
   constructor(private ingestService: IngestService,
               private loaderService: LoaderService,
               private alertService: AlertService) {
@@ -83,41 +82,43 @@ export class SubmitComponent {
   requestExport() {
     this.ingestService.put(this.exportLink, undefined)
       .subscribe(
-      res => {
-        setTimeout(() => {
-            this.alertService.clear();
-            this.loaderService.display(false);
-            this.alertService.success('', 'Your submission envelope should start exporting shortly.');
-          },
-          3000);
-      },
-      err => {
-        this.loaderService.display(false);
-        this.alertService.error('', 'An error occurred on the request to export your submission envelope.');
-        console.log(err);
-
-      }
-    );
-  }
-
-  requestCleanup() {
-    this.ingestService.put(this.cleanupLink, undefined)
-      .subscribe(
         res => {
           setTimeout(() => {
               this.alertService.clear();
               this.loaderService.display(false);
-              this.alertService.success('', 'Your submission envelope upload area will now be deleted.');
+              this.alertService.success('', 'Your submission envelope should start exporting shortly.');
             },
             3000);
         },
         err => {
           this.loaderService.display(false);
-          this.alertService.error('', 'An error occurred on the request to clean up the upload area of your submission envelope.');
+          this.alertService.error('', 'An error occurred on the request to export your submission envelope.');
           console.log(err);
 
         }
-      );;;
+      );
+  }
+
+  requestCleanup() {
+    if (confirm('Are you sure you?')) {
+      this.ingestService.put(this.cleanupLink, undefined)
+        .subscribe(
+          res => {
+            setTimeout(() => {
+                this.alertService.clear();
+                this.loaderService.display(false);
+                this.alertService.success('', 'Your submission envelope upload area will now be deleted.');
+              },
+              3000);
+          },
+          err => {
+            this.loaderService.display(false);
+            this.alertService.error('', 'An error occurred on the request to clean up the upload area of your submission envelope.');
+            console.log(err);
+
+          }
+        );
+    }
   }
 
 
