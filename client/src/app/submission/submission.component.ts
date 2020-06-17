@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IngestService} from '../shared/services/ingest.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -15,7 +15,7 @@ import {BrokerService} from '../shared/services/broker.service';
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.scss']
 })
-export class SubmissionComponent implements OnInit {
+export class SubmissionComponent implements OnInit, OnDestroy {
 
   submissionEnvelopeId: string;
   submissionEnvelopeUuid: string;
@@ -26,8 +26,11 @@ export class SubmissionComponent implements OnInit {
   isLinkingDone: boolean;
   isSubmitted: boolean;
   submitLink: string;
+  exportLink: string;
+  cleanupLink: string;
   url: string;
   project: any;
+  project$: Observable<Object>;
   projectUuid: string;
   projectName: string;
   manifest: Object;
@@ -94,15 +97,14 @@ export class SubmissionComponent implements OnInit {
 
   checkIfValid(submission) {
     const status = submission['submissionState'];
-    const validStates = ['Valid', 'Submitted', 'Processing', 'Archiving', 'Cleanup', 'Complete'];
-    return (validStates.indexOf(status) >= 0);
+    return (status === 'Valid' || this.isStateSubmitted(status));
   }
 
   getSubmissionProject(id) {
-    this.ingestService.getSubmissionProject(id)
-      .subscribe(project => {
-        this.setProject(project);
-      });
+    this.project$ = this.ingestService.getSubmissionProject(id);
+    this.project$.subscribe(project => {
+      this.setProject(project);
+    });
   }
 
   setProject(project) {
@@ -123,7 +125,7 @@ export class SubmissionComponent implements OnInit {
   }
 
   isStateSubmitted(state) {
-    const submittedStates = ['Submitted', 'Processing', 'Archiving', 'Cleanup', 'Complete'];
+    const submittedStates = ['Submitted', 'Processing', 'Archiving', 'Archived', 'Exporting', 'Exported', 'Cleanup', 'Complete'];
     return (submittedStates.indexOf(state) >= 0);
   }
 
@@ -203,6 +205,8 @@ export class SubmissionComponent implements OnInit {
           this.submissionState = data['submissionState'];
           this.isSubmitted = this.isStateSubmitted(data.submissionState);
           this.submitLink = this.getLink(data, 'submit');
+          this.exportLink = this.getLink(data, 'export');
+          this.cleanupLink = this.getLink(data, 'cleanup');
           this.url = this.getLink(data, 'self');
         });
     }

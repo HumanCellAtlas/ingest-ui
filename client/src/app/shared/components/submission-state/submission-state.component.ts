@@ -44,14 +44,14 @@ export class SubmissionStateComponent implements OnInit {
       return 'secondary';
     }
 
-    if (submissionState === 'Processing' || submissionState === 'Cleanup' || submissionState === 'Archiving') {
+    if (submissionState === 'Processing' || submissionState === 'Cleanup' || submissionState === 'Archiving' || submissionState === 'Exporting') {
       return 'warning-invert';
     }
 
-    if (submissionState === 'Complete') {
+    if (submissionState === 'Complete' || submissionState === 'Exported' || submissionState === 'Archived') {
       return 'success-invert';
     }
 
-    return '';
+    return 'secondary';
   }
 }

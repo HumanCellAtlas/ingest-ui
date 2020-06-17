@@ -1,40 +1,74 @@
 <div class="container-fluid">
-<br/>
-<ul class="list-group">
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    Project Overview
-    <mat-icon [ngStyle]="{'color': 'green'}" >check</mat-icon>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    Metadata
-    <mat-icon [ngStyle]="{'color': 'green'}" >check</mat-icon>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    Data Files
-    <mat-icon [ngStyle]="{'color': 'green'}" >check</mat-icon>
-  </li>
-</ul>
-<br/>
+  <br/>
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Project Overview
+      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Metadata
+      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Data Files
+      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+    </li>
+  </ul>
+  <br/>
 
-<ng-container *ngIf="submitLink">
+  <ng-container *ngIf="submitLink">
+    <br/>
+    <h3>What's next?</h3>
+    <p>You have entered all necessary information per Human Cell Atlas standards.
+      That’s awesome!</p>
+    <br/>
+    <p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
+      your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
+    <br/>
+
+    <div>
+      <mat-checkbox
+        [(ngModel)]="submitToArchives"
+        labelPosition="after">
+        Accession the metadata in my submission and release all data in this submission to the archives as specified in
+        the release date of the project.
+      </mat-checkbox>
+
+    </div>
+    <div>
+      <mat-checkbox
+        [(ngModel)]="submitToDcp"
+        labelPosition="after">
+        Release all data in this submission to the Human Cell Atlas Data Coordination Platform.
+      </mat-checkbox>
+    </div>
+    <div>
+      <mat-checkbox
+        [(ngModel)]="cleanup"
+        labelPosition="after">
+        Delete the upload area and data files after successful submission.
+      </mat-checkbox>
+    </div>
+  </ng-container>
+
   <br/>
-  <h3>What's next?</h3>
-  <p>You have entered all necessary information per Human Cell Atlas standards.
-    That’s awesome!</p>
-  <br/>
-  <p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
-    your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
-  <br/>
-  <mat-checkbox
-    [(ngModel)]="triggersAnalysisCheck"
-    labelPosition="after">
-    Only uncheck this if you really know what you're doing. Unchecking this will make the resulting dataset unsearchable, and analysis pipeline won't be triggered.
-  </mat-checkbox>
-  <br/>
-  <br/>
-</ng-container>
-<form action="submit" method="POST" *ngIf="submitLink">
-    <button mat-raised-button class="btn btn-success btn-lg" (click)="completeSubmission()" [disabled]="!isLinkingDone">
+
+
+  <div class="card" *ngIf="isSubmitted">
+    <div class="card-body">
+      <tabs [navClass]="'nav-tabs'">
+        <tab tabTitle="Assay Manifests">
+          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId"
+                             [metadataType]="'bundleManifests'"
+                             [config]="{displayAll: true, hideWhenEmptyRows: true}"></app-metadata-list>
+        </tab>
+      </tabs>
+    </div>
+  </div>
+
+
+  <ng-container *ngIf="submitLink">
+    <button mat-raised-button color="primary"(click)="onSubmit()" [disabled]="!isLinkingDone">
       <ng-container *ngIf="isLinkingDone">
         Submit
       </ng-container>
@@ -44,23 +78,20 @@
           <mat-progress-bar mode="determinate" value="{{getLinkingProgress(manifest)}}"></mat-progress-bar>
         </div>
       </ng-container>
-
     </button>
+  </ng-container>
 
-</form>
+  <br/>
 
-<br/>
-<div class="card" *ngIf="isSubmitted">
-  <div class="card-body" >
-    <tabs [navClass]="'nav-tabs'">
-      <tab tabTitle="Bundles">
-        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId"
-                           [metadataType]="'bundleManifests'"
-                           [config]="{displayAll: true, hideWhenEmptyRows: true}" > </app-metadata-list>
-      </tab>
-    </tabs>
-  </div>
-</div>
+  <ng-container *ngIf="exportLink">
+    <button mat-raised-button color="primary" (click)="requestExport()">Submit to HCA</button>
+  </ng-container>
 
+  <br/>
+  <ng-container *ngIf="cleanupLink">
+    <button mat-raised-button color="primary"(click)="requestCleanup()">Delete Upload Area</button>
+  </ng-container>
+
+  <br/>
 
 </div>

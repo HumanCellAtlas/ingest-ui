@@ -58,27 +58,6 @@ export class IngestService {
     return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`);
   }
 
-  public submit(submitLink) {
-    this.loaderService.display(true);
-    this.http.put(submitLink, null).subscribe(
-      res => {
-        setTimeout(() => {
-            this.alertService.clear();
-            this.loaderService.display(false);
-            this.alertService.success('', 'You have successfully submitted your submission envelope.');
-            location.reload();
-          },
-          3000);
-      },
-      err => {
-        this.loaderService.display(false);
-        this.alertService.error('', 'An error occured on submitting your submission envelope.');
-        console.log(err);
-
-      }
-    );
-  }
-
   public getSubmission(id): Observable<SubmissionEnvelope> {
     return this.http.get<SubmissionEnvelope>(`${this.API_URL}/submissionEnvelopes/${id}`);
   }
@@ -159,8 +138,8 @@ export class IngestService {
       });
   }
 
-  public put(ingestLink, content) {
-    return this.http.put(ingestLink, content);
+  public put(ingestLink, body) {
+    return this.http.put(ingestLink, body);
   }
 
   public patch(ingestLink, patchData) {
@@ -180,11 +159,8 @@ export class IngestService {
     if (entityType === 'bundleManifests') {
       return data.map(function (row) {
         const newRow = {
-          'bundleUuid': row['bundleUuid'],
-          'version': row['bundleVersion'],
-          'envelopeUuid': row['envelopeUuid'],
           '_links': row['_links'],
-          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws&version${row['bundleVersion']}`
+          'dataFiles': row['dataFiles']
         };
         return newRow;
       });
