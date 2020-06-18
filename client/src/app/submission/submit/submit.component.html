@@ -30,8 +30,7 @@
       <mat-checkbox
         [(ngModel)]="submitToArchives"
         labelPosition="after">
-        Accession the metadata in my submission and release all data in this submission to the archives as specified in
-        the release date of the project.
+        Submit to the archives and get accessions. Data will be public on {{ releaseDate ? (releaseDate | date: 'medium') : '(unset)' }} as specified in the release date of this project.
       </mat-checkbox>
 
     </div>
@@ -39,7 +38,7 @@
       <mat-checkbox
         [(ngModel)]="submitToDcp"
         labelPosition="after">
-        Release all data in this submission to the Human Cell Atlas Data Coordination Platform.
+        Submit to the Human Cell Atlas Data Coordination Platform. Data will be public immediately.
       </mat-checkbox>
     </div>
     <div>

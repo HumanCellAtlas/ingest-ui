@@ -1,15 +1,17 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IngestService} from '../../shared/services/ingest.service';
 import {LoaderService} from '../../shared/services/loader.service';
 import {AlertService} from '../../shared/services/alert.service';
+import {Observable} from 'rxjs';
+import {Project} from '../../shared/models/project';
 
 @Component({
   selector: 'app-submit',
   templateUrl: './submit.component.html',
   styleUrls: ['./submit.component.css']
 })
-export class SubmitComponent {
-  @Input() project$;
+export class SubmitComponent implements OnInit {
+  @Input() project$: Observable<Project>;
   @Input() submissionEnvelopeId;
   @Input() submissionEnvelope$;
   @Input() submitLink: string;
@@ -22,6 +24,7 @@ export class SubmitComponent {
   submitToArchives: boolean;
   submitToDcp: boolean;
   cleanup: boolean;
+  releaseDate: string;
 
 
   constructor(private ingestService: IngestService,
@@ -30,6 +33,12 @@ export class SubmitComponent {
     this.submitToArchives = true;
     this.submitToDcp = true;
     this.cleanup = true;
+  }
+
+  ngOnInit() {
+    this.project$.subscribe(project => {
+      this.releaseDate = project.releaseDate;
+    });
   }
 
   onSubmit() {

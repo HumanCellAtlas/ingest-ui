@@ -15,6 +15,7 @@ import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Account} from '../../core/account';
+import {Project} from "../models/project";
 
 
 @Injectable()
@@ -96,7 +97,7 @@ export class IngestService {
     return this.http.patch(projectLink, patch);
   }
 
-  public getSubmissionProject(submissionId): Observable<Object> {
+  public getSubmissionProject(submissionId): Observable<Project> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
       .map((data: ListResult<Object>) => {
         if (data._embedded && data._embedded.projects) {
