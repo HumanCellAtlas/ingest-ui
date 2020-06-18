@@ -109,7 +109,9 @@ export class SubmitComponent implements OnInit {
   }
 
   requestCleanup() {
-    if (confirm('Are you sure you?')) {
+    const message = 'Are you sure you want to delete all data files from this submission? This cannot be undone.';
+
+    if (confirm(message)) {
       this.ingestService.put(this.cleanupLink, undefined)
         .subscribe(
           res => {
