@@ -8,6 +8,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
 import {LoaderService} from '../shared/services/loader.service';
 import {BrokerService} from '../shared/services/broker.service';
+import {Project} from '../shared/models/project';
 
 
 @Component({
@@ -29,8 +30,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   exportLink: string;
   cleanupLink: string;
   url: string;
-  project: any;
-  project$: Observable<Object>;
+  project: Project;
+  project$: Observable<Project>;
   projectUuid: string;
   projectName: string;
   manifest: Object;
@@ -110,13 +111,13 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   setProject(project) {
     if (project) {
       this.project = project;
-      this.projectName = this.getProjectName();
+      this.projectName = this.getProjectShortName();
       this.projectUuid = this.getProjectUuid();
     }
   }
 
-  getProjectName() {
-    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
+  getProjectShortName() {
+    return this.project && this.project['content'] ? this.project['content']['project_core']['project_short_name'] : '';
   }
 
   getProjectUuid() {

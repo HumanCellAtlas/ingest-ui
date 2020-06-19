@@ -56,8 +56,6 @@ export class SubmitComponent implements OnInit {
       submitActions.push('Cleanup');
     }
 
-    console.log('submitActions', submitActions);
-
     if (!this.submitToDcp && !this.submitToArchives) {
       alert('You should either submit to archives or to HCA.');
     } else if (!this.submitToDcp && this.cleanup) {

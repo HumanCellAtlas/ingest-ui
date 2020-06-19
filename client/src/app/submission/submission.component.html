@@ -1,11 +1,17 @@
-<div fxLayout="column">
+<div fxLayout="column" *ngIf="!project || !submissionEnvelope || !manifest">
+  Loading...
+</div>
+<div fxLayout="column" *ngIf="project && submissionEnvelope && manifest">
   <div fxLayout="row" fxLayoutAlign="space-between center">
-    <h1 class="mat-headline">Submission</h1>
+    <h2 class="vf-text vf-text-heading--2">Submission {{projectName ? '(' + projectName + ')' : '' }} </h2>
     <mat-chip-list selectable="false">
-      <mat-basic-chip  ><a *ngIf="projectUuid" [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}" class="text-info">Back to Project</a></mat-basic-chip>
-      <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;</a></mat-basic-chip>
+      <mat-basic-chip><a *ngIf="projectUuid" [routerLink]="['/projects/detail']" [queryParams]="{uuid:this.projectUuid}"
+                         class="text-info">Back to Project</a></mat-basic-chip>
+      <mat-basic-chip><a href="{{submissionEnvelope?._links?.self?.href}}"><strong>Ingest Link</strong>&nbsp;</a>
+      </mat-basic-chip>
       <mat-basic-chip>
-        <button mat-raised-button *ngIf="submissionEnvelope && submissionEnvelope.open" (click)="onDeleteSubmission(submissionEnvelope)">
+        <button mat-raised-button *ngIf="submissionEnvelope && submissionEnvelope.open"
+                (click)="onDeleteSubmission(submissionEnvelope)">
           <mat-icon>delete_forever</mat-icon>
         </button>
       </mat-basic-chip>
@@ -15,44 +21,65 @@
       <app-submission-state [state]="submissionState">{{submissionState}}</app-submission-state>
     </mat-chip-list>
   </div>
-  <div>
-    <mat-tab-group *ngIf="submissionEnvelopeId" [selectedIndex]="this.selectedIndex">
-      <mat-tab label="Metadata">
-        <ng-template matTabContent>
-          <app-metadata
-            [submissionEnvelopeId]="submissionEnvelopeId"
-            [manifest]="manifest">
-          </app-metadata>
-        </ng-template>
-      </mat-tab>
-      <mat-tab label="Data" [disabled]="!submissionEnvelopeId">
-        <ng-template matTabContent>
+  <br/>
+  <br/>
+  <mat-tab-group *ngIf="submissionEnvelopeId" [selectedIndex]="this.selectedIndex">
+    <mat-tab label="Biomaterials">
+      <ng-template matTabContent>
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'biomaterials'"
+                           [expectedCount]="manifest['expectedBiomaterials']"></app-metadata-list>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Processes">
+      <ng-template matTabContent>
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'processes'"
+                           [expectedCount]="manifest['expectedProcesses']"></app-metadata-list>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Protocols">
+      <ng-template matTabContent>
+        <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"
+                           [expectedCount]="manifest['expectedProtocols']"></app-metadata-list>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Data" [disabled]="!submissionEnvelopeId">
+      <ng-template matTabContent>
         <app-files
-                [submissionEnvelope]="submissionEnvelope"
-                [submissionEnvelopeId]="submissionEnvelopeId"
-                [manifest]="manifest">
+          [submissionEnvelope]="submissionEnvelope"
+          [submissionEnvelopeId]="submissionEnvelopeId"
+          [manifest]="manifest">
         </app-files>
-        </ng-template>
-      </mat-tab>
-      <mat-tab label="Submit" [disabled]="!isValid" >
-        <ng-template matTabContent>
-          <ng-container *ngFor="let error of project?.validationErrors">
-            <span class="text-danger" title="{{error.userFriendlyMessage}}">* {{error.userFriendlyMessage}}</span><br>
-          </ng-container>
-          <app-submit
-                  [project$]="project$"
-                  [submissionEnvelope$]="submissionEnvelope$"
-                  [submitLink]="submitLink"
-                  [exportLink]="exportLink"
-                  [cleanupLink]="cleanupLink"
-                  [isSubmitted]="isSubmitted"
-                  [submissionUrl]="url"
-                  [submissionEnvelopeId]="submissionEnvelopeId"
-                  [isLinkingDone]="isLinkingDone"
-                  [manifest]="manifest">
-          </app-submit>
-        </ng-template>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Submit" [disabled]="!isValid" *ngIf="submissionState != 'Complete'">
+      <ng-template matTabContent>
+        <ng-container *ngFor="let error of project?.validationErrors">
+          <span class="text-danger" title="{{error.userFriendlyMessage}}">* {{error.userFriendlyMessage}}</span><br>
+        </ng-container>
+        <app-submit
+          *ngIf="manifest"
+          [project$]="project$"
+          [submissionEnvelope$]="submissionEnvelope$"
+          [submitLink]="submitLink"
+          [exportLink]="exportLink"
+          [cleanupLink]="cleanupLink"
+          [isSubmitted]="isSubmitted"
+          [submissionUrl]="url"
+          [submissionEnvelopeId]="submissionEnvelopeId"
+          [isLinkingDone]="isLinkingDone"
+          [manifest]="manifest">
+        </app-submit>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Assays" *ngIf="isSubmitted && submissionEnvelope['submitActions'].indexOf('Archive')>= 0">
+      <ng-template matTabContent>
+        <app-metadata-list
+          [submissionEnvelopeId]="submissionEnvelopeId"
+          [metadataType]="'bundleManifests'"
+          [config]="{displayAll: true, hideWhenEmptyRows: true}">
+        </app-metadata-list>
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
 </div>

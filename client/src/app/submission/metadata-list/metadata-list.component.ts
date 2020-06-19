@@ -20,6 +20,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   @ViewChild('datatable') table: any;
 
+  @Input() title: string;
   @Input() metadataList;
   @Input() metadataType;
   @Input() expectedCount;
@@ -44,6 +45,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   private alive: boolean;
   private pollInterval: number;
   private isLoading = false;
+
 
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {

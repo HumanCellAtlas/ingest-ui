@@ -1,12 +1,21 @@
-<div class="container-fluid">
+<ng-container *ngIf="submitLink">
   <br/>
+  <h3 class="vf-text vf-text-heading--3">What's next?</h3>
+
+  <p>You have entered all necessary information per Human Cell Atlas standards. That’s awesome!</p>
+  <p>If everything looks correct, feel free to Submit your data.</p>
+
   <ul class="list-group">
     <li class="list-group-item d-flex justify-content-between align-items-center">
-      Project Overview
+      Biomaterials
       <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
     </li>
     <li class="list-group-item d-flex justify-content-between align-items-center">
-      Metadata
+      Processes
+      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Protocols
       <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
     </li>
     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -14,83 +23,65 @@
       <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
     </li>
   </ul>
-  <br/>
-
-  <ng-container *ngIf="submitLink">
-    <br/>
-    <h3>What's next?</h3>
-    <p>You have entered all necessary information per Human Cell Atlas standards.
-      That’s awesome!</p>
-    <br/>
-    <p>If everything looks correct, feel free to Submit your project data. Once you hit “Submit”,
-      your data is going to make its way to the Human Cell Atlas pipelines for immediate analysis and release.</p>
-    <br/>
-
-    <div>
-      <mat-checkbox
-        [(ngModel)]="submitToArchives"
-        labelPosition="after">
-        Submit to the archives and get accessions. Data will be public on {{ releaseDate ? (releaseDate | date: 'medium') : '(unset)' }} as specified in the release date of this project.
-      </mat-checkbox>
-
-    </div>
-    <div>
-      <mat-checkbox
-        [(ngModel)]="submitToDcp"
-        labelPosition="after">
-        Submit to the Human Cell Atlas Data Coordination Platform. Data will be public immediately.
-      </mat-checkbox>
-    </div>
-    <div>
-      <mat-checkbox
-        [(ngModel)]="cleanup"
-        labelPosition="after">
-        Delete the upload area and data files after successful submission.
-      </mat-checkbox>
-    </div>
-  </ng-container>
 
   <br/>
 
 
-  <div class="card" *ngIf="isSubmitted">
-    <div class="card-body">
-      <tabs [navClass]="'nav-tabs'">
-        <tab tabTitle="Assay Manifests">
-          <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId"
-                             [metadataType]="'bundleManifests'"
-                             [config]="{displayAll: true, hideWhenEmptyRows: true}"></app-metadata-list>
-        </tab>
-      </tabs>
-    </div>
+  <div>
+    <mat-checkbox
+      [(ngModel)]="submitToArchives" labelPosition="after">
+      Submit to the <a href="https://www.ebi.ac.uk/services" class="vf-link"
+                       matTooltip="European Nucleotide Archive (ENA), BioStudies, BioSamples">EMBL-EBI public
+      archives </a> and get
+      accessions. Data will be public on {{ releaseDate ? (releaseDate | date: 'medium') : '(unset)' }} as specified
+      in the release date of this project.
+    </mat-checkbox>
+
   </div>
+  <div>
+    <mat-checkbox
+      [(ngModel)]="submitToDcp" labelPosition="after">
+      Submit to the <a href="https://data.humancellatlas.org" class="vf-link">Human Cell Atlas</a>. Data will be made
+      public with the next snapshot.
+    </mat-checkbox>
+  </div>
+  <div>
+    <mat-checkbox
+      [(ngModel)]="cleanup"
+      [disabled]="!submitToDcp"
+      [checked]="submitToDcp ? cleanup : false"
+      labelPosition="after">
+      Delete the upload area and data files after successful submission.
+    </mat-checkbox>
+  </div>
+</ng-container>
+
+<br/>
 
 
-  <ng-container *ngIf="submitLink">
-    <button mat-raised-button color="primary"(click)="onSubmit()" [disabled]="!isLinkingDone">
-      <ng-container *ngIf="isLinkingDone">
-        Submit
-      </ng-container>
-      <ng-container *ngIf="!isLinkingDone">
-        <div>
-          Linking is in progress... {{getLinkingProgress(manifest)}}% done!
-          <mat-progress-bar mode="determinate" value="{{getLinkingProgress(manifest)}}"></mat-progress-bar>
-        </div>
-      </ng-container>
-    </button>
-  </ng-container>
+<ng-container *ngIf="submitLink">
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    Submit
+  </button>
+</ng-container>
 
-  <br/>
+<button (click)="onSubmit()" *ngIf="manifest && !isLinkingDone">
+  <div *ngIf="manifest">
+    Linking is in progress... {{getLinkingProgress(manifest)}}% done!
+    <mat-progress-bar mode="determinate" value="{{getLinkingProgress(manifest)}}"></mat-progress-bar>
+  </div>
+</button>
 
-  <ng-container *ngIf="exportLink">
-    <button mat-raised-button color="primary" (click)="requestExport()">Submit to HCA</button>
-  </ng-container>
+<br/>
 
-  <br/>
-  <ng-container *ngIf="cleanupLink">
-    <button mat-raised-button color="primary"(click)="requestCleanup()">Delete Upload Area</button>
-  </ng-container>
+<ng-container *ngIf="exportLink">
+  <button mat-raised-button color="primary" (click)="requestExport()">Submit to HCA</button>
+</ng-container>
 
-  <br/>
+<br/>
+<ng-container *ngIf="cleanupLink">
+  <button mat-raised-button color="primary" (click)="requestCleanup()">Delete Upload Area</button>
+</ng-container>
 
-</div>
+<br/>
+
