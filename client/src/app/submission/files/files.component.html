@@ -6,7 +6,7 @@
           <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId"
                              [metadataType]="'files'"
                              [config]="config"
-                             [expectedCount]="manifest['expectedFiles']">
+                             [expectedCount]="manifest ? manifest['expectedFiles']: null">
           </app-metadata-list>
         </div>
       </div>

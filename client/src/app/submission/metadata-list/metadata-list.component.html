@@ -14,7 +14,7 @@
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
   <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
 </ng-container>
-<!--[scrollbarV]="true"-->
+
 <ngx-datatable
   #datatable
 
@@ -45,37 +45,16 @@
    <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
     <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <div *ngIf="row['validationState'] == 'Invalid'">
-        <div><strong>Validation Report:</strong></div>
+      <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
         <ng-container *ngFor="let error of getValidationErrors(row)">
-          <span class="text-danger" title="{{error}}">{{error}}</span><br>
+          <span class="vf-u-text-color--red" title="{{error}}">{{error}}</span><br>
         </ng-container>
       </div>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
-        <div><strong>Validation Report:</strong></div>
         <span class="text-success" title="{{getDefaultValidMessage()}}">{{getDefaultValidMessage()}}</span>
       </div>
     </ng-template>
   </ngx-datatable-row-detail>
-
-  <!--Expand column-->
-  <!--<ngx-datatable-column-->
-    <!--[resizeable]="true"-->
-    <!--[sortable]="false"-->
-    <!--[draggable]="false"-->
-    <!--[canAutoResize]="true"-->
-    <!--[width]="'50'">-->
-    <!--<ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template >-->
-      <!--<a-->
-        <!--href="javascript:void(0)"-->
-        <!--[class.datatable-icon-right]="!expanded"-->
-        <!--[class.datatable-icon-down]="expanded"-->
-        <!--title="Expand/Collapse Row"-->
-        <!--(click)="toggleExpandRow(row)">-->
-      <!--</a>-->
-    <!--</ng-template>-->
-  <!--</ngx-datatable-column>-->
-
 
   <!--patch-->
   <ngx-datatable-column prop="_links.patch.href" name="" [width]="'130'" >

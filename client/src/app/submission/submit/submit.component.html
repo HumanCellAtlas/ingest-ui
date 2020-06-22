@@ -1,32 +1,40 @@
+<ng-container>
+  <br/>
+  <h3 class="vf-text vf-text-heading--4">What's next?</h3>
+  <ng-container *ngIf="submitLink || exportLink">
+    <p>You have entered all necessary information per Human Cell Atlas standards. That’s awesome!</p>
+    <p>If everything looks correct, feel free to Submit your data.</p>
+
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        Biomaterials
+        <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        Processes
+        <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        Protocols
+        <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        Data Files
+        <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
+      </li>
+    </ul>
+  </ng-container>
+
+
+  <ng-container *ngIf="cleanupLink">
+    <p>Data has been successfully submitted to the Human Cell Atlas. You can now delete the upload area for this
+      submission.</p>
+  </ng-container>
+
+  <br/>
+</ng-container>
+
 <ng-container *ngIf="submitLink">
-  <br/>
-  <h3 class="vf-text vf-text-heading--3">What's next?</h3>
-
-  <p>You have entered all necessary information per Human Cell Atlas standards. That’s awesome!</p>
-  <p>If everything looks correct, feel free to Submit your data.</p>
-
-  <ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Biomaterials
-      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Processes
-      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Protocols
-      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Data Files
-      <mat-icon [ngStyle]="{'color': 'green'}">check</mat-icon>
-    </li>
-  </ul>
-
-  <br/>
-
-
   <div>
     <mat-checkbox
       [(ngModel)]="submitToArchives" labelPosition="after">
@@ -40,7 +48,8 @@
   </div>
   <div>
     <mat-checkbox
-      [(ngModel)]="submitToDcp" labelPosition="after">
+      [(ngModel)]="submitToDcp" labelPosition="after"
+      (change)="onSubmitToDspChange()">
       Submit to the <a href="https://data.humancellatlas.org" class="vf-link">Human Cell Atlas</a>. Data will be made
       public with the next snapshot.
     </mat-checkbox>
@@ -50,6 +59,7 @@
       [(ngModel)]="cleanup"
       [disabled]="!submitToDcp"
       [checked]="submitToDcp ? cleanup : false"
+      matTooltip="{{submitToDcp ? '': deleteWarning}}"
       labelPosition="after">
       Delete the upload area and data files after successful submission.
     </mat-checkbox>
@@ -58,21 +68,17 @@
 
 <br/>
 
-
-<ng-container *ngIf="submitLink">
+<ng-container *ngIf="submitLink && (this.submitToDcp || this.submitToArchives)">
+  <div *ngIf="manifest && !isLinkingDone">
+    Linking is in progress... {{getLinkingProgress(manifest)}}% done!
+    <mat-progress-bar mode="determinate" value="{{getLinkingProgress(manifest)}}"></mat-progress-bar>
+    <br/>
+  </div>
   <button mat-raised-button color="primary" (click)="onSubmit()">
     Submit
   </button>
 </ng-container>
 
-<button (click)="onSubmit()" *ngIf="manifest && !isLinkingDone">
-  <div *ngIf="manifest">
-    Linking is in progress... {{getLinkingProgress(manifest)}}% done!
-    <mat-progress-bar mode="determinate" value="{{getLinkingProgress(manifest)}}"></mat-progress-bar>
-  </div>
-</button>
-
-<br/>
 
 <ng-container *ngIf="exportLink">
   <button mat-raised-button color="primary" (click)="requestExport()">Submit to HCA</button>

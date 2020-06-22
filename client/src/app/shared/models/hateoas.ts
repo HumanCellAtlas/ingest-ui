@@ -14,4 +14,6 @@ export interface EmbeddedList<T> {
   protocols: T[];
   bundleManifests: T[];
   schemas: T[];
+  archiveEntities: T[];
+  archiveSubmissions: T[];
 }

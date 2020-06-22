@@ -26,6 +26,7 @@ export class SubmitComponent implements OnInit {
   cleanup: boolean;
   releaseDate: string;
 
+  deleteWarning = 'The upload area cannot be deleted until the data files are submitted to Human Cell Atlas.';
 
   constructor(private ingestService: IngestService,
               private loaderService: LoaderService,
@@ -56,13 +57,7 @@ export class SubmitComponent implements OnInit {
       submitActions.push('Cleanup');
     }
 
-    if (!this.submitToDcp && !this.submitToArchives) {
-      alert('You should either submit to archives or to HCA.');
-    } else if (!this.submitToDcp && this.cleanup) {
-      alert('The upload area cannot be deleted yet, the data files are needed for submitting to HCA.');
-    } else {
-      this.requestSubmit(this.submitLink, submitActions);
-    }
+    this.requestSubmit(this.submitLink, submitActions);
 
   }
 
@@ -139,4 +134,9 @@ export class SubmitComponent implements OnInit {
     return 100;
   }
 
+  onSubmitToDspChange() {
+    if (!this.submitToDcp) {
+      this.cleanup = false;
+    }
+  }
 }

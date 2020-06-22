@@ -16,6 +16,9 @@ import {MetadataDocument} from '../models/metadata-document';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Account} from '../../core/account';
 import {Project} from "../models/project";
+import {ArchiveSubmission} from "../models/archiveSubmission";
+import {ArchiveEntity} from "../models/archiveEntity";
+import {concatMap, map} from "rxjs/operators";
 
 
 @Injectable()
@@ -48,7 +51,7 @@ export class IngestService {
   }
 
   public getUserAccount(): Observable<Account> {
-    return this.http.get(`${this.API_URL}/auth/account`).map( data => new Account({
+    return this.http.get(`${this.API_URL}/auth/account`).map(data => new Account({
       id: data['id'],
       providerReference: data['providerReference'],
       roles: data['roles']
@@ -156,6 +159,16 @@ export class IngestService {
       .map(data => data as ListResult<MetadataSchema>);
   }
 
+  public getArchiveSubmission(submissionUuid: string): Observable<ArchiveSubmission> {
+    return this.get(`${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`)
+      .map(data => data as ArchiveSubmission);
+  }
+
+  public getArchiveEntity(dspUuid: string): Observable<ArchiveEntity> {
+    return this.get(`${this.API_URL}/archiveEntities/search/findByDspUuid?dspUuid=${dspUuid}`)
+      .map(data => data as ArchiveEntity);
+  }
+
   private reduceColumnsForBundleManifests(entityType, data) {
     if (entityType === 'bundleManifests') {
       return data.map(function (row) {
@@ -170,5 +183,4 @@ export class IngestService {
 
 
   }
-
 }

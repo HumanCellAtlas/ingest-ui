@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DataTableComponent } from './data-table.component';
+import {DataTableComponent} from './data-table.component';
+import {FlattenService} from '../../services/flatten.service';
 
 describe('DataTableComponent', () => {
   let component: DataTableComponent;
@@ -8,14 +9,16 @@ describe('DataTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataTableComponent ]
+      declarations: [DataTableComponent],
+      providers: [FlattenService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DataTableComponent);
     component = fixture.componentInstance;
+    component.rows = [{}];
     fixture.detectChanges();
   });
 
