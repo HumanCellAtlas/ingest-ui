@@ -1,0 +1,37 @@
+<ngx-datatable #datatable
+
+               *ngIf="rows && (rows.length > 0)"
+
+               class="material expandable"
+
+               [columnMode]="'force'"
+               [rows]="rows"
+               [headerHeight]="50"
+               [footerHeight]="50"
+               [rowHeight]="40"
+               [rowIdentity]="getRowId"
+               [scrollbarH]="true"
+
+               [count]="page.totalElements"
+               [limit]="page.size"
+               [loadingIndicator]="isLoading"
+               [externalPaging]="isPaginated"
+
+               (page)='setPage($event)'>
+
+  <ng-container *ngFor="let column of columns">
+    <ngx-datatable-column prop="{{column}}">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <span *ngIf="!isUrl(value)" title="{{value}}">{{value}}</span>
+        <span *ngIf="isUrl(value)">
+          <a target="_blank" href="{{value}}">
+            <mat-icon matTooltip="See Ingest API JSON" [ngStyle]="{'color': 'lightgrey'}">link</mat-icon>
+          </a>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+  </ng-container>
+
+</ngx-datatable>
+
+

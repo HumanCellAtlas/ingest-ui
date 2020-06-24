@@ -18,6 +18,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 
 
 @NgModule({
@@ -36,17 +38,20 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatInputModule,
     MatAutocompleteModule,
     MatListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    NgxDatatableModule
   ],
   declarations: [
     ClipboardDirective,
     SubmissionStateComponent,
-    MetadataStateComponent
+    MetadataStateComponent,
+    DataTableComponent
   ],
   exports: [
     ClipboardDirective,
     SubmissionStateComponent,
-    MetadataStateComponent
+    MetadataStateComponent,
+    DataTableComponent
   ],
   providers: [
     ClipboardService

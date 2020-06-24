@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IngestService} from '../shared/services/ingest.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -8,6 +8,10 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
 import {LoaderService} from '../shared/services/loader.service';
 import {BrokerService} from '../shared/services/broker.service';
+import {Project} from '../shared/models/project';
+import {ArchiveEntity} from '../shared/models/archiveEntity';
+import {concatMap, map} from 'rxjs/operators';
+import {ListResult} from '../shared/models/hateoas';
 
 
 @Component({
@@ -15,7 +19,7 @@ import {BrokerService} from '../shared/services/broker.service';
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.scss']
 })
-export class SubmissionComponent implements OnInit {
+export class SubmissionComponent implements OnInit, OnDestroy {
 
   submissionEnvelopeId: string;
   submissionEnvelopeUuid: string;
@@ -26,13 +30,18 @@ export class SubmissionComponent implements OnInit {
   isLinkingDone: boolean;
   isSubmitted: boolean;
   submitLink: string;
+  exportLink: string;
+  cleanupLink: string;
   url: string;
-  project: any;
+  project: Project;
+  project$: Observable<Project>;
   projectUuid: string;
-  projectName: string;
+  projectTitle: string;
+  projectShortName: string;
   manifest: Object;
-  submissionErrors: any[];
-  selectedIndex: any = 1;
+  submissionErrors: Object[];
+  selectedIndex: any = 0;
+  archiveEntities: ArchiveEntity[];
   private alive: boolean;
   private pollInterval: number;
   private MAX_ERRORS = 9;
@@ -47,7 +56,6 @@ export class SubmissionComponent implements OnInit {
   ) {
     this.pollInterval = 4000; // 4s
     this.alive = true;
-    this.manifest = {};
   }
 
   private static getSubmissionId(submissionEnvelope) {
@@ -64,57 +72,40 @@ export class SubmissionComponent implements OnInit {
 
     this.pollSubmissionEnvelope();
     this.pollEntities();
+
+    this.getArchiveEntities(this.submissionEnvelopeUuid);
   }
 
   ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  pollSubmissionEnvelope() {
-    TimerObservable.create(0, this.pollInterval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        this.getSubmissionEnvelope();
-        if (this.submissionEnvelope) {
-          this.getSubmissionErrors();
-          this.getSubmissionManifest();
-        }
-      });
-  }
-
-  pollEntities() {
-    TimerObservable.create(500, this.pollInterval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        if (this.submissionEnvelopeId) {
-          this.getSubmissionProject(this.submissionEnvelopeId);
-        }
-      });
-  }
-
   checkIfValid(submission) {
     const status = submission['submissionState'];
-    const validStates = ['Valid', 'Submitted', 'Processing', 'Archiving', 'Cleanup', 'Complete'];
-    return (validStates.indexOf(status) >= 0);
+    return (status === 'Valid' || this.isStateSubmitted(status));
   }
 
   getSubmissionProject(id) {
-    this.ingestService.getSubmissionProject(id)
-      .subscribe(project => {
-        this.setProject(project);
-      });
+    this.project$ = this.ingestService.getSubmissionProject(id);
+    this.project$.subscribe(project => {
+      this.setProject(project);
+    });
   }
 
   setProject(project) {
     if (project) {
       this.project = project;
-      this.projectName = this.getProjectName();
+      this.projectShortName = this.getProjectShortName();
+      this.projectTitle = this.getProjectTitle();
       this.projectUuid = this.getProjectUuid();
-      this.selectedIndex = 0;
     }
   }
 
-  getProjectName() {
+  getProjectShortName() {
+    return this.project && this.project['content'] ? this.project['content']['project_core']['project_short_name'] : '';
+  }
+
+  getProjectTitle() {
     return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
   }
 
@@ -123,7 +114,7 @@ export class SubmissionComponent implements OnInit {
   }
 
   isStateSubmitted(state) {
-    const submittedStates = ['Submitted', 'Processing', 'Archiving', 'Cleanup', 'Complete'];
+    const submittedStates = ['Submitted', 'Processing', 'Archiving', 'Archived', 'Exporting', 'Exported', 'Cleanup', 'Complete'];
     return (submittedStates.indexOf(state) >= 0);
   }
 
@@ -158,7 +149,7 @@ export class SubmissionComponent implements OnInit {
 
   onDeleteSubmission(submissionEnvelope: SubmissionEnvelope) {
     const submissionId: String = SubmissionComponent.getSubmissionId(submissionEnvelope);
-    const projectInfo = this.projectName ? `(${this.projectName})` : '';
+    const projectInfo = this.projectTitle ? `(${this.projectTitle})` : '';
     const submissionUuid = submissionEnvelope['uuid']['uuid'];
     const message = `This may take some time. Are you sure you want to delete the submission with UUID ${submissionUuid} ${projectInfo} ?`;
     const messageOnSuccess = `The submission with UUID ${submissionUuid} ${projectInfo} was deleted!`;
@@ -184,6 +175,60 @@ export class SubmissionComponent implements OnInit {
     }
   }
 
+  isSubmissionLoading() {
+    return !(this.project$ && this.submissionEnvelope$ && (this.manifest || this.isLinkingDone));
+  }
+
+  getContributors(project: Project) {
+    let contributors = project && project.content && project.content['contributors'];
+    contributors = contributors ? project.content['contributors'] : [];
+    const correspondents = contributors.filter(contributor => contributor['corresponding_contributor'] === true);
+    return correspondents.map(c => c['name']).join(' | ');
+  }
+
+  private pollSubmissionEnvelope() {
+    TimerObservable.create(0, this.pollInterval)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        this.getSubmissionEnvelope();
+        if (this.submissionEnvelope) {
+          this.getSubmissionErrors();
+          this.getSubmissionManifest();
+        }
+      });
+  }
+
+  private pollEntities() {
+    TimerObservable.create(500, this.pollInterval)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        if (this.submissionEnvelopeId) {
+          this.getSubmissionProject(this.submissionEnvelopeId);
+        }
+      });
+  }
+
+  private getArchiveEntitiesFromSubmission(submissionUuid: string): Observable<ArchiveEntity[]> {
+    return this.ingestService.getArchiveSubmission(submissionUuid)
+      .pipe(
+        concatMap(data => {
+          if (data) {
+            return this.ingestService.get(data._links['entities']['href'])
+              .map(response => response as Observable<ListResult<ArchiveEntity>>);
+          } else {
+            return [];
+          }
+
+        }),
+        map(data => {
+          if (data._embedded) {
+            return data._embedded.archiveEntities;
+          }
+          return [];
+        })
+      );
+  }
+
   private getSubmissionEnvelope() {
     if (this.submissionEnvelopeId) {
       this.submissionEnvelope$ = this.ingestService.getSubmission(this.submissionEnvelopeId);
@@ -203,6 +248,8 @@ export class SubmissionComponent implements OnInit {
           this.submissionState = data['submissionState'];
           this.isSubmitted = this.isStateSubmitted(data.submissionState);
           this.submitLink = this.getLink(data, 'submit');
+          this.exportLink = this.getLink(data, 'export');
+          this.cleanupLink = this.getLink(data, 'cleanup');
           this.url = this.getLink(data, 'self');
         });
     }
@@ -238,6 +285,15 @@ export class SubmissionComponent implements OnInit {
       );
   }
 
+  private getArchiveEntities(submissionUuid: string) {
+    this.getArchiveEntitiesFromSubmission(submissionUuid)
+      .subscribe(
+        data => {
+          this.archiveEntities = data;
+        }
+      );
+  }
+
   private getSubmissionManifest() {
     this.ingestService.get(this.submissionEnvelope['_links']['submissionManifest']['href'])
       .subscribe(
@@ -245,13 +301,13 @@ export class SubmissionComponent implements OnInit {
           this.manifest = data;
           const actualLinks = this.manifest['actualLinks'];
           const expectedLinks = this.manifest['expectedLinks'];
-          if (!expectedLinks || (actualLinks == expectedLinks)) {
+          if (!expectedLinks || (actualLinks === expectedLinks)) {
             this.isLinkingDone = true;
           }
         }, err => {
-          this.isLinkingDone = false;
-          if (err instanceof HttpErrorResponse && err.status == 404) {
+          if (err instanceof HttpErrorResponse && err.status === 404) {
             // do nothing, the endpoint throws error when no submission manifest is found
+            this.isLinkingDone = true;
           } else {
             console.error(err);
           }

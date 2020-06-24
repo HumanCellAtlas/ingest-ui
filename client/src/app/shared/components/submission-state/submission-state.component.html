@@ -1,1 +1,1 @@
-<mat-basic-chip [ngClass]="getStateChipClassName(state)">{{state}}</mat-basic-chip>
+<mat-basic-chip [ngClass]="getStateChipClassName(state)" *ngIf="state">{{state}}</mat-basic-chip>

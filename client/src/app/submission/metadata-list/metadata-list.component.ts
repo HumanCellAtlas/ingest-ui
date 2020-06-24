@@ -20,6 +20,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   @ViewChild('datatable') table: any;
 
+  @Input() title: string;
   @Input() metadataList;
   @Input() metadataType;
   @Input() expectedCount;
@@ -44,6 +45,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   private alive: boolean;
   private pollInterval: number;
   private isLoading = false;
+
 
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService) {
@@ -76,7 +78,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     const columns = {};
     rows.map(function (row) {
       Object.keys(row).map(function (col) {
-
         columns[col] = '';
       });
     });
@@ -127,27 +128,13 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   getDefaultValidMessage() {
-    let validMessage = 'Metadata is valid.';
+    let validMessage = '* Metadata is valid.';
 
-    if (this.metadataType == 'files') {
-      validMessage = 'Data is valid.';
+    if (this.metadataType === 'files') {
+      validMessage = '* Data is valid.';
     }
 
     return validMessage;
-  }
-
-  revalidate(rowIndex) {
-    const metadataLink = this.metadataList[rowIndex]['_links']['self']['href'];
-
-    this.ingestService.patch(metadataLink, {validationState: 'Draft'}).subscribe(
-      (response) => {
-        console.log('patched metadata');
-        console.log('Response is: ', response);
-      },
-      (error) => {
-        console.error('An error occurred, ', error);
-      });
-
   }
 
   updateValue(event, cell, rowIndex) {
@@ -177,12 +164,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
       errors.push(`* ${row[columns[i]]}`);
     }
     return errors;
-  }
-
-  toggleExpandRow(row) {
-    this.table.rowDetail.toggleExpandRow(row);
-    this.table.bodyComponent.bodyHeight = '800px';
-    this.table.bodyComponent.recalcLayout();
   }
 
   expandAllRows() {
@@ -247,7 +228,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   showFilterState() {
-    return this.metadataType != 'bundleManifests';
+    return this.metadataType !== 'bundleManifests';
   }
 
   onSort(event) {

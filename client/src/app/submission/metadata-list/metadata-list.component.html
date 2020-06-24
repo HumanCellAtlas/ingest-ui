@@ -1,3 +1,4 @@
+<h3 *ngIf="rows && rows.length > 0 && title" class="vf-text vf-text-heading--3">{{title}}</h3>
 <ng-container *ngIf="showFilterState()">
   <div>
     <mat-form-field>
@@ -13,7 +14,7 @@
   <a href="javascript:void(0)" (click)="expandAllRows();">Expand All</a> |
   <a href="javascript:void(0)" (click)="collapseAllRows();">Collapse All</a>
 </ng-container>
-<!--[scrollbarV]="true"-->
+
 <ngx-datatable
   #datatable
 
@@ -44,37 +45,16 @@
    <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
     <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <div *ngIf="row['validationState'] == 'Invalid'">
-        <div><strong>Validation Report:</strong></div>
+      <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
         <ng-container *ngFor="let error of getValidationErrors(row)">
-          <span class="text-danger" title="{{error}}">{{error}}</span><br>
+          <span class="vf-u-text-color--red" title="{{error}}">{{error}}</span><br>
         </ng-container>
       </div>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
-        <div><strong>Validation Report:</strong></div>
         <span class="text-success" title="{{getDefaultValidMessage()}}">{{getDefaultValidMessage()}}</span>
       </div>
     </ng-template>
   </ngx-datatable-row-detail>
-
-  <!--Expand column-->
-  <!--<ngx-datatable-column-->
-    <!--[resizeable]="true"-->
-    <!--[sortable]="false"-->
-    <!--[draggable]="false"-->
-    <!--[canAutoResize]="true"-->
-    <!--[width]="'50'">-->
-    <!--<ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template >-->
-      <!--<a-->
-        <!--href="javascript:void(0)"-->
-        <!--[class.datatable-icon-right]="!expanded"-->
-        <!--[class.datatable-icon-down]="expanded"-->
-        <!--title="Expand/Collapse Row"-->
-        <!--(click)="toggleExpandRow(row)">-->
-      <!--</a>-->
-    <!--</ng-template>-->
-  <!--</ngx-datatable-column>-->
-
 
   <!--patch-->
   <ngx-datatable-column prop="_links.patch.href" name="" [width]="'130'" >
@@ -98,18 +78,9 @@
     </ng-template>
   </ngx-datatable-column>
 
-  <!--dss link-->
-  <ng-container *ngIf="metadataType == 'bundleManifests'">
-    <ngx-datatable-column prop="_dss_bundle_url" name="dss api" [width]="'130'" >
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-        <a href="{{value}}" target="_blank"><mat-icon [ngStyle]="{'color': 'lightgrey'}" >link</mat-icon></a>
-      </ng-template>
-    </ngx-datatable-column>
-  </ng-container>
-
   <!--uuid-->
   <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
       <span
         title="{{value}}"
         (dblclick)="editing[rowIndex + '-' + column] = true"

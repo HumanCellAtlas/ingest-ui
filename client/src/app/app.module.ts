@@ -19,7 +19,6 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './submission-list/submission-list.component';
 import {NavigationComponent} from './navigation/navigation.component';
-import {WelcomeComponent} from './submitter/welcome/welcome.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
@@ -27,7 +26,6 @@ import {FilesComponent} from './submission/files/files.component';
 import {UploadInfoComponent} from './submission/files/upload-info/upload-info.component';
 import {SubmitComponent} from './submission/submit/submit.component';
 
-import {MetadataComponent} from './submission/metadata/metadata.component';
 import {MetadataListComponent} from './submission/metadata-list/metadata-list.component';
 
 import {ProjectComponent} from './project/project.component';
@@ -61,7 +59,6 @@ const BROWSER_LOCALE = navigator.language;
     AppComponent,
     SubmissionListComponent,
     NavigationComponent,
-    WelcomeComponent,
     ProjectComponent,
     SubmissionComponent,
     TabComponent,
@@ -73,7 +70,6 @@ const BROWSER_LOCALE = navigator.language;
     ProjectListComponent,
     AllProjectsComponent,
     UploadComponent,
-    MetadataComponent,
     LoginComponent,
     ProjectViewComponent,
     AlertComponent,

@@ -106,13 +106,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
     return submissionEnvelope['uuid']['uuid'];
   }
 
-  completeSubmission(submissionEnvelope) {
-    const submitLink = this.getSubmitLink(submissionEnvelope);
-    this.ingestService.submit(submitLink);
-    this.alertService.success('', 'You have successfully submitted your submission envelope.');
-
-  }
-
   resetPolling() {
     this.stopPolling();
     this.pollSubmissions();

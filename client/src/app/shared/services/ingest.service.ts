@@ -15,6 +15,10 @@ import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Account} from '../../core/account';
+import {Project} from "../models/project";
+import {ArchiveSubmission} from "../models/archiveSubmission";
+import {ArchiveEntity} from "../models/archiveEntity";
+import {concatMap, map} from "rxjs/operators";
 
 
 @Injectable()
@@ -47,7 +51,7 @@ export class IngestService {
   }
 
   public getUserAccount(): Observable<Account> {
-    return this.http.get(`${this.API_URL}/auth/account`).map( data => new Account({
+    return this.http.get(`${this.API_URL}/auth/account`).map(data => new Account({
       id: data['id'],
       providerReference: data['providerReference'],
       roles: data['roles']
@@ -56,27 +60,6 @@ export class IngestService {
 
   public deleteSubmission(submissionId) {
     return this.http.delete(`${this.API_URL}/submissionEnvelopes/${submissionId}`);
-  }
-
-  public submit(submitLink) {
-    this.loaderService.display(true);
-    this.http.put(submitLink, null).subscribe(
-      res => {
-        setTimeout(() => {
-            this.alertService.clear();
-            this.loaderService.display(false);
-            this.alertService.success('', 'You have successfully submitted your submission envelope.');
-            location.reload();
-          },
-          3000);
-      },
-      err => {
-        this.loaderService.display(false);
-        this.alertService.error('', 'An error occured on submitting your submission envelope.');
-        console.log(err);
-
-      }
-    );
   }
 
   public getSubmission(id): Observable<SubmissionEnvelope> {
@@ -117,7 +100,7 @@ export class IngestService {
     return this.http.patch(projectLink, patch);
   }
 
-  public getSubmissionProject(submissionId): Observable<Object> {
+  public getSubmissionProject(submissionId): Observable<Project> {
     return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
       .map((data: ListResult<Object>) => {
         if (data._embedded && data._embedded.projects) {
@@ -159,8 +142,8 @@ export class IngestService {
       });
   }
 
-  public put(ingestLink, content) {
-    return this.http.put(ingestLink, content);
+  public put(ingestLink, body) {
+    return this.http.put(ingestLink, body);
   }
 
   public patch(ingestLink, patchData) {
@@ -176,15 +159,22 @@ export class IngestService {
       .map(data => data as ListResult<MetadataSchema>);
   }
 
+  public getArchiveSubmission(submissionUuid: string): Observable<ArchiveSubmission> {
+    return this.get(`${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`)
+      .map(data => data as ArchiveSubmission);
+  }
+
+  public getArchiveEntity(dspUuid: string): Observable<ArchiveEntity> {
+    return this.get(`${this.API_URL}/archiveEntities/search/findByDspUuid?dspUuid=${dspUuid}`)
+      .map(data => data as ArchiveEntity);
+  }
+
   private reduceColumnsForBundleManifests(entityType, data) {
     if (entityType === 'bundleManifests') {
       return data.map(function (row) {
         const newRow = {
-          'bundleUuid': row['bundleUuid'],
-          'version': row['bundleVersion'],
-          'envelopeUuid': row['envelopeUuid'],
           '_links': row['_links'],
-          '_dss_bundle_url': `${environment.DSS_API_URL}/v1/bundles/${row['bundleUuid']}/?replica=aws&version${row['bundleVersion']}`
+          'dataFiles': row['dataFiles']
         };
         return newRow;
       });
@@ -193,5 +183,4 @@ export class IngestService {
 
 
   }
-
 }
