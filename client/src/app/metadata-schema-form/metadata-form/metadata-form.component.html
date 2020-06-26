@@ -2,19 +2,19 @@
 
   <mat-tab-group (selectedIndexChange)="onSelectedIndexChange($event)"
                  [selectedIndex]="this.selectedTabIndex">
-    <ng-container *ngFor="let tab of config.layout['tabs']">
+    <ng-container *ngFor="let tab of config.layout.tabs">
       <mat-tab>
         <ng-template mat-tab-label>
           <label
             [matTooltip]="metadataForm.get(tab['key']) ? metadataForm.get(tab['key']).schema.description : ''"> {{tab['title']}}  </label>
         </ng-template>
         <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-          <ng-container *ngFor="let item of tab['items']">
+          <ng-container *ngFor="let field of tab.items">
             <app-metadata-field
-              *ngIf="metadataForm.get(item)"
-              [id]="item"
-              [metadata]="metadataForm.get(item)"
-              [control]="metadataForm.getControl(item)">
+              *ngIf="metadataForm.get(field)"
+              [id]="field"
+              [metadata]="metadataForm.get(field)"
+              [control]="metadataForm.getControl(field)">
             </app-metadata-field>
           </ng-container>
         </div>
