@@ -41,6 +41,20 @@ export class MetadataFieldComponent implements OnInit {
   }
 
   private loadComponent(metadata: Metadata, control: AbstractControl, id: string) {
+    const component = this.selectComponent(metadata, control, id);
+
+    if (component) {
+      const factory = this.resolver.resolveComponentFactory<any>(component);
+      const container = this.fieldHost.container;
+      container.clear();
+      const newComponent = container.createComponent(factory);
+      newComponent.instance.metadata = metadata;
+      newComponent.instance.control = control;
+      newComponent.instance.id = id;
+    }
+  }
+
+  private selectComponent(metadata: Metadata, control: AbstractControl, id: string) {
     let component;
 
     if (metadata.isScalar()) {
@@ -62,7 +76,7 @@ export class MetadataFieldComponent implements OnInit {
         component = InputComponent;
         const formGroup = control as FormGroup;
         for (const child of metadata.childrenMetadata) {
-          this.loadComponent(child, formGroup['controls'][child.key], `${id}'-'${child.key}`);
+          this.selectComponent(child, formGroup['controls'][child.key], `${id}'-'${child.key}`);
         }
       }
 
@@ -74,15 +88,6 @@ export class MetadataFieldComponent implements OnInit {
         component = InputComponent;
       }
     }
-
-    if (component) {
-      const factory = this.resolver.resolveComponentFactory<any>(component);
-      const container = this.fieldHost.container;
-      container.clear();
-      const newComponent = container.createComponent(factory);
-      newComponent.instance.metadata = metadata;
-      newComponent.instance.control = control;
-      newComponent.instance.id = id;
-    }
+    return component;
   }
 }
