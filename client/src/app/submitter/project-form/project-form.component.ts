@@ -6,7 +6,7 @@ import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as metadataSchema from './project-metadata-schema.json';
 import * as ingestSchema from './project-ingest-schema.json';
-import * as layout from './layout.json';
+import {formLayout} from './form-layout';
 import {LoaderService} from '../../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {MatTabGroup} from '@angular/material/tabs';
@@ -24,8 +24,6 @@ export class ProjectFormComponent implements OnInit {
 
   projectMetadataSchema: any = (metadataSchema as any).default;
   projectIngestSchema: any = (ingestSchema as any).default;
-
-  formLayout: any = (layout as any).default;
 
   projectResource: Project;
   projectContent: object;
@@ -46,7 +44,7 @@ export class ProjectFormComponent implements OnInit {
     ],
     removeEmptyFields: true,
 
-    layout: this.formLayout,
+    layout: formLayout,
     inputType: {
       'project_description': 'textarea',
       'notes': 'textarea'
@@ -185,7 +183,7 @@ export class ProjectFormComponent implements OnInit {
 
   private incrementTab() {
     this.formTabIndex++;
-    if (this.formLayout.hasOwnProperty('tabs') && this.formTabIndex >= this.formLayout['tabs'].length) {
+    if (this.formTabIndex >= formLayout.tabs.length) {
       this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
     }
   }

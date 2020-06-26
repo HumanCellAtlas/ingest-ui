@@ -1,3 +1,5 @@
+import {Type} from '@angular/core';
+
 export interface MetadataFormLayout {
   tabs: Tab[];
 }
@@ -11,4 +13,9 @@ interface Tab {
 interface Item {
   key: string;
   items: Item[];
+}
+
+interface ItemGroup {
+  keys: string[];
+  component: Type<any>;
 }

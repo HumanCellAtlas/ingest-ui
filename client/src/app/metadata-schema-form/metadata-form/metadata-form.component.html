@@ -6,7 +6,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <label
-            [matTooltip]="metadataForm.get(tab['key']) ? metadataForm.get(tab['key']).schema.description : ''"> {{tab['title']}}  </label>
+            [matTooltip]="metadataForm.get(tab.key) ? metadataForm.get(tab.key).schema.description : ''"> {{tab.title}}  </label>
         </ng-template>
         <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
           <ng-container *ngFor="let field of tab.items">
@@ -24,10 +24,10 @@
 
   <ng-container *ngIf="!config.viewMode">
     <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
-    <button *ngIf="this.selectedTabIndex !== config.layout['tabs'].length - 1"
+    <button *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1"
             class="vf-button vf-button--primary vf-button--sm">Save and Continue
     </button>
-    <button *ngIf="this.selectedTabIndex === config.layout['tabs'].length - 1"
+    <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
             class="vf-button vf-button--primary vf-button--sm">Finish
     </button>
   </ng-container>
