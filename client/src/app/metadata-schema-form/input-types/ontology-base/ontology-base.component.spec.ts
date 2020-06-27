@@ -8,7 +8,7 @@ import {MetadataFormService} from '../../metadata-form.service';
 import {OlsHttpResponse} from '../../../shared/models/ols';
 import {Ontology} from '../../../shared/models/ontology';
 import {of} from 'rxjs';
-import {OntologyBaseComponent} from "./ontology-base.component";
+import {OntologyBaseComponent} from './ontology-base.component';
 
 describe('OntologyBaseComponent', () => {
   let olsSvc: jasmine.SpyObj<OntologyService>;
@@ -110,7 +110,7 @@ describe('OntologyBaseComponent', () => {
       component.ngOnInit();
 
       // then
-      expect(component.label).toEqual('project_role');
+      expect(component.label).toEqual('Contributor role ontology');
       expect(component.helperText).toContain(schema['description']);
       expect(component.isRequired).toEqual(metadata.isRequired);
       expect(component.searchControl.value).toEqual('');

@@ -2,7 +2,7 @@
   <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
 
   <label *ngIf="label" class="vf-form__label">{{label}}</label>
-  <textarea class="vf-form__textarea" rows="{{rows}}" [formControl]="control" placeholder="{{example}}"
+  <textarea class="vf-form__textarea" rows="{{rows}}" [formControl]="control" placeholder="{{placeholder}}"
             [attr.disabled]="disabled ? disabled : null">
     </textarea>
   <br/>
