@@ -7,7 +7,7 @@ import {RouterModule} from '@angular/router';
 import {MetadataFormComponent} from './metadata-form/metadata-form.component';
 import {InputComponent} from './metadata-field-types/input/input.component';
 import {VfInputComponent} from './field-types/vf-input/vf-input.component';
-import {MetadataFieldDirective} from './metadata-field.directive';
+import {MetadataFormItemDirective} from './metadata-form-item.directive';
 import {TextListInputComponent} from './metadata-field-types/text-list-input/text-list-input.component';
 import {TextAreaComponent} from './metadata-field-types/text-area/text-area.component';
 import {VfAsteriskComponent} from './field-types/vf-asterisk/vf-asterisk.component';
@@ -20,6 +20,7 @@ import {OntologyListInputComponent} from './metadata-field-types/ontology-list-i
 import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enum-list-input.component';
 import {MaterialModule} from '../material.module';
 import {OntologyBaseComponent} from './metadata-field-types/ontology-base/ontology-base.component';
+import { MetadataFormItemComponent } from './metadata-form-item/metadata-form-item.component';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import {OntologyBaseComponent} from './metadata-field-types/ontology-base/ontolo
     MetadataFormComponent,
     InputComponent,
     VfInputComponent,
-    MetadataFieldDirective,
+    MetadataFormItemDirective,
     TextListInputComponent,
     TextAreaComponent,
     VfAsteriskComponent,
@@ -47,7 +48,8 @@ import {OntologyBaseComponent} from './metadata-field-types/ontology-base/ontolo
     SelectComponent,
     OntologyListInputComponent,
     EnumListInputComponent,
-    OntologyBaseComponent
+    OntologyBaseComponent,
+    MetadataFormItemComponent
   ],
   exports: [
     MetadataFormComponent

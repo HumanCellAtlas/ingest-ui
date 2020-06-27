@@ -21,7 +21,7 @@ export class MetadataFormComponent implements OnInit {
 
   @Input() data: object;
 
-  @Input() selectedTabIndex: number = 0;
+  @Input() selectedTabIndex = 0;
 
   @Output() save = new EventEmitter<object>();
 
@@ -69,4 +69,5 @@ export class MetadataFormComponent implements OnInit {
   onSelectedIndexChange(tabIndex: number) {
     this.tabChange.emit(tabIndex);
   }
+
 }

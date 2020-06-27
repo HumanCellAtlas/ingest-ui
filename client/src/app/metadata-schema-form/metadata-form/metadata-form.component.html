@@ -9,13 +9,11 @@
             [matTooltip]="metadataForm.get(tab.key) ? metadataForm.get(tab.key).schema.description : ''"> {{tab.title}}  </label>
         </ng-template>
         <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-          <ng-container *ngFor="let field of tab.items">
-            <app-metadata-field
-              *ngIf="metadataForm.get(field)"
-              [id]="field"
-              [metadata]="metadataForm.get(field)"
-              [control]="metadataForm.getControl(field)">
-            </app-metadata-field>
+          <ng-container *ngFor="let item of tab.items">
+            <app-metadata-form-item
+              [item]="item"
+              [metadataForm]="metadataForm">
+            </app-metadata-form-item>
           </ng-container>
         </div>
       </mat-tab>

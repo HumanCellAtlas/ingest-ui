@@ -1,21 +1,16 @@
 import {Type} from '@angular/core';
 
 export interface MetadataFormLayout {
-  tabs: Tab[];
+  tabs: MetadataFormTab[];
 }
 
-interface Tab {
+export interface MetadataFormTab {
   title: string;
   key: string;
-  items: (Item | string) [];
+  items: (MetadataFieldGroup | string) [];
 }
 
-interface Item {
-  key: string;
-  items: Item[];
-}
-
-interface ItemGroup {
+export interface MetadataFieldGroup {
   keys: string[];
   component: Type<any>;
 }

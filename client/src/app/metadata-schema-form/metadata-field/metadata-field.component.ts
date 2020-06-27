@@ -6,7 +6,7 @@ import {TextListInputComponent} from '../metadata-field-types/text-list-input/te
 import {Metadata} from '../models/metadata';
 import {TextAreaComponent} from '../metadata-field-types/text-area/text-area.component';
 import {AbstractControl, FormGroup} from '@angular/forms';
-import {MetadataFieldDirective} from '../metadata-field.directive';
+import {MetadataFormItemDirective} from '../metadata-form-item.directive';
 import {JsonSchema} from '../models/json-schema';
 import {OntologyListInputComponent} from '../metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from '../metadata-field-types/enum-list-input/enum-list-input.component';
@@ -31,7 +31,7 @@ export class MetadataFieldComponent implements OnInit {
   @Input()
   control: AbstractControl;
 
-  @ViewChild(MetadataFieldDirective, {static: true}) fieldHost: MetadataFieldDirective;
+  @ViewChild(MetadataFormItemDirective, {static: true}) fieldHost: MetadataFormItemDirective;
 
   constructor(private resolver: ComponentFactoryResolver) {
   }
