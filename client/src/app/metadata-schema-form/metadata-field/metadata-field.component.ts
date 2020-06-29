@@ -1,15 +1,15 @@
 import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
-import {InputComponent} from '../input-types/input/input.component';
-import {DateInputComponent} from '../input-types/date-input/date-input.component';
-import {OntologyInputComponent} from '../input-types/ontology-input/ontology-input.component';
-import {TextListInputComponent} from '../input-types/text-list-input/text-list-input.component';
+import {InputComponent} from '../metadata-field-types/input/input.component';
+import {DateInputComponent} from '../metadata-field-types/date-input/date-input.component';
+import {OntologyInputComponent} from '../metadata-field-types/ontology-input/ontology-input.component';
+import {TextListInputComponent} from '../metadata-field-types/text-list-input/text-list-input.component';
 import {Metadata} from '../models/metadata';
-import {TextAreaComponent} from '../input-types/text-area/text-area.component';
+import {TextAreaComponent} from '../metadata-field-types/text-area/text-area.component';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {MetadataFormItemDirective} from '../metadata-form-item.directive';
 import {JsonSchema} from '../models/json-schema';
-import {OntologyListInputComponent} from '../input-types/ontology-list-input/ontology-list-input.component';
-import {EnumListInputComponent} from '../input-types/enum-list-input/enum-list-input.component';
+import {OntologyListInputComponent} from '../metadata-field-types/ontology-list-input/ontology-list-input.component';
+import {EnumListInputComponent} from '../metadata-field-types/enum-list-input/enum-list-input.component';
 
 const components = {
   text: InputComponent,
