@@ -241,8 +241,8 @@ describe('MetadataFormHelper', () => {
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormGroup).toEqual(false);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(null);
+      expect(formArray.controls[0] instanceof FormGroup).toEqual(true);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
     });
 
     it('return a FormArray of FormGroup with data', () => {
