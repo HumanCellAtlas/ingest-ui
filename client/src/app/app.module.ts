@@ -51,6 +51,7 @@ import {RegistrationComponent} from './registration/registration.component';
 import {MetadataSchemaFormModule} from './metadata-schema-form/metadata-schema-form.module';
 import {MaterialModule} from './material.module';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
+import {ProjectRegistrationModule} from './project-registration/project-registration.module';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -92,7 +93,8 @@ const BROWSER_LOCALE = navigator.language;
     BrowserAnimationsModule,
     MaterialModule,
     AaiSecurity,
-    MetadataSchemaFormModule
+    MetadataSchemaFormModule,
+    ProjectRegistrationModule
   ],
   providers: [
     {

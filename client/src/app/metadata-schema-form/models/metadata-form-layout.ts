@@ -6,11 +6,11 @@ export interface MetadataFormLayout {
 
 export interface MetadataFormTab {
   title: string;
-  key: string;
+  key?: string;
   items: (MetadataFieldGroup | string) [];
 }
 
 export interface MetadataFieldGroup {
-  keys: string[];
+  keys?: string[];
   component: Type<any>;
 }

@@ -24,18 +24,16 @@ export class MetadataFormItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (typeof this.item !== 'string') {
-      // TODO create a base component for field and for field group
-      this.component = this.item.component;
-      const newComponent = this.loadComponent(this.component);
-      newComponent.instance.metadata = this.metadataForm.get(this.item.keys[0]);
-      newComponent.instance.control = this.metadataForm.getControl(this.item.keys[0]);
-      newComponent.instance.id = this.item.keys[0];
-    } else {
+    if (typeof this.item === 'string') {
       const newComponent = this.loadComponent(MetadataFieldComponent);
       newComponent.instance.metadata = this.metadataForm.get(this.item);
       newComponent.instance.control = this.metadataForm.getControl(this.item);
       newComponent.instance.id = this.item;
+    } else {
+      // TODO create a base component for field and for field group
+      this.component = this.item.component;
+      const newComponent = this.loadComponent(this.component);
+      newComponent.instance.metadataForm = this.metadataForm;
     }
   }
 
