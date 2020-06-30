@@ -1,0 +1,15 @@
+.grid-padding {
+  padding-top: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.bottom-margin-big {
+  margin-bottom: 24px;
+}
+.bottom-margin-small {
+  margin-bottom: 12px;
+}
+
+.black-text {
+  color: black;
+}
