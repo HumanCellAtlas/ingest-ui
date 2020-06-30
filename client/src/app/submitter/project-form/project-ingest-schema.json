@@ -36,7 +36,7 @@
             "A mixture of open and managed",
             "It's complicated"
           ],
-          "user_friendly":  "Data Access"
+          "user_friendly":  "What type of consent do you have to release the data and metadata for your project?"
         },
         "notes": {
           "description": "Data Access Notes",
