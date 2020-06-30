@@ -17,13 +17,11 @@ export class AccessionFieldGroupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('metadataForm', this.metadataForm);
   }
 
 
   onChange(isAccessioned: boolean) {
     this.isAccessioned = isAccessioned;
-    console.log('isAccessioned', this.isAccessioned);
   }
 
 
