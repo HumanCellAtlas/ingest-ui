@@ -6,7 +6,7 @@
           <li class="vf-navigation__item">
             <a class="vf-navigation__link" routerLink="/home">Home</a>
           </li>
-          <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">
+          <li class="vf-navigation__item">
             <a class="vf-navigation__link" routerLink="/projects">My Projects</a>
           </li>
           <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">
