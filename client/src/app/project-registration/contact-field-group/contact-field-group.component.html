@@ -1,1 +1,36 @@
-<p>contact-field-group works!</p>
+<ng-container *ngFor="let formGroup of contributorsControl['controls'] ; let i = index">
+
+  <app-contact-name-field
+    [id]="'project.content.contributors' + '-' + i + '-' + 'name'"
+    [metadata]="metadataForm.get('project.content.contributors.name')"
+    [control]="formGroup['controls']['name']">
+  </app-contact-name-field>
+
+  <ng-container *ngFor="let child of contactFieldMetadataList">
+    <app-metadata-field [id]="'project.content.contributors' + '-' + i + '-' + child.key"
+                        [metadata]="child"
+                        [control]="formGroup['controls'][child.key]">
+
+    </app-metadata-field>
+  </ng-container>
+
+  <ng-container>
+    <a color="warn" mat-icon-button
+       (click)="removeFormControl(contributorsControl, i)">
+      <mat-icon>remove_circle_outline</mat-icon>
+      Remove
+    </a>
+  </ng-container>
+  
+  <hr class="vf-divider">
+
+</ng-container>
+
+<ng-container>
+  <a mat-icon-button
+     (click)="addFormControl(contributorMetadata, contributorsControl)">
+    <mat-icon>add_circle_outline</mat-icon>
+    Add a contact
+  </a>
+</ng-container>
+

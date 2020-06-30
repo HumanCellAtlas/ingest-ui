@@ -15,7 +15,7 @@ export const contributorLayout: MetadataFormLayout = {
         'project.content.project_core.project_short_name',
         'project.dataAccess.type',
         'project.identifyingOrganisms',
-        'project.technology',
+        'project.technology.ontologies',
         {
           keys: [
             'project.content.publications.url'

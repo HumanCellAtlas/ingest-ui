@@ -7,6 +7,8 @@ import {PublicationFieldGroupComponent} from './publication-field-group/publicat
 import { ContactFieldGroupComponent } from './contact-field-group/contact-field-group.component';
 import {MetadataSchemaFormModule} from '../metadata-schema-form/metadata-schema-form.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatIconModule} from "@angular/material/icon";
+import { ContactNameFieldComponent } from './contact-name-field/contact-name-field.component';
 
 
 @NgModule({
@@ -15,13 +17,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     ProjectRegistrationSummaryComponent,
     ProjectRegistrationFormComponent,
     PublicationFieldGroupComponent,
-    ContactFieldGroupComponent
+    ContactFieldGroupComponent,
+    ContactNameFieldComponent
   ],
   imports: [
     CommonModule,
     MetadataSchemaFormModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ]
 })
 export class ProjectRegistrationModule {

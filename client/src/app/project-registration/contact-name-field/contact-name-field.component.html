@@ -1,0 +1,15 @@
+<app-vf-input
+  [(ngModel)]="firstName"
+  [isRequired]="true"
+  [label]="'First Name'"
+  [dataType]="'string'">
+</app-vf-input>
+
+<app-vf-input
+  [(ngModel)]="lastName"
+  [isRequired]="true"
+  [label]="'Last Name'"
+  [dataType]="'string'"
+  (change)="onChange(firstName, lastName)"
+>
+</app-vf-input>

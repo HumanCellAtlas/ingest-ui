@@ -9,6 +9,7 @@ import {FormControl} from '@angular/forms';
 })
 export class AccessionFieldGroupComponent implements OnInit {
   metadataForm: MetadataForm;
+
   label: string;
   isAccessioned = false;
   control: FormControl;
