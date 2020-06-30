@@ -5,6 +5,8 @@ import {ProjectRegistrationSummaryComponent} from './project-registration-summar
 import {ProjectRegistrationFormComponent} from './project-registration-form/project-registration-form.component';
 import {PublicationFieldGroupComponent} from './publication-field-group/publication-field-group.component';
 import { ContactFieldGroupComponent } from './contact-field-group/contact-field-group.component';
+import {MetadataSchemaFormModule} from '../metadata-schema-form/metadata-schema-form.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -16,7 +18,10 @@ import { ContactFieldGroupComponent } from './contact-field-group/contact-field-
     ContactFieldGroupComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MetadataSchemaFormModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ProjectRegistrationModule {

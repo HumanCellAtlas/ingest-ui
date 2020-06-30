@@ -1,1 +1,35 @@
-<p>accession-field-group works!</p>
+<div class="vf-form__item">
+
+  <label class="vf-form__label">Is there an existing accession ID for the project?</label>
+  <div class="vf-form__item vf-form__item--inline vf-form__item--radio">
+
+    <input type="radio" name="radio-button-group--inline"
+           id="radio-inline-1" class="vf-form__radio" (change)="onChange(true)">
+    <label for="radio-inline-1" class="vf-form__label">Yes</label>
+
+    <input type="radio" name="radio-button-group--inline"
+           id="radio-inline-2" class="vf-form__radio" (change)="onChange(false)">
+    <label for="radio-inline-2" class="vf-form__label">No</label>
+  </div>
+</div>
+
+<app-vf-input
+  *ngIf="isAccessioned"
+  [label]="'Existing project accession ID'"
+  [dataType]="'string'"
+  [helperText]="'Enter a project accession ID from a data repository e.g. Geo or Arrayexpress'">
+</app-vf-input>
+
+<app-metadata-field
+  *ngIf="!isAccessioned"
+  [metadata]="metadataForm.get('project.accessionDate')"
+  [control]="metadataForm.getControl('project.accessionDate')"
+  [id]="'project.accessionDate'">
+</app-metadata-field>
+
+<app-metadata-field [metadata]="metadataForm.get('project.releaseDate')"
+                    [control]="metadataForm.getControl('project.releaseDate')"
+                    [id]="'project.releaseDate'">
+</app-metadata-field>
+
+

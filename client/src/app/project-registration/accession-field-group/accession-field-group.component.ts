@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-accession-field-group',
@@ -8,6 +9,9 @@ import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 })
 export class AccessionFieldGroupComponent implements OnInit {
   metadataForm: MetadataForm;
+  label: string;
+  isAccessioned = false;
+  control: FormControl;
 
   constructor() {
   }
@@ -15,5 +19,12 @@ export class AccessionFieldGroupComponent implements OnInit {
   ngOnInit(): void {
     console.log('metadataForm', this.metadataForm);
   }
+
+
+  onChange(isAccessioned: boolean) {
+    this.isAccessioned = isAccessioned;
+    console.log('isAccessioned', this.isAccessioned);
+  }
+
 
 }

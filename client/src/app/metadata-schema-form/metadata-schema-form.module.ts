@@ -20,8 +20,8 @@ import {OntologyListInputComponent} from './metadata-field-types/ontology-list-i
 import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enum-list-input.component';
 import {MaterialModule} from '../material.module';
 import {OntologyBaseComponent} from './metadata-field-types/ontology-base/ontology-base.component';
-import { MetadataFormItemComponent } from './metadata-form-item/metadata-form-item.component';
-import { BaseInputComponent } from './metadata-field-types/base-input/base-input.component';
+import {MetadataFormItemComponent} from './metadata-form-item/metadata-form-item.component';
+import {BaseInputComponent} from './metadata-field-types/base-input/base-input.component';
 
 
 @NgModule({
@@ -54,7 +54,9 @@ import { BaseInputComponent } from './metadata-field-types/base-input/base-input
     BaseInputComponent
   ],
   exports: [
-    MetadataFormComponent
+    MetadataFormComponent,
+    MetadataFieldComponent,
+    VfInputComponent
   ],
   providers: []
 })
