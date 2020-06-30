@@ -7,6 +7,7 @@ import {Project} from '../../shared/models/project';
 import * as metadataSchema from './project-metadata-schema.json';
 import * as ingestSchema from './project-ingest-schema.json';
 import {formLayout} from './form-layout';
+import {contributorLayout} from './contributor-layout';
 import {LoaderService} from '../../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {MatTabGroup} from '@angular/material/tabs';
@@ -44,7 +45,7 @@ export class ProjectFormComponent implements OnInit {
     ],
     removeEmptyFields: true,
 
-    layout: formLayout,
+    layout: contributorLayout,
     inputType: {
       'project_description': 'textarea',
       'notes': 'textarea'
@@ -111,7 +112,6 @@ export class ProjectFormComponent implements OnInit {
           }
 
           this.schema = projectResource.content['describedBy'];
-
           this.projectContent = projectResource.content;
           this.projectFormData = this.projectResource;
           this.displayPostValidationErrors();
