@@ -18,7 +18,7 @@ export const ROUTES: Routes = [
   {path: 'aai-callback', component: AaiCallbackComponent},
 
   {path: '', component: WelcomeComponent },
-  {path: 'home', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
+  {path: 'home', component: WelcomeComponent},
   {path: 'registration', component: RegistrationComponent, canActivate: [UserIsLoggedInGuard]},
   {path: 'projects', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
   {path: 'projects/new', component: ProjectFormComponent, canActivate: [UserIsLoggedInGuard]},
