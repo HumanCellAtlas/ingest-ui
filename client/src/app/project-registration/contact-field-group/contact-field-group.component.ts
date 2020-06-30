@@ -39,8 +39,6 @@ export class ContactFieldGroupComponent implements OnInit {
     this.contactFieldMetadataList = fieldList.map(field => {
       return this.metadataForm.get(field);
     });
-
-    console.log('contactFieldMetadataList', this.contactFieldMetadataList);
   }
 
   removeFormControl(control: AbstractControl, i: number) {
