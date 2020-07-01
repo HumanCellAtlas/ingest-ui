@@ -3,7 +3,10 @@
     <div class="vf-navigation vf-navigation--global">
       <nav class="vf-navigation  vf-navigation--main">
         <ul class="vf-navigation__list | vf-list--inline"  *ngIf="isLoggedIn$ | async">
-          <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">
+          <li class="vf-navigation__item">
+            <a class="vf-navigation__link" routerLink="/home">Home</a>
+          </li>
+          <li class="vf-navigation__item">
             <a class="vf-navigation__link" routerLink="/projects">My Projects</a>
           </li>
           <li class="vf-navigation__item" *ngIf="(account$ | async)?.isWrangler()">

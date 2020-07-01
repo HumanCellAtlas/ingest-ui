@@ -135,7 +135,7 @@ export class ProjectComponent implements OnInit {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.loaderService.display(false);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/projects']);
         },
         err => {
           this.alertService.clear();
