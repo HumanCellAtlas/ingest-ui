@@ -18,12 +18,13 @@ export class WranglerOrOwnerGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     let accessChecks: Observable<boolean>;
     let getProject: Observable<any>;
-    if (route.url.map(url => url.path).includes('projects') && route.queryParams.hasOwnProperty('uuid')) {
-      getProject = this.ingestService.getProjectByUuid(route.queryParams.uuid);
-    } else if (route.url.map(url => url.path).includes('projects') && route.queryParams.hasOwnProperty('id')) {
-      getProject = this.ingestService.getProject(route.queryParams.id);
-    } else if (route.url.map(url => url.path).includes('submissions') && (route.queryParams.hasOwnProperty('project'))) {
-      getProject = this.ingestService.getProjectByUuid(route.queryParams.project);
+    let params = {...route.queryParams, ...route.params};
+    if (route.url.map(url => url.path).includes('projects') && params.hasOwnProperty('uuid')) {
+      getProject = this.ingestService.getProjectByUuid(params.uuid);
+    } else if (route.url.map(url => url.path).includes('projects') && params.hasOwnProperty('id')) {
+      getProject = this.ingestService.getProject(params.id);
+    } else if (route.url.map(url => url.path).includes('submissions') && (params.hasOwnProperty('project'))) {
+      getProject = this.ingestService.getProjectByUuid(params.project);
     }
     if (getProject) {
       accessChecks = this.isWranglerOrOwner(this.ingestService.getUserAccount(), getProject).catch(() => Observable.of(false));
