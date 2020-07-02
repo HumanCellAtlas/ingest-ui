@@ -19,22 +19,25 @@ export class ContactFieldGroupComponent implements OnInit {
   contactFieldMetadataList: Metadata[];
   contributorMetadata: Metadata;
 
+  contactKey = 'project.content.contributors';
+
+  contactFieldList = [
+    'project.content.contributors.email',
+    'project.content.contributors.institution',
+    'project.content.contributors.country',
+    'project.content.contributors.project_role',
+    'project.content.contributors.corresponding_contributor'
+  ];
 
   constructor() {
     this.formHelper = new MetadataFormHelper();
   }
 
   ngOnInit(): void {
-    this.contributorsControl = this.metadataForm.getControl('project.content.contributors');
-    this.contributorMetadata = this.metadataForm.get('project.content.contributors');
+    this.contributorsControl = this.metadataForm.getControl(this.contactKey);
+    this.contributorMetadata = this.metadataForm.get(this.contactKey);
 
-    const fieldList = [
-      'project.content.contributors.email',
-      'project.content.contributors.institution',
-      'project.content.contributors.country',
-      'project.content.contributors.project_role',
-      'project.content.contributors.corresponding_contributor'
-    ];
+    const fieldList = this.contactFieldList;
 
     this.contactFieldMetadataList = fieldList.map(field => {
       return this.metadataForm.get(field);

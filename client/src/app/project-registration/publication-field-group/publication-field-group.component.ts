@@ -14,17 +14,17 @@ export class PublicationFieldGroupComponent implements OnInit {
 
   publicationUrlMetadata: Metadata;
   publicationUrlControl: AbstractControl;
-  publicationUrlId: string;
 
-  constructor() { }
+  publicationUrlId = 'project.content.publications.url';
+  publicationKey = 'project.content.publications';
+
+  constructor() {
+  }
 
   ngOnInit(): void {
-    this.publicationUrlMetadata = this.metadataForm.get('project.content.publications.url')
-    const publicationsControl = this.metadataForm.getControl('project.content.publications');
-
+    this.publicationUrlMetadata = this.metadataForm.get(this.publicationUrlId);
+    const publicationsControl = this.metadataForm.getControl(this.publicationKey);
     this.publicationUrlControl = publicationsControl['controls'][0]['controls']['url'];
-
-    this.publicationUrlId = 'project.content.publications.url';
   }
 
 
