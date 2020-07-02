@@ -1,3 +1,7 @@
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
+  Please enter the main people we can contact about this project and dataset submission.
+</p>
+
 <ng-container *ngFor="let formGroup of contributorsControl['controls'] ; let i = index">
 
   <app-contact-name-field
@@ -15,21 +19,22 @@
   </ng-container>
 
   <ng-container>
-    <a color="warn" mat-icon-button
+    <br/>
+    <br/>
+    <br/>
+    <a class="vf-button vf-button--primary vf-button--outline"
        (click)="removeFormControl(contributorsControl, i)">
-      <mat-icon>remove_circle_outline</mat-icon>
-      Remove
+      <mat-icon>remove</mat-icon>
+      Remove contact
     </a>
   </ng-container>
-  
-  <hr class="vf-divider">
 
 </ng-container>
 
 <ng-container>
-  <a mat-icon-button
+  <a class="vf-button vf-button--primary vf-button--outline"
      (click)="addFormControl(contributorMetadata, contributorsControl)">
-    <mat-icon>add_circle_outline</mat-icon>
+    <mat-icon>add</mat-icon>
     Add a contact
   </a>
 </ng-container>
