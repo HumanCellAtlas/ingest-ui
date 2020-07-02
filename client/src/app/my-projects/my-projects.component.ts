@@ -1,11 +1,12 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {IngestService} from '../shared/services/ingest.service';
-import {Project} from '../shared/models/project';
+import {Project, ProjectColumn} from '../shared/models/project';
 import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
-import {tap} from 'rxjs/operators';
+import {concatMap, tap} from 'rxjs/operators';
 import {AaiService} from '../aai/aai.service';
-import {Profile} from 'oidc-client';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Observable, of} from "rxjs";
+import {Account} from "../core/account";
 
 @Component({
   selector: 'app-my-projects',
@@ -13,7 +14,8 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
   styleUrls: ['./my-projects.component.css']
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
-  userInfo: Profile;
+  account$: Observable<Account>;
+  isLoggedIn$: Observable<boolean>;
   projects: Project[];
   alive: boolean;
   interval: number;
@@ -31,7 +33,6 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private aai: AaiService, private ingestService: IngestService) {
-
     this.alive = true;
     this.interval = 4000;
 
@@ -47,20 +48,38 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.aai.getUserInfo().subscribe(profile => {
-      this.userInfo = profile;
-    });
+    this.isLoggedIn$ = this.aai.isUserLoggedIn();
+    this.account$ = this.isLoggedIn$.pipe(
+      concatMap(loggedIn => {
+        if (loggedIn) {
+          return this.ingestService.getUserAccount();
+        }
+        return of(undefined);
+      })
+    );
     this.pollProjects();
-  }
-
-  getProjectId(project) {
-    let links: any;
-    links = project['_links'];
-    return links && links['self'] && links['self']['href'] ? links['self']['href'].split('/').pop() : '';
   }
 
   ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
+  }
+
+  get contributorColumns(): ProjectColumn[] {
+    return [
+      ProjectColumn.short_name,
+      ProjectColumn.project_title,
+      ProjectColumn.last_updated
+    ];
+  }
+
+  get wranglerColumns(): ProjectColumn[] {
+    return [
+      ProjectColumn.api_link,
+      ProjectColumn.short_name,
+      ProjectColumn.project_title,
+      ProjectColumn.primary_contributor,
+      ProjectColumn.last_updated
+    ];
   }
 
   pollProjects() {

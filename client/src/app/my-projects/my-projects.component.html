@@ -1,10 +1,26 @@
-<h1 class="vf-text vf-text-heading--2">My Projects</h1>
-<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">These are your projects created for the Human Cell Atlas</p>
-<div align="right"><a class="vf-button vf-button--primary vf-button--sm" routerLink="/projects/new" >New Project</a></div>
-<app-project-list [projects]=projects></app-project-list>
-<mat-paginator [length]="currentPageInfo['totalElements']"
-               [pageSize]="currentPageInfo['size']"
-               [pageIndex]="currentPageInfo['number']"
-               [pageSizeOptions]="pageSizeOptions"
-               (page)="pageEvent = $event">
-</mat-paginator>
+<section class="vf-inlay">
+  <section class="vf-inlay__content">
+    <main class="vf-inlay__content--main">
+      <h1 class="vf-text vf-text-heading--2">My Projects</h1>
+    </main>
+    <main class="vf-inlay__content--additional">
+      <a class="vf-button vf-button--primary vf-button--sm" routerLink="/projects/new" >New Project</a>
+    </main>
+    <main class="vf-inlay__content--full-width">
+      <div *ngIf="!(account$ | async)?.isWrangler()" >
+        <p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">These are your projects created for the Human Cell Atlas</p>
+        <app-project-list [projects]=projects [columns]="contributorColumns"></app-project-list>
+      </div>
+      <div *ngIf="(account$ | async)?.isWrangler()" >
+        <p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">These are your assigned projects.</p>
+        <app-project-list [projects]=projects [columns]="wranglerColumns"></app-project-list>
+      </div>
+      <mat-paginator [length]="currentPageInfo['totalElements']"
+                     [pageSize]="currentPageInfo['size']"
+                     [pageIndex]="currentPageInfo['number']"
+                     [pageSizeOptions]="pageSizeOptions"
+                     (page)="pageEvent = $event">
+      </mat-paginator>
+    </main>
+  </section>
+</section>

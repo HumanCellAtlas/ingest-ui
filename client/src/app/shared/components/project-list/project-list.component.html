@@ -1,52 +1,24 @@
-<div class="dashboard" *ngIf="projects || {}">
-  <div>
-    <table>
-      <thead align="left">
-      <tr>
-        <th></th>
-        <th>Short name</th>
-        <th>Project title</th>
-        <th>Last Updated</th>
-        <th>Contributor</th>
-        <th align="center">State</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let project of projects">
-        <td><a href="{{project['_links']['self']['href']}}" target="_blank" class="vf-link"
-               title="click to see Ingest API resource">
+<table class="vf-table vf-table--striped vf-table--bordered white-border" *ngIf="projects">
+  <thead class="vf-table__header white-border">
+    <tr class="vf-table__row white-border">
+      <th class="vf-table__heading white-border" scope="col" *ngFor="let column of columns">{{getColumnLabel(column)}}</th>
+      <th class="vf-table__heading vf-table__heading--actions white-border">Actions</th>
+    </tr>
+  </thead>
+  <tbody class="vf-table__body white-border">
+    <tr class="vf-table__row white-border" *ngFor="let project of projects">
+      <td class="vf-table__cell white-border" *ngFor="let column of columns">
+        <div *ngIf="column !== 0">{{getContent(column, project)}}</div>
+        <a *ngIf="column === 0" href="{{getContent(column, project)}}" target="_blank" class="vf-link"
+           title="click to see Ingest API resource">
           <mat-icon [ngStyle]="{'color': 'lightgrey'}">link</mat-icon>
-        </a></td>
-        <td><a [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}" class="vf-link"><span
-          title="{{project?.content?.project_core?.project_short_name}}">{{ project?.content?.project_core?.project_short_name }}</span></a>
-        </td>
-        <td>{{ project?.content?.project_core?.project_title }}</td>
-        <td>{{project.updateDate | date: "medium"}}</td>
-
-        <td>
-          {{getContributors(project)}}
-        </td>
-
-        <td align="center">
-          <app-metadata-state [state]="project?.validationState"></app-metadata-state>
-        </td>
-
-        <td>
-          <a routerLink="/projects/{{project?.uuid?.uuid}}" class="vf-link"><span
-            title="{{project?.content?.project_core?.project_short_name}}">Edit</span></a>
-        </td>
-
-      </tr>
-      <tr *ngIf="!projects">
-        <td></td>
-        <td>Loading your projects...</td>
-      </tr>
-      <tr *ngIf="projects && projects.length === 0">
-        <td></td>
-        <td>You do not currently have any projects</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+        </a>
+      </td>
+      <td class="vf-table__cell vf-table__cell--actions white-border">
+        <a *ngIf="project?.primaryWrangler" class="vf-link" [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}">View Project</a>
+        <div  *ngIf="!project?.primaryWrangler">Under Review</div>
+      </td>
+    </tr>
+</table>
+<div class="vf-intro" *ngIf="!projects">Loading...</div>
+<div class="vf-intro" *ngIf="projects && projects.length === 0">No Projects Found</div>
