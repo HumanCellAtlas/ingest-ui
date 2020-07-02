@@ -11,8 +11,9 @@ export class AccessionFieldGroupComponent implements OnInit {
   metadataForm: MetadataForm;
 
   label: string;
-  isAccessioned = false;
+  isAccessioned: boolean | undefined;
   control: FormControl;
+  accessionId: string;
 
   constructor() {
   }
@@ -21,9 +22,13 @@ export class AccessionFieldGroupComponent implements OnInit {
   }
 
 
-  onChange(isAccessioned: boolean) {
+  onIsAccessionedChange(isAccessioned: boolean) {
     this.isAccessioned = isAccessioned;
   }
 
 
+  onProjectAccessionIdChange(accessionId: string) {
+    // TODO set specific accession field
+    // Should we display an error if accession couldn't be set? It won't be stored if accession field cannot be determined
+  }
 }
