@@ -27,6 +27,8 @@ export class MetadataFormComponent implements OnInit {
 
   @Output() cancel = new EventEmitter<boolean>();
 
+  @Output() back = new EventEmitter<boolean>();
+
   @Output() tabChange = new EventEmitter<number>();
 
   formGroup: FormGroup;
@@ -70,4 +72,7 @@ export class MetadataFormComponent implements OnInit {
     this.tabChange.emit(tabIndex);
   }
 
+  onBack($event: MouseEvent) {
+    this.back.emit();
+  }
 }

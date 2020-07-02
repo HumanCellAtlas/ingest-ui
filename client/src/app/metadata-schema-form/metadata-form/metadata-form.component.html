@@ -24,13 +24,23 @@
 
   <ng-container *ngIf="!config.viewMode">
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-      <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button">Cancel</a>
-      <button *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1"
-              class="vf-button vf-button--primary vf-button">Save and Continue
-      </button>
-      <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
-              class="vf-button vf-button--primary vf-button">Finish
-      </button>
+      <div class="form-actions">
+        <div class="vf-u-margin__bottom--xxl">
+          <a class="vf-link vf-u-margin__right--xxl" *ngIf="this.selectedTabIndex !== 0" (click)="onBack($event)">
+            < Back
+          </a>
+          <button *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1"
+                  class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
+          </button>
+          <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
+                  class="next-button vf-button vf-button--primary vf-button">Register Project
+          </button>
+        </div>
+        <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
+           class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
+          Or Cancel project registration
+        </a>
+      </div>
     </div>
   </ng-container>
 </form>
