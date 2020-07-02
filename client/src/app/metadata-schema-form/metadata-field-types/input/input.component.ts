@@ -29,8 +29,10 @@ export class InputComponent implements OnInit {
   }
 
   removeFormControl(control: AbstractControl, i: number) {
-    const formArray = control as FormArray;
-    formArray.removeAt(i);
+    if (confirm('Are you sure?')) {
+      const formArray = control as FormArray;
+      formArray.removeAt(i);
+    }
   }
 
   addFormControl(metadata: Metadata, formControl: AbstractControl) {
