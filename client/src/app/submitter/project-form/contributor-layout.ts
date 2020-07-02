@@ -8,14 +8,14 @@ export const contributorLayout: MetadataFormLayout = {
   tabs: [
     {
       title: 'Project',
-      key: 'project.content.project_core',
+      key: '',
       items: [
         'project.content.project_core.project_title',
         'project.content.project_core.project_description',
         'project.content.project_core.project_short_name',
         'project.dataAccess.type',
         'project.identifyingOrganisms',
-        'project.technology.ontologies',
+        'project.technology',
         {
           keys: [
             'project.content.publications.url'
@@ -39,7 +39,7 @@ export const contributorLayout: MetadataFormLayout = {
     },
     {
       title: 'Contacts',
-      key: 'project.content.contributors',
+      key: '',
       items: [
         {
           keys: [
