@@ -31,13 +31,16 @@ export class MetadataFieldComponent implements OnInit {
   @Input()
   control: AbstractControl;
 
+  @Input()
+  id: string;
+
   @ViewChild(MetadataFormItemDirective, {static: true}) fieldHost: MetadataFormItemDirective;
 
   constructor(private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit(): void {
-    this.loadComponent(this.metadata, this.control, this.metadata.key);
+    this.loadComponent(this.metadata, this.control, this.id);
   }
 
   private loadComponent(metadata: Metadata, control: AbstractControl, id: string) {
