@@ -18,6 +18,7 @@ export class BaseInputComponent implements OnInit {
   error: string;
   placeholder: string;
   disabled: boolean;
+
   constructor() { }
 
   ngOnInit(): void {

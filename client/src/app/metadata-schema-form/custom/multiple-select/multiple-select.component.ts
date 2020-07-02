@@ -17,7 +17,7 @@ export class MultipleSelectComponent implements OnInit {
   id;
 
   @Input()
-  value;
+  value: any;
 
   @Input()
   label: string;
@@ -74,8 +74,8 @@ export class MultipleSelectComponent implements OnInit {
     const value = this.metadataFormService.cleanFormData(this.value);
     this.selectedValues = value ? value : [];
     this.searchControl = this.createSearchControl();
-    this.searchControl.valueChanges.subscribe(value => {
-      this.onSearchValueChanged(value ? value : '');
+    this.searchControl.valueChanges.subscribe(val => {
+      this.onSearchValueChanged(val ? val : '');
     });
   }
 
@@ -124,15 +124,15 @@ export class MultipleSelectComponent implements OnInit {
     this.valueAdded.emit(value);
   }
 
-  isSelected(option: Ontology): boolean {
+  isSelected(option: any): boolean {
     return this.selectedValues.indexOf(option) >= 0;
   }
 
-  updateSelectedValues(ontology: Ontology): void {
-    if (this.isSelected(ontology)) {
-      this.removeValue(ontology);
+  updateSelectedValues(option: any): void {
+    if (this.isSelected(option)) {
+      this.removeValue(option);
     } else {
-      this.addValue(ontology);
+      this.addValue(option);
     }
   }
 

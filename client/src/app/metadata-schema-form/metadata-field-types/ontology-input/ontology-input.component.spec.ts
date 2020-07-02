@@ -97,7 +97,7 @@ describe('OntologyInputComponent', () => {
     let component: OntologyInputComponent;
 
     beforeEach(() => {
-      component = new OntologyInputComponent(olsSvc);
+      component = new OntologyInputComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();

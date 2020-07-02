@@ -1,13 +1,18 @@
 <ng-container *ngIf="inputType ==='text' || inputType ==='number'">
-
   <div class="vf-form__item">
-    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-
-    <label *ngIf="label" class="vf-form__label">{{label}}</label>
-    <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}" class="vf-form__input"
-           placeholder="{{placeholder}}" [(ngModel)]="value" (change)="change($event)">
-    <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
-    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+    <div class="vf-form__label">
+      <label *ngIf="label">{{label}}</label>
+      <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+    </div>
+    <div></div>
+    <div>
+      <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}" class="vf-form__input"
+             placeholder="{{placeholder}}" [(ngModel)]="value" (change)="change($event)">
+    </div>
+    <div>
+      <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+      <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+    </div>
   </div>
 </ng-container>
 

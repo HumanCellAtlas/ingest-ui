@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {OntologyService} from '../../../shared/services/ontology.service';
 import {Ontology} from '../../../shared/models/ontology';
 import {OntologyBaseComponent} from '../ontology-base/ontology-base.component';
+import {MetadataFormService} from '../../metadata-form.service';
 
 
 @Component({
@@ -11,8 +12,8 @@ import {OntologyBaseComponent} from '../ontology-base/ontology-base.component';
 })
 export class OntologyInputComponent extends OntologyBaseComponent {
 
-  constructor(protected ols: OntologyService) {
-    super(ols);
+  constructor(protected ols: OntologyService, protected metadataFormService: MetadataFormService) {
+    super(ols, metadataFormService);
   }
 
 

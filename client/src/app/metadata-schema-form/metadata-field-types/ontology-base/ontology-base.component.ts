@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {concatMap, startWith} from 'rxjs/operators';
 import {BaseInputComponent} from '../base-input/base-input.component';
+import {MetadataFormService} from '../../metadata-form.service';
 
 @Component({
   selector: 'app-ontology-base',
@@ -17,17 +18,16 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
   options$: Observable<Ontology[]>;
   olsUrl: string = environment.OLS_URL;
 
-  constructor(protected ols: OntologyService) {
+  constructor(protected ols: OntologyService, protected metadataFormService: MetadataFormService) {
     super();
   }
 
   ngOnInit(): void {
     super.ngOnInit();
-
     const ontologyReference = `Please note that if the search result is too large, not all options may be displayed. Please see <a href="${this.olsUrl}" target="_blank">Ontology Lookup Service</a> for reference.`;
     this.helperText = this.helperText + ' ' + ontologyReference;
-    this.searchControl = this.createSearchControl(this.control.value);
-
+    const value: Ontology = this.metadataFormService.cleanFormData(this.control.value);
+    this.searchControl = this.createSearchControl(value);
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
@@ -37,7 +37,7 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
 
   createSearchControl(value: Ontology) {
     return new FormControl({
-      value: value && value.ontology ? value : '',
+      value: value && value.ontology_label ? value : '',
       disabled: this.metadata.isDisabled
     });
   }
@@ -46,7 +46,7 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
     if (typeof ontology === 'string') {
       return '';
     }
-    return ontology && ontology.ontology_label ? `${ontology.ontology_label} (${ontology.ontology})` : '';
+    return ontology && ontology.ontology_label && ontology.ontology ? `${ontology.ontology_label} (${ontology.ontology})` : '';
   }
 
   onSearchValueChanged(value: string | Ontology): Observable<Ontology[]> {

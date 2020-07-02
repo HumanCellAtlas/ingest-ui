@@ -95,14 +95,14 @@ describe('OntologyBaseComponent', () => {
   });
 
   it('should instantiate', () => {
-    const component = new OntologyBaseComponent(olsSvc);
+    const component = new OntologyBaseComponent(olsSvc, metadataSvc);
     expect(component).toBeDefined();
   });
 
   describe('onInit', () => {
     it('should initialise attributes based on metadata and control', () => {
       // given
-      const component = new OntologyBaseComponent(olsSvc);
+      const component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
 
@@ -122,7 +122,7 @@ describe('OntologyBaseComponent', () => {
     let component: OntologyBaseComponent;
 
     beforeEach(() => {
-      component = new OntologyBaseComponent(olsSvc);
+      component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();
@@ -177,7 +177,7 @@ describe('OntologyBaseComponent', () => {
     let component: OntologyBaseComponent;
 
     beforeEach(() => {
-      component = new OntologyBaseComponent(olsSvc);
+      component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();
@@ -227,7 +227,7 @@ describe('OntologyBaseComponent', () => {
     let component: OntologyBaseComponent;
 
     beforeEach(() => {
-      component = new OntologyBaseComponent(olsSvc);
+      component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();

@@ -5,7 +5,9 @@ import {OntologyService} from '../../../shared/services/ontology.service';
 import {JsonSchema} from '../../models/json-schema';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {OntologyBaseComponent} from '../ontology-base/ontology-base.component';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
+import {MetadataFormService} from '../../metadata-form.service';
+import {concatMap, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-ontology-list-input',
@@ -14,10 +16,23 @@ import {Observable} from "rxjs";
 })
 export class OntologyListInputComponent extends OntologyBaseComponent implements OnInit {
   formHelper: MetadataFormHelper;
+  value: Ontology[];
 
-  constructor(protected ols: OntologyService) {
-    super(ols);
+  constructor(protected ols: OntologyService, protected metadataFormService: MetadataFormService) {
+    super(ols, metadataFormService);
     this.formHelper = new MetadataFormHelper();
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    const value = this.metadataFormService.cleanFormData(this.control.value);
+    this.value = this.metadataFormService.isEmpty(value) ? value : undefined;
+    this.searchControl = this.createSearchControl(value);
+    this.options$ = this.searchControl.valueChanges
+      .pipe(
+        startWith(this.searchControl.value ? this.searchControl.value : ''),
+        concatMap(value => this.onSearchValueChanged(value))
+      );
   }
 
   removeFormControl(i: number) {
