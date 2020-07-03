@@ -1,0 +1,15 @@
+<app-metadata-field [metadata]="projectShortNameMetadata"
+                    [control]="projectShortNameCtrl"
+                    [id]="projectShortNameKey">
+
+</app-metadata-field>
+
+<div class="vf-form__item vf-form__item--checkbox vf-u-padding__bottom--xxl">
+  <input type="checkbox" class="vf-form__checkbox" id="autogenerate"
+         [(ngModel)]="autogenerate" (change)="onAutoGenerateChange()">
+  <label for="autogenerate" class="vf-form__label"> Autogenerate label </label>
+  <div>
+    <p class="vf-form__helper"> Autogenerate the project label based on the main contact's last name, organism the
+      samples were generated from and technology used to generate the data </p>
+  </div>
+</div>
