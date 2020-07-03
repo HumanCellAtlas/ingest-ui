@@ -52,6 +52,7 @@ import {MetadataSchemaFormModule} from './metadata-schema-form/metadata-schema-f
 import {MaterialModule} from './material.module';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ProjectRegistrationModule} from './project-registration/project-registration.module';
+import {WelcomeComponent} from './welcome/welcome.component';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -78,7 +79,8 @@ const BROWSER_LOCALE = navigator.language;
     ProjectFormComponent,
     MyProjectsComponent,
     GlobalHeaderComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

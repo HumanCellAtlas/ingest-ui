@@ -11,13 +11,14 @@ import {RegistrationComponent} from './registration/registration.component';
 import {UserIsLoggedInGuard} from './shared/guards/user-is-logged-in.guard';
 import {UserIsWranglerGuard} from './shared/guards/user-is-wrangler.guard';
 import {WranglerOrOwnerGuard} from './shared/guards/wrangler-or-owner.guard';
+import {WelcomeComponent} from "./welcome/welcome.component";
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'aai-callback', component: AaiCallbackComponent},
 
-  {path: '', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
-  {path: 'home', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
+  {path: '', component: WelcomeComponent },
+  {path: 'home', component: WelcomeComponent},
   {path: 'registration', component: RegistrationComponent, canActivate: [UserIsLoggedInGuard]},
   {path: 'projects', component: MyProjectsComponent, canActivate: [UserIsLoggedInGuard]},
   {path: 'projects/new', component: ProjectFormComponent, canActivate: [UserIsLoggedInGuard]},
