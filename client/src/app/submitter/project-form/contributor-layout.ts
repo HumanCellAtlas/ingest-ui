@@ -3,6 +3,7 @@ import {AccessionFieldGroupComponent} from '../../project-registration/accession
 import {PublicationFieldGroupComponent} from '../../project-registration/publication-field-group/publication-field-group.component';
 import {ContactFieldGroupComponent} from '../../project-registration/contact-field-group/contact-field-group.component';
 import {ProjectRegistrationSummaryComponent} from '../../project-registration/project-registration-summary/project-registration-summary.component';
+import {ProjectIdComponent} from '../../project-registration/project-id/project-id.component';
 
 export const contributorLayout: MetadataFormLayout = {
   tabs: [
@@ -12,7 +13,12 @@ export const contributorLayout: MetadataFormLayout = {
       items: [
         'project.content.project_core.project_title',
         'project.content.project_core.project_description',
-        'project.content.project_core.project_short_name',
+        {
+          keys: [
+            'project.content.project_core.project_short_name'
+          ],
+          component: ProjectIdComponent
+        },
         'project.dataAccess.type',
         'project.identifyingOrganisms',
         'project.technology',
