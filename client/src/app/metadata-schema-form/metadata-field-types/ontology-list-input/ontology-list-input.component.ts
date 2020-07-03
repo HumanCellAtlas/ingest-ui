@@ -21,10 +21,8 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
   }
 
   removeFormControl(i: number) {
-    if (confirm('Are you sure?')) {
-      const formArray = this.control as FormArray;
-      formArray.removeAt(i);
-    }
+    const formArray = this.control as FormArray;
+    formArray.removeAt(i);
   }
 
   addFormControl(ontology: Ontology) {
