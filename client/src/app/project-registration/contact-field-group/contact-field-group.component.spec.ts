@@ -2,19 +2,28 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ContactFieldGroupComponent} from './contact-field-group.component';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
+import {AaiService} from '../../aai/aai.service';
+import {Subject} from 'rxjs';
+import {User} from 'oidc-client';
 
 describe('ContactFieldGroupComponent', () => {
   let component: ContactFieldGroupComponent;
   let fixture: ComponentFixture<ContactFieldGroupComponent>;
+  let aaiSpy: jasmine.SpyObj<AaiService>;
+  let userSpy: jasmine.SpyObj<Subject<User>>;
 
   beforeEach(async(() => {
+    aaiSpy = jasmine.createSpyObj(['getUserSubject']) as jasmine.SpyObj<AaiService>;
     TestBed.configureTestingModule({
-      declarations: [ContactFieldGroupComponent]
+      declarations: [ContactFieldGroupComponent],
+      providers: [{provide: AaiService, useValue: aaiSpy}],
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
+    userSpy = jasmine.createSpyObj(['subscribe']) as jasmine.SpyObj<Subject<User>>;
+    aaiSpy.getUserSubject.and.returnValue(userSpy);
     const schema = {
       '$id': 'https://schema.dev.data.humancellatlas.org/type/project/15.0.0/project',
       '$schema': 'http://json-schema.org/draft-07/schema#',

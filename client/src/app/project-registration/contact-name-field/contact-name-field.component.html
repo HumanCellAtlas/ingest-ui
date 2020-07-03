@@ -2,7 +2,9 @@
   [(ngModel)]="firstName"
   [isRequired]="true"
   [label]="'First Name'"
-  [dataType]="'string'">
+  [dataType]="'string'"
+  (change)="onChange(firstName, lastName)"
+>
 </app-vf-input>
 
 <app-vf-input

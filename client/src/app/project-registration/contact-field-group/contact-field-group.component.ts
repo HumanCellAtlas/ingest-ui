@@ -4,6 +4,8 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
 import {MetadataFormHelper} from '../../metadata-schema-form/models/metadata-form-helper';
+import {AaiService} from '../../aai/aai.service';
+import {Profile} from 'oidc-client';
 
 @Component({
   selector: 'app-contact-field-group',
@@ -29,7 +31,9 @@ export class ContactFieldGroupComponent implements OnInit {
     'project.content.contributors.corresponding_contributor'
   ];
 
-  constructor() {
+  userInfo: Profile;
+
+  constructor(private aai: AaiService) {
     this.formHelper = new MetadataFormHelper();
   }
 
@@ -41,6 +45,15 @@ export class ContactFieldGroupComponent implements OnInit {
 
     this.contactFieldMetadataList = fieldList.map(field => {
       return this.metadataForm.get(field);
+    });
+
+    const contactEmailCtrl = this.contributorsControl['controls'][0]['controls']['email'];
+    const contactNameCtrl = this.contributorsControl['controls'][0]['controls']['name'];
+
+    this.aai.getUserSubject().subscribe(user => {
+      this.userInfo = user ? user.profile : null;
+      contactNameCtrl.setValue([this.userInfo.given_name, '', this.userInfo.family_name].join(','))
+      contactEmailCtrl.setValue(this.userInfo.email);
     });
   }
 
