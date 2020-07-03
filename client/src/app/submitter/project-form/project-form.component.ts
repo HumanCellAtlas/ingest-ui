@@ -183,7 +183,7 @@ export class ProjectFormComponent implements OnInit {
 
   private incrementTab() {
     this.formTabIndex++;
-    if (this.formTabIndex >= formLayout.tabs.length) {
+    if (this.formTabIndex >= contributorLayout.tabs.length) {
       this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
     }
   }
