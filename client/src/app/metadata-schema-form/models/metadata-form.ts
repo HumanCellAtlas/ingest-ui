@@ -29,22 +29,26 @@ export class MetadataForm {
   }
 
   getControl(key: string, rootControl?: AbstractControl): AbstractControl {
-    const fieldParts = key.split('.');
-
     let control: AbstractControl;
+    try {
+      const fieldParts = key.split('.');
 
-    if (!rootControl) {
-      control = this.formGroup;
-    } else {
-      control = rootControl;
+
+      if (!rootControl) {
+        control = this.formGroup;
+      } else {
+        control = rootControl;
+      }
+
+      fieldParts.shift();
+
+      for (const part of fieldParts) {
+        control = control['controls'][part];
+      }
+
+    } catch (e) {
+      console.error('Could not find form control for ' + key, e);
     }
-
-    fieldParts.shift();
-
-    for (const part of fieldParts) {
-      control = control['controls'][part];
-    }
-
     return control;
   }
 
