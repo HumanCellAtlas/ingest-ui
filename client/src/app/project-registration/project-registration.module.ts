@@ -9,6 +9,7 @@ import {MetadataSchemaFormModule} from '../metadata-schema-form/metadata-schema-
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from "@angular/material/icon";
 import { ContactNameFieldComponent } from './contact-name-field/contact-name-field.component';
+import { ProjectIdComponent } from './project-id/project-id.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ContactNameFieldComponent } from './contact-name-field/contact-name-fie
     ProjectRegistrationFormComponent,
     PublicationFieldGroupComponent,
     ContactFieldGroupComponent,
-    ContactNameFieldComponent
+    ContactNameFieldComponent,
+    ProjectIdComponent
   ],
   imports: [
     CommonModule,
