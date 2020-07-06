@@ -16,13 +16,19 @@ export class DateInputComponent extends BaseInputComponent implements OnInit {
 
   ngOnInit(): void {
     super.ngOnInit();
-    
     this.value = this.control.value ? new Date(this.control.value) : undefined;
   }
 
   onDateChanged($event: MatDatepickerInputEvent<any>) {
     const value = $event.value as Date;
-    const date = value.toJSON();
+    const date = value ? value.toJSON() : '';
     this.control.setValue(date);
+    this.control.markAsDirty();
+    this.error = this.checkForErrors(this.control);
+  }
+
+  onBlur() {
+    this.control.markAsTouched();
+    this.error = this.checkForErrors(this.control);
   }
 }

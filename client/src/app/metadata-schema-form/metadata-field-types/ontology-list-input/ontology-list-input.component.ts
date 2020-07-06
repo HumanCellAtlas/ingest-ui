@@ -36,15 +36,17 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
   }
 
   removeFormControl(i: number) {
+    this.control.markAllAsTouched();
     const formArray = this.control as FormArray;
     formArray.removeAt(i);
   }
 
   addFormControl(ontology: Ontology) {
+    this.control.markAllAsTouched();
     const formArray = this.control as FormArray;
     const count = formArray.length;
 
-    const formGroup: FormGroup = this.formHelper.toFormGroup(this.metadata.schema.items as JsonSchema, ontology);
+    const formGroup: FormGroup = this.formHelper.toFormGroup(this.metadata.itemMetadata, ontology);
     formArray.insert(count, formGroup);
   }
 

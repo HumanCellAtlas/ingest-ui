@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Metadata} from '../../models/metadata';
-import {AbstractControl} from '@angular/forms';
+import {AbstractControl, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-base-input',
@@ -19,7 +19,8 @@ export class BaseInputComponent implements OnInit {
   placeholder: string;
   disabled: boolean;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     const userFriendly = this.metadata.schema.user_friendly;
@@ -37,4 +38,11 @@ export class BaseInputComponent implements OnInit {
     this.placeholder = this.metadata.schema.example;
   }
 
+  checkForErrors(control: AbstractControl): string {
+    control = control as FormControl;
+
+    if ((control.touched || control.dirty) && control.invalid && (control.errors && control.errors.required)) {
+      return 'This field is required';
+    }
+  }
 }

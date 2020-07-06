@@ -1,9 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Ontology} from '../../../shared/models/ontology';
-import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {MatSelectionList} from '@angular/material/list';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {map, startWith} from 'rxjs/operators';
 import {BaseInputComponent} from '../base-input/base-input.component';
@@ -16,14 +14,12 @@ import {BaseInputComponent} from '../base-input/base-input.component';
 export class EnumListInputComponent extends BaseInputComponent implements OnInit {
   options$: Observable<string[]>;
 
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  @ViewChild('input', {read: MatAutocompleteTrigger}) autoComplete;
-  @ViewChild('selectionList') selectionList: MatSelectionList;
-
   searchControl: AbstractControl;
 
   formHelper: MetadataFormHelper;
   enumValues: string[];
+
+  value: string[];
 
   constructor() {
     super();
@@ -33,6 +29,8 @@ export class EnumListInputComponent extends BaseInputComponent implements OnInit
 
   ngOnInit() {
     super.ngOnInit();
+
+    this.value = this.control.value;
 
     this.searchControl = this.createSearchControl(this.control.value);
 
@@ -46,11 +44,13 @@ export class EnumListInputComponent extends BaseInputComponent implements OnInit
   }
 
   removeFormControl(i: number) {
+    this.control.markAllAsTouched();
     const formArray = this.control as FormArray;
     formArray.removeAt(i);
   }
 
   addFormControl(value: string) {
+    this.control.markAllAsTouched();
     const formArray = this.control as FormArray;
     const count = formArray.length;
 
@@ -69,5 +69,4 @@ export class EnumListInputComponent extends BaseInputComponent implements OnInit
     const filterValue = value ? value.toLowerCase() : '';
     return this.enumValues.filter(option => option.toLowerCase().includes(filterValue));
   }
-
 }

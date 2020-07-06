@@ -8,6 +8,7 @@
   [options$]="options$"
   [displayWith]="displayOntology"
   [value]="value"
+  [error]="checkForErrors(control)"
   (searchValueChanged)="this.searchControl.setValue($event)"
   (valueAdded)="addFormControl($event)"
   (valueRemoved)="removeFormControl($event)"

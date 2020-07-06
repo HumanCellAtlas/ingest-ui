@@ -4,8 +4,10 @@
                 [formControl]="control"
                 [label]="label"
                 [dataType]="metadata.schema.type"
+                [readonly]="metadata.isReadOnly"
                 [placeholder]="placeholder"
                 [helperText]="helperText"
+                [error]="checkForErrors(control)"
                 [isRequired]="isRequired">
   </app-vf-input>
 </ng-container>

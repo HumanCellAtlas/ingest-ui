@@ -5,57 +5,33 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Metadata} from './metadata';
 import {JsonSchemaProperty} from './json-schema-property';
 import {MetadataFormHelper} from './metadata-form-helper';
+import {SchemaHelper} from './schema-helper';
+import {MetadataRegistry} from './metadata-registry';
 
 describe('MetadataFormHelper', () => {
 
   let metadataFormHelper: MetadataFormHelper;
   let metadataFormSvc: MetadataFormService;
   let testSchema: JsonSchema;
+  let metadataRegistry: MetadataRegistry;
 
   beforeEach(() => {
     testSchema = (jsonSchema as any).default;
     metadataFormHelper = new MetadataFormHelper({});
     metadataFormSvc = new MetadataFormService();
+    metadataRegistry = new MetadataRegistry('project', testSchema);
   });
 
   it('should be created', () => {
     expect(metadataFormHelper).toBeTruthy();
   });
 
-  describe('getFieldMap', () => {
-    it('return list of Property objects from non-nested schema', () => {
-      // given testSchema
-      // when
-      const fieldMap = metadataFormHelper.getFieldMap(testSchema);
-
-      // then
-      const actual_properties = Array.from(fieldMap.keys());
-
-      const expected_properties = [
-        'describedBy',
-        'schema_type',
-        'schema_version',
-        'array_express_accessions',
-        'biostudies_accessions',
-        'geo_series_accessions',
-        'insdc_project_accessions',
-        'insdc_study_accessions',
-        'supplementary_links',
-        'contributors',
-        'funders',
-        'publications'
-      ];
-
-      expected_properties.forEach(prop => expect(actual_properties).toContain(prop));
-
-    });
-  });
-
   describe('toFormGroup', () => {
     it('return a FormGroup object', () => {
       // given testSchema
+      const metadata = metadataRegistry.get('project');
       // when
-      const formGroup = metadataFormHelper.toFormGroup(testSchema);
+      const formGroup = metadataFormHelper.toFormGroup(metadata);
 
       // then
       expect(formGroup).toBeTruthy();
@@ -68,14 +44,15 @@ describe('MetadataFormHelper', () => {
 
     it('return a FormGroup object with initialised data', () => {
       // given
-      const schema = metadataFormHelper.getProperty('contributors', testSchema).items as JsonSchema;
+      const schema = SchemaHelper.getProperty('contributors', testSchema).items as JsonSchema;
       const data = {
         'name': 'Nathan Smith',
         'institution': 'MRCN',
         'corresponding_contributor': false
       };
       // when
-      const formGroup = metadataFormHelper.toFormGroup(schema as JsonSchema, data);
+      const metadata = metadataRegistry.get('project.contributors');
+      const formGroup = metadataFormHelper.toFormGroup(metadata.itemMetadata, data);
 
       // then
       expect(formGroup instanceof FormGroup).toEqual(true);
@@ -234,20 +211,21 @@ describe('MetadataFormHelper', () => {
   describe('toFormGroupArray', () => {
     it('return a FormArray of FormGroup', () => {
       // given
-      const schema = metadataFormHelper.getProperty('contributors', testSchema);
+      const schema = SchemaHelper.getProperty('contributors', testSchema);
 
       // when
-      const formArray = metadataFormHelper.toFormGroupArray(schema.items as JsonSchema, undefined);
+      const metadata = metadataRegistry.get('project.contributors');
+      const formArray = metadataFormHelper.toFormGroupArray(metadata, undefined);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormGroup).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
+      expect(formArray.controls[0] instanceof FormGroup).toEqual(false);
+      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual(null);
     });
 
     it('return a FormArray of FormGroup with data', () => {
       // given
-      const schema = metadataFormHelper.getProperty('contributors', testSchema);
+      const schema = SchemaHelper.getProperty('contributors', testSchema);
       const data = [
         {
           'name': 'Nathan Smith',
@@ -266,7 +244,8 @@ describe('MetadataFormHelper', () => {
         }
       ];
       // when
-      const formArray = metadataFormHelper.toFormGroupArray(schema.items as JsonSchema, data);
+      const metadata = metadataRegistry.get('project.contributors');
+      const formArray = metadataFormHelper.toFormGroupArray(metadata, data);
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
@@ -278,7 +257,7 @@ describe('MetadataFormHelper', () => {
   describe('toFormControlArray', () => {
     it('return a FormArray of FormControl', () => {
       // given
-      const schema = metadataFormHelper.getProperty('insdc_study_accessions', testSchema);
+      const schema = SchemaHelper.getProperty('insdc_study_accessions', testSchema);
       const field: Metadata = new Metadata({
         schema: schema,
         key: 'project',
@@ -292,13 +271,12 @@ describe('MetadataFormHelper', () => {
 
       // then
       expect(formArray instanceof FormArray).toEqual(true);
-      expect(formArray.controls[0] instanceof FormControl).toEqual(true);
-      expect(metadataFormSvc.cleanFormData(formArray.value)).toEqual([]);
+      expect(formArray.controls.length).toEqual(0);
     });
 
     it('return a FormArray of FormControl with initialised data', () => {
       // given
-      const schema = metadataFormHelper.getProperty('insdc_study_accessions', testSchema);
+      const schema = SchemaHelper.getProperty('insdc_study_accessions', testSchema);
       const field: Metadata = new Metadata({
         schema: schema,
         key: 'project',

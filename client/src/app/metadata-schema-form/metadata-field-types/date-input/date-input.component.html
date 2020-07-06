@@ -1,6 +1,7 @@
 <div class="vf-form__item">
   <div>
     <label class="vf-form__label">{{label}}</label>
+    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
   </div>
   <div></div>
 
@@ -8,15 +9,20 @@
     <div style="display: flex; align-items: center">
       <mat-form-field>
         <input matInput class="vf-form__input" [disabled]="disabled" [matDatepicker]="picker"
+               (blur)="onBlur()"
                (dateChange)="onDateChanged($event)"
                [(ngModel)]="value">
         <mat-datepicker #picker></mat-datepicker>
 
       </mat-form-field>
 
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="picker" (blur)="onBlur()" ></mat-datepicker-toggle>
+
     </div>
   </div>
 
-  <p *ngIf="helperText" class="vf-form__helper">{{helperText}} </p>
+  <div>
+    <p *ngIf="helperText" class="vf-form__helper">{{helperText}} </p>
+    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+  </div>
 </div>

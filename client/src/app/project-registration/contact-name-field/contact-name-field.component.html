@@ -3,6 +3,7 @@
   [isRequired]="true"
   [label]="'First Name'"
   [dataType]="'string'"
+  [error]="firstName ? '': 'This field is required'"
   (change)="onChange(firstName, lastName)"
 >
 </app-vf-input>
@@ -12,6 +13,7 @@
   [isRequired]="true"
   [label]="'Last Name'"
   [dataType]="'string'"
+  [error]="lastName ? '': 'This field is required'"
   (change)="onChange(firstName, lastName)"
 >
 </app-vf-input>

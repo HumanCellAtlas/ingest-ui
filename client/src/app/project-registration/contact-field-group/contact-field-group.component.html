@@ -19,10 +19,9 @@
   </ng-container>
 
   <ng-container>
-    <br/>
-    <br/>
-    <br/>
+    <div class="vf-u-padding__top--xxl"></div>
     <a class="vf-button vf-button--primary vf-button--outline"
+       *ngIf="i!==0"
        (click)="removeFormControl(contributorsControl, i)">
       <mat-icon>remove</mat-icon>
       Remove contact

@@ -38,9 +38,11 @@
         <mat-option [style.display]="'none'"></mat-option>
       </mat-autocomplete>
     </mat-form-field>
+
   </div>
   <div>
     <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
+    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
   </div>
 </div>
 

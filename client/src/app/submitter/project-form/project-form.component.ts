@@ -6,13 +6,14 @@ import {SchemaService} from '../../shared/services/schema.service';
 import {Project} from '../../shared/models/project';
 import * as metadataSchema from './project-metadata-schema.json';
 import * as ingestSchema from './project-ingest-schema.json';
-import {formLayout} from './form-layout';
-import {contributorLayout} from './contributor-layout';
+import {wranglerLayout} from './wrangler-layout';
 import {LoaderService} from '../../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {MatTabGroup} from '@angular/material/tabs';
 import {MetadataFormConfig} from '../../metadata-schema-form/models/metadata-form-config';
 import {concatMap} from 'rxjs/operators';
+import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-form-layout';
+import {contributorLayout} from './contributor-layout';
 
 @Component({
   selector: 'app-project-form',
@@ -36,25 +37,15 @@ export class ProjectFormComponent implements OnInit {
   formIsValid: boolean = null;
   formTabIndex = 0;
 
-  config: MetadataFormConfig = {
-    hideFields: [
-      'describedBy',
-      'schema_version',
-      'schema_type',
-      'provenance'
-    ],
-    removeEmptyFields: true,
+  formLayout: MetadataFormLayout;
 
-    layout: contributorLayout,
-    inputType: {
-      'project_description': 'textarea',
-      'notes': 'textarea'
-    }
-  };
+  config: MetadataFormConfig;
 
   patch: object = {};
 
   schema: string;
+
+  isWrangler: boolean;
 
   @ViewChild('mf') formTabGroup: MatTabGroup;
 
@@ -94,6 +85,38 @@ export class ProjectFormComponent implements OnInit {
       '  You will be able to edit this information as your project develops.' : '';
 
 
+    this.ingestService.getUserAccount().subscribe(account => {
+      this.isWrangler = account.isWrangler();
+
+      // TODO Refactor checking of current role!!! Implement ability to toggle between account roles
+      if (account.isWrangler() || !this.createMode) {
+        this.formLayout = wranglerLayout;
+      } else {
+        this.formLayout = contributorLayout;
+      }
+
+      this.config = {
+        hideFields: [
+          'describedBy',
+          'schema_version',
+          'schema_type',
+          'provenance'
+        ],
+        removeEmptyFields: true,
+        layout: this.formLayout,
+        inputType: {
+          'project_description': 'textarea',
+          'notes': 'textarea'
+        },
+        overrideRequiredFields: {
+          'project.content.contributors.project_role.text': false,
+          'project.content.funders': false
+        }
+      };
+
+    });
+
+
   }
 
   setProjectContent(projectUuid) {
@@ -121,19 +144,29 @@ export class ProjectFormComponent implements OnInit {
         });
   }
 
-  onSave(formValue: object) {
-    this.loaderService.display(true);
-    this.alertService.clear();
-    this.createOrSaveProject(formValue).subscribe(project => {
-        console.log('Project saved', project);
-        this.updateProjectContent(project);
-        this.loaderService.display(false);
-        this.incrementTab();
-      },
-      error => {
-        this.loaderService.display(false);
-        this.alertService.error('Error', error.message);
-      });
+  onSave(formData: object) {
+    const formValue = formData['value'];
+    const valid = formData['valid'];
+
+    if (!this.isWrangler && !valid) {
+      this.alertService.clear();
+      this.alertService.error('Invalid Form', 'Please resolve the form validation errors first before proceeding.');
+    }
+
+    if ((!this.isWrangler && valid) || this.isWrangler) {
+      this.loaderService.display(true);
+      this.alertService.clear();
+      this.createOrSaveProject(formValue).subscribe(project => {
+          console.log('Project saved', project);
+          this.updateProjectContent(project);
+          this.loaderService.display(false);
+          this.incrementTab();
+        },
+        error => {
+          this.loaderService.display(false);
+          this.alertService.error('Error', error.message);
+        });
+    }
   }
 
   onCancel($event: boolean) {
@@ -183,8 +216,12 @@ export class ProjectFormComponent implements OnInit {
 
   private incrementTab() {
     this.formTabIndex++;
-    if (this.formTabIndex >= contributorLayout.tabs.length) {
-      this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+    if (this.formTabIndex >= this.formLayout.tabs.length) {
+      if (this.isWrangler) {
+        this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+      } else {
+        this.router.navigate(['/projects']);
+      }
     }
   }
 

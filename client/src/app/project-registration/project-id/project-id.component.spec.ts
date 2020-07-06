@@ -2,14 +2,18 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ProjectIdComponent} from './project-id.component';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
+import {IngestService} from '../../shared/services/ingest.service';
 
 describe('ProjectIdComponent', () => {
   let component: ProjectIdComponent;
   let fixture: ComponentFixture<ProjectIdComponent>;
+  let ingestSvc: jasmine.SpyObj<IngestService>;
 
   beforeEach(async(() => {
+    ingestSvc = jasmine.createSpyObj(['queryProjects']);
     TestBed.configureTestingModule({
-      declarations: [ProjectIdComponent]
+      declarations: [ProjectIdComponent],
+      providers: [{provide: IngestService, useValue: ingestSvc}]
     })
       .compileComponents();
   }));
@@ -112,6 +116,26 @@ describe('ProjectIdComponent', () => {
           'name': 'project',
           'type': 'object',
           'properties': {
+            'project_core': {
+              '$schema': 'http://json-schema.org/draft-07/schema#',
+              '$id': 'http://schema.dev.data.humancellatlas.org/core/project/7.0.5/project_core',
+              'description': 'Information about the project.',
+              'additionalProperties': false,
+              'required': [
+                'project_short_name'
+              ],
+              'title': 'Project core',
+              'name': 'project_core',
+              'type': 'object',
+              'properties': {
+                'project_short_name': {
+                  'description': 'A short name for the project.',
+                  'type': 'string',
+                  'example': 'CoolOrganProject.',
+                  'user_friendly': 'Project label'
+                }
+              }
+            },
             'contributors': {
               'description': 'People contributing to any aspect of the project.',
               'items': {
@@ -152,26 +176,6 @@ describe('ProjectIdComponent', () => {
               'type': 'array',
               'user_friendly': 'Contributors'
             }
-          },
-          'project_core': {
-            '$schema': 'http://json-schema.org/draft-07/schema#',
-            '$id': 'http://schema.dev.data.humancellatlas.org/core/project/7.0.5/project_core',
-            'description': 'Information about the project.',
-            'additionalProperties': false,
-            'required': [
-              'project_short_name'
-            ],
-            'title': 'Project core',
-            'name': 'project_core',
-            'type': 'object',
-            'properties': {
-              'project_short_name': {
-                'description': 'A short name for the project.',
-                'type': 'string',
-                'example': 'CoolOrganProject.',
-                'user_friendly': 'Project label'
-              }
-            }
           }
         }
       },
@@ -182,9 +186,9 @@ describe('ProjectIdComponent', () => {
     };
 
     const metadataForm = new MetadataForm('project', schema);
-    console.log('mxetadataForm', metadataForm);
     fixture = TestBed.createComponent(ProjectIdComponent);
     component = fixture.componentInstance;
+    component.projectShortNameKey = 'project.content.project_core.project_short_name';
     component.metadataForm = metadataForm;
     fixture.detectChanges();
   });

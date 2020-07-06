@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 import {FormArray} from '@angular/forms';
+import {MetadataFormHelper} from '../../metadata-schema-form/models/metadata-form-helper';
 
 @Component({
   selector: 'app-accession-field-group',
@@ -9,6 +10,8 @@ import {FormArray} from '@angular/forms';
 })
 export class AccessionFieldGroupComponent implements OnInit {
   metadataForm: MetadataForm;
+
+  formHelper: MetadataFormHelper;
 
   isAccessioned: boolean | undefined;
 
@@ -28,6 +31,7 @@ export class AccessionFieldGroupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.formHelper = new MetadataFormHelper();
   }
 
   onIsAccessionedChange(isAccessioned: boolean) {
@@ -53,7 +57,7 @@ export class AccessionFieldGroupComponent implements OnInit {
       }
     }
 
-    matchedControl.setValue([accessionId]);
+    matchedControl.push(this.formHelper.toFormControl(undefined, accessionId));
   }
 
   clearAccessionFields(): void {

@@ -4,11 +4,6 @@ import {Metadata} from './metadata';
 import {JsonSchemaProperty} from './json-schema-property';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
-const INPUT_TYPE = {
-  string: 'text',
-  boolean: 'checkbox',
-  integer: 'number'
-};
 
 export class MetadataFormHelper {
   config: MetadataFormConfig;
@@ -17,45 +12,11 @@ export class MetadataFormHelper {
     this.config = config;
   }
 
-  getFieldMap(jsonSchema: JsonSchema): Map<string, Metadata> {
-    const metadataFieldMap = new Map<string, Metadata>();
-    for (const key of Object.keys(jsonSchema.properties)) {
-      const metadataField = this.createMetadata(jsonSchema, key);
-      metadataFieldMap.set(key, metadataField);
-    }
-    return metadataFieldMap;
-  }
-
-  createMetadata(jsonSchema: JsonSchema, key: string): Metadata {
-    const property = this.getProperty(key, jsonSchema);
-    const requiredFields = jsonSchema.required ? jsonSchema.required : [];
-    const hiddenFields = this.config && this.config.hideFields ? this.config.hideFields : [];
-    const disabledFields = this.config && this.config.disableFields ? this.config.hideFields : [];
-    const isRequired = requiredFields.indexOf(key) >= 0;
-    const isHidden = hiddenFields.indexOf(key) >= 0;
-    const isDisabled = this.config && this.config.viewMode || disabledFields.indexOf(key) >= 0;
-    const inputType = this.config && this.config.inputType && this.config.inputType[key] ?
-      this.config.inputType[key] : INPUT_TYPE[property.type]
-
-    const metadataField = new Metadata({
-      isRequired: isRequired,
-      isHidden: isHidden,
-      isDisabled: isDisabled,
-      key: key,
-      schema: property,
-      inputType: inputType
-    });
-    return metadataField;
-  }
-
-  getProperty(key: string, jsonSchema: JsonSchema): JsonSchemaProperty {
-    return jsonSchema.properties[key];
-  }
-
-  toFormGroup(jsonSchema: JsonSchema, data?: object): FormGroup {
+  toFormGroup(metadata: Metadata, data?: object): FormGroup {
     const group: any = {};
-    this.getFieldMap(jsonSchema).forEach((field: Metadata, key: string) => {
-      const subData = data !== undefined ? data ? data[key] : null : undefined;
+
+    metadata.childrenMetadata.forEach((field: Metadata) => {
+      const subData = data !== undefined ? data ? data[field.key] : null : undefined;
       if (field.isScalar()) {
         const formControl = this.toFormControl(field, subData);
         group[field.key] = formControl;
@@ -63,34 +24,36 @@ export class MetadataFormHelper {
         const formArray = this.toFormControlArray(field, subData);
         group[field.key] = formArray;
       } else if (field.isObject()) {
-        group[field.key] = this.toFormGroup(field.schema as JsonSchema, subData);
+        if (!field.isHidden) {
+          group[field.key] = this.toFormGroup(field, subData);
+        }
       } else if (field.isObjectList()) {
-        group[field.key] = this.toFormGroupArray(field.schema.items as JsonSchema, subData);
+        const formGroupArray = this.toFormGroupArray(field, subData);
+        group[field.key] = formGroupArray;
       }
     });
 
-    return new FormGroup(group);
+    const validators = metadata.isRequired ? [Validators.required] : [];
+    return new FormGroup(group, validators);
   }
 
   toFormControl(field: Metadata, data?: any) {
-    const state = {value: data, disabled: field.isDisabled};
-    const formControl = field.isRequired ? new FormControl(state, Validators.required)
+    const state = {value: data, disabled: field && field.isDisabled};
+    const formControl = field && field.isRequired ? new FormControl(state, Validators.required)
       : new FormControl(state);
     return formControl;
   }
 
-  toFormGroupArray(jsonSchema: JsonSchema, data?: any[]): FormArray {
+  toFormGroupArray(metadata: Metadata, data?: any[]): FormArray {
     const controlData = [];
     if (data && data.length > 0) {
       for (const elem of data) {
-        const elemFormControl = this.toFormGroup(jsonSchema as JsonSchema, elem);
+        const elemFormControl = this.toFormGroup(metadata.itemMetadata, elem);
         controlData.push(elemFormControl);
       }
-    } else {
-      const elemFormControl = this.toFormGroup(jsonSchema as JsonSchema, undefined);
-      controlData.push(elemFormControl);
     }
-    return new FormArray(controlData);
+    const validators = metadata.isRequired ? [Validators.required] : [];
+    return new FormArray(controlData, validators);
   }
 
   toFormControlArray(field: Metadata, data?: any) {
@@ -100,10 +63,9 @@ export class MetadataFormHelper {
         const elemFormControl = this.toFormControl(field, elem);
         controlData.push(elemFormControl);
       }
-    } else {
-      controlData.push(this.toFormControl(field, undefined));
     }
-    return new FormArray(controlData);
-  }
 
+    const validators = field.isRequired ? [Validators.required] : [];
+    return new FormArray(controlData, validators);
+  }
 }

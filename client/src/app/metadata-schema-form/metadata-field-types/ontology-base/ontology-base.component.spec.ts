@@ -73,7 +73,7 @@ describe('OntologyBaseComponent', () => {
     });
     helper = new MetadataFormHelper();
     metadataSvc = new MetadataFormService();
-    control = helper.toFormGroup(schema);
+    control = helper.toFormGroup(metadata);
     const response = {
       'numFound': 1,
       'start': 0,

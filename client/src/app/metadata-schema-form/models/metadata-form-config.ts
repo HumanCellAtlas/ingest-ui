@@ -7,4 +7,5 @@ export interface MetadataFormConfig {
   viewMode?: boolean;
   layout?: MetadataFormLayout;
   inputType?: object;
+  overrideRequiredFields?: {[key: string]: boolean};
 }

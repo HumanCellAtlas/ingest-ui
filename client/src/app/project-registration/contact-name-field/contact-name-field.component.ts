@@ -37,8 +37,10 @@ export class ContactNameFieldComponent implements OnInit {
   }
 
   setName(firstName: string, lastName: string) {
-    firstName = firstName ? firstName : '';
-    lastName = lastName ? lastName : '';
-    this.control.setValue(`${firstName},,${lastName}`);
+    if (firstName || lastName) {
+      firstName = firstName ? firstName : '';
+      lastName = lastName ? lastName : '';
+      this.control.setValue(`${firstName},,${lastName}`);
+    }
   }
 }

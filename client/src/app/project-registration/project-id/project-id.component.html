@@ -1,12 +1,18 @@
-<app-metadata-field [metadata]="projectShortNameMetadata"
-                    [control]="projectShortNameCtrl"
-                    [id]="projectShortNameKey">
-
-</app-metadata-field>
+<app-vf-input *ngIf="!projectIdMetadata.isHidden"
+              [id]="projectShortNameKey"
+              [formControl]="projectIdCtrl"
+              [label]="label"
+              [dataType]="projectIdMetadata.schema.type"
+              [readonly]="projectIdMetadata.isReadOnly"
+              [placeholder]="projectIdMetadata.schema.example"
+              [helperText]="projectIdMetadata.schema.guidelines || projectIdMetadata.schema.guidelines"
+              [error]="checkForErrors(projectIdCtrl)"
+              [isRequired]="projectIdMetadata.isRequired">
+</app-vf-input>
 
 <div class="vf-form__item vf-form__item--checkbox vf-u-padding__bottom--xxl">
   <input type="checkbox" class="vf-form__checkbox" id="autogenerate"
-         [(ngModel)]="autogenerate" (change)="onAutoGenerateChange()">
+         [(ngModel)]="autogenerate" (change)="onAutogenerateChange()">
   <label for="autogenerate" class="vf-form__label"> Autogenerate label </label>
   <div>
     <p class="vf-form__helper"> Autogenerate the project label based on the main contact's last name, organism the

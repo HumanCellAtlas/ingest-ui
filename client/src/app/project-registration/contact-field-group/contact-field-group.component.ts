@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
-import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
 import {MetadataFormHelper} from '../../metadata-schema-form/models/metadata-form-helper';
 import {AaiService} from '../../aai/aai.service';
 import {Profile} from 'oidc-client';
@@ -22,6 +21,7 @@ export class ContactFieldGroupComponent implements OnInit {
   contributorMetadata: Metadata;
 
   contactKey = 'project.content.contributors';
+  roleKey = 'project.content.contributors.project_role';
 
   contactFieldList = [
     'project.content.contributors.email',
@@ -40,6 +40,7 @@ export class ContactFieldGroupComponent implements OnInit {
   ngOnInit(): void {
     this.contributorsControl = this.metadataForm.getControl(this.contactKey);
     this.contributorMetadata = this.metadataForm.get(this.contactKey);
+    this.addFormControl(this.contributorMetadata, this.contributorsControl);
 
     const fieldList = this.contactFieldList;
 
@@ -49,11 +50,19 @@ export class ContactFieldGroupComponent implements OnInit {
 
     const contactEmailCtrl = this.contributorsControl['controls'][0]['controls']['email'];
     const contactNameCtrl = this.contributorsControl['controls'][0]['controls']['name'];
+    const correspondingCtrl = this.contributorsControl['controls'][0]['controls']['corresponding_contributor'];
 
-    this.aai.getUserSubject().subscribe(user => {
+    // default
+    correspondingCtrl.setValue(true);
+
+    this.aai.getUserSubject().first().subscribe(user => {
       this.userInfo = user ? user.profile : null;
-      contactNameCtrl.setValue([this.userInfo.given_name, '', this.userInfo.family_name].join(','))
-      contactEmailCtrl.setValue(this.userInfo.email);
+      const previousValue = contactNameCtrl.value;
+      const name = [this.userInfo.given_name, '', this.userInfo.family_name].join(',');
+      if (previousValue !== name) {
+        contactNameCtrl.setValue(name);
+        contactEmailCtrl.setValue(this.userInfo.email);
+      }
     });
   }
 
@@ -68,7 +77,7 @@ export class ContactFieldGroupComponent implements OnInit {
     const formArray = formControl as FormArray;
     const count = formArray.length;
 
-    const formGroup: FormGroup = this.formHelper.toFormGroup(metadata.schema.items as JsonSchema);
+    const formGroup: FormGroup = this.formHelper.toFormGroup(metadata.itemMetadata);
     formArray.insert(count, formGroup);
   }
 }

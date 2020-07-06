@@ -102,8 +102,7 @@ describe('AccessionFieldGroupComponent', () => {
     component.defaultAccessionField = 'project.array_express_accessions';
 
     fixture.detectChanges();
-
-    console.log(metadataForm);
+    
     arrayExpressCtrl = component.metadataForm.getControl('project.array_express_accessions') as FormArray;
     geoSeriesCtrl = component.metadataForm.getControl('project.geo_series_accessions') as FormArray;
     insdcProjCtrl = component.metadataForm.getControl('project.insdc_project_accessions') as FormArray;
@@ -120,30 +119,30 @@ describe('AccessionFieldGroupComponent', () => {
       component.onProjectAccessionIdChange('S-EXMP1');
       expect(bioStudiesCtrl.value).toEqual(['S-EXMP1']);
 
-      expect(insdcProjCtrl.value).toEqual([null]);
-      expect(insdcStudyCtrl.value).toEqual([null]);
-      expect(arrayExpressCtrl.value).toEqual([null]);
-      expect(geoSeriesCtrl.value).toEqual([null]);
+      expect(insdcProjCtrl.value).toEqual([]);
+      expect(insdcStudyCtrl.value).toEqual([]);
+      expect(arrayExpressCtrl.value).toEqual([]);
+      expect(geoSeriesCtrl.value).toEqual([]);
     });
 
     it('should set the ArrayExpress accession field', () => {
       component.onProjectAccessionIdChange('E-AAAA-00');
       expect(arrayExpressCtrl.value).toEqual(['E-AAAA-00']);
 
-      expect(insdcProjCtrl.value).toEqual([null]);
-      expect(insdcStudyCtrl.value).toEqual([null]);
-      expect(geoSeriesCtrl.value).toEqual([null]);
-      expect(bioStudiesCtrl.value).toEqual([null]);
+      expect(insdcProjCtrl.value).toEqual([]);
+      expect(insdcStudyCtrl.value).toEqual([]);
+      expect(geoSeriesCtrl.value).toEqual([]);
+      expect(bioStudiesCtrl.value).toEqual([]);
     });
 
     it('should set the GEO series accession field', () => {
       component.onProjectAccessionIdChange('GSE00000');
       expect(geoSeriesCtrl.value).toEqual(['GSE00000']);
 
-      expect(insdcProjCtrl.value).toEqual([null]);
-      expect(insdcStudyCtrl.value).toEqual([null]);
-      expect(arrayExpressCtrl.value).toEqual([null]);
-      expect(bioStudiesCtrl.value).toEqual([null]);
+      expect(insdcProjCtrl.value).toEqual([]);
+      expect(insdcStudyCtrl.value).toEqual([]);
+      expect(arrayExpressCtrl.value).toEqual([]);
+      expect(bioStudiesCtrl.value).toEqual([]);
 
     });
 
@@ -151,20 +150,30 @@ describe('AccessionFieldGroupComponent', () => {
       component.onProjectAccessionIdChange('SRP000000');
       expect(insdcStudyCtrl.value).toEqual(['SRP000000']);
 
-      expect(insdcProjCtrl.value).toEqual([null]);
-      expect(arrayExpressCtrl.value).toEqual([null]);
-      expect(geoSeriesCtrl.value).toEqual([null]);
-      expect(bioStudiesCtrl.value).toEqual([null]);
+      expect(insdcProjCtrl.value).toEqual([]);
+      expect(arrayExpressCtrl.value).toEqual([]);
+      expect(geoSeriesCtrl.value).toEqual([]);
+      expect(bioStudiesCtrl.value).toEqual([]);
     });
 
     it('should set the INSDC project accession field', () => {
       component.onProjectAccessionIdChange('PRJNS000000');
       expect(insdcProjCtrl.value).toEqual(['PRJNS000000']);
 
-      expect(arrayExpressCtrl.value).toEqual([null]);
-      expect(insdcStudyCtrl.value).toEqual([null]);
-      expect(geoSeriesCtrl.value).toEqual([null]);
-      expect(bioStudiesCtrl.value).toEqual([null]);
+      expect(arrayExpressCtrl.value).toEqual([]);
+      expect(insdcStudyCtrl.value).toEqual([]);
+      expect(geoSeriesCtrl.value).toEqual([]);
+      expect(bioStudiesCtrl.value).toEqual([]);
+    });
+
+    it('should set unrecognised accession to a default accession field', () => {
+      component.onProjectAccessionIdChange('XXX');
+      expect(arrayExpressCtrl.value).toEqual(['XXX']);
+
+      expect(insdcProjCtrl.value).toEqual([]);
+      expect(insdcStudyCtrl.value).toEqual([]);
+      expect(geoSeriesCtrl.value).toEqual([]);
+      expect(bioStudiesCtrl.value).toEqual([]);
     });
 
   });

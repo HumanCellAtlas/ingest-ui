@@ -29,8 +29,9 @@
           <a class="vf-link vf-u-margin__right--xxl" *ngIf="this.selectedTabIndex !== 0" (click)="onBack($event)">
             < Back
           </a>
-          <button *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1 && this.selectedTabIndex !== config.layout.tabs.length"
-                  class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
+          <button
+            *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1 && this.selectedTabIndex !== config.layout.tabs.length"
+            class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
           </button>
           <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
                   class="next-button vf-button vf-button--primary vf-button">Register Project

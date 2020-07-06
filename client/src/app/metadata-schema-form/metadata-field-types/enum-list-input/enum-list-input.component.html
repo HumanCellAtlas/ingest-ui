@@ -7,6 +7,7 @@
   [helperText]="helperText"
   [options$]="options$"
   [value]="control.value"
+  [error]="checkForErrors(control)"
   (searchValueChanged)="this.searchControl.setValue($event)"
   (valueAdded)="addFormControl($event)"
   (valueRemoved)="removeFormControl($event)"

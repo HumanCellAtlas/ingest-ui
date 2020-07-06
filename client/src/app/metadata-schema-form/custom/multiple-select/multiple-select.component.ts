@@ -4,7 +4,6 @@ import {MatSelectionList, MatSelectionListChange} from '@angular/material/list';
 import {COMMA, DOWN_ARROW, ENTER, ESCAPE, TAB} from '@angular/cdk/keycodes';
 import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {Ontology} from '../../../shared/models/ontology';
 import {MetadataFormService} from '../../metadata-form.service';
 
 @Component({
@@ -72,7 +71,7 @@ export class MultipleSelectComponent implements OnInit {
   ngOnInit() {
     this.removable = this.disabled ? false : true;
     const value = this.metadataFormService.cleanFormData(this.value);
-    this.selectedValues = value ? value : [];
+    this.selectedValues = value && value.length > 0 ? value : [];
     this.searchControl = this.createSearchControl();
     this.searchControl.valueChanges.subscribe(val => {
       this.onSearchValueChanged(val ? val : '');

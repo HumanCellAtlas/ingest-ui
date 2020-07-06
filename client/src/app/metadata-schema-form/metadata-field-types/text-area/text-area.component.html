@@ -8,9 +8,10 @@
     <textarea class="vf-form__textarea" rows="{{rows}}" [formControl]="control" placeholder="{{placeholder}}"
               [attr.disabled]="disabled ? disabled : null">
     </textarea>
+
   </div>
   <div>
-    <p class="vf-form__helper--error">{{error}}</p>
     <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+    <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
   </div>
 </div>
