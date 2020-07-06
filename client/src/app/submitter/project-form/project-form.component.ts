@@ -148,24 +148,30 @@ export class ProjectFormComponent implements OnInit {
     const formValue = formData['value'];
     const valid = formData['valid'];
 
-    if (!this.isWrangler && !valid) {
-      this.alertService.clear();
-      this.alertService.error('Invalid Form', 'Please resolve the form validation errors first before proceeding.');
-    }
+    if (this.createMode && !this.isWrangler && this.formTabIndex+1 < this.formLayout.tabs.length) {
+      console.log(`skipping save until last tab ${this.formTabIndex+1}/${this.formLayout.tabs.length}`);
+      this.incrementTab();
+    } else {
+      console.log(`attempting save on last tab ${this.formTabIndex+1}/${this.formLayout.tabs.length}`);
+      if (!this.isWrangler && !valid) {
+        this.alertService.clear();
+        this.alertService.error('Invalid Form', 'Please resolve the form validation errors first before proceeding.');
+      }
 
-    if ((!this.isWrangler && valid) || this.isWrangler) {
-      this.loaderService.display(true);
-      this.alertService.clear();
-      this.createOrSaveProject(formValue).subscribe(project => {
-          console.log('Project saved', project);
-          this.updateProjectContent(project);
-          this.loaderService.display(false);
-          this.incrementTab();
-        },
-        error => {
-          this.loaderService.display(false);
-          this.alertService.error('Error', error.message);
-        });
+      if ((!this.isWrangler && valid) || this.isWrangler) {
+        this.loaderService.display(true);
+        this.alertService.clear();
+        this.createOrSaveProject(formValue).subscribe(project => {
+            console.log('Project saved', project);
+            this.updateProjectContent(project);
+            this.loaderService.display(false);
+            this.incrementTab();
+          },
+          error => {
+            this.loaderService.display(false);
+            this.alertService.error('Error', error.message);
+          });
+      }
     }
   }
 
