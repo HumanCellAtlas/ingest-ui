@@ -231,10 +231,11 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  private decrementTabIndex() {
-    this.formTabIndex--;
+  decrementTab() {
+    if (this.formTabIndex > 0) {
+      this.formTabIndex--;
+    }
   }
-
 
   private createOrSaveProject(formValue: object): Observable<Project> {
     console.log('formValue', formValue);
