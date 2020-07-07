@@ -31,7 +31,7 @@ import {MetadataListComponent} from './submission/metadata-list/metadata-list.co
 import {ProjectComponent} from './project/project.component';
 import {ProjectListComponent} from './shared/components/project-list/project-list.component';
 import {AllProjectsComponent} from './all-projects/all-projects.component';
-import {MyProjectsComponent} from './submitter/my-projects/my-projects.component';
+import {MyProjectsComponent} from './my-projects/my-projects.component';
 import {ProjectFormComponent} from './submitter/project-form/project-form.component';
 
 import {UploadComponent} from './shared/components/upload/upload.component';

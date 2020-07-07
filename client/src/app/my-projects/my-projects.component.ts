@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {IngestService} from '../../shared/services/ingest.service';
-import {Project} from '../../shared/models/project';
+import {IngestService} from '../shared/services/ingest.service';
+import {Project} from '../shared/models/project';
 import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
-import {AaiService} from '../../aai/aai.service';
+import {AaiService} from '../aai/aai.service';
 import {Profile} from 'oidc-client';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
