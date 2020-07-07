@@ -94,7 +94,6 @@ export class ProjectIdComponent implements OnInit {
     };
     query.push(criteria);
     return this.ingestService.queryProjects(query).map(data => {
-      console.log('total project with same id', data.page['totalElements']);
       return data.page['totalElements'];
     });
   }
@@ -106,7 +105,6 @@ export class ProjectIdComponent implements OnInit {
       const projectId = [this.contributor, organism, technology].join(this.delimiter);
       this.checkProjectCount(projectId).subscribe(count => {
         const suffix = count ? '--' + (++count).toString() : '';
-        console.log('suffix', suffix);
         this.projectIdCtrl.setValue(projectId + suffix, {emitEvent: false});
       });
     }
