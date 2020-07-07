@@ -3,9 +3,6 @@
 </ng-container>
 
 <ng-container *ngIf="project">
-  <app-project-view (tabChange)="projectTabChange($event)" [project]="project">
-  </app-project-view>
-  <br/>
   <div>
     <a class="vf-button vf-button--sm {{upload ? '' : 'vf-button--primary'}}" role="button"
        routerLink="/projects/{{project?.uuid?.uuid}}/{{selectedProjectTab}}">Edit Project</a>
@@ -17,6 +14,9 @@
       <mat-icon>delete_forever</mat-icon>
     </button>
   </div>
+  <br/>
+  <app-project-view (tabChange)="projectTabChange($event)" [project]="project">
+  </app-project-view>
   <br/>
   <app-upload *ngIf="upload" [projectUuid]="projectUuid"></app-upload>
 
