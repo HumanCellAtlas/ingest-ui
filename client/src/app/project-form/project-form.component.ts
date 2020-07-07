@@ -1,18 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {IngestService} from '../../shared/services/ingest.service';
-import {AlertService} from '../../shared/services/alert.service';
-import {SchemaService} from '../../shared/services/schema.service';
-import {Project} from '../../shared/models/project';
+import {IngestService} from '../shared/services/ingest.service';
+import {AlertService} from '../shared/services/alert.service';
+import {SchemaService} from '../shared/services/schema.service';
+import {Project} from '../shared/models/project';
 import * as metadataSchema from './project-metadata-schema.json';
 import * as ingestSchema from './project-ingest-schema.json';
 import {wranglerLayout} from './wrangler-layout';
-import {LoaderService} from '../../shared/services/loader.service';
+import {LoaderService} from '../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {MatTabGroup} from '@angular/material/tabs';
-import {MetadataFormConfig} from '../../metadata-schema-form/models/metadata-form-config';
+import {MetadataFormConfig} from '../metadata-schema-form/models/metadata-form-config';
 import {concatMap} from 'rxjs/operators';
-import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-form-layout';
+import {MetadataFormLayout} from '../metadata-schema-form/models/metadata-form-layout';
 import {contributorLayout} from './contributor-layout';
 
 @Component({

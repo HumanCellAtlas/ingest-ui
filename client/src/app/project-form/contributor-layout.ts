@@ -1,9 +1,9 @@
-import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-form-layout';
-import {AccessionFieldGroupComponent} from '../../project-registration/accession-field-group/accession-field-group.component';
-import {PublicationFieldGroupComponent} from '../../project-registration/publication-field-group/publication-field-group.component';
-import {ContactFieldGroupComponent} from '../../project-registration/contact-field-group/contact-field-group.component';
-import {ProjectRegistrationSummaryComponent} from '../../project-registration/project-registration-summary/project-registration-summary.component';
-import {ProjectIdComponent} from '../../project-registration/project-id/project-id.component';
+import {MetadataFormLayout} from '../metadata-schema-form/models/metadata-form-layout';
+import {AccessionFieldGroupComponent} from '../project-registration/accession-field-group/accession-field-group.component';
+import {PublicationFieldGroupComponent} from '../project-registration/publication-field-group/publication-field-group.component';
+import {ContactFieldGroupComponent} from '../project-registration/contact-field-group/contact-field-group.component';
+import {ProjectRegistrationSummaryComponent} from '../project-registration/project-registration-summary/project-registration-summary.component';
+import {ProjectIdComponent} from '../project-registration/project-id/project-id.component';
 
 export const contributorLayout: MetadataFormLayout = {
   tabs: [
