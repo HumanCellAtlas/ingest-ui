@@ -70,15 +70,27 @@ export class ProjectListComponent implements OnInit {
   }
 
   getApiLink(project: Project) {
-    return project['_links']['self']['href']
+    try {
+      return project['_links']['self']['href'];
+    } catch (e) {
+      return "";
+    }
   }
 
   getShortName(project: Project): string {
-    return project?.content['project_core']['project_short_name'];
+    try {
+      return project?.content['project_core']['project_short_name'];
+    } catch (e) {
+      return "";
+    }
   }
 
   getTitle(project: Project): string {
-    return project?.content['project_core']['project_title'];
+    try {
+      return project?.content['project_core']['project_title'];
+    } catch (e) {
+      return "";
+    }
   }
 
   getLastUpdated(project: Project): string {
