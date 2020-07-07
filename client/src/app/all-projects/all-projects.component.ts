@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Project} from '../shared/models/project';
+import {Project, ProjectColumn} from '../shared/models/project';
 import {IngestService} from '../shared/services/ingest.service';
 import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {tap} from 'rxjs/operators';
@@ -12,6 +12,14 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 })
 export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   projects: Project[];
+  columns: ProjectColumn[] = [
+    ProjectColumn.api_link,
+    ProjectColumn.short_name,
+    ProjectColumn.project_title,
+    ProjectColumn.primary_contributor,
+    ProjectColumn.last_updated
+  ];
+  isWrangler: Boolean = true;
   alive: boolean;
   interval: number;
 
