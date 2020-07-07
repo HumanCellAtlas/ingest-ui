@@ -6,7 +6,7 @@ import {TextListInputComponent} from '../metadata-field-types/text-list-input/te
 import {Metadata} from '../models/metadata';
 import {TextAreaComponent} from '../metadata-field-types/text-area/text-area.component';
 import {AbstractControl, FormGroup} from '@angular/forms';
-import {MetadataFieldDirective} from '../metadata-field.directive';
+import {MetadataFormItemDirective} from '../metadata-form-item.directive';
 import {JsonSchema} from '../models/json-schema';
 import {OntologyListInputComponent} from '../metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from '../metadata-field-types/enum-list-input/enum-list-input.component';
@@ -31,16 +31,33 @@ export class MetadataFieldComponent implements OnInit {
   @Input()
   control: AbstractControl;
 
-  @ViewChild(MetadataFieldDirective, {static: true}) fieldHost: MetadataFieldDirective;
+  @Input()
+  id: string;
+
+  @ViewChild(MetadataFormItemDirective, {static: true}) fieldHost: MetadataFormItemDirective;
 
   constructor(private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit(): void {
-    this.loadComponent(this.metadata, this.control, this.metadata.key);
+    this.loadComponent(this.metadata, this.control, this.id);
   }
 
   private loadComponent(metadata: Metadata, control: AbstractControl, id: string) {
+    const component = this.selectComponent(metadata, control, id);
+
+    if (component) {
+      const factory = this.resolver.resolveComponentFactory<any>(component);
+      const container = this.fieldHost.container;
+      container.clear();
+      const newComponent = container.createComponent(factory);
+      newComponent.instance.metadata = metadata;
+      newComponent.instance.control = control;
+      newComponent.instance.id = id;
+    }
+  }
+
+  private selectComponent(metadata: Metadata, control: AbstractControl, id: string) {
     let component;
 
     if (metadata.isScalar()) {
@@ -62,7 +79,7 @@ export class MetadataFieldComponent implements OnInit {
         component = InputComponent;
         const formGroup = control as FormGroup;
         for (const child of metadata.childrenMetadata) {
-          this.loadComponent(child, formGroup['controls'][child.key], `${id}'-'${child.key}`);
+          this.selectComponent(child, formGroup['controls'][child.key], `${id}'-'${child.key}`);
         }
       }
 
@@ -74,15 +91,6 @@ export class MetadataFieldComponent implements OnInit {
         component = InputComponent;
       }
     }
-
-    if (component) {
-      const factory = this.resolver.resolveComponentFactory<any>(component);
-      const container = this.fieldHost.container;
-      container.clear();
-      const newComponent = container.createComponent(factory);
-      newComponent.instance.metadata = metadata;
-      newComponent.instance.control = control;
-      newComponent.instance.id = id;
-    }
+    return component;
   }
 }

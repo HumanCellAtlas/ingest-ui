@@ -2,11 +2,13 @@
   <app-vf-input *ngIf="!metadata.isHidden"
                 [id]="id"
                 [formControl]="control"
-                [label]="metadata.schema.user_friendly?metadata.schema.user_friendly : metadata.key"
+                [label]="label"
                 [dataType]="metadata.schema.type"
-                [placeholder]="metadata.schema.example"
-                [helperText]="metadata.schema.guidelines ? metadata.schema.guidelines : metadata.schema.description"
-                [isRequired]="metadata.isRequired">
+                [readonly]="metadata.isReadOnly"
+                [placeholder]="placeholder"
+                [helperText]="helperText"
+                [error]="checkForErrors(control)"
+                [isRequired]="isRequired">
   </app-vf-input>
 </ng-container>
 

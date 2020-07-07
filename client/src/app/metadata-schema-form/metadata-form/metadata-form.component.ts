@@ -21,11 +21,13 @@ export class MetadataFormComponent implements OnInit {
 
   @Input() data: object;
 
-  @Input() selectedTabIndex: number = 0;
+  @Input() selectedTabIndex = 0;
 
   @Output() save = new EventEmitter<object>();
 
   @Output() cancel = new EventEmitter<boolean>();
+
+  @Output() back = new EventEmitter<boolean>();
 
   @Output() tabChange = new EventEmitter<number>();
 
@@ -44,17 +46,24 @@ export class MetadataFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.metadataForm = this.metadataFormService.createForm('project', this.schema, this.data, this.config);
-    console.log('metadataForm', this.metadataForm);
     this.formGroup = this.metadataForm.formGroup;
     this.done = true;
-
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const formData = this.metadataFormService.cleanFormData(this.metadataForm.formGroup.value);
+    const formValue = this.metadataForm.formGroup.getRawValue();
+    const formData = this.metadataFormService.cleanFormData(formValue);
     console.log('clean form data', formData);
-    this.save.emit(formData);
+    console.log('form valid?', this.formGroup.valid);
+    console.log('form group', this.formGroup);
+    this.formGroup.markAllAsTouched();
+
+    this.save.emit({
+      value: formData,
+      valid: this.formGroup.valid
+    });
+
   }
 
   confirmCancel(e) {
@@ -68,5 +77,9 @@ export class MetadataFormComponent implements OnInit {
 
   onSelectedIndexChange(tabIndex: number) {
     this.tabChange.emit(tabIndex);
+  }
+
+  onBack($event: MouseEvent) {
+    this.back.emit();
   }
 }

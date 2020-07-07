@@ -1,0 +1,44 @@
+<div class="vf-form__item">
+  <div>
+    <label class="vf-form__label">Is there an existing accession ID for the project?</label>
+  </div>
+  <div></div>
+  <div>
+    <div class="vf-form__item--inline vf-form__item--radio">
+      <input type="radio" name="radio-button-group--inline"
+             id="radio-inline-1" class="vf-form__radio" (change)="onIsAccessionedChange(true)">
+      <label for="radio-inline-1" class="vf-form__label">Yes</label>
+
+      <input type="radio" name="radio-button-group--inline"
+             id="radio-inline-2" class="vf-form__radio" (change)="onIsAccessionedChange(false)">
+      <label for="radio-inline-2" class="vf-form__label">No</label>
+    </div>
+  </div>
+  <div>
+    <p class="vf-form__helper">An accession is usually an identifier you receive for your project if you have submitted
+      it to a repository such as GEO, Arrayexpress, ENA, SRA</p>
+  </div>
+</div>
+
+<app-vf-input
+  *ngIf="isAccessioned"
+  [(ngModel)]="accessionId"
+  [label]="'Existing project accession ID'"
+  [dataType]="'string'"
+  [helperText]="'Enter a project accession ID from a data repository e.g. Geo or Arrayexpress'"
+  (change)="onProjectAccessionIdChange(accessionId)">
+</app-vf-input>
+
+<app-metadata-field
+  *ngIf="isAccessioned!== undefined && !isAccessioned"
+  [metadata]="metadataForm.get('project.accessionDate')"
+  [control]="metadataForm.getControl('project.accessionDate')"
+  [id]="'project.accessionDate'">
+</app-metadata-field>
+
+<app-metadata-field [metadata]="metadataForm.get('project.releaseDate')"
+                    [control]="metadataForm.getControl('project.releaseDate')"
+                    [id]="'project.releaseDate'">
+</app-metadata-field>
+
+

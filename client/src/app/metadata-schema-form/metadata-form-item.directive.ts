@@ -2,9 +2,9 @@ import {Directive, ViewContainerRef} from '@angular/core';
 
 
 @Directive({
-  selector: '[appMetadataField]'
+  selector: '[appMetadataFormItem]'
 })
-export class MetadataFieldDirective {
+export class MetadataFormItemDirective {
 
   constructor(public container: ViewContainerRef) {
   }

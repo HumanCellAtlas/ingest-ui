@@ -3,7 +3,7 @@ export interface JsonSchema {
   '$schema': string;
   type: string;
   format?: string;
-  additionalProperties: boolean;
+  additionalProperties?: boolean;
   description: string;
   name: string;
   properties: object;

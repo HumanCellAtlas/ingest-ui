@@ -197,11 +197,9 @@ describe('MetadataForm', () => {
 
       // when
       const control = metadataForm.getControl('.authors', publications['controls'][0]);
-      console.log('publications', publications);
-      console.log('.authors', control);
 
       // then
-      expect(control).toEqual( publications['controls'][0]['controls']['authors']);
+      expect(control).toEqual(publications['controls'][0]['controls']['authors']);
       expect(control instanceof FormArray).toEqual(true);
       expect(metadataFormSvc.cleanFormData(control.value)).toEqual([
         'Corey JSA',

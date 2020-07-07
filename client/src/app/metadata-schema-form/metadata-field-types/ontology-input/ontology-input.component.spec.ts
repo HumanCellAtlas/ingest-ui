@@ -1,13 +1,13 @@
 import {OntologyInputComponent} from './ontology-input.component';
 import {OntologyService} from '../../../shared/services/ontology.service';
 import {Metadata} from '../../models/metadata';
-import {JsonSchemaProperty} from '../../models/json-schema-property';
 import {JsonSchema} from '../../models/json-schema';
 import {AbstractControl} from '@angular/forms';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {MetadataFormService} from '../../metadata-form.service';
 import {OlsHttpResponse} from '../../../shared/models/ols';
 import {Ontology} from '../../../shared/models/ontology';
+import {MetadataRegistry} from '../../models/metadata-registry';
 
 describe('OntologyInputComponent', () => {
   let olsSvc: jasmine.SpyObj<OntologyService>;
@@ -17,6 +17,7 @@ describe('OntologyInputComponent', () => {
   let schema: JsonSchema;
   let metadataSvc: MetadataFormService;
   let olsResponse: OlsHttpResponse;
+  let metadataRegistry: MetadataRegistry;
 
   beforeEach(() => {
     olsSvc = jasmine.createSpyObj(['select', 'lookup']);
@@ -65,14 +66,12 @@ describe('OntologyInputComponent', () => {
         }
       }
     };
-    metadata = new Metadata({
-      schema: schema as JsonSchemaProperty,
-      key: 'project_role',
-      isRequired: false
-    });
+
+    metadataRegistry = new MetadataRegistry('project_role', schema);
+    metadata = metadataRegistry.get('project_role');
     helper = new MetadataFormHelper();
     metadataSvc = new MetadataFormService();
-    control = helper.toFormGroup(schema);
+    control = helper.toFormGroup(metadata);
     const response = {
       'numFound': 1,
       'start': 0,
@@ -97,7 +96,7 @@ describe('OntologyInputComponent', () => {
     let component: OntologyInputComponent;
 
     beforeEach(() => {
-      component = new OntologyInputComponent(olsSvc);
+      component = new OntologyInputComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();

@@ -37,6 +37,9 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   disabled: boolean;
 
   @Input()
+  readonly : boolean;
+
+  @Input()
   dataType: string;
 
   @Input()
@@ -52,10 +55,10 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   }
 
   onChange = (text: string) => {
-  }
+  };
 
   onTouched = () => {
-  }
+  };
 
   ngOnInit(): void {
     this.inputType = this.INPUT_TYPE[this.dataType];
@@ -87,5 +90,9 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
     if (this.inputType === 'checkbox') {
       this.onChange($event.target.checked);
     }
+  }
+
+  blur($event) {
+    this.onTouched();
   }
 }

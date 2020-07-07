@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Profile} from 'oidc-client';
 import {Router} from '@angular/router';
 import {AaiService} from '../aai/aai.service';

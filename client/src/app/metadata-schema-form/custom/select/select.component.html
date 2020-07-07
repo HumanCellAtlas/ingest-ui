@@ -1,0 +1,26 @@
+<div class="vf-form__item">
+  <div class="vf-form__label">
+    <label *ngIf="label">{{label}}</label>
+    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+  </div>
+  <div></div>
+  <div>
+    <input type="text"
+           placeholder="{{placeholder}}"
+           matInput
+           [matAutocompleteDisabled]="disabled"
+           [formControl]="searchControl"
+           (focusout)="onFocusOut(searchControl.value)"
+           [matAutocomplete]="auto" class="vf-form__input">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith ? displayWith : null"
+                      (optionSelected)="onSelectedValueChange($event)">
+      <mat-option *ngFor="let option of options$ | async" [value]="option">
+        {{displayWith ? displayWith(option) : option}}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+  <div>
+    <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
+    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+  </div>
+</div>

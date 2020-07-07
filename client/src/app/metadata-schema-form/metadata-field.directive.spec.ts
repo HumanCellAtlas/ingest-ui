@@ -1,4 +1,4 @@
-import {MetadataFieldDirective} from './metadata-field.directive';
+import {MetadataFormItemDirective} from './metadata-form-item.directive';
 import {ViewContainerRef} from '@angular/core';
 
 describe('MetadataFieldDirective', () => {
@@ -8,7 +8,7 @@ describe('MetadataFieldDirective', () => {
     containerSpy = jasmine.createSpyObj(['createComponent']) as jasmine.SpyObj<ViewContainerRef>;
 
     it('should create an instance', () => {
-      const directive = new MetadataFieldDirective(containerSpy);
+      const directive = new MetadataFormItemDirective(containerSpy);
       expect(directive).toBeTruthy();
     });
   });

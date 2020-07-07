@@ -8,7 +8,7 @@ import {MetadataFormService} from '../../metadata-form.service';
 import {OlsHttpResponse} from '../../../shared/models/ols';
 import {Ontology} from '../../../shared/models/ontology';
 import {of} from 'rxjs';
-import {OntologyBaseComponent} from "./ontology-base.component";
+import {OntologyBaseComponent} from './ontology-base.component';
 
 describe('OntologyBaseComponent', () => {
   let olsSvc: jasmine.SpyObj<OntologyService>;
@@ -73,7 +73,7 @@ describe('OntologyBaseComponent', () => {
     });
     helper = new MetadataFormHelper();
     metadataSvc = new MetadataFormService();
-    control = helper.toFormGroup(schema);
+    control = helper.toFormGroup(metadata);
     const response = {
       'numFound': 1,
       'start': 0,
@@ -95,14 +95,14 @@ describe('OntologyBaseComponent', () => {
   });
 
   it('should instantiate', () => {
-    const component = new OntologyBaseComponent(olsSvc);
+    const component = new OntologyBaseComponent(olsSvc, metadataSvc);
     expect(component).toBeDefined();
   });
 
   describe('onInit', () => {
     it('should initialise attributes based on metadata and control', () => {
       // given
-      const component = new OntologyBaseComponent(olsSvc);
+      const component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
 
@@ -110,7 +110,7 @@ describe('OntologyBaseComponent', () => {
       component.ngOnInit();
 
       // then
-      expect(component.label).toEqual('project_role');
+      expect(component.label).toEqual('Contributor role ontology');
       expect(component.helperText).toContain(schema['description']);
       expect(component.isRequired).toEqual(metadata.isRequired);
       expect(component.searchControl.value).toEqual('');
@@ -122,7 +122,7 @@ describe('OntologyBaseComponent', () => {
     let component: OntologyBaseComponent;
 
     beforeEach(() => {
-      component = new OntologyBaseComponent(olsSvc);
+      component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();
@@ -177,7 +177,7 @@ describe('OntologyBaseComponent', () => {
     let component: OntologyBaseComponent;
 
     beforeEach(() => {
-      component = new OntologyBaseComponent(olsSvc);
+      component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();
@@ -227,7 +227,7 @@ describe('OntologyBaseComponent', () => {
     let component: OntologyBaseComponent;
 
     beforeEach(() => {
-      component = new OntologyBaseComponent(olsSvc);
+      component = new OntologyBaseComponent(olsSvc, metadataSvc);
       component.metadata = metadata;
       component.control = control;
       component.ngOnInit();

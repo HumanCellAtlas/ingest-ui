@@ -2,33 +2,46 @@
 
   <mat-tab-group (selectedIndexChange)="onSelectedIndexChange($event)"
                  [selectedIndex]="this.selectedTabIndex">
-    <ng-container *ngFor="let tab of config.layout['tabs']">
+    <ng-container *ngFor="let tab of config.layout.tabs">
       <mat-tab>
-        <ng-template mat-tab-label>
-          <label
-            [matTooltip]="metadataForm.get(tab['key']) ? metadataForm.get(tab['key']).schema.description : ''"> {{tab['title']}}  </label>
-        </ng-template>
-        <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-          <ng-container *ngFor="let item of tab['items']">
-            <app-metadata-field
-              *ngIf="metadataForm.get(item)"
-              [id]="item"
-              [metadata]="metadataForm.get(item)"
-              [control]="metadataForm.getControl(item)">
-            </app-metadata-field>
-          </ng-container>
+        <div>
+          <ng-template mat-tab-label>
+            <label
+              [matTooltip]="metadataForm.get(tab.key) ? metadataForm.get(tab.key).schema.description : ''"> {{tab.title}}  </label>
+          </ng-template>
+          <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+            <ng-container *ngFor="let item of tab.items">
+              <app-metadata-form-item
+                [item]="item"
+                [metadataForm]="metadataForm">
+              </app-metadata-form-item>
+            </ng-container>
+          </div>
         </div>
       </mat-tab>
     </ng-container>
   </mat-tab-group>
 
   <ng-container *ngIf="!config.viewMode">
-    <a (click)="confirmCancel($event)" class="vf-button vf-button--tertiary vf-button--sm">Cancel</a>
-    <button *ngIf="this.selectedTabIndex !== config.layout['tabs'].length - 1"
-            class="vf-button vf-button--primary vf-button--sm">Save and Continue
-    </button>
-    <button *ngIf="this.selectedTabIndex === config.layout['tabs'].length - 1"
-            class="vf-button vf-button--primary vf-button--sm">Finish
-    </button>
+    <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+      <div class="form-actions">
+        <div class="vf-u-margin__bottom--xxl">
+          <a class="vf-link vf-u-margin__right--xxl" *ngIf="this.selectedTabIndex !== 0" (click)="onBack($event)">
+            < Back
+          </a>
+          <button
+            *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1 && this.selectedTabIndex !== config.layout.tabs.length"
+            class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
+          </button>
+          <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
+                  class="next-button vf-button vf-button--primary vf-button">Register Project
+          </button>
+        </div>
+        <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
+           class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
+          Or Cancel project registration
+        </a>
+      </div>
+    </div>
   </ng-container>
 </form>

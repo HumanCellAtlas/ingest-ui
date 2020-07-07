@@ -1,0 +1,40 @@
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
+  Please enter the main people we can contact about this project and dataset submission.
+</p>
+
+<ng-container *ngFor="let formGroup of contributorsControl['controls'] ; let i = index">
+
+  <app-contact-name-field
+    [id]="'project.content.contributors' + '-' + i + '-' + 'name'"
+    [metadata]="metadataForm.get('project.content.contributors.name')"
+    [control]="formGroup['controls']['name']">
+  </app-contact-name-field>
+
+  <ng-container *ngFor="let child of contactFieldMetadataList">
+    <app-metadata-field [id]="'project.content.contributors' + '-' + i + '-' + child.key"
+                        [metadata]="child"
+                        [control]="formGroup['controls'][child.key]">
+
+    </app-metadata-field>
+  </ng-container>
+
+  <ng-container>
+    <div class="vf-u-padding__top--xxl"></div>
+    <a class="vf-button vf-button--primary vf-button--outline"
+       *ngIf="i!==0"
+       (click)="removeFormControl(contributorsControl, i)">
+      <mat-icon>remove</mat-icon>
+      Remove contact
+    </a>
+  </ng-container>
+
+</ng-container>
+
+<ng-container>
+  <a class="vf-button vf-button--primary vf-button--outline"
+     (click)="addFormControl(contributorMetadata, contributorsControl)">
+    <mat-icon>add</mat-icon>
+    Add a contact
+  </a>
+</ng-container>
+

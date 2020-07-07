@@ -5,6 +5,7 @@ export class Metadata {
   key: string;
   isRequired: boolean;
   isDisabled: boolean;
+  isReadOnly: boolean;
   isHidden: boolean;
 
   parent: string;
@@ -14,12 +15,15 @@ export class Metadata {
   parentMetadata: Metadata;
   childrenMetadata: Metadata[];
 
+  itemMetadata: Metadata;
+
   constructor(options: {
     schema: JsonSchemaProperty,
     key: string,
     isRequired?: boolean,
     isDisabled?: boolean
     isHidden?: boolean,
+    isReadOnly?: boolean,
 
     parent?: string,
     children?: string[],
@@ -28,6 +32,7 @@ export class Metadata {
   }) {
     this.schema = options.schema;
     this.key = options.key;
+    this.isReadOnly = options.isReadOnly;
     this.isRequired = options.isRequired === undefined ? false : options.isRequired;
     this.isDisabled = options.isDisabled === undefined ? false : options.isDisabled;
     this.isHidden = options.isHidden === undefined ? false : options.isHidden;
@@ -72,7 +77,7 @@ export class Metadata {
   }
 
   setHidden(hidden: boolean): boolean {
-    this.isHidden = hidden
+    this.isHidden = hidden;
     return hidden;
   }
 }

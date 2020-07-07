@@ -3,25 +3,23 @@ import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {Metadata} from '../../models/metadata';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import pluralize from 'pluralize';
-import {JsonSchema} from '../../models/json-schema';
+import {BaseInputComponent} from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-input-field',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css']
 })
-export class InputComponent implements OnInit {
-  metadata: Metadata;
-  control: AbstractControl;
-  id: string;
-
+export class InputComponent extends BaseInputComponent implements OnInit {
   formHelper: MetadataFormHelper;
 
   constructor() {
+    super();
     this.formHelper = new MetadataFormHelper();
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
   }
 
   singularize(word: string) {
@@ -39,7 +37,8 @@ export class InputComponent implements OnInit {
     const formArray = formControl as FormArray;
     const count = formArray.length;
 
-    const formGroup: FormGroup = this.formHelper.toFormGroup(metadata.schema.items as JsonSchema);
+    const formGroup: FormGroup = this.formHelper.toFormGroup(metadata.itemMetadata);
     formArray.insert(count, formGroup);
   }
+
 }

@@ -1,37 +1,25 @@
 import {Component, OnInit} from '@angular/core';
-import {Metadata} from '../../models/metadata';
-import {AbstractControl, FormArray} from '@angular/forms';
+import {FormArray} from '@angular/forms';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
+import {BaseInputComponent} from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-text-list-input',
   templateUrl: './text-list-input.component.html',
   styleUrls: ['./text-list-input.component.css']
 })
-export class TextListInputComponent implements OnInit {
-  metadata: Metadata;
-  control: AbstractControl;
-  id: string;
-
+export class TextListInputComponent extends BaseInputComponent implements OnInit {
   formHelper: MetadataFormHelper;
-
-  label: string;
-  helperText: string;
-  error: string;
-  disabled: boolean;
   value: string;
-
   rows: number;
 
-
   constructor() {
+    super();
     this.formHelper = new MetadataFormHelper();
   }
 
   ngOnInit(): void {
-    this.label = this.metadata.schema.user_friendly ? this.metadata.schema.user_friendly : this.metadata.key;
-    this.helperText = this.metadata.schema.guidelines;
-    this.disabled = this.metadata.isDisabled;
+    super.ngOnInit();
     this.rows = 3;
     this.value = this.control.value.join('\n');
   }
@@ -43,7 +31,7 @@ export class TextListInputComponent implements OnInit {
 
     if (value.trim()) {
       formArray.clear();
-      const data = value.split('\n')
+      const data = value.split('\n');
       if (data && data.length > 0) {
         for (const elem of data) {
           const val = elem.trim();

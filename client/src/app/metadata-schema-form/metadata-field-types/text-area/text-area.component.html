@@ -1,11 +1,17 @@
 <div class="vf-form__item">
-  <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-
-  <label *ngIf="label" class="vf-form__label">{{label}}</label>
-  <textarea class="vf-form__textarea" rows="{{rows}}" [formControl]="control" placeholder="{{example}}"
-            [attr.disabled]="disabled ? disabled : null">
+  <div class="vf-form__label">
+    <label *ngIf="label">{{label}}</label>
+    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+  </div>
+  <div></div>
+  <div>
+    <textarea class="vf-form__textarea" rows="{{rows}}" [formControl]="control" placeholder="{{placeholder}}"
+              [attr.disabled]="disabled ? disabled : null">
     </textarea>
-  <br/>
-  <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
-  <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+
+  </div>
+  <div>
+    <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+    <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
+  </div>
 </div>

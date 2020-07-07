@@ -5,10 +5,10 @@
   "name": "project",
   "properties": {
     "releaseDate": {
-      "guidelines": "Enter the date when you would like the data and metadata for your project to be released publicly and available for download. You can edit this in the future.",
+      "guidelines": "Enter the date when you would like the data and metadata for your project to be released publicly and available for download. You can edit this later.",
       "type": "string",
       "format": "date-time",
-      "user_friendly": "Release date"
+      "user_friendly": "Date for release of the data for this project"
     },
     "accessionDate": {
       "guidelines": "Enter the ideal date when you would have accessions available for your project. We generally require a minimum of 2 weeks to provide an accession. We will endeavour to provide your accessions by the date given",
@@ -25,7 +25,7 @@
       "properties": {
         "type": {
           "description": "Data Access",
-          "guidelines": "What kind of consent do you have to share your data and metadata?",
+          "guidelines": "",
           "type": "array",
           "items": {
             "type": "string"
@@ -36,7 +36,7 @@
             "A mixture of open and managed",
             "It's complicated"
           ],
-          "user_friendly":  "Data Access"
+          "user_friendly":  "Do the data require controlled access?"
         },
         "notes": {
           "description": "Data Access Notes",
@@ -44,11 +44,12 @@
           "user_friendly": "Data Access Notes",
           "guidelines": "Any data access notes?"
         }
-      }
+      },
+      "required": ["type"]
     },
     "identifyingOrganisms": {
-      "description": "Identifying Organism",
-      "guidelines": "What organ or organ system are you working on?",
+      "description": "Organism the samples were generated from",
+      "guidelines": "You can select multiple entries",
       "type": "array",
       "items":{
         "type": "string"
@@ -58,18 +59,18 @@
         "Mouse",
         "Other"
       ],
-      "user_friendly":  "Identifying Organism"
+      "user_friendly":  "Organism the samples were generated from"
     },
     "technology": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "description": "Data Access",
-      "title": "Data Access",
-      "name": "dataAccess",
+      "description":  "Technology",
+      "title":  "Technology",
+      "name": "technology",
       "type": "object",
       "properties": {
         "ontologies": {
           "description": "The general methods used for sequencing library construction in your project.",
-          "guidelines": "Enter the actual ontology id if you know it or keywords to search. If term is not found, please enter it in the other technologies field below.",
+          "guidelines": "Start typing to select the technology. You can select multiple entries.",
           "type": "array",
           "items": {
             "$schema": "http://json-schema.org/draft-07/schema#",
@@ -116,7 +117,7 @@
               }
             }
           },
-          "user_friendly": "Technology"
+          "user_friendly": "Technologies used to generate the data"
         },
         "others": {
           "description": "Other technologies not in the ontologies for technology.",
@@ -127,12 +128,13 @@
           "user_friendly": "Other Technologies",
           "guidelines": "Other technologies not in the options above."
         }
-      }
+      },
+      "required": ["ontologies"]
     },
 
     "content": {}
   },
-  "required": [],
+  "required": ["dataAccess", "identifyingOrganisms", "technology", "releaseDate"],
   "title": "Ingest Project",
   "type": "object"
 }

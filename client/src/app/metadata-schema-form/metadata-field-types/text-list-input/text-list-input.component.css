@@ -1,0 +1,7 @@
+textarea {
+  resize: vertical;
+}
+
+p.vf-form__helper--error{
+  padding-top: 15px;
+}
