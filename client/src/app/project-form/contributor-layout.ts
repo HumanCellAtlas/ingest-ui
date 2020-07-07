@@ -15,13 +15,13 @@ export const contributorLayout: MetadataFormLayout = {
         'project.content.project_core.project_description',
         {
           keys: [
+            'project.identifyingOrganisms',
+            'project.technology',
             'project.content.project_core.project_short_name'
           ],
           component: ProjectIdComponent
         },
         'project.dataAccess.type',
-        'project.identifyingOrganisms',
-        'project.technology',
         {
           keys: [
             'project.content.publications.url'

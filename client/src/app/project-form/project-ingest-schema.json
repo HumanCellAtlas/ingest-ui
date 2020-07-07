@@ -128,8 +128,7 @@
           "user_friendly": "Other Technologies",
           "guidelines": "Other technologies not in the options above."
         }
-      },
-      "required": ["ontologies"]
+      }
     },
 
     "content": {}

@@ -1,3 +1,17 @@
+<app-metadata-field [metadata]="technologyMetadata.parentMetadata"
+                    [control]="parentTechnologyCtrl"
+                    [id]="technologyMetadata.parentMetadata.key">
+
+</app-metadata-field>
+
+
+<app-metadata-field [metadata]="identifyingOrganismMetadata"
+                    [control]="identifyingOrganismCtrl"
+                    [id]="identifyingOrganismMetadata.key">
+
+</app-metadata-field>
+
+
 <app-vf-input *ngIf="!projectIdMetadata.isHidden"
               [id]="projectShortNameKey"
               [formControl]="projectIdCtrl"
@@ -9,6 +23,7 @@
               [error]="checkForErrors(projectIdCtrl)"
               [isRequired]="projectIdMetadata.isRequired">
 </app-vf-input>
+
 
 <div class="vf-form__item vf-form__item--checkbox vf-u-padding__bottom--xxl">
   <input type="checkbox" class="vf-form__checkbox" id="autogenerate"

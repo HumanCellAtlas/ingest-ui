@@ -87,10 +87,14 @@ export class ProjectFormComponent implements OnInit {
 
     this.ingestService.getUserAccount().subscribe(account => {
       this.isWrangler = account.isWrangler();
-
+      let overrideRequiredFields;
       // TODO Refactor checking of current role!!! Implement ability to toggle between account roles
       if (account.isWrangler() || !this.createMode) {
         this.formLayout = wranglerLayout;
+        overrideRequiredFields = {
+          'project.content.contributors.project_role.text': false,
+          'project.content.funders': false,
+        };
       } else {
         this.formLayout = contributorLayout;
       }
@@ -108,10 +112,7 @@ export class ProjectFormComponent implements OnInit {
           'project_description': 'textarea',
           'notes': 'textarea'
         },
-        overrideRequiredFields: {
-          'project.content.contributors.project_role.text': false,
-          'project.content.funders': false
-        }
+        overrideRequiredFields: overrideRequiredFields
       };
 
     });
