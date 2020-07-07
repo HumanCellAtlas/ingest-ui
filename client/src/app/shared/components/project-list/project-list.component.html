@@ -15,8 +15,8 @@
         </a>
       </td>
       <td class="vf-table__cell vf-table__cell--actions white-border">
-        <a *ngIf="project?.primaryWrangler" class="vf-link" [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}">View Project</a>
-        <div  *ngIf="!project?.primaryWrangler">Under Review</div>
+        <a *ngIf="project?.primaryWrangler || showUnassignedActions" class="vf-link" [routerLink]="['/projects/detail']" [queryParams]="{uuid:project?.uuid?.uuid}">View Project</a>
+        <div  *ngIf="!(project?.primaryWrangler || showUnassignedActions)">Under Review</div>
       </td>
     </tr>
 </table>

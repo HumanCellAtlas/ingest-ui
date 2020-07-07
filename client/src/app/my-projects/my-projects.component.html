@@ -4,14 +4,8 @@
     <a class="vf-button vf-button--primary vf-button--sm vf-u-float__right" routerLink="/projects/new" >New Project</a>
   </div>
 </div>
-<div *ngIf="!(account$ | async)?.isWrangler()" >
-  <p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">These are your projects created for the Human Cell Atlas</p>
-  <app-project-list [projects]=projects [columns]="contributorColumns"></app-project-list>
-</div>
-<div *ngIf="(account$ | async)?.isWrangler()" >
-  <p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">These are your assigned projects.</p>
-  <app-project-list [projects]=projects [columns]="wranglerColumns"></app-project-list>
-</div>
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">{{introduction}}</p>
+<app-project-list [projects]=projects [columns]="columns" [showUnassignedActions]="isWrangler"></app-project-list>
 <mat-paginator [length]="currentPageInfo['totalElements']"
                [pageSize]="currentPageInfo['size']"
                [pageIndex]="currentPageInfo['number']"

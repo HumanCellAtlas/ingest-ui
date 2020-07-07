@@ -15,8 +15,13 @@ import {Account} from "../core/account";
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   account$: Observable<Account>;
-  isLoggedIn$: Observable<boolean>;
+  isLoggedIn$: Observable<Boolean>;
+  isWrangler: Boolean;
+  introduction: String;
+  columns: ProjectColumn[];
+
   projects: Project[];
+
   alive: boolean;
   interval: number;
 
@@ -57,6 +62,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
         return of(undefined);
       })
     );
+    this.pollAccount();
     this.pollProjects();
   }
 
@@ -64,24 +70,33 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  get contributorColumns(): ProjectColumn[] {
-    return [
-      ProjectColumn.short_name,
-      ProjectColumn.project_title,
-      ProjectColumn.last_updated
-    ];
+  private pollAccount() {
+    this.account$.subscribe({
+      next: data => {
+        this.isWrangler = data.isWrangler();
+        if (this.isWrangler) {
+          this.introduction = "These are your assigned projects.";
+          this.columns = [
+            ProjectColumn.api_link,
+            ProjectColumn.short_name,
+            ProjectColumn.project_title,
+            ProjectColumn.primary_contributor,
+            ProjectColumn.last_updated
+          ];
+        } else {
+          this.introduction = "These are your projects created for the Human Cell Atlas.";
+          this.columns = [
+            ProjectColumn.short_name,
+            ProjectColumn.project_title,
+            ProjectColumn.last_updated
+          ];
+        }
+      },
+      error: err => {
+        console.log('err', err);
+      }
+    });
   }
-
-  get wranglerColumns(): ProjectColumn[] {
-    return [
-      ProjectColumn.api_link,
-      ProjectColumn.short_name,
-      ProjectColumn.project_title,
-      ProjectColumn.primary_contributor,
-      ProjectColumn.last_updated
-    ];
-  }
-
   pollProjects() {
     TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive) // only fires when component is alive

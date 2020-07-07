@@ -11,6 +11,7 @@ import {formatDate} from "@angular/common";
 export class ProjectListComponent implements OnInit {
   private _projects: Project[];
   private _columns: ProjectColumn[];
+  private _showUnassignedActions: Boolean = false;
 
   constructor() {
   }
@@ -36,6 +37,15 @@ export class ProjectListComponent implements OnInit {
     this._columns = columns;
   }
 
+  get showUnassignedActions(): Boolean {
+    return this._showUnassignedActions;
+  }
+
+  @Input()
+  set showUnassignedActions(showUnassignedActions: Boolean) {
+    this._showUnassignedActions = showUnassignedActions;
+  }
+
   getColumnLabel(column: ProjectColumn): string {
     return $enum.mapValue(column).with({
       [ProjectColumn.api_link]: "",
@@ -54,7 +64,8 @@ export class ProjectListComponent implements OnInit {
       [ProjectColumn.project_title]: this.getTitle(project),
       [ProjectColumn.last_updated]: this.getLastUpdated(project),
       [ProjectColumn.primary_contributor]: this.getContributor(project),
-      [ProjectColumn.primary_wrangler]: "Wrangler Name" //ToDo Include Wrangler and User Account Objects in Project data.
+      [ProjectColumn.primary_wrangler]: "Wrangler Name"
+      //ToDo: Include Wrangler and User Account objects in ingest-core Project object.
     });
   }
 
