@@ -8,6 +8,7 @@
     <input type="text"
            placeholder="{{placeholder}}"
            matInput
+           [attr.required]="touched && isRequired? isRequired: null"
            [matAutocompleteDisabled]="disabled"
            [formControl]="searchControl"
            (focusout)="onFocusOut(searchControl.value)"

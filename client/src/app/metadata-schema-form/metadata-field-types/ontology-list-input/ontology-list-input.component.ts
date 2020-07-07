@@ -31,7 +31,7 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
-        concatMap(value => this.onSearchValueChanged(value))
+        concatMap(val => this.onSearchValueChanged(val))
       );
   }
 
@@ -57,4 +57,7 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
     return this.ols.lookup(this.metadata.schema.items as JsonSchema, searchText);
   }
 
+  onSelectAborted($event: any) {
+    this.control.markAllAsTouched();
+  }
 }

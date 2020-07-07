@@ -25,6 +25,7 @@ export class TextListInputComponent extends BaseInputComponent implements OnInit
   }
 
   change($event) {
+    this.control.markAsTouched();
     const input = $event.target as HTMLInputElement;
     const formArray = this.control as FormArray;
     const value = input.value;
@@ -44,5 +45,9 @@ export class TextListInputComponent extends BaseInputComponent implements OnInit
     } else {
       formArray.clear();
     }
+  }
+
+  onBlur() {
+    this.control.markAllAsTouched();
   }
 }

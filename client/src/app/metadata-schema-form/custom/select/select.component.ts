@@ -47,6 +47,7 @@ export class SelectComponent implements OnInit {
 
 
   searchControl: FormControl;
+  touched: boolean;
 
   constructor() {
   }
@@ -60,11 +61,13 @@ export class SelectComponent implements OnInit {
 
   onSearchValueChanged(value: any) {
     if (typeof value === 'string') {
+      this.touched = true;
       this.searchValueChanged.emit(value.toLowerCase());
     }
   }
 
   onSelectedValueChange(e: MatAutocompleteSelectedEvent) {
+    this.touched = true;
     this.selectedValueChanged.emit(e.option.value);
   }
 
@@ -76,6 +79,7 @@ export class SelectComponent implements OnInit {
   }
 
   onFocusOut(value: any) {
+    this.touched = true;
     this.selectAborted.emit(value ? value : '');
     this.searchControl.setValue(value ? this.value : '');
   }

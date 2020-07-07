@@ -24,11 +24,14 @@ export class DateInputComponent extends BaseInputComponent implements OnInit {
     const date = value ? value.toJSON() : '';
     this.control.setValue(date);
     this.control.markAsDirty();
-    this.error = this.checkForErrors(this.control);
   }
 
   onBlur() {
     this.control.markAsTouched();
     this.error = this.checkForErrors(this.control);
+  }
+
+  onDatePickerClosed() {
+    this.control.markAsTouched();
   }
 }

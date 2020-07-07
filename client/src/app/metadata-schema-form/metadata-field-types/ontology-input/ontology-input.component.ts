@@ -18,6 +18,7 @@ export class OntologyInputComponent extends OntologyBaseComponent {
 
 
   updateControl(value: Ontology | string) {
+    this.control.markAllAsTouched();
     if (typeof value === 'string') {
       value = value.trim();
 

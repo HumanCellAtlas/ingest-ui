@@ -5,3 +5,7 @@ textarea {
 p.vf-form__helper--error{
   padding-top: 15px;
 }
+
+.vf-form__textarea:invalid{
+  border-color:#d32f2f
+}

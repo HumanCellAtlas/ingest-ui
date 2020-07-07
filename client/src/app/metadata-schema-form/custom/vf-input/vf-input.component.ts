@@ -45,6 +45,8 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   error: string;
 
+  touched = false;
+
   INPUT_TYPE = {
     'string': 'text',
     'boolean': 'checkbox',
@@ -92,7 +94,8 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  blur($event) {
+  onBlur($event) {
     this.onTouched();
+    this.touched = true;
   }
 }

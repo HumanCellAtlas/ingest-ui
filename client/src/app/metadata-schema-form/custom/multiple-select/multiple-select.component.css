@@ -1,0 +1,29 @@
+.mat-form-field {
+  width: 100%;
+}
+
+.chip-list-input-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-list {
+  flex-direction: row;
+}
+
+.search-button {
+  margin-top: 9px;
+  margin-left: -45px;
+  color: lightgrey;
+}
+
+.search-input {
+  padding-right: 55px;
+}
+
+.search-box {
+  width: 100%;
+  display: inline-flex;
+
+}

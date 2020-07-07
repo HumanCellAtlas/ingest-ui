@@ -7,7 +7,8 @@
   <app-contact-name-field
     [id]="'project.content.contributors' + '-' + i + '-' + 'name'"
     [metadata]="metadataForm.get('project.content.contributors.name')"
-    [control]="formGroup['controls']['name']">
+    [control]="formGroup['controls']['name']"
+  >
   </app-contact-name-field>
 
   <ng-container *ngFor="let child of contactFieldMetadataList">

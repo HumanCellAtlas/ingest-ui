@@ -5,11 +5,15 @@
   </div>
   <div></div>
   <div>
-    <textarea [id]="id" rows="{{rows}}" [attr.disabled]="disabled ? disabled : null" type="text" class="vf-form__input"
-            placeholder="{{metadata.schema.example}}" (change)="change($event)" [(ngModel)]="value"></textarea>
+    <textarea [id]="id" rows="{{rows}}" class="vf-form__textarea"
+              [attr.disabled]="disabled ? disabled : null" type="text"
+              [required]="control.touched && isRequired? isRequired : null"
+              (blur)="onBlur()"
+              placeholder="{{metadata.schema.example}}" (change)="change($event)" [(ngModel)]="value"></textarea>
+    <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
   </div>
   <div>
     <p *ngIf="helperText" class="vf-form__helper">{{helperText}} Enter each value on separate line. </p>
-    <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
+
   </div>
 </div>

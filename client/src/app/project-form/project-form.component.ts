@@ -148,14 +148,15 @@ export class ProjectFormComponent implements OnInit {
     const formValue = formData['value'];
     const valid = formData['valid'];
 
-    if (this.createMode && !this.isWrangler && this.formTabIndex+1 < this.formLayout.tabs.length) {
-      console.log(`skipping save until last tab ${this.formTabIndex+1}/${this.formLayout.tabs.length}`);
+    if (this.createMode && !this.isWrangler && this.formTabIndex + 1 < this.formLayout.tabs.length) {
+      console.log(`skipping save until last tab ${this.formTabIndex + 1}/${this.formLayout.tabs.length}`);
       this.incrementTab();
     } else {
-      console.log(`attempting save on last tab ${this.formTabIndex+1}/${this.formLayout.tabs.length}`);
+      console.log(`attempting save on last tab ${this.formTabIndex + 1}/${this.formLayout.tabs.length}`);
       if (!this.isWrangler && !valid) {
         this.alertService.clear();
-        this.alertService.error('Invalid Form', 'Please resolve the form validation errors first before proceeding.');
+        const message = 'Some fields in the form are invalid. Please go back through the form to check the errors and resolve them.';
+        this.alertService.error('Invalid Form', message);
       }
 
       if ((!this.isWrangler && valid) || this.isWrangler) {
@@ -203,6 +204,7 @@ export class ProjectFormComponent implements OnInit {
       errorArray.push(error.userFriendlyMessage);
     }
     const message = '<ul><li>' + errorArray.join('</li><li>') + '</li>';
+
     this.alertService.error('JSON Validation Error', message, false, false);
   }
 
@@ -212,6 +214,12 @@ export class ProjectFormComponent implements OnInit {
       obj['schema_type'] = 'project';
       this.schema = schemaUrl;
     });
+  }
+
+  decrementTab() {
+    if (this.formTabIndex > 0) {
+      this.formTabIndex--;
+    }
   }
 
   private updateProjectContent(projectResource: Project) {
@@ -228,12 +236,6 @@ export class ProjectFormComponent implements OnInit {
       } else {
         this.router.navigate(['/projects']);
       }
-    }
-  }
-
-  decrementTab() {
-    if (this.formTabIndex > 0) {
-      this.formTabIndex--;
     }
   }
 

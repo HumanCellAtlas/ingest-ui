@@ -5,34 +5,57 @@
   </div>
   <div></div>
   <div>
-    <mat-form-field class="vf-form__input">
+    <mat-form-field>
       <mat-chip-list #chipList>
-        <mat-chip
-          *ngFor="let selectedValue of selectedValues"
-          [selectable]="selectable"
-          [removable]="removable"
-          (removed)="removeValue(selectedValue)">
-          {{ displayWith ? displayWith(selectedValue) : selectedValue}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-        <input
-          [id]="id"
-          matInput
-          *ngIf="!disabled"
-          (keydown)="onInputKeyboardNavigation($event)"
-          [matAutocompleteDisabled]="disabled"
-          [formControl]="searchControl"
-          [matAutocomplete]="auto"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="addOnBlur">
+        <div class="chip-list-input-box">
+          <div class="chip-list">
+            <mat-chip
+              *ngFor="let selectedValue of selectedValues"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeValue(selectedValue)">
+              {{ displayWith ? displayWith(selectedValue) : selectedValue}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+          </div>
+          <div>
+            <div class="search-box">
+              <input
+                type="search"
+                #input
+                [id]="id"
+                class="vf-form__input search-input"
+                [required]="selectedValues.length === 0 && touched && isRequired? isRequired: null"
+                (focusout)="onFocusOut(searchControl.value)"
+                *ngIf="!disabled"
+                (keydown)="onInputKeyboardNavigation($event)"
+                [matAutocompleteDisabled]="disabled"
+                [formControl]="searchControl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur">
+
+              <a mat-icon-button class="search-button" matSuffix mat-icon-button matTooltip="Clear"
+                 (click)="resetSearch()">
+                <mat-icon>close</mat-icon>
+              </a>
+            </div>
+          </div>
+          <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+        </div>
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-selection-list #selectionList (selectionChange)="onSelectionChange($event)"
                             (keydown)="onListKeyboardNavigation($event)">
-          <mat-list-option [id]="'multi-select-mat-list-option-'+ id"
-                           *ngFor="let option of options$ | async" [selected]="isSelected(option)" [value]="option">
+          <mat-list-option *ngFor="let option of options$ | async"
+                           [id]="'multi-select-mat-list-option-'+ id"
+                           [selected]="isSelected(option)"
+                           [value]="option">
             {{displayWith ? displayWith(option) : option}}
+          </mat-list-option>
+          <mat-list-option *ngIf="(options$ | async)?.length === 0" [disabled]="true">
+            No result found
           </mat-list-option>
         </mat-selection-list>
         <mat-option [style.display]="'none'"></mat-option>
@@ -42,7 +65,7 @@
   </div>
   <div>
     <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
-    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+
   </div>
 </div>
 

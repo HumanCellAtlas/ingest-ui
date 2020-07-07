@@ -69,4 +69,8 @@ export class EnumListInputComponent extends BaseInputComponent implements OnInit
     const filterValue = value ? value.toLowerCase() : '';
     return this.enumValues.filter(option => option.toLowerCase().includes(filterValue));
   }
+
+  onSelectAborted($event: any) {
+    this.control.markAllAsTouched();
+  }
 }
