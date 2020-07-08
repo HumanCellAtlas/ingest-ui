@@ -1,19 +1,19 @@
 <app-vf-input
-  [(ngModel)]="firstName"
   [isRequired]="true"
   [label]="'First Name'"
   [dataType]="'string'"
-  [error]="firstName ? '': 'This field is required'"
-  (change)="onChange(firstName, lastName)"
+  [error]="control.touched && firstNameCtrl.errors && firstNameCtrl.errors.required ? 'This field is required': ''"
+  (blur)="onBlur()"
+  [formControl]="firstNameCtrl"
 >
 </app-vf-input>
 
 <app-vf-input
-  [(ngModel)]="lastName"
   [isRequired]="true"
   [label]="'Last Name'"
   [dataType]="'string'"
-  [error]="lastName ? '': 'This field is required'"
-  (change)="onChange(firstName, lastName)"
+  [error]="control.touched && lastNameCtrl.errors && lastNameCtrl.errors.required ? 'This field is required': ''"
+  [formControl]="lastNameCtrl"
+  (blur)="onBlur()"
 >
 </app-vf-input>

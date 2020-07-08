@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
-import {AbstractControl} from '@angular/forms';
+import {AbstractControl, FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-contact-name-field',
@@ -17,19 +17,37 @@ export class ContactNameFieldComponent implements OnInit {
   @Input()
   id: string;
 
-  firstName: string;
+  firstNameCtrl: FormControl;
 
-  lastName: string;
+  lastNameCtrl: FormControl;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.firstNameCtrl = new FormControl('', [Validators.required]);
+    this.lastNameCtrl = new FormControl('', [Validators.required]);
+
     const names = this.control.value ? this.control.value.split(',') : [];
     if (names.length === 3) {
-      this.firstName = names[0];
-      this.lastName = names[2];
+      const firstName = names[0];
+      const lastName = names[2];
+
+      this.firstNameCtrl.setValue(firstName);
+      this.lastNameCtrl.setValue(lastName);
     }
+
+    this.firstNameCtrl.valueChanges.subscribe(val => {
+      const firstName = val;
+      const lastName = this.lastNameCtrl.value;
+      this.onChange(firstName, lastName);
+    });
+
+    this.lastNameCtrl.valueChanges.subscribe(val => {
+      const firstName = this.firstNameCtrl.value;
+      const lastName = val;
+      this.onChange(firstName, lastName);
+    });
   }
 
   onChange(firstName: string, lastName: string) {
@@ -42,5 +60,9 @@ export class ContactNameFieldComponent implements OnInit {
       lastName = lastName ? lastName : '';
       this.control.setValue(`${firstName},,${lastName}`);
     }
+  }
+
+  onBlur() {
+    this.control.markAllAsTouched();
   }
 }

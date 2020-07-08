@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
-import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
 import {MetadataFormHelper} from '../../metadata-schema-form/models/metadata-form-helper';
 
 @Component({
@@ -33,12 +32,9 @@ export class PublicationFieldGroupComponent implements OnInit {
     this.addFormControl(publicationsMetadata, publicationsControl);
     this.publicationUrlControl = publicationsControl['controls'][0]['controls']['url'];
 
-
-
     const publication = publicationsControl['controls'][0] as FormGroup;
     publication.removeControl('authors');
     publication.removeControl('title');
-
   }
 
   addFormControl(metadata: Metadata, formControl: AbstractControl) {

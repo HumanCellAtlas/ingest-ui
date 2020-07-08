@@ -8,9 +8,11 @@
   [options$]="options$"
   [value]="control.value"
   [error]="checkForErrors(control)"
+  [touched]="control.touched"
   (searchValueChanged)="this.searchControl.setValue($event)"
   (valueAdded)="addFormControl($event)"
   (valueRemoved)="removeFormControl($event)"
+  (selectAborted)="onSelectAborted($event)"
 >
 </app-multiple-select>
 

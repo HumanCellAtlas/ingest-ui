@@ -4,6 +4,7 @@ import {MetadataFormService} from '../metadata-form.service';
 import {JsonSchema} from '../models/json-schema';
 import {MetadataFormConfig} from '../models/metadata-form-config';
 import {MetadataForm} from '../models/metadata-form';
+import {LoaderService} from '../../shared/services/loader.service';
 
 @Component({
   selector: 'app-metadata-form',
@@ -41,7 +42,8 @@ export class MetadataFormComponent implements OnInit {
 
   done: boolean;
 
-  constructor(private metadataFormService: MetadataFormService) {
+  constructor(private metadataFormService: MetadataFormService,
+              private loaderService: LoaderService) {
   }
 
   ngOnInit(): void {
@@ -57,7 +59,10 @@ export class MetadataFormComponent implements OnInit {
     console.log('clean form data', formData);
     console.log('form valid?', this.formGroup.valid);
     console.log('form group', this.formGroup);
-    this.formGroup.markAllAsTouched();
+
+    if (this.selectedTabIndex === this.config.layout.tabs.length - 1) {
+      this.formGroup.markAllAsTouched();
+    }
 
     this.save.emit({
       value: formData,

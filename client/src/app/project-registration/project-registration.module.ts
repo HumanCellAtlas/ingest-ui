@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {ContactNameFieldComponent} from './contact-name-field/contact-name-field.component';
 import {ProjectIdComponent} from './project-id/project-id.component';
+import { ProjectRegistrationFormComponent } from './project-registration-form/project-registration-form.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {ProjectIdComponent} from './project-id/project-id.component';
     PublicationFieldGroupComponent,
     ContactFieldGroupComponent,
     ContactNameFieldComponent,
-    ProjectIdComponent
+    ProjectIdComponent,
+    ProjectRegistrationFormComponent
   ],
   imports: [
     CommonModule,

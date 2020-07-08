@@ -9,11 +9,12 @@
     <div style="display: flex; align-items: center">
       <mat-form-field>
         <input matInput class="vf-form__input" [disabled]="disabled" [matDatepicker]="picker"
+               [attr.required]="control.touched && isRequired? isRequired : null"
                (blur)="onBlur()"
                (dateChange)="onDateChanged($event)"
                [(ngModel)]="value">
-        <mat-datepicker #picker></mat-datepicker>
-
+        <mat-datepicker (closed)="onDatePickerClosed()" #picker></mat-datepicker>
+        <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(this.control)}}</p>
       </mat-form-field>
 
       <mat-datepicker-toggle matSuffix [for]="picker" (blur)="onBlur()" ></mat-datepicker-toggle>
@@ -23,6 +24,5 @@
 
   <div>
     <p *ngIf="helperText" class="vf-form__helper">{{helperText}} </p>
-    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
   </div>
 </div>

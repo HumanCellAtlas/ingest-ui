@@ -34,7 +34,8 @@
             class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
           </button>
           <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
-                  class="next-button vf-button vf-button--primary vf-button">Register Project
+                  class="next-button vf-button vf-button--primary vf-button">
+            {{config.submitButtonLabel ? config.submitButtonLabel : 'Finish'}}
           </button>
         </div>
         <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"

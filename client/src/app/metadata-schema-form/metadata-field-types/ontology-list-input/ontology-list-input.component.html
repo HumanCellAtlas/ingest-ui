@@ -8,10 +8,12 @@
   [options$]="options$"
   [displayWith]="displayOntology"
   [value]="value"
+  [touched]="control.touched"
   [error]="checkForErrors(control)"
   (searchValueChanged)="this.searchControl.setValue($event)"
   (valueAdded)="addFormControl($event)"
   (valueRemoved)="removeFormControl($event)"
+  (selectAborted)="onSelectAborted($event)"
 >
 </app-multiple-select>
 

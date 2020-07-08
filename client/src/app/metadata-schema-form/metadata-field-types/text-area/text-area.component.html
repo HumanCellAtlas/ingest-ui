@@ -6,12 +6,14 @@
   <div></div>
   <div>
     <textarea class="vf-form__textarea" rows="{{rows}}" [formControl]="control" placeholder="{{placeholder}}"
-              [attr.disabled]="disabled ? disabled : null">
-    </textarea>
+              [required]="control.touched && isRequired? isRequired : null"
+              [attr.disabled]="disabled ? disabled : null"></textarea>
+    <br/>
+    <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
 
   </div>
   <div>
     <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
-    <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
+
   </div>
 </div>

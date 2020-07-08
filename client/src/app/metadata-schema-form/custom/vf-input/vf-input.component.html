@@ -6,12 +6,15 @@
     </div>
     <div></div>
     <div>
-      <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}" class="vf-form__input"
-             placeholder="{{placeholder}}" [(ngModel)]="value" (change)="change($event)" (blur)="blur($event)" [readonly]="readonly">
+      <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}"
+             [class]="error ? 'vf-form__input force_invalid': 'vf-form__input'"
+             [attr.required]="error && touched && isRequired ? isRequired : null" placeholder="{{placeholder}}"
+             [(ngModel)]="value"
+             (change)="change($event)" (blur)="onBlur($event)" [readonly]="readonly">
+      <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
     </div>
     <div>
       <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
-      <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
     </div>
   </div>
 </ng-container>

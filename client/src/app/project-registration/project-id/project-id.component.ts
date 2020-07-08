@@ -19,6 +19,20 @@ export class ProjectIdComponent implements OnInit {
   projectIdCtrl: FormControl;
   projectIdMetadata: Metadata;
 
+  technologyKey = 'project.technology.ontologies';
+  technologyMetadata: Metadata;
+  technologyCtrl: FormControl;
+  parentTechnologyCtrl: FormControl;
+
+  otherTechnologyKey = 'project.technology.others';
+  otherTechnologyMetadata: Metadata;
+  otherTechnologyCtrl: FormControl;
+
+  identifyingOrganismKey = 'project.identifyingOrganisms';
+  identifyingOrganismMetadata: Metadata;
+  identifyingOrganismCtrl: FormControl;
+
+
   technology: string;
   otherTechnology: string;
   contributor: string;
@@ -31,40 +45,32 @@ export class ProjectIdComponent implements OnInit {
 
   index = 0;
 
+
   constructor(private metadataFormService: MetadataFormService,
               private ingestService: IngestService) {
   }
 
   ngOnInit(): void {
     this.projectIdMetadata = this.metadataForm.get(this.projectShortNameKey);
+    this.technologyMetadata = this.metadataForm.get(this.technologyKey);
+    this.otherTechnologyMetadata = this.metadataForm.get(this.otherTechnologyKey);
+    this.identifyingOrganismMetadata = this.metadataForm.get(this.identifyingOrganismKey);
+
     this.projectIdCtrl = this.metadataForm.getControl(this.projectShortNameKey) as FormControl;
+    this.technologyCtrl = this.metadataForm.getControl(this.technologyKey) as FormControl;
+    this.otherTechnologyCtrl = this.metadataForm.getControl(this.otherTechnologyKey) as FormControl;
+    this.identifyingOrganismCtrl = this.metadataForm.getControl(this.identifyingOrganismKey) as FormControl;
+
+    this.parentTechnologyCtrl = this.metadataForm.getControl('project.technology') as FormControl;
+    this.parentTechnologyCtrl.setValidators([requireTechnologyValidator(this.metadataFormService)]);
+    this.parentTechnologyCtrl.updateValueAndValidity();
+
     this.projectIdCtrl.setAsyncValidators([uniqueProjectIdAsyncValidator(this.ingestService)]);
     this.projectIdCtrl.updateValueAndValidity();
+
+    this.setUpValueChangeHandlers();
+
     this.label = this.projectIdMetadata.schema.user_friendly || this.projectIdMetadata.schema.title || this.projectIdMetadata.key;
-
-    this.metadataForm.getControl('project.technology.ontologies')
-      .valueChanges
-      .subscribe(val => {
-        this.onTechnologyChange(val);
-      });
-
-    this.metadataForm.getControl('project.technology.others')
-      .valueChanges
-      .subscribe(val => {
-        this.onOtherTechnologyChange(val);
-      });
-
-    this.metadataForm.getControl('project.content.contributors')
-      .valueChanges
-      .subscribe(val => {
-        this.onContributorChange(val);
-      });
-
-    this.metadataForm.getControl('project.identifyingOrganisms')
-      .valueChanges
-      .subscribe(val => {
-        this.onOrganismChange(val);
-      });
   }
 
   onAutogenerateChange() {
@@ -89,7 +95,7 @@ export class ProjectIdComponent implements OnInit {
     const query = [];
     const criteria = {
       'contentField': 'content.project_core.project_short_name',
-      'operator': 'IS',
+      'operator': 'REGEX',
       'value': projectId
     };
     query.push(criteria);
@@ -98,14 +104,41 @@ export class ProjectIdComponent implements OnInit {
     });
   }
 
+  private setUpValueChangeHandlers() {
+    this.metadataForm.getControl('project.technology.ontologies')
+      .valueChanges
+      .subscribe(val => {
+        this.onTechnologyChange(val);
+
+      });
+
+    this.metadataForm.getControl('project.technology.others')
+      .valueChanges
+      .subscribe(val => {
+        this.onOtherTechnologyChange(val);
+      });
+
+    this.metadataForm.getControl('project.content.contributors')
+      .valueChanges
+      .subscribe(val => {
+        this.onContributorChange(val);
+      });
+
+    this.metadataForm.getControl('project.identifyingOrganisms')
+      .valueChanges
+      .subscribe(val => {
+        this.onOrganismChange(val);
+      });
+  }
+
   private generateProjectId() {
     if (this.autogenerate) {
       const technology = this.technology ? this.technology : this.otherTechnology ? this.otherTechnology : 'Unspecified';
       const organism = this.organism ? this.organism : 'Unspecified';
       const projectId = [this.contributor, organism, technology].join(this.delimiter);
       this.checkProjectCount(projectId).subscribe(count => {
-        const suffix = count ? '-' + (++count).toString() : '';
-        this.projectIdCtrl.setValue(projectId + suffix);
+        const suffix = count ? '--' + (++count).toString() : '';
+        this.projectIdCtrl.setValue(projectId + suffix, {emitEvent: false});
       });
     }
   }
@@ -146,6 +179,9 @@ export class ProjectIdComponent implements OnInit {
     technology = this.capitalize(technology);
     this.technology = technology;
     this.generateProjectId();
+
+    const other = this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
+
   }
 
   private onOtherTechnologyChange(val: any) {
@@ -185,5 +221,14 @@ export const uniqueProjectIdAsyncValidator = (ingestService: IngestService, time
         return res.page['totalElements'] === 0 ? null : {exists: true};
       })
     );
+  };
+};
+
+export const requireTechnologyValidator = (metadataFormService: MetadataFormService) => {
+  return (input: FormControl) => {
+    const technology = metadataFormService.cleanFormData(input.value);
+    if (metadataFormService.isEmpty(technology)) {
+      return {required: true};
+    }
   };
 };

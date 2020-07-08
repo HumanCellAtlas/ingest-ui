@@ -42,6 +42,9 @@ export class MultipleSelectComponent implements OnInit {
   @Input()
   displayWith: ((value: any) => string) | null;
 
+  @Input()
+  touched: boolean;
+
   @Output()
   searchValueChanged = new EventEmitter<string>();
 
@@ -51,18 +54,21 @@ export class MultipleSelectComponent implements OnInit {
   @Output()
   valueRemoved = new EventEmitter<number>();
 
+  @Output()
+  selectAborted = new EventEmitter<any>();
+
   selectable = true;
   removable = true;
   addOnBlur = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  formControl = new FormControl();
   selectedValues: any[];
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  @ViewChild('input', {read: MatAutocompleteTrigger}) autoComplete;
+  @ViewChild('auto', {read: MatAutocompleteTrigger}) autoComplete;
   @ViewChild('selectionList') selectionList: MatSelectionList;
 
   searchControl: FormControl;
+
 
   constructor(private metadataFormService: MetadataFormService) {
   }
@@ -79,6 +85,7 @@ export class MultipleSelectComponent implements OnInit {
   }
 
   onSearchValueChanged(value: any) {
+    this.touched = true;
     if (typeof value === 'string') {
       this.searchValueChanged.emit(value.toLowerCase());
     }
@@ -104,6 +111,20 @@ export class MultipleSelectComponent implements OnInit {
     }
   }
 
+  onSelectionChange(event: MatSelectionListChange): void {
+    this.touched = true;
+    this.updateSelectedValues(event.option.value);
+  }
+
+  updateSelectedValues(option: any): void {
+    this.touched = true;
+    if (this.isSelected(option)) {
+      this.removeValue(option);
+    } else {
+      this.addValue(option);
+    }
+  }
+
   removeValue(value: any): void {
     const index = this.selectedValues.indexOf(value);
     if (index >= 0) {
@@ -112,32 +133,34 @@ export class MultipleSelectComponent implements OnInit {
     }
   }
 
-  onSelectionChange(event: MatSelectionListChange): void {
-    this.updateSelectedValues(event.option.value);
-    this.value = '';
-    this.formControl.setValue(null);
-  }
-
   addValue(value: any): void {
     this.selectedValues.push(value);
     this.valueAdded.emit(value);
   }
 
   isSelected(option: any): boolean {
-    return this.selectedValues.indexOf(option) >= 0;
-  }
-
-  updateSelectedValues(option: any): void {
-    if (this.isSelected(option)) {
-      this.removeValue(option);
-    } else {
-      this.addValue(option);
-    }
+    let selected = false;
+    this.selectedValues.forEach((selectedValue) => {
+      if (JSON.stringify(option) === JSON.stringify(selectedValue)) {
+        selected = true;
+      }
+    });
+    return selected;
   }
 
   createSearchControl() {
     const state = {value: this.value, disabled: this.disabled};
     const formControl = this.isRequired ? new FormControl(state, Validators.required) : new FormControl(state);
     return formControl;
+  }
+
+  onFocusOut(value: any) {
+    this.touched = true;
+    this.selectAborted.emit(value ? value : '');
+  }
+
+  resetSearch() {
+    this.searchControl.reset();
+    this.input.nativeElement.value = '';
   }
 }
