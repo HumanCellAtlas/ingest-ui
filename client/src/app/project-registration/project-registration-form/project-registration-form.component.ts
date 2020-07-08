@@ -20,6 +20,9 @@ import {concatMap} from 'rxjs/operators';
 })
 export class ProjectRegistrationFormComponent implements OnInit {
 
+  //  TODO This code needs a bit of refactoring.
+  //  There are some code duplication here with Project form component.
+
   title: string;
   subtitle: string;
 
