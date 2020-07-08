@@ -179,6 +179,9 @@ export class ProjectIdComponent implements OnInit {
     technology = this.capitalize(technology);
     this.technology = technology;
     this.generateProjectId();
+
+    const other = this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
+
   }
 
   private onOtherTechnologyChange(val: any) {
@@ -224,8 +227,6 @@ export const uniqueProjectIdAsyncValidator = (ingestService: IngestService, time
 export const requireTechnologyValidator = (metadataFormService: MetadataFormService) => {
   return (input: FormControl) => {
     const technology = metadataFormService.cleanFormData(input.value);
-    console.log('technology', technology)
-    console.log('technology empty?', metadataFormService.isEmpty(technology))
     if (metadataFormService.isEmpty(technology)) {
       return {required: true};
     }

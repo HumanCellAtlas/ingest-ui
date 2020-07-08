@@ -1,0 +1,20 @@
+<h1 class="vf-text vf-text-heading--2">{{title}}</h1>
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">
+  {{subtitle}}
+</p>
+<br/>
+<br/>
+
+
+<ng-container *ngIf="schema">
+  <app-metadata-form name="project"
+                     [schema]="projectIngestSchema"
+                     [data]="projectFormData"
+                     [config]="config"
+                     (cancel)="onCancel($event)"
+                     (back)="decrementTab()"
+                     (tabChange)="onTabChange($event)"
+                     [selectedTabIndex]="formTabIndex"
+                     (save)="onSave($event)">
+  </app-metadata-form>
+</ng-container>
