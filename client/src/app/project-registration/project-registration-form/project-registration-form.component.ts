@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import * as metadataSchema from '../../submitter/project-form/project-metadata-schema.json';
-import * as ingestSchema from '../../submitter/project-form/project-ingest-schema.json';
+import * as metadataSchema from '../../project-form/project-metadata-schema.json';
+import * as ingestSchema from '../../project-form/project-ingest-schema.json';
 import {Project} from '../../shared/models/project';
 import {MetadataFormConfig} from '../../metadata-schema-form/models/metadata-form-config';
 import {MatTabGroup} from '@angular/material/tabs';

@@ -1,4 +1,4 @@
-import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-form-layout';
+import {MetadataFormLayout} from '../metadata-schema-form/models/metadata-form-layout';
 
 export const layout: MetadataFormLayout = {
   tabs: [
