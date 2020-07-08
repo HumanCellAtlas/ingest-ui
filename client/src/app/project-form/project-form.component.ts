@@ -6,14 +6,13 @@ import {SchemaService} from '../shared/services/schema.service';
 import {Project} from '../shared/models/project';
 import * as metadataSchema from './project-metadata-schema.json';
 import * as ingestSchema from './project-ingest-schema.json';
-import {wranglerLayout} from './wrangler-layout';
+import {layout} from './layout';
 import {LoaderService} from '../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {MatTabGroup} from '@angular/material/tabs';
 import {MetadataFormConfig} from '../metadata-schema-form/models/metadata-form-config';
 import {concatMap} from 'rxjs/operators';
-import {MetadataFormLayout} from '../metadata-schema-form/models/metadata-form-layout';
-import {contributorLayout} from './contributor-layout';
+
 
 @Component({
   selector: 'app-project-form',
@@ -37,15 +36,25 @@ export class ProjectFormComponent implements OnInit {
   formIsValid: boolean = null;
   formTabIndex = 0;
 
-  formLayout: MetadataFormLayout;
+  config: MetadataFormConfig = {
+    hideFields: [
+      'describedBy',
+      'schema_version',
+      'schema_type',
+      'provenance'
+    ],
+    removeEmptyFields: true,
 
-  config: MetadataFormConfig;
+    layout: layout,
+    inputType: {
+      'project_description': 'textarea',
+      'notes': 'textarea'
+    }
+  };
 
   patch: object = {};
 
   schema: string;
-
-  isWrangler: boolean;
 
   @ViewChild('mf') formTabGroup: MatTabGroup;
 
@@ -85,39 +94,6 @@ export class ProjectFormComponent implements OnInit {
       '  You will be able to edit this information as your project develops.' : '';
 
 
-    this.ingestService.getUserAccount().subscribe(account => {
-      this.isWrangler = account.isWrangler();
-      let overrideRequiredFields;
-      // TODO Refactor checking of current role!!! Implement ability to toggle between account roles
-      if (account.isWrangler() || !this.createMode) {
-        this.formLayout = wranglerLayout;
-        overrideRequiredFields = {
-          'project.content.contributors.project_role.text': false,
-          'project.content.funders': false,
-        };
-      } else {
-        this.formLayout = contributorLayout;
-      }
-
-      this.config = {
-        hideFields: [
-          'describedBy',
-          'schema_version',
-          'schema_type',
-          'provenance'
-        ],
-        removeEmptyFields: true,
-        layout: this.formLayout,
-        inputType: {
-          'project_description': 'textarea',
-          'notes': 'textarea'
-        },
-        overrideRequiredFields: overrideRequiredFields
-      };
-
-    });
-
-
   }
 
   setProjectContent(projectUuid) {
@@ -128,14 +104,16 @@ export class ProjectFormComponent implements OnInit {
           this.projectResource = projectResource;
           if (projectResource && projectResource.content &&
             !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
-            this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
-              projectResource.content['describedBy'] = schemaUrl;
-              projectResource.content['schema_type'] = 'project';
-              this.schema = projectResource.content['describedBy'];
-            });
+            this.schemaService.getUrlOfLatestSchema('project')
+              .subscribe(schemaUrl => {
+                projectResource.content['describedBy'] = schemaUrl;
+                projectResource.content['schema_type'] = 'project';
+                this.schema = projectResource.content['describedBy'];
+              });
           }
 
           this.schema = projectResource.content['describedBy'];
+
           this.projectContent = projectResource.content;
           this.projectFormData = this.projectResource;
           this.displayPostValidationErrors();
@@ -147,34 +125,19 @@ export class ProjectFormComponent implements OnInit {
 
   onSave(formData: object) {
     const formValue = formData['value'];
-    const valid = formData['valid'];
-
-    if (this.createMode && !this.isWrangler && this.formTabIndex + 1 < this.formLayout.tabs.length) {
-      console.log(`skipping save until last tab ${this.formTabIndex + 1}/${this.formLayout.tabs.length}`);
-      this.incrementTab();
-    } else {
-      console.log(`attempting save on last tab ${this.formTabIndex + 1}/${this.formLayout.tabs.length}`);
-      if (!this.isWrangler && !valid) {
-        this.alertService.clear();
-        const message = 'Some fields in the form are invalid. Please go back through the form to check the errors and resolve them.';
-        this.alertService.error('Invalid Form', message);
-      }
-
-      if ((!this.isWrangler && valid) || this.isWrangler) {
-        this.loaderService.display(true);
-        this.alertService.clear();
-        this.createOrSaveProject(formValue).subscribe(project => {
-            console.log('Project saved', project);
-            this.updateProjectContent(project);
-            this.loaderService.display(false);
-            this.incrementTab();
-          },
-          error => {
-            this.loaderService.display(false);
-            this.alertService.error('Error', error.message);
-          });
-      }
-    }
+    this.loaderService.display(true);
+    this.alertService.clear();
+    this.createOrSaveProject(formValue)
+      .subscribe(project => {
+          console.log('Project saved', project);
+          this.updateProjectContent(project);
+          this.loaderService.display(false);
+          this.incrementTab();
+        },
+        error => {
+          this.loaderService.display(false);
+          this.alertService.error('Error', error.message);
+        });
   }
 
   onCancel($event: boolean) {
@@ -185,13 +148,11 @@ export class ProjectFormComponent implements OnInit {
         this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
       }
     }
-
   }
 
   onTabChange($event: number) {
     this.formTabIndex = $event;
   }
-
 
   displayPostValidationErrors() {
     if (!this.projectResource) {
@@ -205,22 +166,16 @@ export class ProjectFormComponent implements OnInit {
       errorArray.push(error.userFriendlyMessage);
     }
     const message = '<ul><li>' + errorArray.join('</li><li>') + '</li>';
-
     this.alertService.error('JSON Validation Error', message, false, false);
   }
 
   setSchema(obj: object) {
-    this.schemaService.getUrlOfLatestSchema('project').subscribe(schemaUrl => {
-      obj['describedBy'] = schemaUrl;
-      obj['schema_type'] = 'project';
-      this.schema = schemaUrl;
-    });
-  }
-
-  decrementTab() {
-    if (this.formTabIndex > 0) {
-      this.formTabIndex--;
-    }
+    this.schemaService.getUrlOfLatestSchema('project')
+      .subscribe(schemaUrl => {
+        obj['describedBy'] = schemaUrl;
+        obj['schema_type'] = 'project';
+        this.schema = schemaUrl;
+      });
   }
 
   private updateProjectContent(projectResource: Project) {
@@ -231,12 +186,8 @@ export class ProjectFormComponent implements OnInit {
 
   private incrementTab() {
     this.formTabIndex++;
-    if (this.formTabIndex >= this.formLayout.tabs.length) {
-      if (this.isWrangler) {
-        this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
-      } else {
-        this.router.navigate(['/projects']);
-      }
+    if (this.formTabIndex >= layout.tabs.length) {
+      this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
     }
   }
 
@@ -244,10 +195,12 @@ export class ProjectFormComponent implements OnInit {
     console.log('formValue', formValue);
     if (this.createMode) {
       this.patch = formValue;
-      return this.ingestService.postProject(this.patch).pipe(concatMap(createdProject => {
-        return this.ingestService.patchProject(createdProject, this.patch) // save fields outside content
-          .map(project => project as Project);
-      }));
+      return this.ingestService.postProject(this.patch)
+        .pipe(
+          concatMap(createdProject => {
+            return this.ingestService.patchProject(createdProject, this.patch) // save fields outside content
+              .map(project => project as Project);
+          }));
     } else {
       this.patch = formValue;
       return this.ingestService.patchProject(this.projectResource, this.patch)

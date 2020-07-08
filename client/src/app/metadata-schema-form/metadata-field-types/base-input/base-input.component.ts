@@ -44,5 +44,10 @@ export class BaseInputComponent implements OnInit {
     if ((control.touched || control.dirty) && control.invalid && (control.errors && control.errors.required)) {
       return 'This field is required';
     }
+
+    const parent = control.parent;
+    if (parent && (parent.touched || control.touched) && parent.invalid && parent.errors && parent.errors.required) {
+      return 'This field is required';
+    }
   }
 }

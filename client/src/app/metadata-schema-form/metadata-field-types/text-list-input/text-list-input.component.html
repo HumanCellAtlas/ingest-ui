@@ -7,7 +7,7 @@
   <div>
     <textarea [id]="id" rows="{{rows}}" class="vf-form__textarea"
               [attr.disabled]="disabled ? disabled : null" type="text"
-              [required]="control.touched && isRequired? isRequired : null"
+              [required]="shouldSetRequiredAttr()"
               (blur)="onBlur()"
               placeholder="{{metadata.schema.example}}" (change)="change($event)" [(ngModel)]="value"></textarea>
     <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>

@@ -25,7 +25,7 @@
                 #input
                 [id]="id"
                 class="vf-form__input search-input"
-                [required]="selectedValues.length === 0 && touched && isRequired? isRequired: null"
+                [required]="(touched && error) || (selectedValues.length === 0 && touched && isRequired)? true: null"
                 (focusout)="onFocusOut(searchControl.value)"
                 *ngIf="!disabled"
                 (keydown)="onInputKeyboardNavigation($event)"

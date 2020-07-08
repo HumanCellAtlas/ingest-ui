@@ -5,16 +5,15 @@
 <br/>
 <br/>
 
-<p *ngIf="!formLayout || !schema || !(projectResource || createMode)">Loading project...</p>
+<p *ngIf="!schema || !(projectResource || createMode)">Loading project...</p>
 
-<ng-container *ngIf="formLayout && schema && (projectResource || createMode)">
+<ng-container *ngIf="schema && (projectResource || createMode)">
 
   <app-metadata-form name="project"
                      [schema]="projectIngestSchema"
                      [data]="projectFormData"
                      [config]="config"
                      (cancel)="onCancel($event)"
-                     (back)="decrementTab()"
                      (tabChange)="onTabChange($event)"
                      [selectedTabIndex]="formTabIndex"
                      (save)="onSave($event)">

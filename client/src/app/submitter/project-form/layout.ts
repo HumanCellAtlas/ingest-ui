@@ -1,6 +1,6 @@
 import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-form-layout';
 
-export const wranglerLayout: MetadataFormLayout = {
+export const layout: MetadataFormLayout = {
   tabs: [
     {
       title: 'Project',

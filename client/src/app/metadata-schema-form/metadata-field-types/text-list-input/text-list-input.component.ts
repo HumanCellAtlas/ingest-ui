@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray} from '@angular/forms';
+import {AbstractControl, FormArray} from '@angular/forms';
 import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {BaseInputComponent} from '../base-input/base-input.component';
 
@@ -49,5 +49,13 @@ export class TextListInputComponent extends BaseInputComponent implements OnInit
 
   onBlur() {
     this.control.markAllAsTouched();
+  }
+
+  shouldSetRequiredAttr(): boolean {
+    return (this.isControlRequired(this.control) || this.isControlRequired(this.control.parent)) && this.control.touched;
+  }
+
+  private isControlRequired(control: AbstractControl): boolean {
+    return control && control.invalid && control.errors && control.errors.required;
   }
 }
