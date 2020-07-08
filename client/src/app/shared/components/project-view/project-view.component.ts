@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Project} from '../../models/project';
 import {AlertService} from '../../services/alert.service';
-import * as metadataSchema from '../../../submitter/project-form/project-metadata-schema.json';
-import * as ingestSchema from '../../../submitter/project-form/project-ingest-schema.json';
-import {wranglerLayout} from '../../../submitter/project-form/wrangler-layout';
+import * as metadataSchema from '../../../project-form/project-metadata-schema.json';
+import * as ingestSchema from '../../../project-form/project-ingest-schema.json';
+import {wranglerLayout} from '../../../project-form/wrangler-layout';
 import {MetadataFormConfig} from '../../../metadata-schema-form/models/metadata-form-config';
 
 

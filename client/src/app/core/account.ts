@@ -1,5 +1,6 @@
 export class Account {
   id: string;
+  name: string;
   providerReference: string;
   roles: string[];
 

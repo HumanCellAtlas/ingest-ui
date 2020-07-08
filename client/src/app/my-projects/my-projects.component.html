@@ -1,0 +1,14 @@
+<div class="vf-grid">
+  <h1 class="vf-text vf-text-heading--2">My Projects</h1>
+  <div>
+    <a class="vf-button vf-button--primary vf-button--sm vf-u-float__right" routerLink="/projects/new" >New Project</a>
+  </div>
+</div>
+<p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">{{introduction}}</p>
+<app-project-list [projects]=projects [columns]="columns" [showUnassignedActions]="isWrangler"></app-project-list>
+<mat-paginator [length]="currentPageInfo['totalElements']"
+               [pageSize]="currentPageInfo['size']"
+               [pageIndex]="currentPageInfo['number']"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="pageEvent = $event">
+</mat-paginator>
