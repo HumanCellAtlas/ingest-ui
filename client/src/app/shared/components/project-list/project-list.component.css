@@ -1,3 +1,7 @@
 .white-border{
   border-color: white;
 }
+
+table {
+  width: 100%;
+}
