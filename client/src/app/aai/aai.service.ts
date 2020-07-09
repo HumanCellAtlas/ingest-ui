@@ -41,20 +41,13 @@ export class AaiService {
     return this.getUser().map(user => user && !user.expired);
   }
 
-  isUserFromEBI(): Observable<boolean> {
-    return this.getUser().map(user => user && user.profile && user.profile.email.indexOf('@ebi.ac.uk') >= 0);
-  }
-
-  isUserLoggedInAndFromEBI(): Observable<boolean> {
-    return Observable.forkJoin(this.isUserLoggedIn(), this.isUserFromEBI()).map(results => results[0] && results[1]);
-  }
-
   getAuthorizationHeaderValue(): Observable<string> {
     return this.getUser().map(user => `${user.token_type} ${user.access_token}`);
   }
 
-  startAuthentication(): Promise<void> {
-    return this.manager.signinRedirect();
+  startAuthentication(redirect: string): Promise<void> {
+    const state = {state:encodeURIComponent(redirect)}
+    return this.manager.signinRedirect(state);
   }
 
   completeAuthentication(): Promise<void> {
@@ -63,7 +56,12 @@ export class AaiService {
       this.user$.next(user);
       this.authenticationService.getAccount(user.access_token)
         .then(() => {
-          this.router.navigate(['/home']);
+          let redirect = user.state;
+          if (redirect) {
+            this.router.navigateByUrl(decodeURIComponent(redirect));
+          } else {
+            this.router.navigateByUrl('/home');
+          }
         })
         .catch(() => {
           this.router.navigate(['/registration']);
