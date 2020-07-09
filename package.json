@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "dependencies": {
-    "npm": "^6.13.4",
+    "npm": "^6.14.6",
     "snyk": "^1.258.2"
   },
   "scripts": {
