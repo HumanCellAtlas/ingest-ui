@@ -1,7 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AaiService} from '../aai/aai.service';
-import {AlertService} from '../shared/services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -10,23 +9,34 @@ import {AlertService} from '../shared/services/alert.service';
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
+  redirect: string
 
   constructor(private aai: AaiService,
               private router: Router,
-              private alertService: AlertService) {
-    this.aai.isUserLoggedInAndFromEBI().subscribe(isLoggedInAndFromEBI => {
-      if (isLoggedInAndFromEBI) {
-        alert('You are already logged in. Redirecting to homepage...');
-        this.router.navigate(['/home']);
+              private route: ActivatedRoute) {
+    this.redirect = this.route.snapshot.queryParamMap.get('redirect');
+    this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.navigate()
       }
     });
   }
 
   login(): void {
     this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
-      if (!isLoggedIn) {
-        this.aai.startAuthentication();
+      if (isLoggedIn) {
+        this.navigate()
+      } else {
+        this.aai.startAuthentication(this.redirect);
       }
     });
+  }
+
+  navigate() {
+    if (this.redirect) {
+      this.router.navigateByUrl(this.redirect);
+    } else {
+      this.router.navigateByUrl('/home');
+    }
   }
 }
