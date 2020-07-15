@@ -13,7 +13,7 @@ export class MetadataFormService {
   }
 
   createForm(entity: string, schema: JsonSchema, data: object, config: MetadataFormConfig) {
-    const form = new MetadataForm('project', schema, data, config);
+    const form = new MetadataForm(entity, schema, data, config);
     return form;
   }
 
