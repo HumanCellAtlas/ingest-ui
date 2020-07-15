@@ -10,6 +10,7 @@ import {MetadataFormItemDirective} from '../metadata-form-item.directive';
 import {JsonSchema} from '../models/json-schema';
 import {OntologyListInputComponent} from '../metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from '../metadata-field-types/enum-list-input/enum-list-input.component';
+import {EnumInputComponent} from "../metadata-field-types/enum-input/enum-input.component";
 
 const components = {
   text: InputComponent,
@@ -61,10 +62,12 @@ export class MetadataFieldComponent implements OnInit {
     let component;
 
     if (metadata.isScalar()) {
-
-      component = metadata.inputType ? components[metadata.inputType] : InputComponent;
-      component = metadata.schema.format === 'date-time' ? DateInputComponent : component;
-
+      if (metadata.schema.enum) {
+        component = EnumInputComponent;
+      } else {
+        component = metadata.inputType ? components[metadata.inputType] : InputComponent;
+        component = metadata.schema.format === 'date-time' ? DateInputComponent : component;
+      }
     } else if (metadata.isScalarList()) {
       if (metadata.schema.enum) {
         component = EnumListInputComponent;
