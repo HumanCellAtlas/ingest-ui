@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Questions required to generate an spreadsheet",
+  "name": "template-questionnaire",
+  "properties": {
+    "identifyingOrganisms": {
+      "description": "Identifying Organism",
+      "user_friendly": "What organism the samples were generated from?",
+      "guidelines": "You can select multiple entries",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Human",
+        "Mouse",
+        "Other"
+      ]
+    },
+    "preNatalQuantity": {
+      "description": "Pre-natal Samples",
+      "user_friendly": "Are any of your donor samples pre-natal?",
+      "guidelines": "Are any samples fetal or embryonic?",
+      "type": "string",
+      "enum": [
+        "All",
+        "Some",
+        "None"
+      ]
+    },
+    "donorsRelated": {
+      "description": "Donor Related Samples",
+      "user_friendly": "Are any of your donors related to one another?",
+      "guidelines": "For example, a mother and a fetus?",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "specimenType": {
+      "description": "Specimen Type",
+      "user_friendly": "What type of specimens did you use?",
+      "guidelines": "You can select multiple entries.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Primary Tissue",
+        "Organoid",
+        "Cell Line"
+      ]
+    },
+    "trackExperimentInfo": {
+      "description": "Track Experimental Info",
+      "user_friendly": "Do you wish to record experimental information?",
+      "guidelines": "Record where, when and who performed your experiment?",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "timecourseInvolved": {
+      "description": "Timecourse Involved",
+      "user_friendly": "Did your experiment involve a timecourse?",
+      "guidelines": "You can select Yes or No.",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    }
+  },
+  "required": ["identifyingOrganisms", "preNatalQuantity", "donorsRelated", "specimenType", "trackExperimentInfo", "timecourseInvolved"],
+  "title": "Spreadsheet Questionnaire",
+  "type": "object"
+}
