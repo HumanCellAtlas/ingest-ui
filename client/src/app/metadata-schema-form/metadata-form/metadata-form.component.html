@@ -40,7 +40,7 @@
         </div>
         <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
            class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
-          Or Cancel project registration
+          {{config.cancelButtonLabel ? config.cancelButtonLabel : 'Or Cancel project registration'}}
         </a>
       </div>
     </div>
