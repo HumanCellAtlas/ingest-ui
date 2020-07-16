@@ -16,6 +16,7 @@ import {OntologyInputComponent} from './metadata-field-types/ontology-input/onto
 import {MultipleSelectComponent} from './custom/multiple-select/multiple-select.component';
 import {MetadataFieldComponent} from './metadata-field/metadata-field.component';
 import {SelectComponent} from './custom/select/select.component';
+import {SelectRadioComponent} from "./custom/select-radio/select-radio.component";
 import {OntologyListInputComponent} from './metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enum-list-input.component';
 import {MaterialModule} from '../material.module';
@@ -48,6 +49,7 @@ import {EnumInputComponent} from "./metadata-field-types/enum-input/enum-input.c
     MultipleSelectComponent,
     MetadataFieldComponent,
     SelectComponent,
+    SelectRadioComponent,
     OntologyListInputComponent,
     EnumInputComponent,
     EnumListInputComponent,
@@ -58,7 +60,8 @@ import {EnumInputComponent} from "./metadata-field-types/enum-input/enum-input.c
   exports: [
     MetadataFormComponent,
     MetadataFieldComponent,
-    VfInputComponent
+    VfInputComponent,
+    SelectRadioComponent
   ],
   providers: []
 })
