@@ -1,13 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "description": "Questions required to generate an spreadsheet",
+  "description": "Information required to generate an spreadsheet",
   "name": "template-questionnaire",
   "properties": {
     "identifyingOrganisms": {
-      "description": "Identifying Organism",
       "user_friendly": "What organism the samples were generated from?",
-      "guidelines": "You can select multiple entries",
       "type": "array",
       "items": {
         "type": "string"
@@ -19,7 +17,6 @@
       ]
     },
     "preNatalQuantity": {
-      "description": "Pre-natal Samples",
       "user_friendly": "Are any of your donor samples pre-natal?",
       "guidelines": "Are any samples fetal or embryonic?",
       "type": "string",
@@ -30,7 +27,6 @@
       ]
     },
     "donorsRelated": {
-      "description": "Donor Related Samples",
       "user_friendly": "Are any of your donors related to one another?",
       "guidelines": "For example, a mother and a fetus?",
       "type": "string",
@@ -40,9 +36,7 @@
       ]
     },
     "specimenType": {
-      "description": "Specimen Type",
       "user_friendly": "What type of specimens did you use?",
-      "guidelines": "You can select multiple entries.",
       "type": "array",
       "items": {
         "type": "string"
@@ -53,8 +47,15 @@
         "Cell Line"
       ]
     },
-    "trackExperimentInfo": {
-      "description": "Track Experimental Info",
+    "specimenPurchased": {
+      "user_friendly": "Did you purchase your specimens?",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "experimentInfo": {
       "user_friendly": "Do you wish to record experimental information?",
       "guidelines": "Record where, when and who performed your experiment?",
       "type": "string",
@@ -63,18 +64,86 @@
         "No"
       ]
     },
-    "timecourseInvolved": {
-      "description": "Timecourse Involved",
+    "experimentTimecourse": {
       "user_friendly": "Did your experiment involve a timecourse?",
-      "guidelines": "You can select Yes or No.",
       "type": "string",
       "enum": [
         "Yes",
         "No"
       ]
+    },
+    "technology": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description":  "Technology",
+      "title":  "Technology",
+      "name": "technology",
+      "type": "object",
+      "required": ["ontologies"],
+      "properties": {
+        "ontologies": {
+          "description": "The general methods used for sequencing library construction in your project.",
+          "guidelines": "Start typing to select the technology. You can select multiple entries.",
+          "type": "array",
+          "items": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://schema.dev.data.humancellatlas.org/module/ontology/1.2.5/library_construction_ontology",
+            "description": "A term that may be associated with a process-related ontology term.",
+            "additionalProperties": false,
+            "required": [
+              "text"
+            ],
+            "title": "Library construction ontology",
+            "name": "library_construction_ontology",
+            "type": "object",
+            "properties": {
+              "text": {
+                "description": "The name of a library construction approach being used.",
+                "type": "string",
+                "user_friendly": "Library construction",
+                "example": "10X v2 sequencing; Smart-seq2"
+              },
+              "ontology": {
+                "description": "An ontology term identifier in the form prefix:accession.",
+                "type": "string",
+                "graph_restriction": {
+                  "ontologies": [
+                    "obo:efo"
+                  ],
+                  "classes": [
+                    "OBI:0000711"
+                  ],
+                  "relations": [
+                    "rdfs:subClassOf"
+                  ],
+                  "direct": false,
+                  "include_self": false
+                },
+                "user_friendly": "Library construction ontology ID",
+                "example": "EFO:0009310; EFO:0008931"
+              },
+              "ontology_label": {
+                "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field.",
+                "type": "string",
+                "user_friendly": "Library construction ontology label",
+                "example": "10X v2 sequencing; Smart-seq2"
+              }
+            }
+          },
+          "user_friendly": "Technologies used to generate the data"
+        },
+        "others": {
+          "description": "Other technologies not in the ontologies for technology.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "user_friendly": "Other Technologies",
+          "guidelines": "Other technologies not in the options above."
+        }
+      }
     }
   },
-  "required": ["identifyingOrganisms", "preNatalQuantity", "donorsRelated", "specimenType", "trackExperimentInfo", "timecourseInvolved"],
+  "required": ["identifyingOrganisms", "preNatalQuantity", "donorsRelated", "specimenType", "experimentInfo", "experimentTimecourse", "technology"],
   "title": "Spreadsheet Questionnaire",
   "type": "object"
 }
