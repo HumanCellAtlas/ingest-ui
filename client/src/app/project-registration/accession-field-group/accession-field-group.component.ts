@@ -34,8 +34,8 @@ export class AccessionFieldGroupComponent implements OnInit {
     this.formHelper = new MetadataFormHelper();
   }
 
-  onIsAccessionedChange(isAccessioned: boolean) {
-    this.isAccessioned = isAccessioned;
+  onIsAccessionedChange(isAccessioned: string) {
+    this.isAccessioned = isAccessioned == 'Yes';
     if (!this.isAccessioned) {
       this.clearAccessionFields();
     }
