@@ -1,0 +1,11 @@
+<app-metadata-field
+  [metadata]="metadataForm.get('template-questionnaire.specimenType')"
+  [control]="metadataForm.getControl('template-questionnaire.specimenType')"
+  [id]="'template-questionnaire.specimenType'">
+</app-metadata-field>
+
+<app-metadata-field *ngIf="showPurchased"
+  [metadata]="metadataForm.get('template-questionnaire.specimenPurchased')"
+  [control]="metadataForm.getControl('template-questionnaire.specimenPurchased')"
+  [id]="'template-questionnaire.specimenPurchased'">
+</app-metadata-field>

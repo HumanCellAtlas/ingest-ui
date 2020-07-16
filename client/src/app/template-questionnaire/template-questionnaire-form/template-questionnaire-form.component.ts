@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import * as questionnaireSchema from './template-questionnaire-schema.json'
 import {MetadataFormConfig} from "../../metadata-schema-form/models/metadata-form-config";
 import {MetadataFormLayout} from "../../metadata-schema-form/models/metadata-form-layout";
+import {SpecimenGroupComponent} from "../specimen-group/specimen-group.component";
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -9,7 +10,19 @@ export const layout: MetadataFormLayout = {
       title: "Spreadsheet Questionnaire",
       key: "template-questionnaire",
       items: [
-        "template-questionnaire",
+        "template-questionnaire.identifyingOrganisms",
+        "template-questionnaire.preNatalQuantity",
+        "template-questionnaire.donorsRelated",
+        {
+          keys: [
+            'template-questionnaire.specimenType',
+            'template-questionnaire.specimenPurchased'
+          ],
+          component: SpecimenGroupComponent
+        },
+        "template-questionnaire.technology.ontologies",
+        "template-questionnaire.experimentInfo",
+        "template-questionnaire.experimentTimecourse"
       ]
     }
   ]
