@@ -53,7 +53,7 @@ import {MaterialModule} from './material.module';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ProjectRegistrationModule} from './project-registration/project-registration.module';
 import {WelcomeComponent} from './welcome/welcome.component';
-import {TemplateQuestionnaireComponent} from "./template-questionnaire/template-questionnaire.component";
+import {TemplateQuestionnaireModule} from "./template-questionnaire/template-questionnaire.module";
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -82,7 +82,6 @@ const BROWSER_LOCALE = navigator.language;
     GlobalHeaderComponent,
     RegistrationComponent,
     WelcomeComponent,
-    TemplateQuestionnaireComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +97,8 @@ const BROWSER_LOCALE = navigator.language;
     MaterialModule,
     AaiSecurity,
     MetadataSchemaFormModule,
-    ProjectRegistrationModule
+    ProjectRegistrationModule,
+    TemplateQuestionnaireModule
   ],
   providers: [
     {

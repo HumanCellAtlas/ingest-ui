@@ -13,7 +13,7 @@ import {UserIsWranglerGuard} from './shared/guards/user-is-wrangler.guard';
 import {WranglerOrOwnerGuard} from './shared/guards/wrangler-or-owner.guard';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {ProjectRegistrationFormComponent} from './project-registration/project-registration-form/project-registration-form.component';
-import {TemplateQuestionnaireComponent} from "./template-questionnaire/template-questionnaire.component";
+import {TemplateQuestionnaireFormComponent} from "./template-questionnaire/template-questionnaire-form/template-questionnaire-form.component";
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
@@ -35,7 +35,7 @@ export const ROUTES: Routes = [
   {path: 'projects/:uuid/:tab', component: ProjectFormComponent, canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
   {path: 'submissions/detail', component: SubmissionComponent,  canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
 
-  {path: 'template', component: TemplateQuestionnaireComponent},
+  {path: 'template', component: TemplateQuestionnaireFormComponent},
 
   {path: '**', redirectTo: ''}
 ];

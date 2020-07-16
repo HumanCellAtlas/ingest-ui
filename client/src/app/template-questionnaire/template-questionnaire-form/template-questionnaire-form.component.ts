@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import * as questionnaireSchema from './template-questionnaire-schema.json'
-import {MetadataFormConfig} from "../metadata-schema-form/models/metadata-form-config";
-import {MetadataFormLayout} from "../metadata-schema-form/models/metadata-form-layout";
+import {MetadataFormConfig} from "../../metadata-schema-form/models/metadata-form-config";
+import {MetadataFormLayout} from "../../metadata-schema-form/models/metadata-form-layout";
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -18,10 +18,10 @@ export const layout: MetadataFormLayout = {
 
 @Component({
   selector: 'app-template-questionnaire',
-  templateUrl: './template-questionnaire.component.html',
-  styleUrls: ['./template-questionnaire.component.css']
+  templateUrl: './template-questionnaire-form.component.html',
+  styleUrls: ['./template-questionnaire-form.component.css']
 })
-export class TemplateQuestionnaireComponent {
+export class TemplateQuestionnaireFormComponent {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object= {};
   config: MetadataFormConfig = {
