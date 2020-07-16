@@ -1,14 +1,12 @@
-<app-select
+<app-select-radio
   [id]="id"
   [label]="label"
   [isRequired]="isRequired"
   [disabled]="disabled"
   [placeholder]="placeholder"
   [helperText]="helperText"
-  [options$]="options$"
+  [options]="metadata.schema.enum"
   [value]="control.value"
   [error]="checkForErrors(control)"
-  (searchValueChanged)="searchControl.setValue($event)"
-  (selectedValueChanged)="updateControl($event)"
-  (selectAborted)="onSelectAborted($event)"
-></app-select>
+  (valueChanged)="updateControl($event)"
+></app-select-radio>
