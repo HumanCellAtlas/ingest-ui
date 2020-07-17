@@ -1,0 +1,16 @@
+<app-metadata-field
+  [metadata]="metadataForm.get('template-questionnaire.identifyingOrganisms')"
+  [control]="metadataForm.getControl('template-questionnaire.identifyingOrganisms')"
+  [id]="'template-questionnaire.identifyingOrganisms'">
+</app-metadata-field>
+
+<app-metadata-field *ngIf="showRelatedDonor"
+  [metadata]="metadataForm.get('template-questionnaire.donorsRelated')"
+  [control]="metadataForm.getControl('template-questionnaire.donorsRelated')"
+  [id]="'template-questionnaire.donorsRelated'">
+</app-metadata-field>
+
+<app-metadata-field [metadata]="metadataForm.get('template-questionnaire.preNatalQuantity')"
+                    [control]="metadataForm.getControl('template-questionnaire.preNatalQuantity')"
+                    [id]="'template-questionnaire.preNatalQuantity'">
+</app-metadata-field>
