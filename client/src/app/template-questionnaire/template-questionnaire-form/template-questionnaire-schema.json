@@ -81,6 +81,20 @@
         "No"
       ]
     },
+    "protocols": {
+      "user_friendly": "Which of the following protocols did you use?",
+      "guidelines": "This will add fields for capturing the relevant details of the experimental process.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Enrichment",
+        "Differentiation",
+        "Aggregate Generation",
+        "Induction"
+      ]
+    },
     "technology": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "description":  "Technology",
@@ -137,7 +151,7 @@
               }
             }
           },
-          "user_friendly": "Technologies used to generate the data."
+          "user_friendly": "What technologies did you use to generate the data?"
         },
         "others": {
           "description": "Other technologies not in the ontologies for technology.",

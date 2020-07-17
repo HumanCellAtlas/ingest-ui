@@ -28,7 +28,8 @@ export const layout: MetadataFormLayout = {
           component: SpecimenGroupComponent
         },
         "template-questionnaire.experimentInfo",
-        "template-questionnaire.experimentTimecourse"
+        "template-questionnaire.experimentTimecourse",
+        "template-questionnaire.protocols"
       ]
     }
   ]
