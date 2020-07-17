@@ -36,7 +36,10 @@ export const layout: MetadataFormLayout = {
 })
 export class TemplateQuestionnaireFormComponent {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
-  questionnaireData: object= {};
+  questionnaireData: object = {
+    "identifyingOrganisms": ["Human"],
+    "specimenType": ["Primary Tissue"]
+  };
   config: MetadataFormConfig = {
     layout: layout,
     submitButtonLabel: "Generate",

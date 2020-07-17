@@ -1,11 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "description": "Information required to generate an spreadsheet",
+  "description": "Information required about your experiments to trigger the creation of a metadata spreadsheet.",
   "name": "template-questionnaire",
   "properties": {
     "identifyingOrganisms": {
-      "user_friendly": "What organism the samples were generated from?",
+      "user_friendly": "What species are the donors of your experiment?",
+      "guidelines": "This adds relevant species specific fields to the donor tab of the spreadsheet.",
       "type": "array",
       "items": {
         "type": "string"
@@ -18,8 +19,9 @@
     },
     "preNatalQuantity": {
       "user_friendly": "Are any of your donor samples pre-natal?",
-      "guidelines": "Are any samples fetal or embryonic?",
+      "guidelines": "If some donors are prenatal we add fields for capturing gestational age, if all are prenatal we remove fields for capturing organism age.",
       "type": "string",
+      "example": "None",
       "enum": [
         "All",
         "Some",
@@ -28,7 +30,8 @@
     },
     "donorsRelated": {
       "user_friendly": "Are any of your donors related to one another?",
-      "guidelines": "For example, a mother and a fetus?",
+      "guidelines": "Adds fields for capturing familial relationships, not required if none of your donors are human.",
+      "example": "No",
       "type": "string",
       "enum": [
         "Yes",
@@ -37,6 +40,7 @@
     },
     "specimenType": {
       "user_friendly": "What type of specimens did you use?",
+      "guidelines": "Expands the available protocols you can can include in your experimental definition",
       "type": "array",
       "items": {
         "type": "string"
@@ -48,16 +52,19 @@
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase your specimens?",
+      "user_friendly": "Did you purchase any specimens?",
+      "guidelines": "Add fields for capturing purchase information. Not required if all specimens are Primary Tissue",
       "type": "string",
+      "example": "No",
       "enum": [
         "Yes",
         "No"
       ]
     },
     "experimentInfo": {
-      "user_friendly": "Do you wish to record experimental information?",
-      "guidelines": "Record where, when and who performed your experiment?",
+      "user_friendly": "Do you wish to record the provenance of the experimental process?",
+      "guidelines": "This will add fields for capturing where, when and who performed your experiment.",
+      "example": "No",
       "type": "string",
       "enum": [
         "Yes",
@@ -66,6 +73,8 @@
     },
     "experimentTimecourse": {
       "user_friendly": "Did your experiment involve a timecourse?",
+      "guidelines": "This will add fields for capturing cell suspension timecourse details.",
+      "example": "No",
       "type": "string",
       "enum": [
         "Yes",
@@ -82,7 +91,6 @@
       "properties": {
         "ontologies": {
           "description": "The general methods used for sequencing library construction in your project.",
-          "guidelines": "Start typing to select the technology. You can select multiple entries.",
           "type": "array",
           "items": {
             "$schema": "http://json-schema.org/draft-07/schema#",
@@ -129,7 +137,7 @@
               }
             }
           },
-          "user_friendly": "Technologies used to generate the data"
+          "user_friendly": "Technologies used to generate the data."
         },
         "others": {
           "description": "Other technologies not in the ontologies for technology.",
@@ -143,7 +151,7 @@
       }
     }
   },
-  "required": ["identifyingOrganisms", "preNatalQuantity", "donorsRelated", "specimenType", "experimentInfo", "experimentTimecourse", "technology"],
+  "required": ["technology"],
   "title": "Spreadsheet Questionnaire",
   "type": "object"
 }
