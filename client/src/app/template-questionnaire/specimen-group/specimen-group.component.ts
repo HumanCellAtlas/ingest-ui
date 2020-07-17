@@ -13,17 +13,18 @@ export class SpecimenGroupComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.onTypeChange(this.metadataForm.getControl('template-questionnaire.specimenType').value);
     this.metadataForm.getControl('template-questionnaire.specimenType').valueChanges.subscribe({
       next: data => {
-        this.onTypeChange(data)
+        this.onTypeChange(data);
       }
     })
   }
 
   onTypeChange(specimenType: string[]) {
-    this.showPurchased = specimenType.includes("Organoid") || specimenType.includes("Cell Line")
+    this.showPurchased = specimenType.includes("Organoid") || specimenType.includes("Cell Line");
     if (!this.showPurchased) {
-      this.metadataForm.getControl('template-questionnaire.specimenPurchased').reset()
+      this.metadataForm.getControl('template-questionnaire.specimenPurchased').reset();
     }
   }
 }
