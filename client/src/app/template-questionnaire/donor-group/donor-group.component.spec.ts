@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DonorGroupComponent } from './donor-group.component';
 
-describe('SpecimenGroupComponent', () => {
+describe('DonorGroupComponent', () => {
   let component: DonorGroupComponent;
   let fixture: ComponentFixture<DonorGroupComponent>;
 
