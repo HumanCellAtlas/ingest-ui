@@ -12,6 +12,7 @@ export const layout: MetadataFormLayout = {
       key: "template-questionnaire",
       items: [
         "template-questionnaire.technologyType",
+        "template-questionnaire.libraryPreparation",
         {
           keys: [
             "template-questionnaire.identifyingOrganisms",
@@ -28,7 +29,6 @@ export const layout: MetadataFormLayout = {
           component: SpecimenGroupComponent
         },
         "template-questionnaire.experimentInfo",
-        "template-questionnaire.experimentTimecourse",
         "template-questionnaire.protocols"
       ]
     }
@@ -44,15 +44,13 @@ export const layout: MetadataFormLayout = {
 export class TemplateQuestionnaireFormComponent {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
+    "technologyType": ["Sequencing"],
+    "libraryPreparation": ["Plate-based (e.g. SmartSeq2)"],
     "identifyingOrganisms": ["Human"],
     "specimenType": ["Primary Tissue"]
   };
   config: MetadataFormConfig = {
     layout: layout,
-    inputType: {
-      technologyType: "dropdown",
-      preNatalQuantity: "radio"
-    },
     submitButtonLabel: "Generate",
     cancelButtonLabel: "Cancel"
   }

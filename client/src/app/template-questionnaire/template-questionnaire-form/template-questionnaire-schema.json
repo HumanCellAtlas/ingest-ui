@@ -4,9 +4,28 @@
   "description": "Information required about your experiments to trigger the creation of a metadata spreadsheet.",
   "name": "template-questionnaire",
   "properties": {
+    "technologyType": {
+      "user_friendly": "What technologies did you use to generate the data?",
+      "guidelines": "Knowing the technology helps us to limit the fields to those appropriate to your experiment. For example, by choosing ‘sequencing’ we will include fields related to the library preparation and sequencing protocols you used.",
+      "type": "array",
+      "enum": [
+        "Sequencing",
+        "Imaging"
+      ]
+    },
+    "libraryPreparation": {
+      "user_friendly": "What type of library preparation did you use?",
+      "guidelines": "By choosing the specific type of library preparation, we will ensure the most appropriate fields are included in your spreadsheet. For example for plate-based sequencing we will include fields like well id, and well quality whereas for droplet-based sequencing we will include fields for cell-barcode and UMI information.",
+      "type": "array",
+      "enum": [
+        "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)",
+        "Plate-based (e.g. SmartSeq2)",
+        "Other"
+      ]
+    },
     "identifyingOrganisms": {
       "user_friendly": "What species are the donors of your experiment?",
-      "guidelines": "This adds relevant species specific fields to the donor tab of the spreadsheet.",
+      "guidelines": "The species of your donors lets us know whether we should add fields like ‘strain’ for mouse experiments and ‘ethnicity’ and ‘medical history’ for human experiments.",
       "type": "array",
       "items": {
         "type": "string"
@@ -17,20 +36,9 @@
         "Other"
       ]
     },
-    "preNatalQuantity": {
-      "user_friendly": "Are any of your donor samples pre-natal?",
-      "guidelines": "If some donors are prenatal we add fields for capturing gestational age, if all are prenatal we remove fields for capturing organism age.",
-      "type": "string",
-      "example": "None",
-      "enum": [
-        "All",
-        "Some",
-        "None"
-      ]
-    },
     "donorsRelated": {
       "user_friendly": "Are any of your donors related to one another?",
-      "guidelines": "Adds fields for capturing familial relationships, not required if none of your donors are human.",
+      "guidelines": "Answering yes to this question allows you to link related donors, for example a sample from a mother to that of its embryo.",
       "example": "No",
       "type": "string",
       "enum": [
@@ -38,9 +46,20 @@
         "No"
       ]
     },
+    "preNatalQuantity": {
+      "user_friendly": "Are any of your donor samples prenatal?",
+      "guidelines": "This information tells us whether we should include fields to record pre-birth age.",
+      "type": "string",
+      "example": "No, None",
+      "enum": [
+        "Yes, All",
+        "Yes, Some",
+        "No, None"
+      ]
+    },
     "specimenType": {
       "user_friendly": "What type of specimens did you use?",
-      "guidelines": "Expands the available protocols you can can include in your experimental definition",
+      "guidelines": "The type of specimen tells us whether we should include a tab with specific fields related to that biospecimen type as well as enabling you to describe the protocols that may have been involved in producing them.",
       "type": "array",
       "items": {
         "type": "string"
@@ -62,18 +81,8 @@
       ]
     },
     "experimentInfo": {
-      "user_friendly": "Do you wish to record the provenance of the experimental process?",
-      "guidelines": "This will add fields for capturing where, when and who performed your experiment.",
-      "example": "No",
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No"
-      ]
-    },
-    "experimentTimecourse": {
-      "user_friendly": "Did your experiment involve a timecourse?",
-      "guidelines": "This will add fields for capturing cell suspension timecourse details.",
+      "user_friendly": "Do you wish to record information about the where, when and who of your experiment?",
+      "guidelines": "Answering yes to this question will add fields to record the location, name/initials of the performer, and the date and time when your experiment was performed.",
       "example": "No",
       "type": "string",
       "enum": [
@@ -83,7 +92,7 @@
     },
     "protocols": {
       "user_friendly": "Which of the following protocols did you use?",
-      "guidelines": "This will add fields for capturing the relevant details of the experimental process.",
+      "guidelines": "Based on the previous answers we have generated a list of protocol types that you may have used in your experiment. Selecting the specific type will add a tab to your spreadsheet that has fields specific to recording information about that type of protocol.",
       "type": "array",
       "items": {
         "type": "string"
@@ -93,17 +102,6 @@
         "Differentiation",
         "Aggregate Generation",
         "Induction"
-      ]
-    },
-    "technologyType": {
-      "user_friendly": "What type of technology did you use?",
-      "guidelines": "This will add fields for capturing the relevant imaging or sequencing protocol.",
-      "type": "string",
-      "enum": [
-        "Imaging",
-        "10x Sequencing",
-        "SS2 or Plate Based Sequencing",
-        "Other Sequencing"
       ]
     }
   },
