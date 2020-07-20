@@ -4,6 +4,7 @@ import {MetadataFormConfig} from "../../metadata-schema-form/models/metadata-for
 import {MetadataFormLayout} from "../../metadata-schema-form/models/metadata-form-layout";
 import {SpecimenGroupComponent} from "../specimen-group/specimen-group.component";
 import {DonorGroupComponent} from "../donor-group/donor-group.component";
+import {TechnologyGroupComponent} from "../technology-group/technology-group.component";
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -11,8 +12,13 @@ export const layout: MetadataFormLayout = {
       title: "Spreadsheet Questionnaire",
       key: "template-questionnaire",
       items: [
-        "template-questionnaire.technologyType",
-        "template-questionnaire.libraryPreparation",
+        {
+          keys: [
+            "template-questionnaire.technologyType",
+            "template-questionnaire.libraryPreparation"
+          ],
+          component: TechnologyGroupComponent
+        },
         {
           keys: [
             "template-questionnaire.identifyingOrganisms",

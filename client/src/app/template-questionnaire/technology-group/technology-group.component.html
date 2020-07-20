@@ -1,0 +1,11 @@
+<app-metadata-field
+  [metadata]="metadataForm.get('template-questionnaire.technologyType')"
+  [control]="metadataForm.getControl('template-questionnaire.technologyType')"
+  [id]="'template-questionnaire.technologyType'">
+</app-metadata-field>
+
+<app-metadata-field *ngIf="showLibraryPrep"
+  [metadata]="metadataForm.get('template-questionnaire.libraryPreparation')"
+  [control]="metadataForm.getControl('template-questionnaire.libraryPreparation')"
+  [id]="'template-questionnaire.libraryPreparation'">
+</app-metadata-field>
