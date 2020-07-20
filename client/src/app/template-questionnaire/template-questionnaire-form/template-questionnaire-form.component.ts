@@ -13,25 +13,12 @@ export const layout: MetadataFormLayout = {
       key: "template-questionnaire",
       items: [
         {
-          keys: [
-            "template-questionnaire.technologyType",
-            "template-questionnaire.libraryPreparation"
-          ],
           component: TechnologyGroupComponent
         },
         {
-          keys: [
-            "template-questionnaire.identifyingOrganisms",
-            "template-questionnaire.donorsRelated",
-            "template-questionnaire.preNatalQuantity",
-          ],
           component: DonorGroupComponent
         },
         {
-          keys: [
-            'template-questionnaire.specimenType',
-            'template-questionnaire.specimenPurchased'
-          ],
           component: SpecimenGroupComponent
         },
         "template-questionnaire.experimentInfo",
@@ -51,7 +38,7 @@ export class TemplateQuestionnaireFormComponent {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
     "technologyType": ["Sequencing"],
-    "libraryPreparation": ["Plate-based (e.g. SmartSeq2)"],
+    "libraryPreparation": ["Droplet-based (e.g. 10X chromium, dropSeq, InDrop)"],
     "identifyingOrganisms": ["Human"],
     "specimenType": ["Primary Tissue"]
   };
