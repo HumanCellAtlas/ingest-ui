@@ -11,7 +11,7 @@ export const layout: MetadataFormLayout = {
       title: "Spreadsheet Questionnaire",
       key: "template-questionnaire",
       items: [
-        "template-questionnaire.technology.ontologies",
+        "template-questionnaire.technologyType",
         {
           keys: [
             "template-questionnaire.identifyingOrganisms",
@@ -49,6 +49,10 @@ export class TemplateQuestionnaireFormComponent {
   };
   config: MetadataFormConfig = {
     layout: layout,
+    inputType: {
+      technologyType: "dropdown",
+      preNatalQuantity: "radio"
+    },
     submitButtonLabel: "Generate",
     cancelButtonLabel: "Cancel"
   }

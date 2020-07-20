@@ -95,77 +95,19 @@
         "Induction"
       ]
     },
-    "technology": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "description":  "Technology",
-      "title":  "Technology",
-      "name": "technology",
-      "type": "object",
-      "required": ["ontologies"],
-      "properties": {
-        "ontologies": {
-          "description": "The general methods used for sequencing library construction in your project.",
-          "type": "array",
-          "items": {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "https://schema.dev.data.humancellatlas.org/module/ontology/1.2.5/library_construction_ontology",
-            "description": "A term that may be associated with a process-related ontology term.",
-            "additionalProperties": false,
-            "required": [
-              "text"
-            ],
-            "title": "Library construction ontology",
-            "name": "library_construction_ontology",
-            "type": "object",
-            "properties": {
-              "text": {
-                "description": "The name of a library construction approach being used.",
-                "type": "string",
-                "user_friendly": "Library construction",
-                "example": "10X v2 sequencing; Smart-seq2"
-              },
-              "ontology": {
-                "description": "An ontology term identifier in the form prefix:accession.",
-                "type": "string",
-                "graph_restriction": {
-                  "ontologies": [
-                    "obo:efo"
-                  ],
-                  "classes": [
-                    "OBI:0000711"
-                  ],
-                  "relations": [
-                    "rdfs:subClassOf"
-                  ],
-                  "direct": false,
-                  "include_self": false
-                },
-                "user_friendly": "Library construction ontology ID",
-                "example": "EFO:0009310; EFO:0008931"
-              },
-              "ontology_label": {
-                "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field.",
-                "type": "string",
-                "user_friendly": "Library construction ontology label",
-                "example": "10X v2 sequencing; Smart-seq2"
-              }
-            }
-          },
-          "user_friendly": "What technologies did you use to generate the data?"
-        },
-        "others": {
-          "description": "Other technologies not in the ontologies for technology.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "user_friendly": "Other Technologies",
-          "guidelines": "Other technologies not in the options above."
-        }
-      }
+    "technologyType": {
+      "user_friendly": "What type of technology did you use?",
+      "guidelines": "This will add fields for capturing the relevant imaging or sequencing protocol.",
+      "type": "string",
+      "enum": [
+        "Imaging",
+        "10x Sequencing",
+        "SS2 or Plate Based Sequencing",
+        "Other Sequencing"
+      ]
     }
   },
-  "required": ["technology"],
+  "required": ["technologyType"],
   "title": "Spreadsheet Questionnaire",
   "type": "object"
 }
