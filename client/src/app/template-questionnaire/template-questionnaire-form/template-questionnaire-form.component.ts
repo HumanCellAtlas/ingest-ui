@@ -59,5 +59,17 @@ export class TemplateQuestionnaireFormComponent {
 
   onSave($event: object) {
     console.log($event)
+    this.download('assets/xlsx-templates/Empty_template_v4.6.1_spreadsheet_NOPROJECTTAB.xlsx');
   }
+
+  private download(url: string) {
+    let link = document.createElement('a');
+    link.setAttribute('type', 'hidden');
+    link.href = url;
+    link.download = 'template.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
 }
