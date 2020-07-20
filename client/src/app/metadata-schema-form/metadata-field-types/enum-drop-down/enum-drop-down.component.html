@@ -1,0 +1,12 @@
+<app-select-list
+  [id]="id"
+  [label]="label"
+  [isRequired]="isRequired"
+  [disabled]="disabled"
+  [placeholder]="placeholder"
+  [helperText]="helperText"
+  [options]="metadata.schema.enum"
+  [value]="control.value"
+  [error]="checkForErrors(control)"
+  (valueChanged)="updateControl($event)"
+></app-select-list>

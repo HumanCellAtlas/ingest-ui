@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-select-radio',
-  templateUrl: './select-radio.component.html',
-  styleUrls: ['./select-radio.component.css']
+  selector: 'app-select-list',
+  templateUrl: './select-list.component.html',
+  styleUrls: ['./select-list.component.css']
 })
-export class SelectRadioComponent {
+export class SelectListComponent {
   @Input()
   id: string
 
@@ -32,9 +32,6 @@ export class SelectRadioComponent {
 
   @Input()
   options: string[];
-
-  @Input()
-  inline: boolean = true;
 
   @Output()
   valueChanged = new EventEmitter<string>();

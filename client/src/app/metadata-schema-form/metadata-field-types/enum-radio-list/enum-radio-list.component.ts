@@ -3,11 +3,11 @@ import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {BaseInputComponent} from '../base-input/base-input.component';
 
 @Component({
-  selector: 'app-enum-input',
-  templateUrl: './enum-input.component.html',
-  styleUrls: ['./enum-input.component.css']
+  selector: 'app-enum-radio-list',
+  templateUrl: './enum-radio-list.component.html',
+  styleUrls: ['./enum-radio-list.component.css']
 })
-export class EnumInputComponent extends BaseInputComponent implements OnInit {
+export class EnumRadioListComponent extends BaseInputComponent implements OnInit {
   formHelper: MetadataFormHelper;
 
   constructor() {

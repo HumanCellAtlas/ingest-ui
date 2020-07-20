@@ -10,7 +10,9 @@ import {MetadataFormItemDirective} from '../metadata-form-item.directive';
 import {JsonSchema} from '../models/json-schema';
 import {OntologyListInputComponent} from '../metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from '../metadata-field-types/enum-list-input/enum-list-input.component';
-import {EnumInputComponent} from "../metadata-field-types/enum-input/enum-input.component";
+import {EnumRadioListComponent} from "../metadata-field-types/enum-radio-list/enum-radio-list.component";
+import {EnumRadioInlineComponent} from "../metadata-field-types/enum-radio-inline/enum-radio-inline.component";
+import {EnumDropDownComponent} from "../metadata-field-types/enum-drop-down/enum-drop-down.component";
 
 const components = {
   text: InputComponent,
@@ -18,7 +20,11 @@ const components = {
   number: InputComponent,
   textarea: TextAreaComponent
 };
-
+const enumComponents = {
+  radio: EnumRadioListComponent,
+  radioInline: EnumRadioInlineComponent,
+  dropdown: EnumDropDownComponent
+};
 
 @Component({
   selector: 'app-metadata-field',
@@ -63,9 +69,9 @@ export class MetadataFieldComponent implements OnInit {
 
     if (metadata.isScalar()) {
       if (metadata.schema.enum) {
-        component = EnumInputComponent;
+        component = metadata.inputType && enumComponents[metadata.inputType] ? enumComponents[metadata.inputType] : EnumRadioInlineComponent;
       } else {
-        component = metadata.inputType ? components[metadata.inputType] : InputComponent;
+        component = metadata.inputType && components[metadata.inputType] ? components[metadata.inputType] : InputComponent;
         component = metadata.schema.format === 'date-time' ? DateInputComponent : component;
       }
     } else if (metadata.isScalarList()) {

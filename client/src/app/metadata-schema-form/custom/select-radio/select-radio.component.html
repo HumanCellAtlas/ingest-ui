@@ -10,6 +10,7 @@
         <input type="radio" name="{{id}}" id="{{id}}-{{i}}-{{option}}"
                class="vf-form__radio" (change)="onSelectedValueChange(option)" [disabled]="disabled" [checked]="(value ? value : placeholder) == option">
         <label for="{{id}}-{{i}}-{{option}}" class="vf-form__label">{{option}}</label>
+        <br *ngIf="!inline"/>
       </ng-template>
     </div>
   </div>
