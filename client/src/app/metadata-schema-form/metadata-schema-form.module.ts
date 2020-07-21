@@ -16,12 +16,17 @@ import {OntologyInputComponent} from './metadata-field-types/ontology-input/onto
 import {MultipleSelectComponent} from './custom/multiple-select/multiple-select.component';
 import {MetadataFieldComponent} from './metadata-field/metadata-field.component';
 import {SelectComponent} from './custom/select/select.component';
+import {SelectRadioComponent} from "./custom/select-radio/select-radio.component";
+import {SelectListComponent} from "./custom/select-list/select-list.component";
 import {OntologyListInputComponent} from './metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from './metadata-field-types/enum-list-input/enum-list-input.component';
 import {MaterialModule} from '../material.module';
 import {OntologyBaseComponent} from './metadata-field-types/ontology-base/ontology-base.component';
 import {MetadataFormItemComponent} from './metadata-form-item/metadata-form-item.component';
 import {BaseInputComponent} from './metadata-field-types/base-input/base-input.component';
+import {EnumDropDownComponent} from "./metadata-field-types/enum-drop-down/enum-drop-down.component";
+import {EnumRadioListComponent} from "./metadata-field-types/enum-radio-list/enum-radio-list.component";
+import {EnumRadioInlineComponent} from "./metadata-field-types/enum-radio-inline/enum-radio-inline.component";
 
 
 @NgModule({
@@ -47,6 +52,11 @@ import {BaseInputComponent} from './metadata-field-types/base-input/base-input.c
     MultipleSelectComponent,
     MetadataFieldComponent,
     SelectComponent,
+    SelectRadioComponent,
+    SelectListComponent,
+    EnumRadioListComponent,
+    EnumRadioInlineComponent,
+    EnumDropDownComponent,
     OntologyListInputComponent,
     EnumListInputComponent,
     OntologyBaseComponent,
@@ -56,7 +66,8 @@ import {BaseInputComponent} from './metadata-field-types/base-input/base-input.c
   exports: [
     MetadataFormComponent,
     MetadataFieldComponent,
-    VfInputComponent
+    VfInputComponent,
+    SelectRadioComponent
   ],
   providers: []
 })

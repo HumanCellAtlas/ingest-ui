@@ -1,0 +1,13 @@
+<app-select-radio
+  [id]="id"
+  [label]="label"
+  [isRequired]="isRequired"
+  [disabled]="disabled"
+  [placeholder]="placeholder"
+  [helperText]="helperText"
+  [options]="metadata.schema.enum"
+  [value]="control.value"
+  [error]="checkForErrors(control)"
+  [inline]="true"
+  (valueChanged)="updateControl($event)"
+></app-select-radio>

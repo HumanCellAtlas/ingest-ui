@@ -1,0 +1,21 @@
+<div class="vf-form__item">
+  <div>
+    <label class="vf-form__label">{{label}}</label>
+    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+  </div>
+  <div></div>
+  <div>
+    <div class="vf-form__item--inline vf-form__item--radio">
+      <ng-template ngFor let-option let-i="index" [ngForOf]="options">
+        <input type="radio" name="{{id}}" id="{{id}}-{{i}}-{{option}}"
+               class="vf-form__radio" (change)="onSelectedValueChange(option)" [disabled]="disabled" [checked]="(value ? value : placeholder) == option">
+        <label for="{{id}}-{{i}}-{{option}}" class="vf-form__label">{{option}}</label>
+        <br *ngIf="!inline"/>
+      </ng-template>
+    </div>
+  </div>
+  <div>
+    <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
+    <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
+  </div>
+</div>

@@ -54,7 +54,7 @@ export class MetadataForm {
   }
 
   initForm(form: MetadataForm): MetadataForm {
-    this.formGroup = this.helper.toFormGroup(this.get('project'), form.data);
+    this.formGroup = this.helper.toFormGroup(this.get(this.key), form.data);
     return form;
   }
 

@@ -1,25 +1,10 @@
-<div class="vf-form__item">
-  <div>
-    <label class="vf-form__label">Is there an existing accession ID for the project?</label>
-  </div>
-  <div></div>
-  <div>
-    <div class="vf-form__item--inline vf-form__item--radio">
-      <input type="radio" name="radio-button-group--inline"
-             id="radio-inline-1" class="vf-form__radio" (change)="onIsAccessionedChange(true)">
-      <label for="radio-inline-1" class="vf-form__label">Yes</label>
-
-      <input type="radio" name="radio-button-group--inline"
-             id="radio-inline-2" class="vf-form__radio" (change)="onIsAccessionedChange(false)">
-      <label for="radio-inline-2" class="vf-form__label">No</label>
-    </div>
-  </div>
-  <div>
-    <p class="vf-form__helper">An accession is usually an identifier you receive for your project if you have submitted
-      it to a repository such as GEO, Arrayexpress, ENA, SRA</p>
-  </div>
-</div>
-
+<app-select-radio
+  [id]="'is-accessioned'"
+  [label]="'Is there an existing accession ID for the project?'"
+  [helperText]="'An accession is usually an identifier you receive for your project if you have submitted it to a repository such as GEO, Arrayexpress, ENA, SRA'"
+  [options]="['Yes', 'No']"
+  (valueChanged)="onIsAccessionedChange($event)"
+></app-select-radio>
 <app-vf-input
   *ngIf="isAccessioned"
   [(ngModel)]="accessionId"

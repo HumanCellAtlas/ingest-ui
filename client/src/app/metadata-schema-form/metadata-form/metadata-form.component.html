@@ -1,7 +1,8 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
 
-  <mat-tab-group (selectedIndexChange)="onSelectedIndexChange($event)"
-                 [selectedIndex]="this.selectedTabIndex">
+  <mat-tab-group *ngIf="config.layout.tabs.length > 1"
+    (selectedIndexChange)="onSelectedIndexChange($event)"
+    [selectedIndex]="this.selectedTabIndex">
     <ng-container *ngFor="let tab of config.layout.tabs">
       <mat-tab>
         <div>
@@ -21,6 +22,14 @@
       </mat-tab>
     </ng-container>
   </mat-tab-group>
+  <div *ngIf="config.layout.tabs.length === 1" class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+    <ng-container *ngFor="let item of config.layout.tabs[0].items">
+      <app-metadata-form-item
+        [item]="item"
+        [metadataForm]="metadataForm">
+      </app-metadata-form-item>
+    </ng-container>
+  </div>
 
   <ng-container *ngIf="!config.viewMode">
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
@@ -40,7 +49,7 @@
         </div>
         <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
            class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
-          Or Cancel project registration
+          {{config.cancelButtonLabel ? config.cancelButtonLabel : 'Or Cancel project registration'}}
         </a>
       </div>
     </div>

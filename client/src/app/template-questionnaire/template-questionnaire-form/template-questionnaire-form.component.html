@@ -1,0 +1,10 @@
+<p class="vf-intro__text">
+  We need information about your experiments to trigger the creation of a metadata spreadsheet.<br/>
+  You will use this spreadsheet to send us information about your samples and experiments so we can add them to the HCA
+</p>
+<app-metadata-form name="spreadsheet-template-questionnaire"
+                   [schema]="templateQuestionnaireSchema"
+                   [data]="questionnaireData"
+                   [config]="config"
+                   (save)="onSave($event)">
+</app-metadata-form>

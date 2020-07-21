@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Information required about your experiments to trigger the creation of a metadata spreadsheet.",
+  "name": "template-questionnaire",
+  "properties": {
+    "technologyType": {
+      "user_friendly": "Did you use imaging and/or sequencing to generate your data?",
+      "guidelines": "Knowing this helps us to limit the fields to those appropriate to your experiment. For example, by choosing ‘sequencing’ we will include fields related to the library preparation and sequencing protocols you used.",
+      "type": "array",
+      "enum": [
+        "Sequencing",
+        "Imaging"
+      ]
+    },
+    "libraryPreparation": {
+      "user_friendly": "What type of library preparation did you use?",
+      "guidelines": "By choosing the specific type of library preparation, we will ensure the most appropriate fields are included in your spreadsheet. For example for plate-based sequencing we will include fields like well id, and well quality whereas for droplet-based sequencing we will include fields for cell-barcode and UMI information.",
+      "type": "array",
+      "enum": [
+        "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)",
+        "Plate-based (e.g. SmartSeq2)",
+        "Other"
+      ]
+    },
+    "identifyingOrganisms": {
+      "user_friendly": "What species are the donors of your experiment?",
+      "guidelines": "The species of your donors lets us know whether we should add fields like ‘strain’ for mouse experiments and ‘ethnicity’ and ‘medical history’ for human experiments.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Human",
+        "Mouse",
+        "Other"
+      ]
+    },
+    "donorsRelated": {
+      "user_friendly": "Are any of your donors related to one another?",
+      "guidelines": "Answering yes to this question allows you to link related donors, for example a sample from a mother to that of its embryo.",
+      "example": "No",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "preNatalQuantity": {
+      "user_friendly": "Are any of your donor samples prenatal?",
+      "guidelines": "This information tells us whether we should include fields to record pre-birth age.",
+      "type": "string",
+      "example": "No, None",
+      "enum": [
+        "Yes, All",
+        "Yes, Some",
+        "No, None"
+      ]
+    },
+    "specimenType": {
+      "user_friendly": "What type of specimens did you use?",
+      "guidelines": "The type of specimen tells us whether we should include a tab with specific fields related to that biospecimen type as well as enabling you to describe the protocols that may have been involved in producing them.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Primary Tissue",
+        "Organoid",
+        "Cell Line"
+      ]
+    },
+    "specimenPurchased": {
+      "user_friendly": "Did you purchase any specimens?",
+      "guidelines": "Add fields for capturing purchase information. Not required if all specimens are Primary Tissue",
+      "type": "string",
+      "example": "No",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "experimentInfo": {
+      "user_friendly": "Do you wish to record information about the where, when and who of your experiment?",
+      "guidelines": "Answering yes to this question will add fields to record the location, name/initials of the performer, and the date and time when your experiment was performed.",
+      "example": "No",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "protocols": {
+      "user_friendly": "Which of the following protocols did you use?",
+      "guidelines": "Based on the previous answers we have generated a list of protocol types that you may have used in your experiment. Selecting the specific type will add a tab to your spreadsheet that has fields specific to recording information about that type of protocol.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Enrichment",
+        "Differentiation",
+        "Aggregate Generation",
+        "Induction"
+      ]
+    }
+  },
+  "required": ["technologyType"],
+  "title": "Spreadsheet Questionnaire",
+  "type": "object"
+}
