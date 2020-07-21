@@ -5,8 +5,8 @@
   "name": "template-questionnaire",
   "properties": {
     "technologyType": {
-      "user_friendly": "What technologies did you use to generate the data?",
-      "guidelines": "Knowing the technology helps us to limit the fields to those appropriate to your experiment. For example, by choosing ‘sequencing’ we will include fields related to the library preparation and sequencing protocols you used.",
+      "user_friendly": "Did you use imaging and/or sequencing to generate your data?",
+      "guidelines": "Knowing this helps us to limit the fields to those appropriate to your experiment. For example, by choosing ‘sequencing’ we will include fields related to the library preparation and sequencing protocols you used.",
       "type": "array",
       "enum": [
         "Sequencing",
