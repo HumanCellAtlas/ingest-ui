@@ -1,10 +1,13 @@
-import { Component} from '@angular/core';
+import {Component} from '@angular/core';
 import * as questionnaireSchema from './template-questionnaire-schema.json'
 import {MetadataFormConfig} from "../../metadata-schema-form/models/metadata-form-config";
 import {MetadataFormLayout} from "../../metadata-schema-form/models/metadata-form-layout";
 import {SpecimenGroupComponent} from "../specimen-group/specimen-group.component";
 import {DonorGroupComponent} from "../donor-group/donor-group.component";
 import {TechnologyGroupComponent} from "../technology-group/technology-group.component";
+import {QuestionnaireData} from "../template-questionnaire.data";
+import {TemplateGeneratorService} from "../template-generator.service";
+import {saveAs} from "file-saver";
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -28,13 +31,16 @@ export const layout: MetadataFormLayout = {
   ]
 };
 
-
 @Component({
   selector: 'app-template-questionnaire',
   templateUrl: './template-questionnaire-form.component.html',
   styleUrls: ['./template-questionnaire-form.component.css']
 })
 export class TemplateQuestionnaireFormComponent {
+
+  constructor(readonly templateGenerator: TemplateGeneratorService) {
+  }
+
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
     "technologyType": ["Sequencing"],
@@ -49,18 +55,11 @@ export class TemplateQuestionnaireFormComponent {
   }
 
   onSave($event: object) {
-    console.log($event)
-    this.download('assets/xlsx-templates/Empty_template_v4.6.1_spreadsheet_NOPROJECTTAB.xlsx');
-  }
-
-  private download(url: string) {
-    let link = document.createElement('a');
-    link.setAttribute('type', 'hidden');
-    link.href = url;
-    link.download = 'template.xlsx';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    let data: QuestionnaireData = $event['value'];
+    console.log(data.specimenType);
+    this.templateGenerator.generate(data).then(blob => {
+      saveAs(blob, 'template.xlsx');
+    });
   }
 
 }
