@@ -4,3 +4,11 @@ export interface QuestionnaireData {
   identifyingOrganisms: string[];
   specimenType: string[];
 }
+
+export class TemplateSpecification {
+
+  static convert(data: QuestionnaireData): TemplateSpecification {
+    return new TemplateSpecification();
+  }
+
+}
