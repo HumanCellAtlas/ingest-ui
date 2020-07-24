@@ -44,9 +44,10 @@ export class TemplateQuestionnaireFormComponent {
   };
   config: MetadataFormConfig = {
     layout: layout,
-    submitButtonLabel: "Generate",
+    submitButtonLabel: "Generate Spreadsheet",
     cancelButtonLabel: "Cancel"
   }
+  title: string = this.templateQuestionnaireSchema.title;
 
   onSave($event: object) {
     console.log($event)
