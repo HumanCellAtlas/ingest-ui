@@ -106,6 +106,6 @@
     }
   },
   "required": ["technologyType"],
-  "title": "Spreadsheet Questionnaire",
+  "title": "Generate your metadata spreadsheet",
   "type": "object"
 }

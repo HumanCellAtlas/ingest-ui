@@ -9,7 +9,7 @@ import {TechnologyGroupComponent} from "../technology-group/technology-group.com
 export const layout: MetadataFormLayout = {
   tabs: [
     {
-      title: "Generate your metadata spreadsheet",
+      title: "Spreadsheet Questionnaire",
       key: "template-questionnaire",
       items: [
         {
@@ -47,7 +47,6 @@ export class TemplateQuestionnaireFormComponent {
     submitButtonLabel: "Generate Spreadsheet",
     cancelButtonLabel: "Cancel"
   }
-  title: string = this.templateQuestionnaireSchema.title;
 
   onSave($event: object) {
     console.log($event)
