@@ -9,7 +9,7 @@ import {TechnologyGroupComponent} from "../technology-group/technology-group.com
 export const layout: MetadataFormLayout = {
   tabs: [
     {
-      title: "Spreadsheet Questionnaire",
+      title: "Generate your metadata spreadsheet",
       key: "template-questionnaire",
       items: [
         {
