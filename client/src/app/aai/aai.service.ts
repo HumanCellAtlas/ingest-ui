@@ -1,11 +1,11 @@
-import {Profile, User, UserManager} from 'oidc-client';
+import {User, UserManager} from 'oidc-client';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../core/authentication.service';
 import {AaiSecurity} from './aai.module';
+import {IngestService} from '../shared/services/ingest.service';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -18,7 +18,7 @@ export class AaiService {
   constructor(private http: HttpClient,
               private manager: UserManager,
               private alertService: AlertService,
-              private authenticationService: AuthenticationService,
+              private ingestService: IngestService,
               private router: Router) {
 
     this.user$.subscribe(usr => {
@@ -46,7 +46,7 @@ export class AaiService {
   }
 
   startAuthentication(redirect: string): Promise<void> {
-    const state = {state: encodeURIComponent(redirect)}
+    const state = {state: encodeURIComponent(redirect)};
     return this.manager.signinRedirect(state);
   }
 
@@ -54,18 +54,7 @@ export class AaiService {
     return this.manager.signinRedirectCallback().then((user: User) => {
       this.user = user;
       this.user$.next(user);
-      this.authenticationService.getAccount(user.access_token)
-        .then(() => {
-          const redirect = user.state;
-          if (redirect) {
-            this.router.navigateByUrl(decodeURIComponent(redirect));
-          } else {
-            this.router.navigateByUrl('/home');
-          }
-        })
-        .catch(() => {
-          this.router.navigate(['/registration']);
-        });
+      this.checkForUserAccountRegistration(user);
     }).catch(error => {
       this.alertService.error('Authentication Error',
         'An error occured during authentication. Please retry logging in. ' +
@@ -74,16 +63,39 @@ export class AaiService {
     });
   }
 
-  getUserInfo(): Observable<Profile> {
-    return this.getUser().map(user => {
-      if (user) {
-        return user.profile;
-      }
-    });
-  }
-
   logout() {
     this.manager.signoutRedirect();
   }
 
+  private removeUser() {
+    this.manager.removeUser().then(
+      () => {
+        console.log('removing user');
+        this.user$.next(null);
+      }
+    );
+  }
+
+  private checkForUserAccountRegistration(user: User) {
+    this.ingestService.getUserAccount()
+      .subscribe(account => {
+        const redirect = user.state;
+        if (redirect) {
+          this.router.navigateByUrl(decodeURIComponent(redirect));
+        } else {
+          this.router.navigateByUrl('/home');
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 404) {
+            this.router.navigate(['/registration']);
+          } else {
+            this.alertService.error('Ingest Service Error',
+              'A problem occurred while trying to check the user account from the Ingest Service.' +
+              ' Please try again later. If the error is persistent, please email hca-ingest-dev@ebi.ac.uk');
+            this.removeUser();
+          }
+        }
+      });
+  }
 }
