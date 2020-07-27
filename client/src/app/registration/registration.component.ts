@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from "../core/authentication.service";
-import {AaiService} from "../aai/aai.service";
-import {User} from "oidc-client";
-import {Router} from "@angular/router";
+import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from '../core/authentication.service';
+import {AaiService} from '../aai/aai.service';
+import {User} from 'oidc-client';
+import {Router} from '@angular/router';
 
 const messages = {
   success: 'Your account was successfully created. Click OK to return to the home page.',
@@ -12,7 +12,7 @@ const messages = {
     [RegistrationErrorCode.ServiceError]:
       'Registration failed due to a service error. Please check back again, or contact support.'
   }
-}
+};
 
 interface RegistrationStatus {
   success: boolean;
@@ -26,7 +26,7 @@ interface RegistrationStatus {
 })
 export class RegistrationComponent implements OnInit {
 
-  termsAccepted: boolean = false;
+  termsAccepted = false;
   status: RegistrationStatus;
 
   constructor(private aaiService: AaiService,
@@ -51,6 +51,6 @@ export class RegistrationComponent implements OnInit {
             this.status.message = messages.error[failure.errorCode];
           });
       }
-    })
+    });
   }
 }
