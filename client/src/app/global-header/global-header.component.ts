@@ -16,13 +16,11 @@ export class GlobalHeaderComponent implements OnInit {
   isLoggedIn: boolean;
   userInfo: Profile;
   account$: Observable<Account>;
-  isLoggedIn$: Observable<boolean>;
 
   constructor(private router: Router, private ingestService: IngestService, private aai: AaiService) {
   }
 
   ngOnInit() {
-    this.isLoggedIn$ = this.aai.isUserLoggedIn();
     this.account$ = this.aai.user$.pipe(
       map(user => {
         this.isLoggedIn = user && !user.expired;
@@ -40,6 +38,8 @@ export class GlobalHeaderComponent implements OnInit {
 
   logout(e) {
     e.preventDefault();
-    this.aai.logout();
+    if (confirm('Are you sure you want to logout?')) {
+      this.aai.logout();
+    }
   }
 }
