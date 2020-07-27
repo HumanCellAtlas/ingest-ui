@@ -46,7 +46,7 @@ export class AaiService {
   }
 
   startAuthentication(redirect: string): Promise<void> {
-    const state = {state:encodeURIComponent(redirect)}
+    const state = {state: encodeURIComponent(redirect)}
     return this.manager.signinRedirect(state);
   }
 
@@ -56,7 +56,7 @@ export class AaiService {
       this.user$.next(user);
       this.authenticationService.getAccount(user.access_token)
         .then(() => {
-          let redirect = user.state;
+          const redirect = user.state;
           if (redirect) {
             this.router.navigateByUrl(decodeURIComponent(redirect));
           } else {
