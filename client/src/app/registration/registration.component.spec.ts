@@ -1,7 +1,7 @@
 import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
 
 import {RegistrationComponent} from './registration.component';
-import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from '../core/authentication.service';
+import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from '../core/registration.service';
 import {AaiService} from '../aai/aai.service';
 import {User} from 'oidc-client';
 import {Observable} from 'rxjs';
@@ -15,7 +15,7 @@ import {Account} from '../core/account';
 let registration: RegistrationComponent;
 let fixture: ComponentFixture<RegistrationComponent>;
 
-let authenticationService: SpyObj<AuthenticationService>;
+let authenticationService: SpyObj<RegistrationService>;
 let aaiService: SpyObj<AaiService>;
 
 function configureTestEnvironment(): void {
@@ -26,7 +26,7 @@ function configureTestEnvironment(): void {
     declarations: [RegistrationComponent],
     imports: [FormsModule],
     providers: [
-      {provide: AuthenticationService, useFactory: () => authenticationService},
+      {provide: RegistrationService, useFactory: () => authenticationService},
       {provide: AaiService, useFactory: () => aaiService},
       {provide: Router, useValue: createSpy('Router')}
     ]

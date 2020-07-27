@@ -1,19 +1,19 @@
-import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from './authentication.service';
+import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from './registration.service';
 import {fakeAsync, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
 import {environment} from '../../environments/environment';
 import {Account} from './account';
 
-let accountService: AuthenticationService;
+let accountService: RegistrationService;
 let remoteService: HttpTestingController;
 
 function setUp() {
   TestBed.configureTestingModule({
-    providers: [AuthenticationService],
+    providers: [RegistrationService],
     imports: [HttpClientTestingModule],
   });
 
-  accountService = TestBed.get(AuthenticationService);
+  accountService = TestBed.get(RegistrationService);
   remoteService = TestBed.get(HttpTestingController);
 }
 
@@ -26,52 +26,6 @@ function expectAuthorisedRequest(token: string, httpMethod?: string): TestReques
   }
   return request;
 }
-
-describe('Get Account', () => {
-
-  beforeEach(setUp);
-
-  afterEach(() => {
-    remoteService.verify();
-  });
-
-  it('should resolve to an Account if the User is registered', fakeAsync(() => {
-    {
-      // expect:
-      const accountId = 'c83bf90';
-      const token = 'aGVsbG8sIHdvcmxkCg==';
-      accountService.getAccount(token).then((account: Account) => {
-        expect(account).toBeTruthy();
-        expect(account.id).toEqual(accountId);
-        expect(account.roles).toContain('CONTRIBUTOR');
-      });
-
-      // given:
-      const request = expectAuthorisedRequest(token, 'GET');
-      request.flush({
-        'id': accountId,
-        'roles': ['CONTRIBUTOR'],
-      });
-    }
-  }));
-
-  it('should reject with an empty Account if the User is not registered', fakeAsync(() => {
-    // expect:
-    const token = 'bWFnaWMgc3RyaW5nCg==';
-    accountService.getAccount(token)
-      .then(() => {
-        fail('service is expected to reject for unregistered User');
-      })
-      .catch((account: Account) => {
-        expect(account).toEqual(<Account>{});
-      });
-
-    // given:
-    const request = expectAuthorisedRequest(token, 'GET');
-    request.flush(null, { status: 404, statusText: 'not found' });
-  }));
-
-});
 
 describe('Account Registration', () => {
 
