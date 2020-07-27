@@ -36,7 +36,7 @@ describe('Complete Authentication', () => {
     authenticationService = jasmine.createSpyObj('AuthenticationService', ['getAccount']);
     userManager = jasmine.createSpyObj('UserManager', ['getUser', 'signinRedirectCallback']);
     alertService = jasmine.createSpyObj('AlertService', ['error']);
-    router = jasmine.createSpyObj('Router', ['navigate']);
+    router = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -66,8 +66,29 @@ describe('Complete Authentication', () => {
     // expect:
     aaiService.completeAuthentication().then(() => {
       expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
-      expect(router.navigate).toHaveBeenCalledTimes(1);
-      expect(router.navigate).toHaveBeenCalledWith(['/home']);
+      expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      expect(router.navigateByUrl).toHaveBeenCalledWith('/home');
+      expect(aaiService.user$.getValue()).toBe(user);
+    });
+  }));
+
+  it('should redirect to url when the user is registered', async(() => {
+    // given:
+    signInToRemoteService();
+    user.state = '/redirect_url'
+
+    // and:
+    authenticationService.getAccount.and.returnValue(Observable.of(new Account({
+      id: '',
+      providerReference: '',
+      roles: []
+    })).toPromise());
+
+    // expect:
+    aaiService.completeAuthentication().then(() => {
+      expect(authenticationService.getAccount).toHaveBeenCalledWith(user.access_token);
+      expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      expect(router.navigateByUrl).toHaveBeenCalledWith( '/redirect_url');
       expect(aaiService.user$.getValue()).toBe(user);
     });
   }));
