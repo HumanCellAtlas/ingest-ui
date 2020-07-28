@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
   status: RegistrationStatus;
 
   constructor(private aaiService: AaiService,
-              private authenticationService: RegistrationService,
+              private registrationService: RegistrationService,
               private router: Router) {
   }
 
@@ -41,7 +41,7 @@ export class RegistrationComponent implements OnInit {
     this.aaiService.getUser().subscribe((user: User) => {
       if (this.termsAccepted) {
         this.status = <RegistrationStatus>{};
-        this.authenticationService.register(user.access_token)
+        this.registrationService.register(user.access_token)
           .then(() => {
             this.status.success = true;
             this.status.message = messages.success;
