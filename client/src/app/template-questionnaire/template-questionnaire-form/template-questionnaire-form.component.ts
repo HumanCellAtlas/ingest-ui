@@ -44,7 +44,7 @@ export class TemplateQuestionnaireFormComponent {
   };
   config: MetadataFormConfig = {
     layout: layout,
-    submitButtonLabel: "Generate",
+    submitButtonLabel: "Generate Spreadsheet",
     cancelButtonLabel: "Cancel"
   }
 
