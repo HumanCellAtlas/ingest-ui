@@ -112,7 +112,7 @@ describe('Complete Authentication', () => {
     });
   }));
 
-  it('should display error when it could not communicate successfully with Ingest API', async(() => {
+  it('should display error and reset user when it could not communicate successfully with Ingest API', async(() => {
     // given:
     signInToRemoteService();
 
