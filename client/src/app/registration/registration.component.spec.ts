@@ -15,18 +15,18 @@ import {Account} from '../core/account';
 let registration: RegistrationComponent;
 let fixture: ComponentFixture<RegistrationComponent>;
 
-let authenticationService: SpyObj<RegistrationService>;
+let registrationService: SpyObj<RegistrationService>;
 let aaiService: SpyObj<AaiService>;
 
 function configureTestEnvironment(): void {
-  authenticationService = createSpyObj('AuthenticationService', ['register']);
+  registrationService = createSpyObj('AuthenticationService', ['register']);
   aaiService = createSpyObj('AaiService', ['getUser']);
 
   TestBed.configureTestingModule({
     declarations: [RegistrationComponent],
     imports: [FormsModule],
     providers: [
-      {provide: RegistrationService, useFactory: () => authenticationService},
+      {provide: RegistrationService, useFactory: () => registrationService},
       {provide: AaiService, useFactory: () => aaiService},
       {provide: Router, useValue: createSpy('Router')}
     ]
@@ -54,14 +54,14 @@ describe('Registration', () => {
     // and:
     const newAccount = new Account({id: '11f1faa8', providerReference: '2367ded12'});
     const accountPromise = Promise.resolve(newAccount);
-    authenticationService.register.and.returnValue(accountPromise);
+    registrationService.register.and.returnValue(accountPromise);
 
     // when:
     registration.proceed();
 
     // then:
     flushMicrotasks();
-    expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
+    expect(registrationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(true);
     expect(registration.status.message).not.toBe(undefined);
   }));
@@ -74,14 +74,14 @@ describe('Registration', () => {
     // and:
     const failure = <RegistrationFailed>{errorCode: RegistrationErrorCode.Duplication};
     const accountPromise = Promise.reject(failure);
-    authenticationService.register.and.returnValue(accountPromise);
+    registrationService.register.and.returnValue(accountPromise);
 
     // when:
     registration.proceed();
 
     // then:
     flushMicrotasks();
-    expect(authenticationService.register).toHaveBeenCalledWith(accessToken);
+    expect(registrationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
     expect(registration.status.message).not.toBe(undefined);
   }));
@@ -95,6 +95,6 @@ describe('Registration', () => {
     registration.proceed();
 
     // then:
-    expect(authenticationService.register).not.toHaveBeenCalled();
+    expect(registrationService.register).not.toHaveBeenCalled();
   }));
 });
