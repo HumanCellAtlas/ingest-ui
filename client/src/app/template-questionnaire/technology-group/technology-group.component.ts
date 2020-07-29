@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MetadataForm} from "../../metadata-schema-form/models/metadata-form";
+import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 
 @Component({
   selector: 'app-specimen-group',
@@ -8,7 +8,7 @@ import {MetadataForm} from "../../metadata-schema-form/models/metadata-form";
 })
 export class TechnologyGroupComponent implements OnInit {
   metadataForm: MetadataForm;
-  showLibraryPrep: boolean = false;
+  showLibraryPrep = false;
 
   constructor() { }
 
@@ -18,11 +18,11 @@ export class TechnologyGroupComponent implements OnInit {
       next: data => {
         this.onTypeChange(data);
       }
-    })
+    });
   }
 
   onTypeChange(technologyType: string[]) {
-    this.showLibraryPrep = technologyType.includes("Sequencing");
+    this.showLibraryPrep = technologyType.includes('Sequencing');
     if (!this.showLibraryPrep) {
       this.metadataForm.getControl('template-questionnaire.libraryPreparation').reset();
     }

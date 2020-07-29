@@ -5,8 +5,8 @@ import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
 import {concatMap, tap} from 'rxjs/operators';
 import {AaiService} from '../aai/aai.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {Observable, of} from "rxjs";
-import {Account} from "../core/account";
+import {Observable, of} from 'rxjs';
+import {Account} from '../core/account';
 
 @Component({
   selector: 'app-my-projects',
@@ -15,6 +15,7 @@ import {Account} from "../core/account";
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   account$: Observable<Account>;
+  account: Account;
   isLoggedIn$: Observable<Boolean>;
   isWrangler: Boolean;
   introduction: String;
@@ -73,9 +74,10 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   private pollAccount() {
     this.account$.subscribe({
       next: data => {
+        this.account = data;
         this.isWrangler = data.isWrangler();
         if (this.isWrangler) {
-          this.introduction = "These are your assigned projects.";
+          this.introduction = 'These are your assigned projects.';
           this.columns = [
             ProjectColumn.api_link,
             ProjectColumn.short_name,
@@ -84,7 +86,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
             ProjectColumn.last_updated
           ];
         } else {
-          this.introduction = "These are your projects created for the Human Cell Atlas.";
+          this.introduction = 'These are your projects created for the Human Cell Atlas.';
           this.columns = [
             ProjectColumn.short_name,
             ProjectColumn.project_title,

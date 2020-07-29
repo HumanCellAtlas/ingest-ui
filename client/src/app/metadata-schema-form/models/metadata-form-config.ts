@@ -10,4 +10,5 @@ export interface MetadataFormConfig {
   overrideRequiredFields?: {[key: string]: boolean};
   submitButtonLabel?: string;
   cancelButtonLabel?: string;
+  showResetButton?: boolean;
 }
