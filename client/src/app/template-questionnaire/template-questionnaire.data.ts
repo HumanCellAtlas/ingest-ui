@@ -1,4 +1,5 @@
 import * as answerKey from './answer-key.json';
+import {camelCase} from "@swimlane/ngx-datatable";
 
 export interface QuestionnaireData {
   technologyType: string[];
@@ -25,7 +26,12 @@ export class TemplateSpecification {
 
   static convert(data: QuestionnaireData): TemplateSpecification {
     let specification = new TemplateSpecification();
-    answerKey.technology.sequencing.forEach((t: TypeSpec) => specification.types.push(t));
+    data.technologyType
+      .map(camelCase)
+      .filter(type => type in answerKey.technology)
+      .forEach(type => {
+        answerKey.technology[type].forEach((ts: TypeSpec) => specification.types.push(ts));
+      });
     return specification;
   }
 
