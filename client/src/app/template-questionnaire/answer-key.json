@@ -1,0 +1,196 @@
+{
+  "technology": {
+    "imaging": [
+      {
+        "schemaName": "imaging_protocol",
+        "modules": [
+          "channel",
+          "probe"
+        ]
+      },
+      {
+        "schemaName": "imaging_preparation_protocol"
+      },
+      {
+        "schemaName": "imaged_specimen"
+      }
+    ],
+    "sequencing": [
+      {
+        "schemaName": "dissociation_protocol"
+      },
+      {
+        "schemaName": "cell_suspension"
+      },
+      {
+        "schemaName": "library_preparation_protocol"
+      },
+      {
+        "schemaName": "sequencing_protocol"
+      }
+    ]
+  },
+  "library": {
+    "droplet": [
+      {
+        "schemaName": "sequencing_protocol",
+        "modules": [
+          "10x"
+        ]
+      },
+      {
+        "schemaName": "library_preparation",
+        "modules": [
+          "cell_barcode"
+        ]
+      }
+    ],
+    "plate": [
+      {
+        "schemaName": "cell_suspension",
+        "modules": [
+          "plate_based_sequencing"
+        ]
+      }
+    ],
+    "other": [
+      {
+        "schemaName": "cell_suspension",
+        "modules": [
+          "plate_based_sequencing"
+        ]
+      },
+      {
+        "schemaName": "sequencing_protocol",
+        "modules": [
+          "10x"
+        ]
+      },
+      {
+        "schemaName": "library_preparation",
+        "modules": [
+          "cell_barcode"
+        ]
+      }
+    ]
+  },
+  "species": {
+    "human": [
+      {
+        "schemaName": "donor_organism",
+        "modules": [
+          "human_specific",
+          "medical_history",
+          "height_unit"
+        ],
+        "fields": [
+          "height"
+        ]
+      }
+    ],
+    "mouse": [
+      {
+        "schemaName": "donor_organism",
+        "modules": [
+          "mouse_specific"
+        ]
+      }
+    ]
+  },
+  "prenatal": {
+    "all": {
+      "schemaName": "donor_organism",
+      "excludedModules": [
+        "organism_age_unit"
+      ],
+      "excludedFields": [
+        "organism_age"
+      ]
+    },
+    "some": {
+      "schemaName": "donor_organism",
+      "modules": [
+        "organism_age_unit",
+        "gestational_age_unit"
+      ],
+      "fields": [
+        "organism_age",
+        "gestational_age"
+      ]
+    }
+  },
+  "relationship": {
+    "schemaName": "donor_organism",
+    "modules": [
+      "familial_relationship"
+    ]
+  },
+  "specimens": {
+    "organoid": [
+      {
+        "schemaName": "organoid"
+      },
+      {
+        "schemaName": "aggregate_generation_protocol"
+      }
+    ],
+    "cellLine": [
+      {
+        "schemaName": "cell_suspension",
+        "modules": [
+          "growth_conditions"
+        ]
+      },
+      {
+        "schemaName": "ipsc_induction_protocol"
+      },
+      {
+        "schemaName": "differentiation_protocol"
+      }
+    ]
+  },
+  "purchasedSpecimen": {
+    "yes": [
+      {
+        "schemaName": "purchased_specimen"
+      }
+    ]
+  },
+  "protocols": {
+    "enrichment": [
+      {
+        "schemaName": "enrichment_protocol"
+      },
+      {
+        "schemaName": "cell_suspension"
+      }
+    ],
+    "differentiation": [
+      {
+        "schemaName": "differentiation_protocol"
+      },
+      {
+        "schemaName": "organoid"
+      },
+      {
+        "schemaName": "cell_line"
+      }
+    ],
+    "aggregateGeneration": [
+      {
+        "schemaName": "aggregation_generation_protocol"
+      },
+      {
+        "schemaName": "organoid"
+      }
+    ],
+    "induction": [
+      {
+        "schemaName": "ipsc_induction_protocol"
+      },
+      {
+        "schemaName": "cell_line"
+      }
+    ]
+  }
+}
