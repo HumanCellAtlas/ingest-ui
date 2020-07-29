@@ -11,6 +11,7 @@ describe('ContactFieldGroupComponent', () => {
   let fixture: ComponentFixture<ContactFieldGroupComponent>;
   let aaiSpy: jasmine.SpyObj<AaiService>;
   let userSpy: jasmine.SpyObj<Subject<User>>;
+  let firstUserSpy: jasmine.SpyObj<Subject<User>>;
 
   beforeEach(async(() => {
     aaiSpy = jasmine.createSpyObj(['getUserSubject']) as jasmine.SpyObj<AaiService>;
@@ -23,7 +24,10 @@ describe('ContactFieldGroupComponent', () => {
 
   beforeEach(() => {
     userSpy = jasmine.createSpyObj(['subscribe']) as jasmine.SpyObj<Subject<User>>;
-    aaiSpy.getUserSubject.and.returnValue(userSpy);
+    firstUserSpy = jasmine.createSpyObj(['first']) as jasmine.SpyObj<Subject<User>>;
+    firstUserSpy.first.and.returnValue(userSpy);
+    aaiSpy.getUserSubject.and.returnValue(firstUserSpy);
+
     const schema = {
       '$id': 'https://schema.dev.data.humancellatlas.org/type/project/15.0.0/project',
       '$schema': 'http://json-schema.org/draft-07/schema#',
