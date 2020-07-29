@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MetadataForm} from "../../metadata-schema-form/models/metadata-form";
+import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 
 @Component({
   selector: 'app-specimen-group',
@@ -8,7 +8,7 @@ import {MetadataForm} from "../../metadata-schema-form/models/metadata-form";
 })
 export class DonorGroupComponent implements OnInit {
   metadataForm: MetadataForm;
-  showRelatedDonor: boolean = false;
+  showRelatedDonor = false;
 
   constructor() { }
 
@@ -18,11 +18,11 @@ export class DonorGroupComponent implements OnInit {
       next: data => {
         this.onOrganismChange(data);
       }
-    })
+    });
   }
 
   onOrganismChange(identifyingOrganisms: string[]) {
-    this.showRelatedDonor = identifyingOrganisms.includes("Human");
+    this.showRelatedDonor = identifyingOrganisms.includes('Human');
     if (!this.showRelatedDonor) {
       this.metadataForm.getControl('template-questionnaire.donorsRelated').reset();
     }

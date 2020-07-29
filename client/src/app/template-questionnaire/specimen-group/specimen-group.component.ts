@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MetadataForm} from "../../metadata-schema-form/models/metadata-form";
+import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 
 @Component({
   selector: 'app-specimen-group',
@@ -8,7 +8,7 @@ import {MetadataForm} from "../../metadata-schema-form/models/metadata-form";
 })
 export class SpecimenGroupComponent implements OnInit {
   metadataForm: MetadataForm;
-  showPurchased: boolean = false;
+  showPurchased = false;
 
   constructor() { }
 
@@ -18,11 +18,11 @@ export class SpecimenGroupComponent implements OnInit {
       next: data => {
         this.onTypeChange(data);
       }
-    })
+    });
   }
 
   onTypeChange(specimenType: string[]) {
-    this.showPurchased = specimenType.includes("Organoid") || specimenType.includes("Cell Line");
+    this.showPurchased = specimenType.includes('Organoid') || specimenType.includes('Cell Line');
     if (!this.showPurchased) {
       this.metadataForm.getControl('template-questionnaire.specimenPurchased').reset();
     }

@@ -10,5 +10,7 @@
                    [schema]="templateQuestionnaireSchema"
                    [data]="questionnaireData"
                    [config]="config"
+                   (cancel)="onCancel($event)"
+                   (reset)="onReset($event)"
                    (save)="onSave($event)">
 </app-metadata-form>
