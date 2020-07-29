@@ -52,7 +52,8 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     showResetButton: true
   };
 
-  constructor(private templateGenerator: TemplateGeneratorService, private router: Router) {
+  constructor(private templateGenerator: TemplateGeneratorService,
+              private router: Router) {
 
   }
 
