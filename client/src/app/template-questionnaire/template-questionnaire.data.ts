@@ -1,3 +1,5 @@
+import * as answerKey from './answer-key.json';
+
 export interface QuestionnaireData {
   technologyType: string[];
   libraryPreparation: string[];
@@ -18,10 +20,13 @@ interface TypeSpec {
 
 
 export class TemplateSpecification {
-  types: TypeSpec[];
+
+  types = [] as TypeSpec[];
 
   static convert(data: QuestionnaireData): TemplateSpecification {
-    return new TemplateSpecification();
+    let specification = new TemplateSpecification();
+    answerKey.technology.sequencing.forEach((t: TypeSpec) => specification.types.push(t));
+    return specification;
   }
 
 }
