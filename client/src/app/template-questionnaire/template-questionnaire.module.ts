@@ -5,9 +5,13 @@ import {MetadataSchemaFormModule} from "../metadata-schema-form/metadata-schema-
 import {SpecimenGroupComponent} from './specimen-group/specimen-group.component';
 import {DonorGroupComponent} from "./donor-group/donor-group.component";
 import {TechnologyGroupComponent} from "./technology-group/technology-group.component";
+import {TemplateGeneratorService} from "./template-generator.service";
 
 
 @NgModule({
+  providers: [
+    TemplateGeneratorService
+  ],
   declarations: [
     TemplateQuestionnaireFormComponent,
     TechnologyGroupComponent,
