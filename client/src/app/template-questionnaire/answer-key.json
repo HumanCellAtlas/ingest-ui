@@ -74,8 +74,8 @@
       }
     ]
   },
-  "species": {
-    "human": [
+  "identifyingOrganisms": {
+    "Human": [
       {
         "schemaName": "donor_organism",
         "modules": [
@@ -88,7 +88,7 @@
         ]
       }
     ],
-    "mouse": [
+    "Mouse": [
       {
         "schemaName": "donor_organism",
         "modules": [
@@ -97,8 +97,8 @@
       }
     ]
   },
-  "prenatal": {
-    "all": {
+  "preNatalQuantity": {
+    "Yes, All": {
       "schemaName": "donor_organism",
       "excludedModules": [
         "organism_age_unit"
@@ -107,7 +107,7 @@
         "organism_age"
       ]
     },
-    "some": {
+    "Yes, Some": {
       "schemaName": "donor_organism",
       "modules": [
         "organism_age_unit",
@@ -119,14 +119,18 @@
       ]
     }
   },
-  "relationship": {
-    "schemaName": "donor_organism",
-    "modules": [
-      "familial_relationship"
+  "donorsRelated": {
+    "Yes": [
+      {
+        "schemaName": "donor_organism",
+        "modules": [
+          "familial_relationship"
+        ]
+      }
     ]
   },
-  "specimens": {
-    "organoid": [
+  "specimenType": {
+    "Organoid": [
       {
         "schemaName": "organoid"
       },
@@ -134,7 +138,7 @@
         "schemaName": "aggregate_generation_protocol"
       }
     ],
-    "cellLine": [
+    "Cell Line": [
       {
         "schemaName": "cell_suspension",
         "modules": [
@@ -149,15 +153,15 @@
       }
     ]
   },
-  "purchasedSpecimen": {
-    "yes": [
+  "specimenPurchased": {
+    "Yes": [
       {
         "schemaName": "purchased_specimen"
       }
     ]
   },
   "protocols": {
-    "enrichment": [
+    "Enrichment": [
       {
         "schemaName": "enrichment_protocol"
       },
@@ -165,7 +169,7 @@
         "schemaName": "cell_suspension"
       }
     ],
-    "differentiation": [
+    "Differentiation": [
       {
         "schemaName": "differentiation_protocol"
       },
@@ -176,7 +180,7 @@
         "schemaName": "cell_line"
       }
     ],
-    "aggregateGeneration": [
+    "Aggregate Generation": [
       {
         "schemaName": "aggregation_generation_protocol"
       },
@@ -184,7 +188,7 @@
         "schemaName": "organoid"
       }
     ],
-    "induction": [
+    "Induction": [
       {
         "schemaName": "ipsc_induction_protocol"
       },

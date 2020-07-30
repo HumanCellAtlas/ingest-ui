@@ -27,6 +27,11 @@ describe('Template Specification conversion', () => {
       question: 'libraryPreparation',
       answer: 'Plate-based (e.g. SmartSeq2)',
       schemaNames: ['cell_suspension']
+    },
+    {
+      question: 'preNatalQuantity',
+      answer: 'No, None',
+      schemaNames: []
     }
   ].forEach(param => {
     it(`should correctly translate ${param.question} "${param.answer}"`, () => {
