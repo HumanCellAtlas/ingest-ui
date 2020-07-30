@@ -66,7 +66,7 @@
         </app-files>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Assays" *ngIf="isSubmitted && (submissionEnvelope['submitActions'] || []).indexOf('Archive')>= 0">
+    <mat-tab label="Assays" *ngIf="isSubmitted">
       <ng-template matTabContent>
         <app-metadata-list
           [submissionEnvelopeId]="submissionEnvelopeId"
