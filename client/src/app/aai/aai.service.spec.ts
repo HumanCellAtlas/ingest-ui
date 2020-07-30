@@ -1,6 +1,5 @@
 import {AaiService} from './aai.service';
 import {async, TestBed} from '@angular/core/testing';
-import {RegistrationService} from '../core/registration.service';
 import {User, UserManager} from 'oidc-client';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AlertService} from '../shared/services/alert.service';
