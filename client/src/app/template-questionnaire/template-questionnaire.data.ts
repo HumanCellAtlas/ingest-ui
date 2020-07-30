@@ -28,6 +28,7 @@ export class TemplateSpecification {
   static convert(data: QuestionnaireData): TemplateSpecification {
     let specification = new TemplateSpecification();
     for (let field in data) {
+      if (!(field in answers)) continue;
       let answerSection = answers[field];
       data[field]
         .filter(value => value in answerSection)

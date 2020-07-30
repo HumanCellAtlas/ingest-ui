@@ -30,8 +30,8 @@
       }
     ]
   },
-  "library": {
-    "droplet": [
+  "libraryPreparation": {
+    "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)": [
       {
         "schemaName": "sequencing_protocol",
         "modules": [
@@ -45,7 +45,7 @@
         ]
       }
     ],
-    "plate": [
+    "Plate-based (e.g. SmartSeq2)": [
       {
         "schemaName": "cell_suspension",
         "modules": [
@@ -53,7 +53,7 @@
         ]
       }
     ],
-    "other": [
+    "Other": [
       {
         "schemaName": "cell_suspension",
         "modules": [
