@@ -8,11 +8,11 @@ describe('Template Specification conversion', () => {
       schemaNames: ['dissociation_protocol', 'cell_suspension', 'library_preparation_protocol', 'sequencing_protocol']
     },
     {
-      answer: 'imaging',
+      answer: 'Imaging',
       schemaNames: ['imaging_protocol', 'imaging_preparation_protocol', 'imaged_specimen']
     }
   ].forEach(param => {
-    it(`should correctly translate technology type ${param.answer}`, () => {
+    it(`should correctly translate technology type "${param.answer}"`, () => {
       //given:
       const data = <QuestionnaireData>{
         'technologyType': [param.answer]

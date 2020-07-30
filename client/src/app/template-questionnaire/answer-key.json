@@ -1,6 +1,6 @@
 {
-  "technology": {
-    "imaging": [
+  "technologyType": {
+    "Imaging": [
       {
         "schemaName": "imaging_protocol",
         "modules": [
@@ -15,7 +15,7 @@
         "schemaName": "imaged_specimen"
       }
     ],
-    "sequencing": [
+    "Sequencing": [
       {
         "schemaName": "dissociation_protocol"
       },
