@@ -15,7 +15,7 @@ import {IngestService} from '../shared/services/ingest.service';
 export class GlobalHeaderComponent implements OnInit {
   isLoggedIn: boolean;
   userInfo: Profile;
-  account$: Observable<Account>;
+  account$: Observable<Account | undefined>;
 
   constructor(private router: Router, private ingestService: IngestService, private aai: AaiService) {
   }
@@ -24,7 +24,7 @@ export class GlobalHeaderComponent implements OnInit {
     this.account$ = this.aai.user$.pipe(
       map(user => {
         this.isLoggedIn = user && !user.expired;
-        this.userInfo = user ? user.profile : null;
+        this.userInfo = user ? user.profile : undefined;
         return this.isLoggedIn;
       }),
       concatMap(loggedIn => {

@@ -12,7 +12,7 @@
   </div>
 </div>
 <p class="vf-text-body vf-text-body--3 vf-u-text-color--grey">{{introduction}}</p>
-<ng-container *ngIf="account">
+<ng-container *ngIf="account$ | async as account">
   <app-project-list [projects]=projects [columns]="columns" [showUnassignedActions]="isWrangler"></app-project-list>
 </ng-container>
 <mat-paginator [length]="currentPageInfo['totalElements']"

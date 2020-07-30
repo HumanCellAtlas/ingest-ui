@@ -15,7 +15,6 @@ import {Account} from '../core/account';
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   account$: Observable<Account>;
-  account: Account;
   isLoggedIn$: Observable<Boolean>;
   isWrangler: Boolean;
   introduction: String;
@@ -74,7 +73,6 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   private pollAccount() {
     this.account$.subscribe({
       next: data => {
-        this.account = data;
         this.isWrangler = data.isWrangler();
         if (this.isWrangler) {
           this.introduction = 'These are your assigned projects.';
