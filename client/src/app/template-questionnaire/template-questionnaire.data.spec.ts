@@ -36,7 +36,7 @@ describe('Template Specification conversion', () => {
   ].forEach(param => {
     it(`should correctly translate ${param.question} "${param.answer}"`, () => {
       //given:
-      const data = <QuestionnaireData> {};
+      const data = <QuestionnaireData>{};
       data[param.question] = [param.answer];
 
       //when:
@@ -44,10 +44,24 @@ describe('Template Specification conversion', () => {
 
       //then:
       expect(specification).not.toBeNull();
-      const schemaNames = specification.types.map(t => t.schemaName);
+      const schemaNames = specification.getTypes().map(t => t.schemaName);
       expect(schemaNames.length).toBe(param.schemaNames.length);
       param.schemaNames.forEach(name => expect(schemaNames).toContain(name));
     });
+  });
+
+  it('should ensure type specifications are unique', () => {
+    //given:
+    const data = <QuestionnaireData>{
+      identifyingOrganisms: ['Human', 'Mouse']
+    };
+
+    //when:
+    const specification = TemplateSpecification.convert(data);
+
+    //then:
+    const typeSpecs = specification.getTypes().filter(ts => ts.schemaName == 'donor_organism');
+    expect(typeSpecs.length).toBe(1);
   });
 
 });
