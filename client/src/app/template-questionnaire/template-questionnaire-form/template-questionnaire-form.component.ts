@@ -9,6 +9,8 @@ import {QuestionnaireData} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
 import {saveAs} from 'file-saver';
 import {Router} from '@angular/router';
+import {LoaderService} from '../../shared/services/loader.service';
+import {AlertService} from '../../shared/services/alert.service';
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -53,6 +55,8 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
   };
 
   constructor(private templateGenerator: TemplateGeneratorService,
+              private loaderService: LoaderService,
+              private alertService: AlertService,
               private router: Router) {
 
   }
@@ -63,9 +67,17 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
   onSave($event: object) {
     const data: QuestionnaireData = $event['value'];
     console.log(data.specimenType);
-    this.templateGenerator.generate(data).then(blob => {
-      saveAs(blob, 'template.xlsx');
-    });
+    this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
+      ' please don\'t refresh while this is happening.');
+    setTimeout(() => {
+      this.templateGenerator.generate(data).then(blob => {
+        saveAs(blob, 'template.xlsx');
+        this.loaderService.display(false);
+        this.alertService.clear();
+        this.alertService.success('Success', 'You have successfully generated a spreadsheet!');
+        window.scroll(0, 0);
+      });
+    }, 5000);
     console.log($event);
   }
 
