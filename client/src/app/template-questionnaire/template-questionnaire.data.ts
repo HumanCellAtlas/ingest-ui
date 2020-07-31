@@ -30,7 +30,6 @@ const default_type_specs = [
     category: 'biomaterial',
     includeModules: [
       'genus_species',
-      'organism_age_unit',
       'development_stage',
       'diseases',
       'death',

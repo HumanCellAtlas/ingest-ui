@@ -110,12 +110,6 @@
     ]
   },
   "preNatalQuantity": {
-    "Yes, All": [
-      {
-        "schemaName": "donor_organism",
-        "category": "biomaterial"
-      }
-    ],
     "Yes, Some": [
       {
         "schemaName": "donor_organism",
@@ -123,6 +117,15 @@
         "includeModules": [
           "organism_age_unit",
           "gestational_age_unit"
+        ]
+      }
+    ],
+    "No, None": [
+      {
+        "schemaName": "donor_organism",
+        "category": "biomaterial",
+        "includeModules": [
+          "organism_age_unit"
         ]
       }
     ]
