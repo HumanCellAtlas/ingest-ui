@@ -193,7 +193,7 @@
       },
       {
         "schemaName": "cell_line",
-        "category": "other"
+        "category": "biomaterial"
       }
     ],
     "Aggregate Generation": [
@@ -213,7 +213,7 @@
       },
       {
         "schemaName": "cell_line",
-        "category": "other"
+        "category": "biomaterial"
       }
     ]
   }
