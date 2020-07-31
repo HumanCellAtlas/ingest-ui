@@ -5,7 +5,9 @@ describe('Template Specification conversion', () => {
   /*
   This parameterised test does not exhaustively test all possible combinations of questions, answers, and
   expected schema mapping. The goal is to add here some representative translation, and any additional ones
-  that do not easily conform to the JSON file mapping.
+  that do not easily conform to the JSON file mapping (implementation detail).
+
+  Some of the mappings are tested implicitly by other tests in this suite.
    */
   [
     {
@@ -69,6 +71,24 @@ describe('Template Specification conversion', () => {
     const expectedModules = ['human_specific', 'medical_history', 'height_unit', 'mouse_specific'];
     expect(donorOrganism.includeModules.length).toBe(expectedModules.length);
     expectedModules.forEach(module => expect(donorOrganism.includeModules).toContain(module));
+  });
+
+  it('should embed process into biomaterials when experiment info are recorded', () => {
+    //given:
+    const data = <QuestionnaireData>{
+      experimentInfo: 'Yes',
+      identifyingOrganisms: ['Mouse'],
+      libraryPreparation: ['Other']
+    };
+
+    //when:
+    const specification = TemplateSpecification.convert(data);
+
+    //then:
+    const biomaterials = new Set<string>(['donor_organism', 'cell_suspension', 'library_preparation']);
+    specification.getTypes().forEach(ts => {
+      expect(ts.embedProcess).withContext(ts.schemaName).toBe(biomaterials.has(ts.schemaName));
+    });
   });
 
 });

@@ -3,30 +3,37 @@
     "Imaging": [
       {
         "schemaName": "imaging_protocol",
+        "category": "other",
         "includeModules": [
           "channel",
           "probe"
         ]
       },
       {
-        "schemaName": "imaging_preparation_protocol"
+        "schemaName": "imaging_preparation_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "imaged_specimen"
+        "schemaName": "imaged_specimen",
+        "category": "other"
       }
     ],
     "Sequencing": [
       {
-        "schemaName": "dissociation_protocol"
+        "schemaName": "dissociation_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "cell_suspension"
+        "schemaName": "cell_suspension",
+        "category": "biomaterial"
       },
       {
-        "schemaName": "library_preparation_protocol"
+        "schemaName": "library_preparation_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "sequencing_protocol"
+        "schemaName": "sequencing_protocol",
+        "category": "other"
       }
     ]
   },
@@ -34,12 +41,14 @@
     "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)": [
       {
         "schemaName": "sequencing_protocol",
+        "category": "other",
         "includeModules": [
           "10x"
         ]
       },
       {
         "schemaName": "library_preparation",
+        "category": "other",
         "includeModules": [
           "cell_barcode"
         ]
@@ -48,6 +57,7 @@
     "Plate-based (e.g. SmartSeq2)": [
       {
         "schemaName": "cell_suspension",
+        "category": "biomaterial",
         "includeModules": [
           "plate_based_sequencing"
         ]
@@ -56,18 +66,21 @@
     "Other": [
       {
         "schemaName": "cell_suspension",
+        "category": "biomaterial",
         "includeModules": [
           "plate_based_sequencing"
         ]
       },
       {
         "schemaName": "sequencing_protocol",
+        "category": "other",
         "includeModules": [
           "10x"
         ]
       },
       {
         "schemaName": "library_preparation",
+        "category": "biomaterial",
         "includeModules": [
           "cell_barcode"
         ]
@@ -78,6 +91,7 @@
     "Human": [
       {
         "schemaName": "donor_organism",
+        "category": "biomaterial",
         "includeModules": [
           "human_specific",
           "medical_history",
@@ -88,6 +102,7 @@
     "Mouse": [
       {
         "schemaName": "donor_organism",
+        "category": "biomaterial",
         "includeModules": [
           "mouse_specific"
         ]
@@ -96,10 +111,12 @@
   },
   "preNatalQuantity": {
     "Yes, All": {
-      "schemaName": "donor_organism"
+      "schemaName": "donor_organism",
+      "category": "biomaterial"
     },
     "Yes, Some": {
       "schemaName": "donor_organism",
+      "category": "biomaterial",
       "includeModules": [
         "organism_age_unit",
         "gestational_age_unit"
@@ -110,6 +127,7 @@
     "Yes": [
       {
         "schemaName": "donor_organism",
+        "category": "biomaterial",
         "includeModules": [
           "familial_relationship"
         ]
@@ -119,68 +137,83 @@
   "specimenType": {
     "Organoid": [
       {
-        "schemaName": "organoid"
+        "schemaName": "organoid",
+        "category": "biomaterial"
       },
       {
-        "schemaName": "aggregate_generation_protocol"
+        "schemaName": "aggregate_generation_protocol",
+        "category": "other"
       }
     ],
     "Cell Line": [
       {
         "schemaName": "cell_suspension",
+        "category": "biomaterial",
         "includeModules": [
           "growth_conditions"
         ]
       },
       {
-        "schemaName": "ipsc_induction_protocol"
+        "schemaName": "ipsc_induction_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "differentiation_protocol"
+        "schemaName": "differentiation_protocol",
+        "category": "other"
       }
     ]
   },
   "specimenPurchased": {
     "Yes": [
       {
-        "schemaName": "purchased_specimen"
+        "schemaName": "purchased_specimen",
+        "category": "other"
       }
     ]
   },
   "protocols": {
     "Enrichment": [
       {
-        "schemaName": "enrichment_protocol"
+        "schemaName": "enrichment_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "cell_suspension"
+        "schemaName": "cell_suspension",
+        "category": "biomaterial"
       }
     ],
     "Differentiation": [
       {
-        "schemaName": "differentiation_protocol"
+        "schemaName": "differentiation_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "organoid"
+        "schemaName": "organoid",
+        "category": "biomaterial"
       },
       {
-        "schemaName": "cell_line"
+        "schemaName": "cell_line",
+        "category": "other"
       }
     ],
     "Aggregate Generation": [
       {
-        "schemaName": "aggregation_generation_protocol"
+        "schemaName": "aggregation_generation_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "organoid"
+        "schemaName": "organoid",
+        "category": "biomaterial"
       }
     ],
     "Induction": [
       {
-        "schemaName": "ipsc_induction_protocol"
+        "schemaName": "ipsc_induction_protocol",
+        "category": "other"
       },
       {
-        "schemaName": "cell_line"
+        "schemaName": "cell_line",
+        "category": "other"
       }
     ]
   }

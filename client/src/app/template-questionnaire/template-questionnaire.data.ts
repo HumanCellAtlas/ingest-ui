@@ -7,6 +7,7 @@ export interface QuestionnaireData {
   libraryPreparation: string[];
   identifyingOrganisms: string[];
   specimenType: string[];
+  experimentInfo: string;
 }
 
 export interface TypeSpec {
@@ -25,6 +26,7 @@ export class TemplateSpecification {
 
   static convert(data: QuestionnaireData): TemplateSpecification {
     let specification = new TemplateSpecification();
+    let recordInfo: boolean = 'experimentInfo' in data && data.experimentInfo.toLowerCase() == 'yes';
     for (let field in data) {
       if (!(field in answers)) continue;
       let answerSection = answers[field];
@@ -33,9 +35,14 @@ export class TemplateSpecification {
         .forEach(value => {
           answers[field][value].forEach((ts: TypeSpec) => {
             if (specification.types.has(ts.schemaName)) {
-              TemplateSpecification.merge(ts, specification.types.get(ts.schemaName));
+              TemplateSpecification.merge(specification.types.get(ts.schemaName), ts);
+            } else {
+              //cloning to ensure the source object doesn't get overwritten by merges
+              let clone = Object.assign({}, ts);
+              clone.embedProcess = 'category' in clone && clone['category'] == 'biomaterial' ? recordInfo : false;
+              delete clone['category'];
+              specification.types.set(ts.schemaName, clone);
             }
-            specification.types.set(ts.schemaName, ts);
           });
         });
     }
