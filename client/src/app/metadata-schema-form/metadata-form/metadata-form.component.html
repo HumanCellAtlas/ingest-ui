@@ -1,8 +1,8 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
 
   <mat-tab-group *ngIf="config.layout.tabs.length > 1"
-    (selectedIndexChange)="onSelectedIndexChange($event)"
-    [selectedIndex]="this.selectedTabIndex">
+                 (selectedIndexChange)="onSelectedIndexChange($event)"
+                 [selectedIndex]="this.selectedTabIndex">
     <ng-container *ngFor="let tab of config.layout.tabs">
       <mat-tab>
         <div>
@@ -22,6 +22,7 @@
       </mat-tab>
     </ng-container>
   </mat-tab-group>
+
   <div *ngIf="config.layout.tabs.length === 1" class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
     <ng-container *ngFor="let item of config.layout.tabs[0].items">
       <app-metadata-form-item
@@ -38,6 +39,12 @@
           <a class="vf-link vf-u-margin__right--xxl" *ngIf="this.selectedTabIndex !== 0" (click)="onBack($event)">
             < Back
           </a>
+
+          <a *ngIf="config.showResetButton" class="vf-button vf-button--tertiary vf-button vf-u-margin__left--xxl"
+             (click)="onReset($event)">
+            Reset
+          </a>
+
           <button
             *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1 && this.selectedTabIndex !== config.layout.tabs.length"
             class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
@@ -46,10 +53,12 @@
                   class="next-button vf-button vf-button--primary vf-button">
             {{config.submitButtonLabel ? config.submitButtonLabel : 'Finish'}}
           </button>
+
+
         </div>
         <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
            class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
-          {{config.cancelButtonLabel ? config.cancelButtonLabel : 'Or Cancel project registration'}}
+          {{config.cancelButtonLabel ? config.cancelButtonLabel : 'Cancel'}}
         </a>
       </div>
     </div>

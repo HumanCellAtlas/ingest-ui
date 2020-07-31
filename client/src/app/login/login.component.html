@@ -3,15 +3,20 @@
     <mat-card-content>
       <div>
         <p align="center" class="vf-text-body vf-text-body--1">
-          Sign in
+          Sign in or Register
         </p>
         <p align="center" class="vf-text-body vf-text-body--3">
-          to submit your single-cell sequencing data to the Human Cell Atlas.
+          To submit your single-cell sequencing data to the Human Cell Atlas,
+          sign in with your Elixir account. If you do not have an Elixir account,
+          you can register for one and then come back here to sign in.
         </p>
         <br/>
         <p align="center">
           <a (click)="login()" href="javascript:void(0)" class="vf-link">
             <img src="assets/login-button-blue-small.png" alt="[ELIXIR Login]">
+          </a>
+          <a href="https://perun.elixir-czech.cz/registrar/?vo=elixir&targetexisting=https://www.elixir-europe.org/alreadyregistered&targetnew=https://www.elixir-europe.org/registration-successful" target="_blank" class="vf-link">
+            <img src="assets/register-button-blue-small.png" alt="[ELIXIR Register]">
           </a>
         </p>
       </div>

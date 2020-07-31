@@ -9,7 +9,7 @@ import {AaiService} from '../aai/aai.service';
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
-  redirect: string
+  redirect: string;
 
   constructor(private aai: AaiService,
               private router: Router,
@@ -17,7 +17,7 @@ export class LoginComponent {
     this.redirect = this.route.snapshot.queryParamMap.get('redirect');
     this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
       if (isLoggedIn) {
-        this.navigate()
+        this.navigate();
       }
     });
   }
@@ -25,7 +25,7 @@ export class LoginComponent {
   login(): void {
     this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
       if (isLoggedIn) {
-        this.navigate()
+        this.navigate();
       } else {
         this.aai.startAuthentication(this.redirect);
       }

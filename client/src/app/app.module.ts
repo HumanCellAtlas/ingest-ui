@@ -53,7 +53,7 @@ import {MaterialModule} from './material.module';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ProjectRegistrationModule} from './project-registration/project-registration.module';
 import {WelcomeComponent} from './welcome/welcome.component';
-import {TemplateQuestionnaireModule} from "./template-questionnaire/template-questionnaire.module";
+import {TemplateQuestionnaireModule} from './template-questionnaire/template-questionnaire.module';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -81,7 +81,7 @@ const BROWSER_LOCALE = navigator.language;
     MyProjectsComponent,
     GlobalHeaderComponent,
     RegistrationComponent,
-    WelcomeComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

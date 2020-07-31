@@ -12,12 +12,21 @@ import {User} from 'oidc-client';
 })
 export class AppComponent {
   showLoader: boolean;
+  loaderMessage: string;
   user$: Subject<User>;
+  isSafari: boolean;
 
   constructor(private loaderService: LoaderService, private aai: AaiService) {
+    this.isSafari = window['safari'] !== undefined;
+
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
     });
+
+    this.loaderService.message.subscribe((val: string) => {
+      this.loaderMessage = val;
+    });
+
     this.user$ = this.aai.getUserSubject();
   }
 

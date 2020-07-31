@@ -3,8 +3,8 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {AaiService} from './aai.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {AaiSecurity} from "./aai.module";
-import {concatMap} from "rxjs/operators";
+import {AaiSecurity} from './aai.module';
+import {concatMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -29,13 +29,13 @@ export class OidcInterceptor implements HttpInterceptor {
   }
 
   private getHostName(url: string): string {
-    let hostName = undefined;
+    let hostName;
     try {
       hostName = (new URL(url)).hostname;
     } catch (e) {
-      //TypeError non URL requests (e.g. file system access)
+      // TypeError non URL requests (e.g. file system access)
       console.debug(e);
     }
-    return hostName
+    return hostName;
   }
 }

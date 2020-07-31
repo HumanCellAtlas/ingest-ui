@@ -1,10 +1,16 @@
+<h1 class="vf-text vf-text-heading--2">{{this.templateQuestionnaireSchema.title}}</h1>
+<br/>
+<br/>
+
 <p class="vf-intro__text">
-  We need information about your experiments to trigger the creation of a metadata spreadsheet.<br/>
-  You will use this spreadsheet to send us information about your samples and experiments so we can add them to the HCA
+  In order for us to support you to submit your experimental metadata, please complete this questionnaire.<br/>
+  We can then create a bespoke metadata spreadsheet for you, which you can download and edit with additional information about your sample(s) and experimental design.
 </p>
 <app-metadata-form name="spreadsheet-template-questionnaire"
                    [schema]="templateQuestionnaireSchema"
                    [data]="questionnaireData"
                    [config]="config"
+                   (cancel)="onCancel($event)"
+                   (reset)="onReset($event)"
                    (save)="onSave($event)">
 </app-metadata-form>

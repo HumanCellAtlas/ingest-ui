@@ -15,11 +15,10 @@
     </button>
   </div>
   <br/>
+  <app-upload *ngIf="upload" [projectUuid]="projectUuid"></app-upload>
+  <br/>
   <app-project-view (tabChange)="projectTabChange($event)" [project]="project">
   </app-project-view>
-  <br/>
-  <app-upload *ngIf="upload" [projectUuid]="projectUuid"></app-upload>
-
   <div class="dashboard" *ngIf="!upload && submissionEnvelopes && submissionEnvelopes.length > 0">
     <table>
       <thead class="thead-light">
