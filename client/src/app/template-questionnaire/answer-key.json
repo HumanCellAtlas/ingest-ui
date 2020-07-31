@@ -3,7 +3,7 @@
     "Imaging": [
       {
         "schemaName": "imaging_protocol",
-        "modules": [
+        "includeModules": [
           "channel",
           "probe"
         ]
@@ -34,13 +34,13 @@
     "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)": [
       {
         "schemaName": "sequencing_protocol",
-        "modules": [
+        "includeModules": [
           "10x"
         ]
       },
       {
         "schemaName": "library_preparation",
-        "modules": [
+        "includeModules": [
           "cell_barcode"
         ]
       }
@@ -48,7 +48,7 @@
     "Plate-based (e.g. SmartSeq2)": [
       {
         "schemaName": "cell_suspension",
-        "modules": [
+        "includeModules": [
           "plate_based_sequencing"
         ]
       }
@@ -56,19 +56,19 @@
     "Other": [
       {
         "schemaName": "cell_suspension",
-        "modules": [
+        "includeModules": [
           "plate_based_sequencing"
         ]
       },
       {
         "schemaName": "sequencing_protocol",
-        "modules": [
+        "includeModules": [
           "10x"
         ]
       },
       {
         "schemaName": "library_preparation",
-        "modules": [
+        "includeModules": [
           "cell_barcode"
         ]
       }
@@ -78,7 +78,7 @@
     "Human": [
       {
         "schemaName": "donor_organism",
-        "modules": [
+        "includeModules": [
           "human_specific",
           "medical_history",
           "height_unit"
@@ -91,7 +91,7 @@
     "Mouse": [
       {
         "schemaName": "donor_organism",
-        "modules": [
+        "includeModules": [
           "mouse_specific"
         ]
       }
@@ -109,7 +109,7 @@
     },
     "Yes, Some": {
       "schemaName": "donor_organism",
-      "modules": [
+      "includeModules": [
         "organism_age_unit",
         "gestational_age_unit"
       ],
@@ -123,7 +123,7 @@
     "Yes": [
       {
         "schemaName": "donor_organism",
-        "modules": [
+        "includeModules": [
           "familial_relationship"
         ]
       }
@@ -141,7 +141,7 @@
     "Cell Line": [
       {
         "schemaName": "cell_suspension",
-        "modules": [
+        "includeModules": [
           "growth_conditions"
         ]
       },

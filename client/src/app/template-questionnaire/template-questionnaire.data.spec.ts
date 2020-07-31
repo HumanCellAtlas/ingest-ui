@@ -60,8 +60,15 @@ describe('Template Specification conversion', () => {
     const specification = TemplateSpecification.convert(data);
 
     //then:
-    const typeSpecs = specification.getTypes().filter(ts => ts.schemaName == 'donor_organism');
+    const types = specification.getTypes();
+    const typeSpecs = types.filter(ts => ts.schemaName == 'donor_organism');
     expect(typeSpecs.length).toBe(1);
+
+    //and:
+    const donorOrganism = types[0];
+    const expectedModules = ['human_specific', 'medical_history', 'height_unit', 'mouse_specific'];
+    expect(donorOrganism.includeModules.length).toBe(expectedModules.length);
+    expectedModules.forEach(module => expect(donorOrganism.includeModules).toContain(module));
   });
 
 });

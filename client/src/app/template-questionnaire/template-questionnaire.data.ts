@@ -9,20 +9,14 @@ export interface QuestionnaireData {
   specimenType: string[];
 }
 
-export class TypeSpec {
+export interface TypeSpec {
   schemaName: string;
-  includeModules: Set<string>;
+  includeModules: string[];
   embedProcess: boolean;
   linkSpec: {
     linkEntities: string[];
     linkProtocols: string[]
   };
-
-  merge(other: TypeSpec): void {
-    if (this.schemaName == other.schemaName) {
-      other.includeModules.forEach(this.includeModules.add);
-    }
-  }
 }
 
 export class TemplateSpecification {
@@ -38,11 +32,20 @@ export class TemplateSpecification {
         .filter(value => value in answerSection)
         .forEach(value => {
           answers[field][value].forEach((ts: TypeSpec) => {
+            if (specification.types.has(ts.schemaName)) {
+              TemplateSpecification.merge(ts, specification.types.get(ts.schemaName));
+            }
             specification.types.set(ts.schemaName, ts);
           });
         });
     }
     return specification;
+  }
+
+  private static merge(spec: TypeSpec, other: TypeSpec): void {
+    if (spec.schemaName == other.schemaName) {
+      other.includeModules.forEach(it => spec.includeModules.push(it));
+    }
   }
 
   public getTypes(): TypeSpec[] {
