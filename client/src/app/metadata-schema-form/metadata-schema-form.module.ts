@@ -67,7 +67,8 @@ import {EnumRadioInlineComponent} from "./metadata-field-types/enum-radio-inline
     MetadataFormComponent,
     MetadataFieldComponent,
     VfInputComponent,
-    SelectRadioComponent
+    SelectRadioComponent,
+    EnumListInputComponent
   ],
   providers: []
 })

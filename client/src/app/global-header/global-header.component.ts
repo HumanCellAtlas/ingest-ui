@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Profile} from 'oidc-client';
 import {Router} from '@angular/router';
 import {AaiService} from '../aai/aai.service';
+import {concatMap, map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {Account} from '../core/account';
+import {IngestService} from '../shared/services/ingest.service';
 
 @Component({
   selector: 'app-global-header',
@@ -11,21 +15,31 @@ import {AaiService} from '../aai/aai.service';
 export class GlobalHeaderComponent implements OnInit {
   isLoggedIn: boolean;
   userInfo: Profile;
+  account$: Observable<Account | undefined>;
 
-  constructor(private router: Router,
-              private aai: AaiService) {
-    this.aai.user$.subscribe(user => {
-      this.isLoggedIn = user && !user.expired;
-      this.userInfo = user ? user.profile : null;
-    });
+  constructor(private router: Router, private ingestService: IngestService, private aai: AaiService) {
+  }
+
+  ngOnInit() {
+    this.account$ = this.aai.user$.pipe(
+      map(user => {
+        this.isLoggedIn = user && !user.expired;
+        this.userInfo = user ? user.profile : undefined;
+        return this.isLoggedIn;
+      }),
+      concatMap(loggedIn => {
+        if (loggedIn) {
+          return this.ingestService.getUserAccount();
+        }
+        return of(undefined);
+      })
+    );
   }
 
   logout(e) {
     e.preventDefault();
-    this.aai.logout();
+    if (confirm('Are you sure you want to logout?')) {
+      this.aai.logout();
+    }
   }
-
-  ngOnInit() {
-  }
-
 }

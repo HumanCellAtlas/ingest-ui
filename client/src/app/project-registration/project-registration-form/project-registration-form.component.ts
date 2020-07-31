@@ -71,7 +71,8 @@ export class ProjectRegistrationFormComponent implements OnInit {
         'project.content.contributors.project_role.text': false,
         'project.content.funders': false,
       },
-      submitButtonLabel: 'Register Project'
+      submitButtonLabel: 'Register Project',
+      cancelButtonLabel: 'Or Cancel project registration'
     };
 
     if (this.route.snapshot.paramMap.has('tab')) {

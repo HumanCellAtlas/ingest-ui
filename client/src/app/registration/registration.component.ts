@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, RegistrationErrorCode, RegistrationFailed} from '../core/authentication.service';
+import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from '../core/registration.service';
 import {AaiService} from '../aai/aai.service';
 import {User} from 'oidc-client';
 import {Router} from '@angular/router';
@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
   status: RegistrationStatus;
 
   constructor(private aaiService: AaiService,
-              private authenticationService: AuthenticationService,
+              private registrationService: RegistrationService,
               private router: Router) {
   }
 
@@ -41,7 +41,7 @@ export class RegistrationComponent implements OnInit {
     this.aaiService.getUser().subscribe((user: User) => {
       if (this.termsAccepted) {
         this.status = <RegistrationStatus>{};
-        this.authenticationService.register(user.access_token)
+        this.registrationService.register(user.access_token)
           .then(() => {
             this.status.success = true;
             this.status.message = messages.success;

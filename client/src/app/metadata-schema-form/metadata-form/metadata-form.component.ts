@@ -28,6 +28,8 @@ export class MetadataFormComponent implements OnInit {
 
   @Output() cancel = new EventEmitter<boolean>();
 
+  @Output() reset = new EventEmitter<boolean>();
+
   @Output() back = new EventEmitter<boolean>();
 
   @Output() tabChange = new EventEmitter<number>();
@@ -47,6 +49,7 @@ export class MetadataFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.metadataForm = this.metadataFormService.createForm(this.schema.name, this.schema, this.data, this.config);
     this.formGroup = this.metadataForm.formGroup;
     this.done = true;
@@ -86,5 +89,9 @@ export class MetadataFormComponent implements OnInit {
 
   onBack($event: MouseEvent) {
     this.back.emit();
+  }
+
+  onReset($event: MouseEvent) {
+    this.reset.emit();
   }
 }

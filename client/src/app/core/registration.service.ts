@@ -8,19 +8,11 @@ import {Account} from './account';
 @Injectable({
   providedIn: CoreSecurity,
 })
-export class AuthenticationService {
-
-  constructor(private http: HttpClient) {}
+export class RegistrationService {
 
   private readonly BASE_URL = `${environment.INGEST_API_URL}/auth`;
 
-  getAccount(token: string): Promise<Account> {
-    const url = `${this.BASE_URL}/account`;
-    return this.http
-      .get<Account>(url, {headers: this.authoriseHeader(token)})
-      .catch((error: HttpErrorResponse) => {
-        return Observable.throwError(<Account>{});
-      }).toPromise();
+  constructor(private http: HttpClient) {
   }
 
   register(token: string): Promise<Account> {

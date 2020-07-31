@@ -18,8 +18,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { DataTableComponent } from './components/data-table/data-table.component';
-import {NgxDatatableModule} from "@swimlane/ngx-datatable";
+import {DataTableComponent} from './components/data-table/data-table.component';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {EllipsisComponent} from './components/ellipsis/ellipsis.component';
 
 
 @NgModule({
@@ -45,13 +46,15 @@ import {NgxDatatableModule} from "@swimlane/ngx-datatable";
     ClipboardDirective,
     SubmissionStateComponent,
     MetadataStateComponent,
-    DataTableComponent
+    DataTableComponent,
+    EllipsisComponent
   ],
   exports: [
     ClipboardDirective,
     SubmissionStateComponent,
     MetadataStateComponent,
-    DataTableComponent
+    DataTableComponent,
+    EllipsisComponent
   ],
   providers: [
     ClipboardService
