@@ -82,9 +82,6 @@
           "human_specific",
           "medical_history",
           "height_unit"
-        ],
-        "fields": [
-          "height"
         ]
       }
     ],
@@ -99,23 +96,13 @@
   },
   "preNatalQuantity": {
     "Yes, All": {
-      "schemaName": "donor_organism",
-      "excludedModules": [
-        "organism_age_unit"
-      ],
-      "excludedFields": [
-        "organism_age"
-      ]
+      "schemaName": "donor_organism"
     },
     "Yes, Some": {
       "schemaName": "donor_organism",
       "includeModules": [
         "organism_age_unit",
         "gestational_age_unit"
-      ],
-      "fields": [
-        "organism_age",
-        "gestational_age"
       ]
     }
   },
