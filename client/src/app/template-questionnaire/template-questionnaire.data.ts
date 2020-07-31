@@ -132,7 +132,9 @@ export class TemplateSpecification {
   private merge(spec: TypeSpec, other: TypeSpec): void {
     if (spec.schemaName == other.schemaName) {
       let unique = new Set<string>(spec.includeModules);
-      if (other.includeModules) {
+      if (other.includeModules == 'ALL') {
+        spec.includeModules = other.includeModules;
+      } else {
         other.includeModules.forEach(it => unique.add(it));
       }
       spec.includeModules = [...unique];
