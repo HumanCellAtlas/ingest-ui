@@ -16,7 +16,7 @@ export interface QuestionnaireData {
 
 export interface TypeSpec {
   schemaName: string;
-  includeModules: string[];
+  includeModules: string[] | 'ALL';
   embedProcess: boolean;
   linkSpec: {
     linkEntities: string[];
@@ -39,7 +39,7 @@ const default_type_specs = [
   {
     schemaName: 'collection_protocol',
     category: 'other',
-    includeModules: ['ALL']
+    includeModules: 'ALL'
   },
   {
     schemaName: 'specimen_from_organism',
