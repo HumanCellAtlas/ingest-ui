@@ -86,7 +86,6 @@ const default_type_specs = [
 ]
 
 export class TemplateSpecification {
-
   private types = new Map<String, TypeSpec>();
 
   static convert(questionnaire: QuestionnaireData): TemplateSpecification {

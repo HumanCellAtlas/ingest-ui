@@ -5,7 +5,8 @@ import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-for
 import {SpecimenGroupComponent} from '../specimen-group/specimen-group.component';
 import {DonorGroupComponent} from '../donor-group/donor-group.component';
 import {TechnologyGroupComponent} from '../technology-group/technology-group.component';
-import {QuestionnaireData} from '../template-questionnaire.data';
+
+import {QuestionnaireData, TemplateSpecification} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
 import {saveAs} from 'file-saver';
 import {Router} from '@angular/router';
@@ -66,17 +67,17 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
 
   onSave($event: object) {
     const data: QuestionnaireData = $event['value'];
-    console.log(data.specimenType);
     this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
       ' please don\'t refresh while this is happening.');
     setTimeout(() => {
-      this.templateGenerator.generate(data).then(blob => {
-        saveAs(blob, 'template.xlsx');
-        this.loaderService.display(false);
-        this.alertService.clear();
-        this.alertService.success('Success', 'You have successfully generated a spreadsheet!');
-        window.scroll(0, 0);
-      });
+      this.templateGenerator.generate(TemplateSpecification.convert(data))
+        .subscribe(blob => {
+          saveAs(blob, 'template.xlsx');
+          this.loaderService.display(false);
+          this.alertService.clear();
+          this.alertService.success('Success', 'You have successfully generated a spreadsheet!');
+          window.scroll(0, 0);
+        });
     }, 5000);
     console.log($event);
   }

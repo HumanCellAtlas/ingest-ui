@@ -1,11 +1,11 @@
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
-import {UploadResults} from "../models/uploadResults";
+import {UploadResults} from '../models/uploadResults';
 
 import {environment} from '../../../environments/environment';
-import {throwError} from "rxjs/index";
+import {throwError} from 'rxjs/index';
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
 
@@ -17,23 +17,8 @@ export class BrokerService {
   constructor(private http: HttpClient) {
   }
 
-  private handleError(operation: any) {
-    return (err: any) => {
-      let errMsg = `error in ${operation}()`;
-      console.log(`${errMsg}:`, err);
-
-      let httpError = {
-        message: "An error occurred in uploading spreadsheet",
-        details: `${err.name}: ${err.message}`
-      };
-
-      let error = err.error && err.error.message && err.error.details ? err.error : httpError;
-      return throwError(error);
-    }
-  }
-
-  public uploadSpreadsheet(formData, isUpdate=false): Observable<UploadResults> {
-    let uploadApiSuffix = isUpdate ? '_update': '';
+  uploadSpreadsheet(formData, isUpdate = false): Observable<UploadResults> {
+    const uploadApiSuffix = isUpdate ? '_update' : '';
     return this.http.post<UploadResults>(`${this.API_URL}/api_upload${uploadApiSuffix}`, formData)
       .pipe(
         tap(data => console.log('server data:', data)),
@@ -41,19 +26,43 @@ export class BrokerService {
       );
   }
 
-  public downloadSpreadsheet(submissionUuid): Observable<any> {
+  downloadSpreadsheet(submissionUuid): Observable<any> {
     return this.http
       .get(`${this.API_URL}/submissions/${submissionUuid}/spreadsheet`,
-        { observe: 'response',responseType: 'blob' }
+        {observe: 'response', responseType: 'blob'}
       ).map((res) => {
-        let contentDisposition = res.headers.get('content-disposition');
-        let filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
-        let response = {
-          "data": res.body,
-          "filename": filename
+        const contentDisposition = res.headers.get('content-disposition');
+        const filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+        const response = {
+          'data': res.body,
+          'filename': filename
         };
-        return response
+        return response;
       });
   }
 
+  generateTemplate(spec: object): Observable<any> {
+    const url = `${this.API_URL}/spreadsheets`;
+    return this.http.post(url, spec);
+  }
+
+  downloadTemplate(relativeUrl: string): Observable<HttpResponse<Blob>> {
+    const url = `${this.API_URL}/${relativeUrl}`;
+    return this.http.get(url, {responseType: 'blob', observe: 'response'});
+  }
+
+  private handleError(operation: any) {
+    return (err: any) => {
+      const errMsg = `error in ${operation}()`;
+      console.log(`${errMsg}:`, err);
+
+      const httpError = {
+        message: 'An error occurred in uploading spreadsheet',
+        details: `${err.name}: ${err.message}`
+      };
+
+      const error = err.error && err.error.message && err.error.details ? err.error : httpError;
+      return throwError(error);
+    };
+  }
 }
