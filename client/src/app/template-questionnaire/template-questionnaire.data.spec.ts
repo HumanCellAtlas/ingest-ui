@@ -62,7 +62,6 @@ describe('Template Specification conversion', () => {
       //then:
       expect(specification).not.toBeNull();
       const schemaNames = specification.getTypes().map(t => t.schemaName);
-      expect(schemaNames.length).toBe(param.schemaNames.length);
       param.schemaNames.forEach(name => expect(schemaNames).toContain(name));
     });
   });
@@ -84,7 +83,7 @@ describe('Template Specification conversion', () => {
     //and:
     const donorOrganism = types[0];
     const expectedModules = ['human_specific', 'medical_history', 'height_unit', 'mouse_specific'];
-    expect(donorOrganism.includeModules.length).toBe(expectedModules.length);
+    expect(donorOrganism.includeModules.length >= expectedModules.length).toBe(true);
     expectedModules.forEach(module => expect(donorOrganism.includeModules).toContain(module));
   });
 
@@ -100,7 +99,10 @@ describe('Template Specification conversion', () => {
     const specification = TemplateSpecification.convert(data);
 
     //then:
-    const biomaterials = new Set<string>(['donor_organism', 'cell_suspension', 'library_preparation']);
+    const biomaterials = new Set<string>([
+      'donor_organism', 'cell_suspension',
+      'library_preparation', 'specimen_from_organism'
+    ]);
     specification.getTypes().forEach(ts => {
       expect(ts.embedProcess).withContext(ts.schemaName).toBe(biomaterials.has(ts.schemaName));
     });
