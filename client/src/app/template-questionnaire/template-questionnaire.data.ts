@@ -8,6 +8,10 @@ export interface QuestionnaireData {
   identifyingOrganisms: string[];
   specimenType: string[];
   experimentInfo: string;
+  preNatalQuantity: string;
+  donorsRelated: string;
+  specimenPurchased: string;
+  protocols: string[];
 }
 
 export interface TypeSpec {
