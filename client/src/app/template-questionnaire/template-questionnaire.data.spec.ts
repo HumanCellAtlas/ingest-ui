@@ -13,33 +13,48 @@ describe('Template Specification conversion', () => {
     {
       question: 'technologyType',
       answer: 'Sequencing',
+      arrayType: true,
       schemaNames: ['dissociation_protocol', 'cell_suspension', 'library_preparation_protocol', 'sequencing_protocol']
     },
     {
       question: 'technologyType',
       answer: 'Imaging',
+      arrayType: true,
       schemaNames: ['imaging_protocol', 'imaging_preparation_protocol', 'imaged_specimen']
     },
     {
       question: 'libraryPreparation',
       answer: 'Droplet-based (e.g. 10X chromium, dropSeq, InDrop)',
+      arrayType: true,
       schemaNames: ['sequencing_protocol', 'library_preparation']
     },
     {
       question: 'libraryPreparation',
       answer: 'Plate-based (e.g. SmartSeq2)',
+      arrayType: true,
       schemaNames: ['cell_suspension']
     },
     {
       question: 'preNatalQuantity',
+      answer: 'Yes, All',
+      arrayType: false,
+      schemaNames: ['donor_organism']
+    },
+    {
+      question: 'preNatalQuantity',
       answer: 'No, None',
+      arrayType: false,
       schemaNames: []
     }
   ].forEach(param => {
     it(`should correctly translate ${param.question} "${param.answer}"`, () => {
       //given:
       const data = <QuestionnaireData>{};
-      data[param.question] = [param.answer];
+      if (param.arrayType) {
+        data[param.question] = [param.answer];
+      } else {
+        data[param.question] = param.answer;
+      }
 
       //when:
       const specification = TemplateSpecification.convert(data);

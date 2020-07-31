@@ -28,32 +28,42 @@ export class TemplateSpecification {
 
   private types = new Map<String, TypeSpec>();
 
-  static convert(data: QuestionnaireData): TemplateSpecification {
+  static convert(questionnaire: QuestionnaireData): TemplateSpecification {
     let specification = new TemplateSpecification();
-    let recordInfo: boolean = 'experimentInfo' in data && data.experimentInfo.toLowerCase() == 'yes';
-    for (let field in data) {
-      if (!(field in answers)) continue;
-      let answerSection = answers[field];
-      data[field]
-        .filter(value => value in answerSection)
-        .forEach(value => {
-          answers[field][value].forEach((ts: TypeSpec) => {
-            if (specification.types.has(ts.schemaName)) {
-              TemplateSpecification.merge(specification.types.get(ts.schemaName), ts);
-            } else {
-              //cloning to ensure the source object doesn't get overwritten by merges
-              let clone = Object.assign({}, ts);
-              clone.embedProcess = 'category' in clone && clone['category'] == 'biomaterial' ? recordInfo : false;
-              delete clone['category'];
-              specification.types.set(ts.schemaName, clone);
-            }
+    let recordInfo: boolean = 'experimentInfo' in questionnaire && questionnaire.experimentInfo.toLowerCase() == 'yes';
+    for (let question in questionnaire) {
+      if (!(question in answers)) continue;
+      let userInput = questionnaire[question];
+      if (userInput instanceof Array) {
+        userInput
+          .filter(input => input in answers[question])
+          .forEach(input => {
+            specification.addTypeSpec(question, input, recordInfo);
           });
-        });
+      } else {
+        if (userInput in answers[question]) {
+          specification.addTypeSpec(question, userInput, recordInfo);
+        }
+      }
     }
     return specification;
   }
 
-  private static merge(spec: TypeSpec, other: TypeSpec): void {
+  private addTypeSpec(question: string, answer: string, recordInfo: boolean): void {
+    answers[question][answer].forEach((ts: TypeSpec) => {
+      if (this.types.has(ts.schemaName)) {
+        this.merge(this.types.get(ts.schemaName), ts);
+      } else {
+        //cloning to ensure the source object doesn't get overwritten by merges
+        let clone = Object.assign({}, ts);
+        clone.embedProcess = 'category' in clone && clone['category'] == 'biomaterial' ? recordInfo : false;
+        delete clone['category'];
+        this.types.set(ts.schemaName, clone);
+      }
+    });
+  }
+
+  private merge(spec: TypeSpec, other: TypeSpec): void {
     if (spec.schemaName == other.schemaName) {
       let unique = new Set<string>(spec.includeModules);
       other.includeModules.forEach(it => unique.add(it));
