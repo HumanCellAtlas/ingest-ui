@@ -208,7 +208,7 @@
     ],
     "Aggregate Generation": [
       {
-        "schemaName": "aggregation_generation_protocol",
+        "schemaName": "aggregate_generation_protocol",
         "category": "other"
       },
       {

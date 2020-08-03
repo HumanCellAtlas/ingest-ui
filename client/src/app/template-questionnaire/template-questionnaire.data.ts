@@ -1,6 +1,8 @@
 import * as answerKey from './answer-key.json';
+import * as defaultFields from './default_fields.json'
 
 const answers = (answerKey as any).default;
+const schemaFields = (defaultFields as any).default;
 
 export interface QuestionnaireData {
   technologyType: string[];
@@ -126,6 +128,7 @@ export class TemplateSpecification {
     let clone = Object.assign({}, ts);
     clone.embedProcess = 'category' in clone && clone['category'] == 'biomaterial' ? recordInfo : false;
     delete clone['category'];
+    this.addModules(clone, schemaFields[ts.schemaName]);
     this.types.set(ts.schemaName, clone);
   }
 
@@ -139,9 +142,20 @@ export class TemplateSpecification {
       if (other.includeModules == 'ALL') {
         spec.includeModules = other.includeModules;
       } else {
-        other.includeModules.forEach(it => unique.add(it));
+        if (other.includeModules) {
+          other.includeModules.forEach(it => unique.add(it));
+        }
       }
       spec.includeModules = [...unique];
+    }
+  }
+
+  //Similar note to merge method.
+  private addModules(spec: TypeSpec, fields: string[]): void {
+    const modules = new Set<string>(spec.includeModules);
+    if (fields) {
+      fields.forEach(f => modules.add(f));
+      spec.includeModules = [...modules];
     }
   }
 
