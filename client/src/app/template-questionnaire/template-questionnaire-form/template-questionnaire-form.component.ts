@@ -6,7 +6,7 @@ import {SpecimenGroupComponent} from '../specimen-group/specimen-group.component
 import {DonorGroupComponent} from '../donor-group/donor-group.component';
 import {TechnologyGroupComponent} from '../technology-group/technology-group.component';
 
-import {QuestionnaireData} from '../template-questionnaire.data';
+import {QuestionnaireData, TemplateSpecification} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
 import {saveAs} from 'file-saver';
 import {Router} from '@angular/router';
@@ -70,10 +70,8 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     const data: QuestionnaireData = $event['value'];
     this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
       ' please don\'t refresh while this is happening.');
-
-    // FIXME: This is throwing an error
-    // const templateSpec = TemplateSpecification.convert(data);
-    this.templateGenerator.generateTemplate(undefined)
+    const templateSpec = TemplateSpecification.convert(data);
+    this.templateGenerator.generateTemplate(templateSpec)
       .subscribe(
         blob => {
           saveAs(blob, 'template.xlsx');

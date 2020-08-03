@@ -66,47 +66,7 @@ export class TemplateGeneratorService {
         'types': templateSpec.getTypes()
       }
     };
-    // TODO Remove after successful integration
-    // const param = {
-    //   'filename': 'template.xlsx',
-    //   'spec': {
-    //     'types': [{
-    //       'schemaName': 'project',
-    //       'includeModules': 'ALL',
-    //       'embedProcess': false,
-    //       'linkSpec': {
-    //         'linkEntities': ['specimen_from_organism'],
-    //         'linkProtocols': []
-    //       }
-    //     },
-    //       {
-    //         'schemaName': 'donor_organism',
-    //         'includeModules': 'ALL',
-    //         'embedProcess': false,
-    //       }, {
-    //         'schemaName': 'imaged_specimen',
-    //         'includeModules': 'ALL',
-    //         'embedProcess': true,
-    //         'linkSpec': {
-    //           'linkEntities': [],
-    //           'linkProtocols': ['imaging_protocol']
-    //         }
-    //       }, {
-    //         'schemaName': 'imaging_protocol',
-    //         'includeModules': 'ALL',
-    //         'embedProcess': false,
-    //         'linkSpec': {}
-    //       }, {
-    //         'schemaName': 'specimen_from_organism',
-    //         'includeModules': 'ALL',
-    //         'embedProcess': true,
-    //         'linkSpec': {
-    //           'linkEntities': ['donor_organism'],
-    //           'linkProtocols': []
-    //         }
-    //       }]
-    //   }
-    // };
+    
     return this.brokerService.generateTemplate(param as TemplateGenerationRequestParam)
       .map(data => data as TemplateGenerationResponse);
   }
