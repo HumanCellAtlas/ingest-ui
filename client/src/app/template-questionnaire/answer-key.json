@@ -116,7 +116,9 @@
         "category": "biomaterial",
         "includeModules": [
           "organism_age_unit",
-          "gestational_age_unit"
+          "organism_age",
+          "gestational_age_unit",
+          "gestational_age"
         ]
       }
     ],
@@ -125,7 +127,8 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "organism_age_unit"
+          "organism_age_unit",
+          "organism_age"
         ]
       }
     ]

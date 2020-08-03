@@ -129,6 +129,10 @@ export class TemplateSpecification {
     this.types.set(ts.schemaName, clone);
   }
 
+  /*
+  Ideally, this should be defined in TypeSpec, but due to my limited understanding of TS interface VS class and its
+  implications on built-in JSON typing (i.e. <Type>{ "json": "data" }), it's done this way.
+   */
   private merge(spec: TypeSpec, other: TypeSpec): void {
     if (spec.schemaName == other.schemaName) {
       let unique = new Set<string>(spec.includeModules);
