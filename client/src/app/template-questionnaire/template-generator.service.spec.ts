@@ -53,7 +53,7 @@ describe('TemplateGeneratorService', () => {
       tick(service.POLLING_INTERVAL);  // fast forward to polling interval time
     }));
 
-    it('throws timeout error after 5 mins', fakeAsync(() => {
+    it('throws timeout error after TIMEOUT time', fakeAsync(() => {
       mockBrokerService.generateTemplate.and.returnValue(of({'_links': {'download': {'href': '/relative/url'}}}));
 
       const body = new Blob([],
