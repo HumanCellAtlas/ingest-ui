@@ -22,7 +22,7 @@ describe('TemplateGeneratorService', () => {
   });
 
   describe('generateTemplate', () => {
-    it('should generate spreadsheet after 5 secs', fakeAsync(() => {
+    it('should generate spreadsheet succesfully', fakeAsync(() => {
       mockBrokerService.generateTemplate.and.returnValue(of({'_links': {'download': {'href': '/relative/url'}}}));
 
       const body = new Blob([],
@@ -50,7 +50,7 @@ describe('TemplateGeneratorService', () => {
         expect(data).toEqual(body);
       });
 
-      tick(3000);  // fast forward 5 secs
+      tick(service.POLLING_INTERVAL);  // fast forward to polling interval time
     }));
 
     it('throws timeout error after 5 mins', fakeAsync(() => {
@@ -60,7 +60,7 @@ describe('TemplateGeneratorService', () => {
         {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
       const response: HttpResponse<Blob> = new HttpResponse({body: body, status: 200});
       mockBrokerService.downloadTemplate.and.returnValue(of(response)
-        .pipe(delay(300000))); // delay result for 5 mins
+        .pipe(delay(service.TIMEOUT))); // delay result as long as timeout time
 
       const qData = {
         donorsRelated: '',
@@ -85,7 +85,7 @@ describe('TemplateGeneratorService', () => {
         expect(error.message).toContain('Retrieval of template spreadsheet has timed out.');
       });
 
-      tick(300000); // fast forward 5 mins
+      tick(service.TIMEOUT); // fast forward to timeout time
 
     }));
   });

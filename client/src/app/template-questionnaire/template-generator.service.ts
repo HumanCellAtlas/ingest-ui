@@ -19,6 +19,9 @@ interface TemplateGenerationHref {
 @Injectable()
 export class TemplateGeneratorService {
 
+  POLLING_INTERVAL = 3000; // 3 secs
+  TIMEOUT = 300000; // 5 mins
+
   constructor(readonly http: HttpClient, private brokerService: BrokerService) {
   }
 
@@ -26,12 +29,12 @@ export class TemplateGeneratorService {
     return Observable
       .from(this._requestToGenerate(templateSpec))
       .flatMap(data =>
-        Observable.interval(3000) // 3 secs
+        Observable.interval(this.POLLING_INTERVAL)
           .flatMap(() => this._requestToDownload(data._links.download.href))
           .filter(template => template.complete)
           .take(1)
           .map(template => template.data)
-          .timeoutWith(300000, // 5 mins
+          .timeoutWith(this.TIMEOUT,
             throwError(new Error('Retrieval of template spreadsheet has timed out.'))
           ));
   }
