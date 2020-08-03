@@ -51,6 +51,12 @@ export class TemplateGeneratorService {
   }
 
   private _requestToGenerate(templateSpec: TemplateSpecification): Observable<TemplateGenerationResponse> {
+    // FIXME: Pass the correct param, uncomment the ff code
+    // const param = {
+    //   'filename': 'template.xlsx',
+    //   'spec': templateSpec  // TODO: might need to convert to JSON?
+    // }
+
     const param = {
       'filename': 'template.xlsx',
       'spec': {
