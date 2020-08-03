@@ -5,12 +5,14 @@ import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-for
 import {SpecimenGroupComponent} from '../specimen-group/specimen-group.component';
 import {DonorGroupComponent} from '../donor-group/donor-group.component';
 import {TechnologyGroupComponent} from '../technology-group/technology-group.component';
+
 import {QuestionnaireData} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
 import {saveAs} from 'file-saver';
 import {Router} from '@angular/router';
 import {LoaderService} from '../../shared/services/loader.service';
 import {AlertService} from '../../shared/services/alert.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -66,19 +68,38 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
 
   onSave($event: object) {
     const data: QuestionnaireData = $event['value'];
-    console.log(data.specimenType);
     this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
       ' please don\'t refresh while this is happening.');
-    setTimeout(() => {
-      this.templateGenerator.generate(data).then(blob => {
-        saveAs(blob, 'template.xlsx');
-        this.loaderService.display(false);
-        this.alertService.clear();
-        this.alertService.success('Success', 'You have successfully generated a spreadsheet!');
-        window.scroll(0, 0);
-      });
-    }, 5000);
-    console.log($event);
+
+    // FIXME: This is throwing an error
+    // const templateSpec = TemplateSpecification.convert(data);
+    this.templateGenerator.generateTemplate(undefined)
+      .subscribe(
+        blob => {
+          saveAs(blob, 'template.xlsx');
+          this.loaderService.display(false);
+          this.alertService.clear();
+          this.alertService.success('Success', 'You have successfully generated a template spreadsheet!');
+          window.scroll(0, 0);
+        },
+        error => {
+          this.loaderService.display(false);
+
+          console.error('Error on template generation', error);
+          let message = '';
+
+          if (error instanceof Error) {
+            message = error.message;
+          } else if (error instanceof HttpErrorResponse) {
+            message = `HTTP ${error.status} - ${error.message}`;
+          }
+
+          this.alertService.clear();
+          this.alertService.error('An error has occurred while generating your template spreadsheet.',
+            `Error: ${message} <br/> <br/> Please try again later.  If the error persists, please email email hca-ingest-dev@ebi.ac.uk.`);
+          window.scroll(0, 0);
+        }
+      );
   }
 
   onCancel($event) {
