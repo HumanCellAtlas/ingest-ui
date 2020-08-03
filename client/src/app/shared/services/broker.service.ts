@@ -6,7 +6,7 @@ import {UploadResults} from '../models/uploadResults';
 
 import {environment} from '../../../environments/environment';
 import {throwError} from 'rxjs/index';
-import {TemplateGenerationResponse} from '../../template-questionnaire/template-generator.service';
+import {TemplateGenerationRequestParam, TemplateGenerationResponse} from '../../template-questionnaire/template-generator.service';
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
 
@@ -42,15 +42,15 @@ export class BrokerService {
       });
   }
 
-  generateTemplate(spec: object): Observable<TemplateGenerationResponse> {
-    console.log('requesting')
+  generateTemplate(spec: TemplateGenerationRequestParam): Observable<TemplateGenerationResponse> {
+    console.log('requesting');
     const url = `${this.API_URL}/spreadsheets`;
     return this.http.post(url, spec)
       .map(response => response as TemplateGenerationResponse);
   }
 
   downloadTemplate(relativeUrl: string): Observable<HttpResponse<Blob>> {
-    console.log('downloading')
+    console.log('downloading');
     const url = `${this.API_URL}${relativeUrl}`;
     return this.http.get(url, {responseType: 'blob', observe: 'response'});
   }
