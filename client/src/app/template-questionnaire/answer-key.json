@@ -47,7 +47,7 @@
         ]
       },
       {
-        "schemaName": "library_preparation",
+        "schemaName": "library_preparation_protocol",
         "category": "other",
         "includeModules": [
           "cell_barcode"
@@ -79,7 +79,7 @@
         ]
       },
       {
-        "schemaName": "library_preparation",
+        "schemaName": "library_preparation_protocol",
         "category": "biomaterial",
         "includeModules": [
           "cell_barcode"
