@@ -176,8 +176,12 @@
   "specimenPurchased": {
     "Yes": [
       {
-        "schemaName": "purchased_specimen",
-        "category": "other"
+        "schemaName": "specimen_from_organism",
+        "category": "biomaterial",
+        "includeModules": [
+          "purchased_reagents",
+          "purchased_specimen"
+        ]
       }
     ]
   },
