@@ -42,7 +42,7 @@ export class AaiService {
   }
 
   getAuthorizationHeaderValue(): Observable<string> {
-    return this.getUser().map(user => `${user.token_type} ${user.access_token}`);
+    return this.getUser().map(user => user ? `${user.token_type} ${user.access_token}` : '');
   }
 
   startAuthentication(redirect: string): Promise<void> {

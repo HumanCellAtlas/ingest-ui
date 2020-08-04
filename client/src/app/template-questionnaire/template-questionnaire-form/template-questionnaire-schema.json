@@ -6,7 +6,7 @@
   "properties": {
     "technologyType": {
       "user_friendly": "Did you use imaging and/or sequencing to generate your data?",
-      "guidelines": "Knowing this helps us to limit the fields to those appropriate to your experiment. For example, by choosing ‘sequencing’ we will include fields related to the library preparation and sequencing protocols you used.",
+      "guidelines": "The technology type tells us whether we should add fields like ‘sequencing method’ for a sequencing experiment or ‘imaged sliced thickness’ for an imaging experiment.",
       "type": "array",
       "enum": [
         "Sequencing",
@@ -15,7 +15,7 @@
     },
     "libraryPreparation": {
       "user_friendly": "What type of library preparation did you use?",
-      "guidelines": "By choosing the specific type of library preparation, we will ensure the most appropriate fields are included in your spreadsheet. For example for plate-based sequencing we will include fields like well id, and well quality whereas for droplet-based sequencing we will include fields for cell-barcode and UMI information.",
+      "guidelines": "The library preparation method tells us whether we should add fields like ‘well id’ for plate-based sequencing or ‘cell barcode-containing read’ for droplet-based sequencing.",
       "type": "array",
       "enum": [
         "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)",
@@ -25,7 +25,7 @@
     },
     "identifyingOrganisms": {
       "user_friendly": "What species are the donors of your experiment?",
-      "guidelines": "The species of your donors lets us know whether we should add fields like ‘strain’ for mouse experiments and ‘ethnicity’ and ‘medical history’ for human experiments.",
+      "guidelines": "The species of your donors tells us whether we should add fields like ‘strain’ for mouse experiments and ‘ethnicity’ and ‘medical history’ for human experiments.",
       "type": "array",
       "items": {
         "type": "string"
@@ -59,7 +59,7 @@
     },
     "specimenType": {
       "user_friendly": "What type of specimens did you use?",
-      "guidelines": "The type of specimen tells us whether we should include a tab with specific fields related to that biospecimen type as well as enabling you to describe the protocols that may have been involved in producing them.",
+      "guidelines": "The type of specimen tells us whether we should add fields related to the biospecimen type, for example ‘organ’ for primary tissue or ‘organ model’ for a cell line model.",
       "type": "array",
       "items": {
         "type": "string"
@@ -92,7 +92,7 @@
     },
     "protocols": {
       "user_friendly": "Which of the following protocols did you use?",
-      "guidelines": "Based on the previous answers we have generated a list of protocol types that you may have used in your experiment. Selecting the specific type will add a tab to your spreadsheet that has fields specific to recording information about that type of protocol.",
+      "guidelines": "The protocol types tell us whether to add fields specific to certain protocol types, for example ‘dissociation method’ for a dissociation protocol and ‘markers’ for an enrichment protocol.",
       "type": "array",
       "items": {
         "type": "string"
