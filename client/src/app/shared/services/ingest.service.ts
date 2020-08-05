@@ -15,10 +15,9 @@ import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Account} from '../../core/account';
-import {Project} from "../models/project";
-import {ArchiveSubmission} from "../models/archiveSubmission";
-import {ArchiveEntity} from "../models/archiveEntity";
-import {concatMap, map} from "rxjs/operators";
+import {Project} from '../models/project';
+import {ArchiveSubmission} from '../models/archiveSubmission';
+import {ArchiveEntity} from '../models/archiveEntity';
 
 
 @Injectable()
@@ -161,7 +160,13 @@ export class IngestService {
 
   public getArchiveSubmission(submissionUuid: string): Observable<ArchiveSubmission> {
     return this.get(`${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`)
-      .map(data => data as ArchiveSubmission);
+      .map(data => {
+        const archiveSubmissions = data['_embedded']['archiveSubmissions'];
+        // TODO Adjust the UI to be able to display all archive submissions
+        // just display the first for now
+        const archiveSubmission = archiveSubmissions.length > 0 ? archiveSubmissions[0] as ArchiveSubmission : undefined;
+        return archiveSubmission;
+      });
   }
 
   public getArchiveEntity(dspUuid: string): Observable<ArchiveEntity> {
