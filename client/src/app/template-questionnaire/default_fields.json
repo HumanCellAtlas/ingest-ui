@@ -12,8 +12,6 @@
     "is_living",
     "medical_history",
     "mouse_specific",
-    "organism_age",
-    "organism_age_unit",
     "provenance",
     "sex",
     "timecourse",
