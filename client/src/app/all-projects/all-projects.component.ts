@@ -104,10 +104,6 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getDefaultProjects(params) {
     const query = [{
-      'contentField': 'content.project_core.project_title',
-      'operator': 'NIN',
-      'value': ['SS2 1 Cell Integration Test', '10x 1 Run Integration Test']
-    }, {
       'contentField': 'isUpdate',
       'operator': 'IS',
       'value': false
