@@ -163,8 +163,12 @@ export class IngestService {
       .map(data => {
         const archiveSubmissions = data['_embedded']['archiveSubmissions'];
         // TODO Adjust the UI to be able to display all archive submissions
-        // just display the first for now
-        const archiveSubmission = archiveSubmissions.length > 0 ? archiveSubmissions[0] as ArchiveSubmission : undefined;
+        // just display the last
+        let archiveSubmission: ArchiveSubmission;
+        if (archiveSubmissions.length > 0) {
+          const idx = archiveSubmissions.length - 1;
+          archiveSubmission = archiveSubmissions[idx];
+        }
         return archiveSubmission;
       });
   }
