@@ -1,7 +1,9 @@
 .mat-card {
-  max-width: 570px;
   margin: 2em auto;
   text-align: center;
+  background-color: #f3f3f3;
+  border-bottom: 4px solid;
+  border-color: rgb(59, 111, 182);
 
   .mat-card-content {
     padding: 5px;
