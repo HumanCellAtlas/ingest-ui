@@ -27,6 +27,7 @@ import {BaseInputComponent} from './metadata-field-types/base-input/base-input.c
 import {EnumDropDownComponent} from "./metadata-field-types/enum-drop-down/enum-drop-down.component";
 import {EnumRadioListComponent} from "./metadata-field-types/enum-radio-list/enum-radio-list.component";
 import {EnumRadioInlineComponent} from "./metadata-field-types/enum-radio-inline/enum-radio-inline.component";
+import {FormItemComponent} from "./metadata-field-types/base-input/form-item.component";
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import {EnumRadioInlineComponent} from "./metadata-field-types/enum-radio-inline
     EnumListInputComponent,
     OntologyBaseComponent,
     MetadataFormItemComponent,
-    BaseInputComponent
+    BaseInputComponent,
+    FormItemComponent
   ],
   exports: [
     MetadataFormComponent,

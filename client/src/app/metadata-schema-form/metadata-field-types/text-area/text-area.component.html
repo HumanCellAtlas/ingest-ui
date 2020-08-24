@@ -1,7 +1,9 @@
 <div class="vf-form__item">
   <div class="vf-form__label">
     <label *ngIf="label">{{label}}</label>
-    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+    <ng-container *ngIf="!disabled">
+      <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+    </ng-container>
   </div>
   <div></div>
   <div>
@@ -12,8 +14,5 @@
     <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
 
   </div>
-  <div>
-    <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
 
-  </div>
 </div>

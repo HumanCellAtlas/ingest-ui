@@ -1,10 +1,4 @@
-<div class="vf-form__item">
-  <div>
-    <label class="vf-form__label">{{label}}</label>
-    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-  </div>
-  <div></div>
-
+<form-item [data]="data">
   <div>
     <div style="display: flex; align-items: center">
       <mat-form-field>
@@ -21,8 +15,4 @@
 
     </div>
   </div>
-
-  <div>
-    <p *ngIf="helperText" class="vf-form__helper">{{helperText}} </p>
-  </div>
-</div>
+</form-item>
