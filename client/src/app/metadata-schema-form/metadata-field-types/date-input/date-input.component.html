@@ -1,18 +1,18 @@
 <form-item [data]="data">
-  <div>
-    <div style="display: flex; align-items: center">
-      <mat-form-field>
-        <input matInput class="vf-form__input" [disabled]="disabled" [matDatepicker]="picker"
-               [attr.required]="control.touched && isRequired? isRequired : null"
-               (blur)="onBlur()"
-               (dateChange)="onDateChanged($event)"
-               [(ngModel)]="value">
-        <mat-datepicker (closed)="onDatePickerClosed()" #picker></mat-datepicker>
-        <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(this.control)}}</p>
-      </mat-form-field>
+  <div *ngIf="!disabled; else readOnlyView" style="display: flex; align-items: center">
+    <mat-form-field>
+      <input matInput class="vf-form__input" [disabled]="disabled" [matDatepicker]="picker"
+             [attr.required]="control.touched && isRequired? isRequired : null"
+             (blur)="onBlur()"
+             (dateChange)="onDateChanged($event)"
+             [(ngModel)]="value">
+      <mat-datepicker (closed)="onDatePickerClosed()" #picker></mat-datepicker>
+      <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(this.control)}}</p>
+    </mat-form-field>
 
-      <mat-datepicker-toggle matSuffix [for]="picker" (blur)="onBlur()" ></mat-datepicker-toggle>
-
-    </div>
+    <mat-datepicker-toggle matSuffix [for]="picker" (blur)="onBlur()" ></mat-datepicker-toggle>
   </div>
+  <ng-template #readOnlyView>
+    <span class="content read-only">{{value ? value : '(none specified)'}}</span>
+  </ng-template>
 </form-item>

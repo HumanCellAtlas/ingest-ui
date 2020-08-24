@@ -5,7 +5,7 @@ import {BaseInputComponent} from '../base-input/base-input.component';
 @Component({
   selector: 'app-date-input',
   templateUrl: './date-input.component.html',
-  styleUrls: ['./date-input.component.css']
+  styleUrls: ['./date-input.component.css', '../../form-item/form-item.component.css']
 })
 export class DateInputComponent extends BaseInputComponent implements OnInit {
   value: Date;
