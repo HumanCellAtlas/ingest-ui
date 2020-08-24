@@ -1,11 +1,6 @@
 <ng-container *ngIf="inputType ==='text' || inputType ==='number'">
-  <div class="vf-form__item">
-    <div class="vf-form__label">
-      <label *ngIf="label">{{label}}</label>
-      <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-    </div>
-    <div></div>
-    <div>
+  <form-item [data]="data">
+    <div *ngIf="!disabled; else readOnlyInput">
       <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}"
              [class]="error ? 'vf-form__input force_invalid': 'vf-form__input'"
              [attr.required]="error && touched && isRequired ? isRequired : null" placeholder="{{placeholder}}"
@@ -13,10 +8,10 @@
              (change)="change($event)" (blur)="onBlur($event)" [readonly]="readonly">
       <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
     </div>
-    <div>
-      <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
-    </div>
-  </div>
+    <ng-template #readOnlyInput>
+      <span class="content read-only">{{value}}</span>
+    </ng-template>
+  </form-item>
 </ng-container>
 
 

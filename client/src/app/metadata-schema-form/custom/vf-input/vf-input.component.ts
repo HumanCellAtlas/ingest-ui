@@ -1,5 +1,6 @@
 import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {FormItemData} from "../../form-item/form-item.component";
 
 export const VF_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -17,6 +18,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   id: string;
 
+  //TODO form item data
   @Input()
   label: string;
 
@@ -26,15 +28,18 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   isRequired: boolean;
 
+  @Input()
+  disabled: boolean;
+
+  data: FormItemData;
+  //end form item data
+
   inputType: string;
 
   @Input()
   placeholder: string;
 
   value: any;
-
-  @Input()
-  disabled: boolean;
 
   @Input()
   readonly : boolean;
@@ -64,6 +69,13 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
     this.inputType = this.INPUT_TYPE[this.dataType];
+    //TODO form item data
+    this.data = <FormItemData> {
+      label: this.label,
+      helperText: this.helperText,
+      isRequired: this.isRequired,
+      disabled: this.disabled
+    }
   }
 
   registerOnChange(fn: (text: string) => void): void {
@@ -76,6 +88,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this.data.disabled = isDisabled; //TODO merge these
   }
 
   writeValue(value: any): void {
