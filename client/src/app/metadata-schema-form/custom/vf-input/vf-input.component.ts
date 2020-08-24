@@ -12,7 +12,7 @@ export const VF_INPUT_VALUE_ACCESSOR: any = {
   selector: 'app-vf-input',
   templateUrl: './vf-input.component.html',
   providers: [VF_INPUT_VALUE_ACCESSOR],
-  styleUrls: ['./vf-input.component.css']
+  styleUrls: ['./vf-input.component.css', '../../form-item/form-item.component.css']
 })
 export class VfInputComponent implements ControlValueAccessor, OnInit {
   @Input()

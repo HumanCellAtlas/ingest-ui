@@ -5,10 +5,3 @@ input[type=checkbox] {
 .vf-form__input.force_invalid {
   border-color:#d32f2f
 }
-
-.content.read-only {
-  padding: 20px 40px;
-  color: #555;
-  line-height: 1.25em;
-  text-align: justify;
-}

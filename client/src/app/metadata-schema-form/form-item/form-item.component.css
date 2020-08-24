@@ -2,3 +2,10 @@
   padding: 10px 10px 0px;
   background: #f0f0f0;
 }
+
+.content.read-only {
+  padding: 20px 40px;
+  color: #555;
+  line-height: 1.25em;
+  text-align: justify;
+}
