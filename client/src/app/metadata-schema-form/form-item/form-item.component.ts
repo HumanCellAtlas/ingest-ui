@@ -19,4 +19,17 @@ export class FormItemComponent {
   @Input()
   data: FormItemData;
 
+  private _rootClass = <any> {
+    "vf-form__item": true
+  }
+
+  @Input()
+  get rootClass(): any {
+    return this._rootClass;
+  }
+
+  set rootClass(rootClass: any) {
+    Object.assign(this._rootClass, rootClass);
+  }
+
 }

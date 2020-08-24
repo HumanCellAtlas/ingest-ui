@@ -1,4 +1,4 @@
-<div class="vf-form__item">
+<div [ngClass]="rootClass">
   <div [ngClass]="{'label': true, 'read-only': data.disabled}">
     <label class="vf-form__label">{{data.label}}</label>
     <app-vf-asterisk *ngIf="!data.disabled" [isRequired]="data.isRequired"></app-vf-asterisk>
