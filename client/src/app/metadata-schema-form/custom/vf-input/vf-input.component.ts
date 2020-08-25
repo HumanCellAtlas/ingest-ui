@@ -1,6 +1,7 @@
 import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {FormItemData} from "../../form-item/form-item.component";
+import {toTitleCase} from "codelyzer/util/utils";
 
 export const VF_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -58,6 +59,11 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
     'integer': 'number'
   };
 
+  static CHECKBOX_VIEW = {
+    true: 'yes',
+    false: 'no'
+  }
+
   constructor() {
   }
 
@@ -93,6 +99,15 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: any): void {
     this.value = value;
+  }
+
+  staticView(): string {
+    if (!this.value) return '(not specified)';
+    let content = this.value as string;
+    if (this.inputType === 'checkbox' && content in VfInputComponent.CHECKBOX_VIEW) {
+      content = toTitleCase(VfInputComponent.CHECKBOX_VIEW[content]);
+    }
+    return content;
   }
 
   change($event) {
