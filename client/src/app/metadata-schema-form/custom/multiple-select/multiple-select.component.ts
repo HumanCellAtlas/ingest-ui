@@ -5,11 +5,12 @@ import {COMMA, DOWN_ARROW, ENTER, ESCAPE, TAB} from '@angular/cdk/keycodes';
 import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {MetadataFormService} from '../../metadata-form.service';
+import {FormItemData} from "../../form-item/form-item.component";
 
 @Component({
   selector: 'app-multiple-select',
   templateUrl: './multiple-select.component.html',
-  styleUrls: ['./multiple-select.component.css']
+  styleUrls: ['./multiple-select.component.css', '../../form-item/form-item.component.css']
 })
 export class MultipleSelectComponent implements OnInit {
   @Input()
@@ -18,6 +19,7 @@ export class MultipleSelectComponent implements OnInit {
   @Input()
   value: any;
 
+  //TODO form data
   @Input()
   label: string;
 
@@ -28,13 +30,16 @@ export class MultipleSelectComponent implements OnInit {
   isRequired: boolean;
 
   @Input()
+  disabled: boolean;
+
+  data: FormItemData;
+  //end form data
+
+  @Input()
   error: string;
 
   @Input()
   placeholder: string;
-
-  @Input()
-  disabled: boolean;
 
   @Input()
   options$: Observable<any[]>;
@@ -82,6 +87,14 @@ export class MultipleSelectComponent implements OnInit {
     this.searchControl.valueChanges.subscribe(val => {
       this.onSearchValueChanged(val ? val : '');
     });
+
+    //TODO form data
+    this.data = <FormItemData> {
+      label: this.label,
+      helperText: this.helperText,
+      disabled: this.disabled,
+      isRequired: this.isRequired
+    }
   }
 
   onSearchValueChanged(value: any) {
