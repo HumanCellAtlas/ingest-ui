@@ -16,6 +16,6 @@
   </div>
 
   <ng-template #readOnlyView>
-    <span class="content read-only">{{value}}</span>
+    <span class="content read-only">{{value ? value : '(not specified)'}}</span>
   </ng-template>
 </form-item>

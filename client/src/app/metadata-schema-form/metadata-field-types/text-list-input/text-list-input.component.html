@@ -10,7 +10,7 @@
 
   <ng-template #readOnlyView>
     <div class="content read-only">
-      <ng-container *ngIf="!value">(none specified)</ng-container>
+      <ng-container *ngIf="!value">(not specified)</ng-container>
       <span *ngFor="let item of control.value; last as last">{{item}} <br *ngIf="!last"></span>
     </div>
   </ng-template>

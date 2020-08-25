@@ -13,6 +13,6 @@
     <mat-datepicker-toggle matSuffix [for]="picker" (blur)="onBlur()" ></mat-datepicker-toggle>
   </div>
   <ng-template #readOnlyView>
-    <span class="content read-only">{{value ? value : '(none specified)'}}</span>
+    <span class="content read-only">{{value ? value : '(not specified)'}}</span>
   </ng-template>
 </form-item>
