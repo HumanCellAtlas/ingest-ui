@@ -6,7 +6,7 @@ import {BaseInputComponent} from '../base-input/base-input.component';
 @Component({
   selector: 'app-text-list-input',
   templateUrl: './text-list-input.component.html',
-  styleUrls: ['./text-list-input.component.css']
+  styleUrls: ['./text-list-input.component.css', '../../form-item/form-item.component.css']
 })
 export class TextListInputComponent extends BaseInputComponent implements OnInit {
   formHelper: MetadataFormHelper;

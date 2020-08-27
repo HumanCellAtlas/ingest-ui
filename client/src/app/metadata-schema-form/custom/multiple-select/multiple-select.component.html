@@ -1,10 +1,5 @@
-<div class="vf-form__item">
-  <div class="vf-form__label">
-    <label *ngIf="label" [innerHtml]="label"></label>
-    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-  </div>
-  <div></div>
-  <div>
+<form-item [data]="data">
+  <div *ngIf="!disabled; else readOnlyView">
     <mat-form-field>
       <mat-chip-list #chipList>
         <div class="chip-list-input-box">
@@ -63,10 +58,18 @@
     </mat-form-field>
 
   </div>
-  <div>
-    <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
-
-  </div>
-</div>
+  <ng-template #readOnlyView>
+    <ng-container *ngIf="selectedValues; else notSpecified">
+      <div class="content">
+        <mat-chip-list>
+          <mat-chip *ngFor="let value of selectedValues">{{value}}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </ng-container>
+    <ng-template #notSpecified>
+      <span class="content read-only">(not specified)</span>
+    </ng-template>
+  </ng-template>
+</form-item>
 
 

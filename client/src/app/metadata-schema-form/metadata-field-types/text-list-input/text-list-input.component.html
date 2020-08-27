@@ -1,10 +1,5 @@
-<div class="vf-form__item">
-  <div>
-    <label *ngIf="label" class="vf-form__label">{{label}}</label>
-    <app-vf-asterisk [isRequired]="metadata.isRequired"></app-vf-asterisk>
-  </div>
-  <div></div>
-  <div>
+<form-item [data]="data">
+  <div *ngIf="!disabled; else readOnlyView">
     <textarea [id]="id" rows="{{rows}}" class="vf-form__textarea"
               [attr.disabled]="disabled ? disabled : null" type="text"
               [required]="shouldSetRequiredAttr()"
@@ -12,8 +7,11 @@
               placeholder="{{metadata.schema.example}}" (change)="change($event)" [(ngModel)]="value"></textarea>
     <p class="vf-form__helper vf-form__helper--error">{{checkForErrors(control)}}</p>
   </div>
-  <div>
-    <p *ngIf="helperText" class="vf-form__helper">{{helperText}} Enter each value on separate line. </p>
 
-  </div>
-</div>
+  <ng-template #readOnlyView>
+    <div class="content read-only">
+      <ng-container *ngIf="!value">(not specified)</ng-container>
+      <span *ngFor="let item of control.value; last as last">{{item}} <br *ngIf="!last"></span>
+    </div>
+  </ng-template>
+</form-item>

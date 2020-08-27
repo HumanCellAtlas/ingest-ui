@@ -2,16 +2,18 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {FormItemData} from "../../form-item/form-item.component";
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css']
+  styleUrls: ['./select.component.css', '../../form-item/form-item.component.css']
 })
 export class SelectComponent implements OnInit {
   @Input()
   value;
 
+  //TODO form data
   @Input()
   label: string;
 
@@ -22,13 +24,16 @@ export class SelectComponent implements OnInit {
   isRequired: boolean;
 
   @Input()
+  disabled: boolean;
+
+  data: FormItemData;
+  //end form data
+
+  @Input()
   error: string;
 
   @Input()
   placeholder: string;
-
-  @Input()
-  disabled: boolean;
 
   @Input()
   options$: Observable<any[]>;
@@ -57,6 +62,14 @@ export class SelectComponent implements OnInit {
     this.searchControl.valueChanges.subscribe(value => {
       this.onSearchValueChanged(value ? value : '');
     });
+
+    //TODO form data
+    this.data = <FormItemData> {
+      label: this.label,
+      helperText: this.helperText,
+      disabled: this.disabled,
+      isRequired: this.isRequired
+    }
   }
 
   onSearchValueChanged(value: any) {

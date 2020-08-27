@@ -1,30 +1,21 @@
-<ng-container *ngIf="inputType ==='text' || inputType ==='number'">
-  <div class="vf-form__item">
-    <div class="vf-form__label">
-      <label *ngIf="label">{{label}}</label>
-      <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
-    </div>
-    <div></div>
-    <div>
-      <input id="{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}"
+<form-item [data]="data" [rootClass]="{'vf-form__item--checkbox':  inputType ==='checkbox'}">
+  <div *ngIf="!disabled; else readOnlyView">
+    <ng-container *ngIf="inputType ==='text' || inputType ==='number'; else checkboxInput">
+      <input id="text_{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}"
              [class]="error ? 'vf-form__input force_invalid': 'vf-form__input'"
              [attr.required]="error && touched && isRequired ? isRequired : null" placeholder="{{placeholder}}"
              [(ngModel)]="value"
              (change)="change($event)" (blur)="onBlur($event)" [readonly]="readonly">
-      <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
-    </div>
-    <div>
-      <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
-    </div>
-  </div>
-</ng-container>
+    </ng-container>
 
-
-<ng-container *ngIf="inputType ==='checkbox'">
-  <div class="vf-form__item vf-form__item--checkbox">
-    <input type="checkbox" id="{{id}}" [(ngModel)]="value" class="vf-form__checkbox" (change)="change($event)">
-    <label *ngIf="label" for="{{id}}" class="vf-form__label">{{label}} </label>
-    <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+    <ng-template #checkboxInput>
+      <input type="checkbox" id="check_{{id}}" [(ngModel)]="value" class="vf-form__checkbox" (change)="change($event)">
+      <label *ngIf="label" for="check_{{id}}" class="vf-form__label">{{label}} </label>
+    </ng-template>
     <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
   </div>
-</ng-container>
+
+  <ng-template #readOnlyView>
+    <span class="content read-only">{{staticView()}}</span>
+  </ng-template>
+</form-item>
