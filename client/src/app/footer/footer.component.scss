@@ -1,0 +1,35 @@
+.custom-footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  border-top: 3px solid #121826;
+  padding-bottom: 100px;
+  width: 100%;
+}
+
+.vf-footer__links-group .vf-links__heading {
+  font-size: 15px;
+  color: #3d9fc6;
+  text-transform: uppercase;
+}
+
+.vf-footer__links-group .vf-links {
+  padding-bottom: 0;
+  padding-top: 3em;
+}
+
+.vf-list__link {
+  color: #999999;
+  text-decoration: underline;
+}
+
+.vf-footer__legal-text {
+  font-size: 17px;
+  padding: 0px;
+  color: #999999;
+}
+
+.legal-text-container p {
+  padding: 0px;
+  margin: 0.5em;
+}
