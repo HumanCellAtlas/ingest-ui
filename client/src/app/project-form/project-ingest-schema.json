@@ -67,6 +67,9 @@
       "title":  "Technology",
       "name": "technology",
       "type": "object",
+      "required": [
+        "ontologies"
+      ],
       "properties": {
         "ontologies": {
           "description": "The general methods used for sequencing library construction in your project.",
