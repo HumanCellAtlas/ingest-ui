@@ -76,7 +76,8 @@ export class ProjectComponent implements OnInit {
   }
 
   getProjectName() {
-    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
+    return this.project && this.project['content'] && this.project['content']['project_core'] ?
+      this.project['content']['project_core']['project_title'] : '';
   }
 
   getSubmissionId(submissionEnvelope) {

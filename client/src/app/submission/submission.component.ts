@@ -102,11 +102,13 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   getProjectShortName() {
-    return this.project && this.project['content'] ? this.project['content']['project_core']['project_short_name'] : '';
+    return this.project && this.project['content'] && this.project['content']['project_core'] ?
+      this.project['content']['project_core']['project_short_name'] : '';
   }
 
   getProjectTitle() {
-    return this.project && this.project['content'] ? this.project['content']['project_core']['project_title'] : '';
+    return this.project && this.project['content'] && this.project['content']['project_core'] ?
+      this.project['content']['project_core']['project_title'] : '';
   }
 
   getProjectUuid() {
