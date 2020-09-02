@@ -15,6 +15,7 @@ import {WelcomeComponent} from './welcome/welcome.component';
 import {ProjectRegistrationFormComponent} from './project-registration/project-registration-form/project-registration-form.component';
 // tslint:disable-next-line:max-line-length
 import {TemplateQuestionnaireFormComponent} from './template-questionnaire/template-questionnaire-form/template-questionnaire-form.component';
+import {ErrorComponent} from './error/error.component';
 
 export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
@@ -37,6 +38,8 @@ export const ROUTES: Routes = [
   {path: 'submissions/detail', component: SubmissionComponent,  canActivate: [UserIsLoggedInGuard, WranglerOrOwnerGuard]},
 
   {path: 'template', component: TemplateQuestionnaireFormComponent},
+
+  {path: 'error', component: ErrorComponent},
 
   {path: '**', redirectTo: ''}
 ];
