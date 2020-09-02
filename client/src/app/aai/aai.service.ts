@@ -1,7 +1,7 @@
 import {User, UserManager} from 'oidc-client';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
 import {AaiSecurity} from './aai.module';
@@ -15,8 +15,7 @@ export class AaiService {
   public user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   private user: User = null;
 
-  constructor(private http: HttpClient,
-              private manager: UserManager,
+  constructor(private manager: UserManager,
               private alertService: AlertService,
               private ingestService: IngestService,
               private router: Router) {
@@ -87,7 +86,7 @@ export class AaiService {
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          if (error.status === 404) {
+          if (error.status === 404) { // Not found - isn't captured by http error interceptor
             this.router.navigate(['/registration']);
           } else {
             this.alertService.error('Ingest Service Error',
