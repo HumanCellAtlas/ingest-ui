@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-error',
@@ -8,12 +8,13 @@ import { Router } from '@angular/router';
 })
 export class ErrorComponent implements OnInit {
 
-  errorMsg: string;
+  errorMsg: string = 'Error - Service unavailable';
+  redirect: string;
 
-  constructor(private router: Router) { }
+  constructor(private route: ActivatedRoute ) { }
 
   ngOnInit(): void {
-    this.errorMsg = this.router.getCurrentNavigation().extras.state.error
+    this.redirect = this.route.snapshot.queryParamMap.get('redirect');
   }
 
 }
