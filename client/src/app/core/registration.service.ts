@@ -21,7 +21,7 @@ export class RegistrationService {
       .post<Account>(url, {}, {headers: this.authoriseHeader(token)})
       .catch((error: HttpErrorResponse) => {
         const serviceError = <RegistrationFailed>{};
-        if ([403, 409].includes(error.status)) {
+        if ([403, 409].includes(error.status)) { // 403 Forbidden 409 Conflict
           serviceError.errorCode = RegistrationErrorCode.Duplication;
         } else {
           serviceError.errorCode = RegistrationErrorCode.ServiceError;
