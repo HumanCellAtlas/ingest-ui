@@ -16,6 +16,11 @@
       {
         "schemaName": "imaged_specimen",
         "category": "other"
+      },
+      {
+        "schemaName": "image_file",
+        "includeModules": "ALL",
+        "category": "other"
       }
     ],
     "Sequencing": [
@@ -33,6 +38,11 @@
       },
       {
         "schemaName": "sequencing_protocol",
+        "category": "other"
+      },
+      {
+        "schemaName": "sequence_file",
+        "includeModules": "ALL",
         "category": "other"
       }
     ]
