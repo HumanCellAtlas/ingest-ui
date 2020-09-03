@@ -17,12 +17,10 @@
         "schemaName": "imaged_specimen",
         "category": "other",
         "linkSpec": {
-          "linkEntities":
-          [
+          "linkEntities": [
             "specimen_from_organism"
           ],
-          "linkProtocols":
-          [
+          "linkProtocols": [
             "imaging_preparation_protocol"
           ]
         }
@@ -32,12 +30,10 @@
         "includeModules": "ALL",
         "category": "other",
         "linkSpec": {
-          "linkEntities":
-          [
+          "linkEntities": [
             "imaged_specimen"
           ],
-          "linkProtocols":
-          [
+          "linkProtocols": [
             "imaging_protocol"
           ]
         }
@@ -51,14 +47,11 @@
       {
         "schemaName": "cell_suspension",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkEntities":
-          [
+        "linkSpec": {
+          "linkEntities": [
             "specimen_from_organism"
           ],
-          "linkProtocols":
-          [
+          "linkProtocols": [
             "dissociation_protocol"
           ]
         }
@@ -75,14 +68,11 @@
         "schemaName": "sequence_file",
         "includeModules": "ALL",
         "category": "other",
-        "linkSpec":
-        {
-          "linkEntities":
-          [
+        "linkSpec": {
+          "linkEntities": [
             "cell_suspension"
           ],
-          "linkProtocols":
-          [
+          "linkProtocols": [
             "sequencing_protocol",
             "library_preparation_protocol"
           ]
@@ -213,31 +203,39 @@
       {
         "schemaName": "specimen_from_organism",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkEntities": ["donor_organism"],
-          "linkProtocols": ["collection_protocol"]
+        "linkSpec": {
+          "linkEntities": [
+            "donor_organism"
+          ],
+          "linkProtocols": [
+            "collection_protocol"
+          ]
         }
       }
-
     ],
     "Organoid": [
       {
         "schemaName": "specimen_from_organism",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkEntities": ["donor_organism"],
-          "linkProtocols": ["collection_protocol"]
+        "linkSpec": {
+          "linkEntities": [
+            "donor_organism"
+          ],
+          "linkProtocols": [
+            "collection_protocol"
+          ]
         }
       },
       {
         "schemaName": "organoid",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkEntities": ["specimen_from_organism"],
-          "linkProtocols": ["collection_protocol"]
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "collection_protocol"
+          ]
         }
       },
       {
@@ -256,14 +254,6 @@
         "includeModules": [
           "growth_conditions"
         ]
-      },
-      {
-        "schemaName": "ipsc_induction_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "differentiation_protocol",
-        "category": "other"
       }
     ]
   },
@@ -288,14 +278,8 @@
       {
         "schemaName": "cell_suspension",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkEntities":
-          [
-            "specimen_from_organism"
-          ],
-          "linkProtocols":
-          [
+        "linkSpec": {
+          "linkProtocols": [
             "enrichment_protocol"
           ]
         }
@@ -309,10 +293,8 @@
       {
         "schemaName": "organoid",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkProtocols":
-          [
+        "linkSpec": {
+          "linkProtocols": [
             "differentiation_protocol"
           ]
         }
@@ -320,10 +302,8 @@
       {
         "schemaName": "cell_line",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkProtocols":
-          [
+        "linkSpec": {
+          "linkProtocols": [
             "differentiation_protocol"
           ]
         }
@@ -337,10 +317,8 @@
       {
         "schemaName": "organoid",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkProtocols":
-          [
+        "linkSpec": {
+          "linkProtocols": [
             "aggregate_generation_protocol"
           ]
         }
@@ -354,14 +332,11 @@
       {
         "schemaName": "cell_line",
         "category": "biomaterial",
-        "linkSpec":
-        {
-          "linkEntities":
-          [
+        "linkSpec": {
+          "linkEntities": [
             "specimen_from_organism"
           ],
-          "linkProtocols":
-          [
+          "linkProtocols": [
             "ipsc_induction_protocol"
           ]
         }
