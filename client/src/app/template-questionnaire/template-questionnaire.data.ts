@@ -35,6 +35,7 @@ export function merge(spec: TypeSpec, other: TypeSpec): void {
     };
   }
   spec.linkSpec.linkEntities = union(spec.linkSpec.linkEntities, other.linkSpec?.linkEntities);
+  spec.linkSpec.linkProtocols = union(spec.linkSpec.linkProtocols, other.linkSpec?.linkProtocols);
 }
 
 function union(a: string[], b: string[]): string[] {

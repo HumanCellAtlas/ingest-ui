@@ -147,4 +147,26 @@ describe('Merging', () => {
     expect(entities.linkSpec.linkEntities).toEqual(['organoid', 'specimen_from_organism', 'donor_organism']);
   });
 
+  it('should merge link protocols', () => {
+    //given:
+    const protocols = <TypeSpec> {
+      linkSpec: {
+        linkProtocols: ['dissociation_protocol', 'sequencing_protocol']
+      }
+    };
+    const otherProtocols = <TypeSpec> {
+      linkSpec: {
+        linkProtocols: ['sequencing_protocol', 'analysis_protocol']
+      }
+    };
+
+    //when:
+    merge(protocols, otherProtocols);
+
+    //then:
+    expect(protocols.linkSpec).not.toBeUndefined();
+    const merged_protocols = ['dissociation_protocol', 'sequencing_protocol', 'analysis_protocol'];
+    expect(protocols.linkSpec.linkProtocols).toEqual(merged_protocols);
+  });
+
 });
