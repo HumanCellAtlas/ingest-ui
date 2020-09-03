@@ -17,8 +17,14 @@
         "schemaName": "imaged_specimen",
         "category": "other",
         "linkSpec": {
-          "linkEntities": "specimen_from_organism",
-          "linkProtocols": "imaging_preparation_protocol"
+          "linkEntities":
+          [
+            "specimen_from_organism"
+          ],
+          "linkProtocols":
+          [
+            "imaging_preparation_protocol"
+          ]
         }
       },
       {
@@ -26,8 +32,14 @@
         "includeModules": "ALL",
         "category": "other",
         "linkSpec": {
-          "linkEntities": "imaged_specimen",
-          "linkProtocols": "imaging_protocol"
+          "linkEntities":
+          [
+            "imaged_specimen"
+          ],
+          "linkProtocols":
+          [
+            "imaging_protocol"
+          ]
         }
       }
     ],
@@ -41,8 +53,14 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkEntities": "specimen_from_organism",
-          "linkProtocols": "dissociation_protocol"
+          "linkEntities":
+          [
+            "specimen_from_organism"
+          ],
+          "linkProtocols":
+          [
+            "dissociation_protocol"
+          ]
         }
       },
       {
@@ -59,10 +77,14 @@
         "category": "other",
         "linkSpec":
         {
-          "linkEntities": "cell_suspension",
-          "linkProtocols": [
-            "library_preparation_protocol",
-            "sequencing_protocol"
+          "linkEntities":
+          [
+            "cell_suspension"
+          ],
+          "linkProtocols":
+          [
+            "sequencing_protocol",
+            "library_preparation_protocol"
           ]
         }
       }
@@ -193,8 +215,8 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkEntities": "donor_organism",
-          "linkProtocols": "collection_protocol"
+          "linkEntities": ["donor_organism"],
+          "linkProtocols": ["collection_protocol"]
         }
       }
 
@@ -205,8 +227,8 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkEntities": "donor_organism",
-          "linkProtocols": "collection_protocol"
+          "linkEntities": ["donor_organism"],
+          "linkProtocols": ["collection_protocol"]
         }
       },
       {
@@ -214,8 +236,8 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkEntities": "specimen_from_organism",
-          "linkProtocols": "collection_protocol"
+          "linkEntities": ["specimen_from_organism"],
+          "linkProtocols": ["collection_protocol"]
         }
       },
       {
@@ -268,8 +290,14 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkEntities": "specimen_from_organism",
-          "linkProtocols": "enrichment_protocol"
+          "linkEntities":
+          [
+            "specimen_from_organism"
+          ],
+          "linkProtocols":
+          [
+            "enrichment_protocol"
+          ]
         }
       }
     ],
@@ -283,7 +311,10 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkProtocols": "differentiation_protocol"
+          "linkProtocols":
+          [
+            "differentiation_protocol"
+          ]
         }
       },
       {
@@ -291,7 +322,10 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkProtocols": "differentiation_protocol"
+          "linkProtocols":
+          [
+            "differentiation_protocol"
+          ]
         }
       }
     ],
@@ -305,7 +339,10 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkProtocols": "aggregate_generation_protocol"
+          "linkProtocols":
+          [
+            "aggregate_generation_protocol"
+          ]
         }
       }
     ],
@@ -319,8 +356,14 @@
         "category": "biomaterial",
         "linkSpec":
         {
-          "linkEntities": "specimen_from_organism",
-          "linkProtocols": "ipsc_induction_protocol"
+          "linkEntities":
+          [
+            "specimen_from_organism"
+          ],
+          "linkProtocols":
+          [
+            "ipsc_induction_protocol"
+          ]
         }
       }
     ]
