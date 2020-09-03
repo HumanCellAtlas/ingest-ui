@@ -26,6 +26,15 @@ export interface TypeSpec {
   };
 }
 
+export function merge(spec: TypeSpec, other: TypeSpec): void {
+  if (!spec.linkSpec) {
+    spec.linkSpec = {
+      linkEntities: [],
+      linkProtocols: []
+    };
+  }
+}
+
 const default_type_specs = [
   {
     schemaName: 'donor_organism',

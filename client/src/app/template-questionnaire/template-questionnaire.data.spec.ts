@@ -1,4 +1,4 @@
-import {QuestionnaireData, TemplateSpecification} from "./template-questionnaire.data";
+import {merge, QuestionnaireData, TemplateSpecification, TypeSpec} from "./template-questionnaire.data";
 
 describe('Template Specification conversion', () => {
 
@@ -106,6 +106,22 @@ describe('Template Specification conversion', () => {
     specification.getTypes().forEach(ts => {
       expect(ts.embedProcess).withContext(ts.schemaName).toBe(biomaterials.has(ts.schemaName));
     });
+  });
+
+});
+
+describe('Merging Type Specifications', () => {
+
+  it('should merge linking specifications', () => {
+    //given:
+    const spec = <TypeSpec> {};
+    const other = <TypeSpec> {};
+
+    //when:
+    merge(spec, other);
+
+    //then:
+    expect(spec.linkSpec).not.toBeUndefined();
   });
 
 });
