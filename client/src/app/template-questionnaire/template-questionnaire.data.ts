@@ -33,6 +33,9 @@ export function merge(spec: TypeSpec, other: TypeSpec): void {
       linkProtocols: []
     };
   }
+  const entities = new Set<string>(spec.linkSpec.linkEntities);
+  other?.linkSpec?.linkEntities?.forEach(e => entities.add(e));
+  spec.linkSpec.linkEntities = [...entities];
 }
 
 const default_type_specs = [

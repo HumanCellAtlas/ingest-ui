@@ -110,18 +110,41 @@ describe('Template Specification conversion', () => {
 
 });
 
-describe('Merging Type Specifications', () => {
+describe('Merging', () => {
 
-  it('should merge linking specifications', () => {
+  it('should merge empty linking specifications', () => {
     //given:
-    const spec = <TypeSpec> {};
-    const other = <TypeSpec> {};
+    const empty = <TypeSpec> {};
+    const otherEmpty = <TypeSpec> {};
 
     //when:
-    merge(spec, other);
+    merge(empty, otherEmpty);
 
     //then:
-    expect(spec.linkSpec).not.toBeUndefined();
+    expect(empty.linkSpec).not.toBeUndefined();
+    expect(empty.linkSpec.linkEntities).toEqual([]);
+    expect(empty.linkSpec.linkProtocols).toEqual([]);
+  });
+
+  it('should merge link entities', () => {
+    //given:
+    const entities = <TypeSpec> {
+      linkSpec: {
+        linkEntities: ['organoid', 'specimen_from_organism']
+      }
+    };
+    const otherEntities = <TypeSpec> {
+      linkSpec: {
+        linkEntities: ['donor_organism', 'organoid']
+      }
+    };
+
+    //when:
+    merge(entities, otherEntities);
+
+    //then:
+    expect(entities.linkSpec).not.toBeUndefined();
+    expect(entities.linkSpec.linkEntities).toEqual(['organoid', 'specimen_from_organism', 'donor_organism']);
   });
 
 });
