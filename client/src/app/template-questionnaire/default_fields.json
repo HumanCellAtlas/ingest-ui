@@ -6,12 +6,7 @@
     "diseases",
     "familial_relationship",
     "genus_species",
-    "height",
-    "height_unit",
-    "human_specific",
     "is_living",
-    "medical_history",
-    "mouse_specific",
     "provenance",
     "sex",
     "timecourse",
@@ -34,8 +29,6 @@
     "cell_morphology",
     "estimated_cell_count",
     "genus_species",
-    "growth_conditions",
-    "plate_based_sequencing",
     "provenance",
     "selected_cell_types",
     "timecourse"
@@ -60,7 +53,6 @@
     "umi_barcode"
   ],
   "sequencing_protocol": [
-    "10x",
     "instrument_manufacturer_model",
     "local_machine_name",
     "method",
