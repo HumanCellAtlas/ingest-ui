@@ -27,15 +27,20 @@ export interface TypeSpec {
 }
 
 export function merge(spec: TypeSpec, other: TypeSpec): void {
+  if (!spec || !other) return;
   if (!spec.linkSpec) {
     spec.linkSpec = {
       linkEntities: [],
       linkProtocols: []
     };
   }
-  const entities = new Set<string>(spec.linkSpec.linkEntities);
-  other?.linkSpec?.linkEntities?.forEach(e => entities.add(e));
-  spec.linkSpec.linkEntities = [...entities];
+  spec.linkSpec.linkEntities = union(spec.linkSpec.linkEntities, other.linkSpec?.linkEntities);
+}
+
+function union(a: string[], b: string[]): string[] {
+  const result = new Set<string>(a);
+  b?.forEach(i => result.add(i));
+  return [...result];
 }
 
 const default_type_specs = [
