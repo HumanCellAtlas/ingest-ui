@@ -112,6 +112,22 @@ describe('Template Specification conversion', () => {
 
 describe('Merging', () => {
 
+  it('should merge included modules', () => {
+    //given:
+    const modules = <TypeSpec> {
+      includeModules: ['contributors', 'funders']
+    };
+    const otherModules = <TypeSpec> {
+      includeModules: ['funders', 'contacts']
+    };
+
+    //when:
+    merge(modules, otherModules);
+
+    //then:
+    expect(modules.includeModules).toEqual(['contributors', 'funders', 'contacts']);
+  });
+
   it('should merge empty linking specifications', () => {
     //given:
     const empty = <TypeSpec> {};

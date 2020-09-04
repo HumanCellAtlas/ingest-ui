@@ -34,6 +34,9 @@ export function merge(spec: TypeSpec, other: TypeSpec): void {
       linkProtocols: []
     };
   }
+  if (spec.includeModules != 'ALL' && other.includeModules != 'ALL') {
+    spec.includeModules = union(spec.includeModules, other.includeModules);
+  }
   spec.linkSpec.linkEntities = union(spec.linkSpec.linkEntities, other.linkSpec?.linkEntities);
   spec.linkSpec.linkProtocols = union(spec.linkSpec.linkProtocols, other.linkSpec?.linkProtocols);
 }
