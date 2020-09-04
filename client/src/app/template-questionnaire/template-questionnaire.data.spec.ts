@@ -128,6 +128,29 @@ describe('Merging', () => {
     expect(modules.includeModules).toEqual(['contributors', 'funders', 'contacts']);
   });
 
+  [
+    {
+      spec: <TypeSpec>{includeModules: ['contacts']},
+      other: <TypeSpec>{includeModules: 'ALL'}
+    },
+    {
+      spec: <TypeSpec>{includeModules: 'ALL'},
+      other: <TypeSpec>{includeModules: ['contacts', 'contributors']}
+    }
+  ].forEach((param, index) => {
+    it(`should merge included modules set to ALL (var ${index + 1})`, () => {
+      //given:
+      const spec = param.spec;
+      const other = param.other;
+
+      //when:
+      merge(spec, other);
+
+      //then:
+      expect(spec.includeModules).toEqual('ALL');
+    });
+  });
+
   it('should merge empty linking specifications', () => {
     //given:
     const empty = <TypeSpec> {};
