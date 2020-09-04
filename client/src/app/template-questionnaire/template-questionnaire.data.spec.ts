@@ -115,9 +115,11 @@ describe('Merging', () => {
   it('should merge included modules', () => {
     //given:
     const modules = <TypeSpec> {
+      schemaName: 'name',
       includeModules: ['contributors', 'funders']
     };
     const otherModules = <TypeSpec> {
+      schemaName: 'name',
       includeModules: ['funders', 'contacts']
     };
 
@@ -130,10 +132,12 @@ describe('Merging', () => {
 
   [
     {
+      schemaName: 'name',
       spec: <TypeSpec>{includeModules: ['contacts']},
       other: <TypeSpec>{includeModules: 'ALL'}
     },
     {
+      schemaName: 'name',
       spec: <TypeSpec>{includeModules: 'ALL'},
       other: <TypeSpec>{includeModules: ['contacts', 'contributors']}
     }
@@ -151,10 +155,33 @@ describe('Merging', () => {
     });
   });
 
+  it('should merge modules with matching schema names', () => {
+    //given:
+    const donor = <TypeSpec> {
+      schemaName: 'donor_organism',
+      includeModules: []
+    };
+    const otherDonor = <TypeSpec> {
+      schemaName: 'donor_organism',
+      includeModules: ['name']
+    }
+    const imageFile = <TypeSpec> {
+      schemaName: 'image_file',
+      includeModules: ['file_name']
+    }
+
+    //when:
+    merge(donor, otherDonor);
+    merge(donor, imageFile);
+
+    //then:
+    expect(donor.includeModules).toEqual(otherDonor.includeModules)
+  });
+
   it('should merge empty linking specifications', () => {
     //given:
-    const empty = <TypeSpec> {};
-    const otherEmpty = <TypeSpec> {};
+    const empty = <TypeSpec> {schemaName: 'name'};
+    const otherEmpty = <TypeSpec> {schemaName: 'name'};
 
     //when:
     merge(empty, otherEmpty);
@@ -168,11 +195,13 @@ describe('Merging', () => {
   it('should merge link entities', () => {
     //given:
     const entities = <TypeSpec> {
+      schemaName: 'name',
       linkSpec: {
         linkEntities: ['organoid', 'specimen_from_organism']
       }
     };
     const otherEntities = <TypeSpec> {
+      schemaName: 'name',
       linkSpec: {
         linkEntities: ['donor_organism', 'organoid']
       }
@@ -189,11 +218,13 @@ describe('Merging', () => {
   it('should merge link protocols', () => {
     //given:
     const protocols = <TypeSpec> {
+      schemaName: 'name',
       linkSpec: {
         linkProtocols: ['dissociation_protocol', 'sequencing_protocol']
       }
     };
     const otherProtocols = <TypeSpec> {
+      schemaName: 'name',
       linkSpec: {
         linkProtocols: ['sequencing_protocol', 'analysis_protocol']
       }

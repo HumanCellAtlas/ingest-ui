@@ -27,7 +27,7 @@ export interface TypeSpec {
 }
 
 export function merge(spec: TypeSpec, other: TypeSpec): void {
-  if (!spec || !other) return;
+  if (!spec || !other || spec.schemaName != other.schemaName) return;
   if (!spec.linkSpec) {
     spec.linkSpec = {
       linkEntities: [],
