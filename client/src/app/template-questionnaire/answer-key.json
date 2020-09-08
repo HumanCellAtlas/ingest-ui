@@ -161,6 +161,7 @@
         "includeModules": [
           "organism_age_unit",
           "organism_age",
+          "medical_history",
           "gestational_age_unit",
           "gestational_age"
         ]
@@ -172,7 +173,8 @@
         "category": "biomaterial",
         "includeModules": [
           "organism_age_unit",
-          "organism_age"
+          "organism_age",
+          "medical_history"
         ]
       }
     ],
