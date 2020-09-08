@@ -279,6 +279,9 @@
         "schemaName": "cell_suspension",
         "category": "biomaterial",
         "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
           "linkProtocols": [
             "enrichment_protocol"
           ]
