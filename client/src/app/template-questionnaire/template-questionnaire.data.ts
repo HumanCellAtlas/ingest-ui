@@ -62,7 +62,11 @@ const default_type_specs = [
       'development_stage',
       'diseases',
       'death',
-      'weight'
+      'is_living',
+      'weight',
+      'weight_unit',
+      'sex',
+      'timecourse'
     ]
   },
   {
