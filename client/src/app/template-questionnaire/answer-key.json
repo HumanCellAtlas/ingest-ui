@@ -136,10 +136,7 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "human_specific",
-          "medical_history",
-          "height",
-          "height_unit"
+          "human_specific"
         ]
       }
     ],
@@ -162,6 +159,8 @@
           "organism_age_unit",
           "organism_age",
           "medical_history",
+          "height",
+          "height_unit",
           "gestational_age_unit",
           "gestational_age"
         ]
@@ -174,7 +173,9 @@
         "includeModules": [
           "organism_age_unit",
           "organism_age",
-          "medical_history"
+          "medical_history",
+          "height",
+          "height_unit"
         ]
       }
     ],
