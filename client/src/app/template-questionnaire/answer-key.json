@@ -136,10 +136,7 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "human_specific",
-          "medical_history",
-          "height",
-          "height_unit"
+          "human_specific"
         ]
       }
     ],
@@ -161,6 +158,9 @@
         "includeModules": [
           "organism_age_unit",
           "organism_age",
+          "medical_history",
+          "height",
+          "height_unit",
           "gestational_age_unit",
           "gestational_age"
         ]
@@ -172,11 +172,14 @@
         "category": "biomaterial",
         "includeModules": [
           "organism_age_unit",
-          "organism_age"
+          "organism_age",
+          "medical_history",
+          "height",
+          "height_unit"
         ]
       }
     ],
-    "Yes, all": [
+    "Yes, All": [
       {
         "schemaName": "donor_organism",
         "category": "biomaterial",
@@ -254,14 +257,6 @@
         "includeModules": [
           "growth_conditions"
         ]
-      },
-      {
-        "schemaName": "ipsc_induction_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "differentiation_protocol",
-        "category": "other"
       }
     ]
   },

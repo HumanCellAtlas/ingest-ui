@@ -62,7 +62,11 @@ const default_type_specs = [
       'development_stage',
       'diseases',
       'death',
-      'weight'
+      'is_living',
+      'weight',
+      'weight_unit',
+      'sex',
+      'timecourse'
     ]
   },
   {
@@ -80,36 +84,6 @@ const default_type_specs = [
       'diseases',
       'state_of_specimen',
       'preservation_storage'
-    ]
-  },
-  {
-    schemaName: 'cell_suspension',
-    category: 'biomaterial',
-    includeModules: [
-      'cell_morphology',
-      'genus_species',
-      'selected_cell_types'
-    ]
-  },
-  {
-    schemaName: 'library_preparation_protocol',
-    category: 'other',
-    includeModules: [
-      'input_nucleic_acid_molecule',
-      'library_construction_method',
-      'library_construction_kit',
-      'nucleic_acid_conversion_kit',
-      'umi_barcode',
-      'library_preamplification_method',
-      'cdna_library_amplification_method'
-    ]
-  },
-  {
-    schemaName: 'sequencing_protocol',
-    category: 'other',
-    includeModules: [
-      'instrument_manufacturer_model',
-      'method'
     ]
   }
 ]
