@@ -7,7 +7,7 @@
     <ul class="vf-navigation__list | vf-list--inline">
       <li class="vf-navigation__item">
         <a *ngIf="account$ | async" class="vf-navigation__link">
-          <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}"
+          <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}" alt="User Profile Image"
                class="rounded-circle profile-image"> {{ userInfo?.given_name }} {{userInfo.family_name}}
         </a>
         <a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Register</a>
