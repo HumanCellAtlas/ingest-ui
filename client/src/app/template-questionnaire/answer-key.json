@@ -241,9 +241,6 @@
         "linkSpec": {
           "linkEntities": [
             "specimen_from_organism"
-          ],
-          "linkProtocols": [
-            "collection_protocol"
           ]
         }
       },
