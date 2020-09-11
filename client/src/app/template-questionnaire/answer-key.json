@@ -276,7 +276,7 @@
   "specimenPurchased": {
     "Yes": [
       {
-        "schemaName": "specimen_from_organism",
+        "schemaName": "cell_line",
         "category": "biomaterial",
         "includeModules": [
           "purchased_reagents",
