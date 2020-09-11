@@ -47,6 +47,7 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     'technologyType': ['Sequencing'],
     'libraryPreparation': ['Droplet-based (e.g. 10X chromium, dropSeq, InDrop)'],
     'identifyingOrganisms': ['Human'],
+    'preNatalQuantity': ['No, None'],
     'specimenType': ['Primary Tissue']
   };
   config: MetadataFormConfig = {
