@@ -71,7 +71,7 @@
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase any specimens?",
+      "user_friendly": "Did you purchase your cell line/s?",
       "guidelines": "Add fields for capturing purchase information. Not required if all specimens are Primary Tissue",
       "type": "string",
       "example": "No",

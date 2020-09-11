@@ -22,7 +22,7 @@ export class SpecimenGroupComponent implements OnInit {
   }
 
   onTypeChange(specimenType: string[]) {
-    this.showPurchased = specimenType.includes('Organoid') || specimenType.includes('Cell Line');
+    this.showPurchased = specimenType.includes('Cell Line');
     if (!this.showPurchased) {
       this.metadataForm.getControl('template-questionnaire.specimenPurchased').reset();
     }
