@@ -193,7 +193,7 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "familial_relationship"
+          "familial_relationships"
         ]
       }
     ]
