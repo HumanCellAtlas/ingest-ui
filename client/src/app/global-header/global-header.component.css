@@ -1,0 +1,3 @@
+.width-override {
+  max-width: var(--vf-body-width);
+}

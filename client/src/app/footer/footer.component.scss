@@ -22,3 +22,7 @@
   padding: 0px;
   margin: 0.5em;
 }
+
+.width-override {
+  max-width: var(--vf-body-width);
+}
