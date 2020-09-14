@@ -48,9 +48,6 @@
         "schemaName": "cell_suspension",
         "category": "biomaterial",
         "linkSpec": {
-          "linkEntities": [
-            "specimen_from_organism"
-          ],
           "linkProtocols": [
             "dissociation_protocol"
           ]
@@ -214,9 +211,18 @@
             "collection_protocol"
           ]
         }
+      },
+      {
+        "schemaName": "cell_suspension",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ]
+        }
       }
     ],
-    "Organoid": [
+    "Organoid and/or Cell Line": [
       {
         "schemaName": "specimen_from_organism",
         "category": "biomaterial",
@@ -237,33 +243,50 @@
             "specimen_from_organism"
           ],
           "linkProtocols": [
-            "collection_protocol"
+            "differentiation_protocol",
+            "aggregate_generation_protocol"
+          ]
+        }
+      },
+      {
+        "schemaName": "cell_line",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "differentiation_protocol"
           ]
         }
       },
       {
         "schemaName": "aggregate_generation_protocol",
         "category": "other"
-      }
-    ],
-    "Cell Line": [
+      },
       {
-        "schemaName": "cell_line",
-        "category": "biomaterial"
+        "schemaName": "differentiation_protocol",
+        "category": "other"
       },
       {
         "schemaName": "cell_suspension",
         "category": "biomaterial",
         "includeModules": [
           "growth_conditions"
-        ]
+        ],
+        "linkSpec": {
+          "linkEntities": [
+            "organoid",
+            "cell_line"
+          ]
+        }
       }
     ]
   },
   "specimenPurchased": {
     "Yes": [
       {
-        "schemaName": "specimen_from_organism",
+        "schemaName": "cell_line",
         "category": "biomaterial",
         "includeModules": [
           "purchased_reagents",
@@ -282,50 +305,8 @@
         "schemaName": "cell_suspension",
         "category": "biomaterial",
         "linkSpec": {
-          "linkEntities": [
-            "specimen_from_organism"
-          ],
           "linkProtocols": [
             "enrichment_protocol"
-          ]
-        }
-      }
-    ],
-    "Differentiation": [
-      {
-        "schemaName": "differentiation_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "organoid",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkProtocols": [
-            "differentiation_protocol"
-          ]
-        }
-      },
-      {
-        "schemaName": "cell_line",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkProtocols": [
-            "differentiation_protocol"
-          ]
-        }
-      }
-    ],
-    "Aggregate Generation": [
-      {
-        "schemaName": "aggregate_generation_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "organoid",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkProtocols": [
-            "aggregate_generation_protocol"
           ]
         }
       }
