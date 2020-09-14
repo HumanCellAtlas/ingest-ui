@@ -66,12 +66,11 @@
       },
       "enum": [
         "Primary Tissue",
-        "Organoid",
-        "Cell Line"
+        "Organoid and/or Cell Line"
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase your cell line/s?",
+      "user_friendly": "Did you purchase your specimens?",
       "guidelines": "Add fields for capturing purchase information. Not required if all specimens are Primary Tissue",
       "type": "string",
       "example": "No",
@@ -99,8 +98,6 @@
       },
       "enum": [
         "Enrichment",
-        "Differentiation",
-        "Aggregate Generation",
         "Induction"
       ]
     }
