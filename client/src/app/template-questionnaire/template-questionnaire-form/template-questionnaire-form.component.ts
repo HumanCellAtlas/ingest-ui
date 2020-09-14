@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 import {LoaderService} from '../../shared/services/loader.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {DatePipe} from "@angular/common";
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -60,7 +61,8 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
   constructor(private templateGenerator: TemplateGeneratorService,
               private loaderService: LoaderService,
               private alertService: AlertService,
-              private router: Router) {
+              private router: Router,
+              private datePipe: DatePipe) {
 
   }
 
@@ -75,7 +77,7 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     this.templateGenerator.generateTemplate(templateSpec)
       .subscribe(
         blob => {
-          saveAs(blob, `hca_metadata_template-${this.getDateString()}.xlsx`);
+          saveAs(blob, `hca_metadata_template-${this.datePipe.transform(Date.now(), 'yyyyMMdd')}.xlsx`);
           this.loaderService.display(false);
           this.alertService.clear();
           this.alertService.success('Success', 'You have successfully generated a template spreadsheet!');
@@ -109,13 +111,5 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
 
   onReset($event: boolean) {
     window.location.reload();
-  }
-
-  getDateString() {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day =`${date.getDate()}`.padStart(2, '0');
-  return `${year}${month}${day}`
   }
 }
