@@ -84,7 +84,15 @@ const default_type_specs = [
       'diseases',
       'state_of_specimen',
       'preservation_storage'
-    ]
+    ],
+    linkSpec: {
+          "linkEntities": [
+            "donor_organism"
+          ],
+          "linkProtocols": [
+            "collection_protocol"
+          ]
+        }
   }
 ]
 
