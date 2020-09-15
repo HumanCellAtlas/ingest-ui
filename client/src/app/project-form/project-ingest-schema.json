@@ -26,10 +26,7 @@
         "type": {
           "description": "Data Access",
           "guidelines": "",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "type": "string",
           "enum": [
             "All fully open",
             "All managed access",
