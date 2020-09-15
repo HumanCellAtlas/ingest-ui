@@ -1,19 +1,20 @@
-<header class="vf-global-header">
-  <a [routerLink]="['/home']"><img class="vf-logo__image" src="assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas"></a>
-  <p class="vf-logo__text vf-u-padding__left--xxl vf-u-padding__top--sm"> Data Contribution Service</p>
+<header class="vf-global-header width-override">
+  <a [routerLink]="['/home']" class="vf-logo | vf-logo--has-text">
+    <img class="vf-logo__image" src="/assets/HCA_logo_full_transparent.png" alt="Human Cell Atlas">
+    <span class="vf-logo__text">Data Contribution Service</span>
+  </a>
   <nav class="vf-navigation vf-navigation--global">
     <ul class="vf-navigation__list | vf-list--inline">
       <li class="vf-navigation__item">
         <a *ngIf="account$ | async" class="vf-navigation__link">
-          <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}"
+          <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}" alt="User Profile Image"
                class="rounded-circle profile-image"> {{ userInfo?.given_name }} {{userInfo.family_name}}
         </a>
+        <!--a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Register</a-->
       </li>
       <li class="vf-navigation__item">
-        <a class="vf-navigation__link"
-           *ngIf="isLoggedIn" href="#"
-           (click)="logout($event)">Sign out
-        </a>
+        <a *ngIf="isLoggedIn" class="vf-navigation__link" (click)="logout($event)">Log out</a>
+        <a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Log in</a>
       </li>
     </ul>
   </nav>
