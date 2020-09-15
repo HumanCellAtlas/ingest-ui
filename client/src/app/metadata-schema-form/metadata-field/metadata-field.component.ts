@@ -21,6 +21,7 @@ const components = {
   textarea: TextAreaComponent
 };
 const enumComponents = {
+  text: EnumDropDownComponent,
   radio: EnumRadioListComponent,
   radioInline: EnumRadioInlineComponent,
   dropdown: EnumDropDownComponent
