@@ -48,6 +48,9 @@
         "schemaName": "cell_suspension",
         "category": "biomaterial",
         "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
           "linkProtocols": [
             "dissociation_protocol"
           ]
@@ -193,48 +196,13 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "familial_relationship"
+          "familial_relationships"
         ]
       }
     ]
   },
   "specimenType": {
-    "Primary Tissue": [
-      {
-        "schemaName": "specimen_from_organism",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkEntities": [
-            "donor_organism"
-          ],
-          "linkProtocols": [
-            "collection_protocol"
-          ]
-        }
-      },
-      {
-        "schemaName": "cell_suspension",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkEntities": [
-            "specimen_from_organism"
-          ]
-        }
-      }
-    ],
     "Organoid and/or Cell Line": [
-      {
-        "schemaName": "specimen_from_organism",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkEntities": [
-            "donor_organism"
-          ],
-          "linkProtocols": [
-            "collection_protocol"
-          ]
-        }
-      },
       {
         "schemaName": "organoid",
         "category": "biomaterial",
@@ -280,13 +248,23 @@
             "cell_line"
           ]
         }
+      },
+      {
+        "schemaName": "imaged_specimen",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "organoid",
+            "cell_line"
+          ]
+        }
       }
     ]
   },
   "specimenPurchased": {
     "Yes": [
       {
-        "schemaName": "cell_line",
+        "schemaName": "specimen_from_organism",
         "category": "biomaterial",
         "includeModules": [
           "purchased_reagents",
