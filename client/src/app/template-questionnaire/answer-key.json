@@ -48,7 +48,7 @@
         "schemaName": "cell_suspension",
         "category": "biomaterial",
         "linkSpec": {
-          "linkEntities" : [
+          "linkEntities": [
             "specimen_from_organism"
           ],
           "linkProtocols": [
@@ -202,8 +202,6 @@
     ]
   },
   "specimenType": {
-    "Primary Tissue": [
-    ],
     "Organoid and/or Cell Line": [
       {
         "schemaName": "organoid",
