@@ -250,6 +250,16 @@
             "cell_line"
           ]
         }
+      },
+      {
+        "schemaName": "imaged_specimen",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "organoid",
+            "cell_line"
+          ]
+        }
       }
     ]
   },
