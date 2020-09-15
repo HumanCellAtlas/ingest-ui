@@ -10,7 +10,7 @@
           <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}" alt="User Profile Image"
                class="rounded-circle profile-image"> {{ userInfo?.given_name }} {{userInfo.family_name}}
         </a>
-        <a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Register</a>
+        <!--a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Register</a-->
       </li>
       <li class="vf-navigation__item">
         <a *ngIf="isLoggedIn" class="vf-navigation__link" (click)="logout($event)">Log out</a>
