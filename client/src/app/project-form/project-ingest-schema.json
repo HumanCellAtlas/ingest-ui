@@ -33,7 +33,7 @@
             "A mixture of open and managed",
             "It's complicated"
           ],
-          "user_friendly":  "Do the data require controlled access?"
+          "user_friendly":  "Does the data require controlled access?"
         },
         "notes": {
           "description": "Data Access Notes",
