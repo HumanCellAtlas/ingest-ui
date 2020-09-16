@@ -62,7 +62,7 @@
     <ng-container *ngIf="selectedValues; else notSpecified">
       <div class="content">
         <mat-chip-list>
-          <mat-chip *ngFor="let value of selectedValues">{{value}}</mat-chip>
+          <mat-chip *ngFor="let value of selectedValues">{{ displayWith ? displayWith(value) : value}}</mat-chip>
         </mat-chip-list>
       </div>
     </ng-container>
