@@ -89,7 +89,7 @@ export class MetadataFieldComponent implements OnInit {
         component = InputComponent;
         const formGroup = control as FormGroup;
         for (const child of metadata.childrenMetadata) {
-          this.selectComponent(child, formGroup['controls'][child.key], `${id}'-'${child.key}`);
+          this.loadComponent(child, formGroup['controls'][child.key], `${id}-${child.key}`);
         }
       }
 
