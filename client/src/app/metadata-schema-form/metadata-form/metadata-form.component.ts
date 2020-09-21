@@ -5,6 +5,7 @@ import {JsonSchema} from '../models/json-schema';
 import {MetadataFormConfig} from '../models/metadata-form-config';
 import {MetadataForm} from '../models/metadata-form';
 import {LoaderService} from '../../shared/services/loader.service';
+import {MetadataFormTab} from "../models/metadata-form-layout";
 
 @Component({
   selector: 'app-metadata-form',
@@ -52,6 +53,37 @@ export class MetadataFormComponent implements OnInit {
     this.metadataForm = this.metadataFormService.createForm(this.schema.name, this.schema, this.data, this.config);
     this.formGroup = this.metadataForm.formGroup;
     this.done = true;
+  }
+
+  showTab(tab: MetadataFormTab): boolean {
+    if (this.config.viewMode && this.config.removeEmptyFields && tab.items.length == 1) {
+      if (tab.key == tab.items[0]) {
+        let data = this.data;
+        let chain = true;
+
+        let keys = tab.key.replace('project.', '').split('.')
+        for (const key of keys) {
+          if ((key in data)) {
+            data = data[key];
+          } else {
+            chain = false;
+            break;
+          }
+        }
+        return chain;
+      }
+    }
+    return true;
+  }
+
+  visibleTabs(tabs: MetadataFormTab[]): number {
+    let visibleTabs: number = 0;
+    for (const tab of tabs) {
+      if (this.showTab(tab)) {
+        visibleTabs++;
+      }
+    }
+    return visibleTabs;
   }
 
   onSubmit(e) {

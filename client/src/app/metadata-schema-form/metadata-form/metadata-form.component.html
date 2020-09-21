@@ -1,10 +1,10 @@
 <form *ngIf="done" class="vf-form" [formGroup]="metadataForm.formGroup" (submit)="onSubmit($event)">
 
-  <mat-tab-group *ngIf="config.layout.tabs.length > 1"
+  <mat-tab-group *ngIf="visibleTabs(config.layout.tabs) > 1"
                  (selectedIndexChange)="onSelectedIndexChange($event)"
                  [selectedIndex]="this.selectedTabIndex">
     <ng-container *ngFor="let tab of config.layout.tabs">
-      <mat-tab>
+      <mat-tab *ngIf="showTab(tab)">
         <div>
           <ng-template mat-tab-label>
             <label
@@ -22,16 +22,18 @@
       </mat-tab>
     </ng-container>
   </mat-tab-group>
-
-  <div *ngIf="config.layout.tabs.length === 1" class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
-    <ng-container *ngFor="let item of config.layout.tabs[0].items">
-      <app-metadata-form-item
-        [item]="item"
-        [metadataForm]="metadataForm">
-      </app-metadata-form-item>
-    </ng-container>
+  <div *ngIf="visibleTabs(config.layout.tabs) === 1">
+    <div *ngFor="let tab of config.layout.tabs">
+      <div *ngIf="showTab(tab)" class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+        <ng-container *ngFor="let item of config.layout.tabs[0].items">
+          <app-metadata-form-item
+            [item]="item"
+            [metadataForm]="metadataForm">
+          </app-metadata-form-item>
+        </ng-container>
+      </div>
+    </div>
   </div>
-
   <ng-container *ngIf="!config.viewMode">
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
       <div class="form-actions">
