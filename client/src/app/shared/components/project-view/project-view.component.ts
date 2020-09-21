@@ -22,8 +22,8 @@ export class ProjectViewComponent implements OnInit {
 
   config: MetadataFormConfig = {
     hideFields: ['describedBy', 'schema_version', 'schema_type', 'provenance'],
-    removeEmptyFields: true,
     viewMode: true,
+    removeEmptyFields: true,
     layout: layout
   };
 

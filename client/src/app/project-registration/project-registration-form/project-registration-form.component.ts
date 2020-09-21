@@ -61,7 +61,6 @@ export class ProjectRegistrationFormComponent implements OnInit {
         'schema_type',
         'provenance'
       ],
-      removeEmptyFields: true,
       layout: projectRegLayout,
       inputType: {
         'project_description': 'textarea',

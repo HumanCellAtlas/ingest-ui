@@ -43,8 +43,6 @@ export class ProjectFormComponent implements OnInit {
       'schema_type',
       'provenance'
     ],
-    removeEmptyFields: true,
-
     layout: layout,
     inputType: {
       'project_description': 'textarea',

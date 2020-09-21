@@ -67,6 +67,7 @@ export class MetadataFieldComponent implements OnInit {
 
   private selectComponent(metadata: Metadata, control: AbstractControl, id: string) {
     let component;
+    let hasValue: boolean;
 
     if (metadata.isScalar()) {
       if (metadata.schema.enum) {
@@ -75,14 +76,15 @@ export class MetadataFieldComponent implements OnInit {
         component = metadata.inputType && components[metadata.inputType] ? components[metadata.inputType] : InputComponent;
         component = metadata.schema.format === 'date-time' ? DateInputComponent : component;
       }
+      hasValue = control.value;
     } else if (metadata.isScalarList()) {
       if (metadata.schema.enum) {
         component = EnumListInputComponent;
       } else {
         component = TextListInputComponent;
       }
+      hasValue = control.value?.length > 0;
     } else if (metadata.isObject()) {
-
       if (metadata.schema && metadata.schema.$id && metadata.schema.$id.indexOf('/module/ontology/') >= 0) {
         component = OntologyInputComponent;
       } else {
@@ -92,7 +94,7 @@ export class MetadataFieldComponent implements OnInit {
           this.loadComponent(child, formGroup['controls'][child.key], `${id}-${child.key}`);
         }
       }
-
+      hasValue = Object.keys(control.value).length > 0;
     } else { // object list
       const schema = metadata.schema.items as JsonSchema;
       if (schema.$id.indexOf('/module/ontology/') >= 0) {
@@ -100,6 +102,10 @@ export class MetadataFieldComponent implements OnInit {
       } else {
         component = InputComponent;
       }
+      hasValue = control.value;
+    }
+    if (metadata.isDisabled && metadata.isReadOnly && !hasValue){
+      return undefined;
     }
     return component;
   }
