@@ -24,8 +24,6 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
 
   ngOnInit(): void {
     super.ngOnInit();
-    const ontologyReference = `Please note that if the search result is too large, not all options may be displayed. Please see <a href="${this.olsUrl}" target="_blank">Ontology Lookup Service</a> for reference.`;
-    this.helperText = this.helperText + ' ' + ontologyReference;
     const value: Ontology = this.metadataFormService.cleanFormData(this.control.value);
     this.searchControl = this.createSearchControl(value);
     this.options$ = this.searchControl.valueChanges

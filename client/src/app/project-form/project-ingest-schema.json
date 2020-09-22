@@ -70,7 +70,7 @@
       "properties": {
         "ontologies": {
           "description": "The general methods used for sequencing library construction in your project.",
-          "guidelines": "Start typing to select the technology. You can select multiple entries.",
+          "guidelines": "Enter each technique by searching and selecting as many as are applicable. If you cannot find it, please enter the name of the technique in the 'Other library preparation and/or imaging technique/s' box below.",
           "type": "array",
           "items": {
             "$schema": "http://json-schema.org/draft-07/schema#",
@@ -117,7 +117,7 @@
               }
             }
           },
-          "user_friendly": "Technologies used to generate the data"
+          "user_friendly": "What library preparation and/or imaging technique/s did you use to generate the data?"
         },
         "others": {
           "description": "Other technologies not in the ontologies for technology.",
@@ -125,8 +125,8 @@
           "items": {
             "type": "string"
           },
-          "user_friendly": "Other Technologies",
-          "guidelines": "Other technologies not in the options above."
+          "user_friendly": "Other library preparation and/or imaging technique/s",
+          "guidelines": "If you cannot find any of the techniques used to generate your data in the search box above, please enter their names here."
         }
       }
     },
