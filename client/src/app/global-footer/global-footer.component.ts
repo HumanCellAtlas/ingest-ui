@@ -2,11 +2,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from "rxjs";
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+  selector: 'app-global-footer',
+  templateUrl: './global-footer.component.html',
+  styleUrls: ['./global-footer.component.scss']
 })
-export class FooterComponent implements OnInit {
+export class GlobalFooterComponent implements OnInit {
   @Input() isLoggedIn$: Observable<any>;
   @Output() logout = new EventEmitter<any>();
 
