@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {combineLatest, Observable, of} from 'rxjs';
 import {OlsHttpResponse} from '../models/ols';
 import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
-import {concatMap} from 'rxjs/operators';
 import {Ontology} from '../models/ontology';
 
 
@@ -23,16 +22,13 @@ export class OntologyService {
   }
 
   lookup(schema: JsonSchema, searchText: string): Observable<Ontology[]> {
-    return this.createSearchParams(schema, searchText)
-      .pipe(
-        concatMap(params =>
-          this.searchOntologies(params)
-        )
-      );
+    return this
+      .createSearchParams(schema, searchText)
+      .concatMap(params => this.searchOntologies(params));
   }
 
   createSearchParams(schema: JsonSchema, searchText?: string): Observable<object> {
-    const searchParams = {
+    let searchParams = {
       groupField: 'iri',
       start: 0,
       ontology: 'efo',
@@ -47,23 +43,20 @@ export class OntologyService {
 
     const properties = schema.properties;
     const graphRestriction = properties['ontology']['graph_restriction'];
-    const ontologyClass: string = graphRestriction['classes'][0]; // TODO support only 1 class for now
+    const ontologyClasses: string[] = graphRestriction['classes'];
     const ontologyRelation: string = graphRestriction['relations'][0]; // TODO support only 1 relation for now
 
-
-    const olsClass = ontologyClass.replace(':', '_');
-
-    const searchParams$ = this.select({q: olsClass})
-      .map(data => data as OlsHttpResponse)
-      .map(data => {
-        if (data.response.numFound === 1) {
-          const iri = data.response.docs[0].iri;
-          searchParams[this.OLS_RELATION[ontologyRelation]] = iri;
-          return searchParams;
-        }
-      });
-
-    return searchParams$;
+    return combineLatest(ontologyClasses
+      .map(ontologyClass => ontologyClass.replace(':', '_'))
+      .map(olsClass => this.select({q: olsClass}))
+    ).map(responses => responses
+      .map(ols => ols.response)
+      .filter(olsResponse => olsResponse.numFound === 1)
+      .map(olsResponse => olsResponse.docs[0].iri)
+    ).map(iriArray => {
+      searchParams[this.OLS_RELATION[ontologyRelation]] = iriArray;
+      return searchParams;
+    });
   }
 
   searchOntologies(params): Observable<Ontology[]> {

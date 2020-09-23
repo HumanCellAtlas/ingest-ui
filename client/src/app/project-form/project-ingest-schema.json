@@ -98,7 +98,8 @@
                     "obo:efo"
                   ],
                   "classes": [
-                    "OBI:0000711"
+                    "OBI:0000711",
+                    "OBI:0001686"
                   ],
                   "relations": [
                     "rdfs:subClassOf"
