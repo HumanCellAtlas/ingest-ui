@@ -1,22 +1,26 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoaderService} from './shared/services/loader.service';
-import 'rxjs-compat/add/operator/takeWhile';
 import {AaiService} from './aai/aai.service';
-import {Subject} from 'rxjs';
-import {User} from 'oidc-client';
+import {IngestService} from './shared/services/ingest.service';
+import {Observable} from "rxjs";
+import {Profile} from 'oidc-client';
+import {Account} from "./core/account";
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   showLoader: boolean;
   loaderMessage: string;
-  user$: Subject<User>;
   isSafari: boolean;
 
-  constructor(private loaderService: LoaderService, private aai: AaiService) {
+  userProfile$: Observable<Profile>;
+  userAccount$: Observable<Account>;
+
+  constructor(private loaderService: LoaderService, private aai: AaiService, private ingestService: IngestService) {
     this.isSafari = window['safari'] !== undefined;
 
     this.loaderService.status.subscribe((val: boolean) => {
@@ -26,8 +30,15 @@ export class AppComponent {
     this.loaderService.message.subscribe((val: string) => {
       this.loaderMessage = val;
     });
-
-    this.user$ = this.aai.getUserSubject();
+  }
+  ngOnInit(): void {
+    this.userProfile$ = this.aai.user$.filter(user => user && !user.expired).map(user => user.profile);
+    this.userAccount$ = this.aai.user$.filter(user => user && !user.expired).concatMap(() => this.ingestService.getUserAccount());
   }
 
+  onLogout($event: any) {
+    if (confirm('Are you sure you want to logout?')) {
+      this.aai.logout();
+    }
+  }
 }

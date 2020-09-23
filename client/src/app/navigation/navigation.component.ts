@@ -1,8 +1,5 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {IngestService} from '../shared/services/ingest.service';
-import {AaiService} from '../aai/aai.service';
-import {Observable, of} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Observable} from 'rxjs';
 import {Account} from '../core/account';
 
 @Component({
@@ -12,24 +9,8 @@ import {Account} from '../core/account';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent implements OnInit {
-  account$: Observable<Account>;
-  isLoggedIn$: Observable<boolean>;
-
-
-  constructor(private aai: AaiService, private ingestService: IngestService) {
-    this.isLoggedIn$ = this.aai.isUserLoggedIn();
-    this.account$ = this.isLoggedIn$.pipe(
-      concatMap(loggedIn => {
-        if (loggedIn) {
-          return this.ingestService.getUserAccount();
-        }
-        return of(undefined);
-      })
-    );
-  }
+  @Input() userAccount$: Observable<Account | undefined>;
 
   ngOnInit() {
-
   }
-
 }

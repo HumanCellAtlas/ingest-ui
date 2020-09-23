@@ -6,15 +6,15 @@
   <nav class="vf-navigation vf-navigation--global">
     <ul class="vf-navigation__list | vf-list--inline">
       <li class="vf-navigation__item">
-        <a *ngIf="account$ | async" class="vf-navigation__link">
-          <img *ngIf="userInfo && userInfo.picture" src="{{ userInfo?.picture}}" alt="User Profile Image"
-               class="rounded-circle profile-image"> {{ userInfo?.given_name }} {{userInfo.family_name}}
+        <a *ngIf="userAccount$ | async" class="vf-navigation__link">
+          <img *ngIf="(userProfile$ | async)?.picture" class="rounded-circle profile-image"
+               src="{{(userProfile$ | async)?.picture}}" alt="User Profile Image" />
+          {{(userProfile$ | async)?.given_name}} {{(userProfile$ | async)?.family_name}}
         </a>
-        <!--a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Register</a-->
       </li>
       <li class="vf-navigation__item">
-        <a *ngIf="isLoggedIn" class="vf-navigation__link" (click)="logout($event)">Log out</a>
-        <a *ngIf="!isLoggedIn" class="vf-navigation__link" [routerLink]="'/login'">Log in</a>
+        <a *ngIf="isLoggedIn$ | async" class="vf-navigation__link" (click)="onLogout($event)">Log out</a>
+        <a *ngIf="!(isLoggedIn$ | async)" class="vf-navigation__link" routerLink="/login">Log in</a>
       </li>
     </ul>
   </nav>
