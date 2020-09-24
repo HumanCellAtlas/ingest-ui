@@ -138,6 +138,10 @@ export class ProjectFormComponent implements OnInit {
         });
   }
 
+  onBack($event: boolean) {
+    this.decrementTab();
+  }
+
   onCancel($event: boolean) {
     if ($event) {
       if (this.createMode) {
@@ -186,6 +190,12 @@ export class ProjectFormComponent implements OnInit {
     this.formTabIndex++;
     if (this.formTabIndex >= layout.tabs.length) {
       this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+    }
+  }
+
+  private decrementTab() {
+    if (this.formTabIndex > 0) {
+      this.formTabIndex--;
     }
   }
 
