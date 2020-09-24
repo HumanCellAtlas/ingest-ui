@@ -20,9 +20,9 @@ export class MetadataFormComponent implements OnInit {
 
   @Input() config: MetadataFormConfig;
 
-  @Input() data: object;
+  @Input() selectedTabKey: string;
 
-  @Input() selectedTabIndex = 0;
+  @Input() data: object;
 
   @Output() save = new EventEmitter<object>();
 
@@ -32,7 +32,7 @@ export class MetadataFormComponent implements OnInit {
 
   @Output() back = new EventEmitter<boolean>();
 
-  @Output() tabChange = new EventEmitter<number>();
+  @Output() tabChange = new EventEmitter<string>();
 
   formGroup: FormGroup;
 
@@ -52,8 +52,19 @@ export class MetadataFormComponent implements OnInit {
   ngOnInit(): void {
     this.metadataForm = this.metadataFormService.createForm(this.schema.name, this.schema, this.data, this.config);
     this.formGroup = this.metadataForm.formGroup;
-    this.visibleTabs = this.config.layout.tabs.filter((tab) => this.tabIsVisible(tab));
+    this.visibleTabs = this.config.layout.tabs.filter(tab => this.tabIsVisible(tab));
+    if (this.lookupTabIndex(this.selectedTabKey) === -1) {
+      this.selectedTabKey = this.visibleTabs[0].key;
+    }
     this.done = true;
+  }
+
+  lookupTabIndex(tabKey: string): number {
+    if (tabKey) {
+      return this.visibleTabs.findIndex(tab => tab.key === tabKey);
+    } else {
+      return -1;
+    }
   }
 
   tabIsVisible(tab: MetadataFormTab): boolean {
@@ -86,7 +97,7 @@ export class MetadataFormComponent implements OnInit {
     console.log('form valid?', this.formGroup.valid);
     console.log('form group', this.formGroup);
 
-    if (this.selectedTabIndex === this.config.layout.tabs.length - 1) {
+    if (this.lookupTabIndex(this.selectedTabKey) === this.config.layout.tabs.length - 1) {
       this.formGroup.markAllAsTouched();
     }
 
@@ -107,7 +118,7 @@ export class MetadataFormComponent implements OnInit {
   }
 
   onSelectedIndexChange(tabIndex: number) {
-    this.tabChange.emit(tabIndex);
+    this.tabChange.emit(this.visibleTabs[tabIndex].key);
   }
 
   onBack($event: MouseEvent) {

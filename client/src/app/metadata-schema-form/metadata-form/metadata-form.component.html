@@ -2,7 +2,7 @@
 
   <mat-tab-group *ngIf="visibleTabs.length > 1"
                  (selectedIndexChange)="onSelectedIndexChange($event)"
-                 [selectedIndex]="this.selectedTabIndex">
+                 [selectedIndex]="lookupTabIndex(selectedTabKey)">
     <ng-container *ngFor="let tab of visibleTabs">
       <mat-tab>
         <div>
@@ -35,7 +35,7 @@
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
       <div class="form-actions">
         <div class="vf-u-margin__bottom--xxl">
-          <a class="vf-link vf-u-margin__right--xxl" *ngIf="this.selectedTabIndex !== 0" (click)="onBack($event)">
+          <a class="vf-link vf-u-margin__right--xxl" *ngIf="selectedTabKey !== visibleTabs[0].key" (click)="onBack($event)">
             < Back
           </a>
 
@@ -44,19 +44,15 @@
             Reset
           </a>
 
-          <button
-            *ngIf="this.selectedTabIndex !== config.layout.tabs.length - 1 && this.selectedTabIndex !== config.layout.tabs.length"
+          <button *ngIf="selectedTabKey !== visibleTabs[visibleTabs.length - 1].key"
             class="next-button vf-button vf-button--primary vf-button vf-u-margin__left--xxl">Next
           </button>
-          <button *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
+          <button *ngIf="selectedTabKey === visibleTabs[visibleTabs.length - 1].key"
                   class="next-button vf-button vf-button--primary vf-button">
             {{config.submitButtonLabel ? config.submitButtonLabel : 'Finish'}}
           </button>
-
-
         </div>
-        <a *ngIf="this.selectedTabIndex === config.layout.tabs.length - 1"
-           class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
+        <a *ngIf="config.showCancelButton" class="vf-link vf-u-margin__top--xxl" (click)="confirmCancel($event)">
           {{config.cancelButtonLabel ? config.cancelButtonLabel : 'Cancel'}}
         </a>
       </div>

@@ -34,7 +34,7 @@ export class ProjectFormComponent implements OnInit {
   createMode = true;
   formValidationErrors: any = null;
   formIsValid: boolean = null;
-  formTabIndex = 0;
+  formTabKey: string;
 
   config: MetadataFormConfig = {
     hideFields: [
@@ -47,7 +47,9 @@ export class ProjectFormComponent implements OnInit {
     inputType: {
       'project_description': 'textarea',
       'notes': 'textarea'
-    }
+    },
+    showCancelButton: true,
+    showResetButton: false
   };
 
   patch: object = {};
@@ -69,7 +71,9 @@ export class ProjectFormComponent implements OnInit {
 
     const projectUuid: string = this.route.snapshot.paramMap.get('uuid');
     if (this.route.snapshot.paramMap.has('tab')) {
-      this.formTabIndex = +this.route.snapshot.paramMap.get('tab');
+      this.formTabKey = this.route.snapshot.paramMap.get('tab');
+    } else {
+      this.formTabKey = this.config.layout.tabs[0].key;
     }
 
     this.projectResource = null;
@@ -90,8 +94,7 @@ export class ProjectFormComponent implements OnInit {
     this.title = this.createMode ? 'New Project' : 'Edit Project';
     this.subtitle = this.createMode ? 'Please provide initial information about your HCA project.\n' +
       '  You will be able to edit this information as your project develops.' : '';
-
-
+    this.config.showCancelButton = !this.createMode;
   }
 
   setProjectContent(projectUuid) {
@@ -119,6 +122,10 @@ export class ProjectFormComponent implements OnInit {
         error => {
           this.alertService.error('Project could not be retrieved.', error.message);
         });
+  }
+
+  onTabChange($tabKey: string) {
+    this.formTabKey = $tabKey;
   }
 
   onSave(formData: object) {
@@ -152,10 +159,6 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  onTabChange($event: number) {
-    this.formTabIndex = $event;
-  }
-
   displayPostValidationErrors() {
     if (!this.projectResource) {
       return null;
@@ -187,15 +190,19 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private incrementTab() {
-    this.formTabIndex++;
-    if (this.formTabIndex >= layout.tabs.length) {
+    let index =  layout.tabs.findIndex(tab => tab.key === this.formTabKey);
+    index++;
+    if (index >= layout.tabs.length) {
       this.router.navigateByUrl(`/projects/detail?uuid=${this.projectResource['uuid']['uuid']}`);
+    } else {
+      this.formTabKey = layout.tabs[index].key;
     }
   }
 
   private decrementTab() {
-    if (this.formTabIndex > 0) {
-      this.formTabIndex--;
+    const index = layout.tabs.findIndex(tab => tab.key === this.formTabKey);
+    if (index > 0) {
+      this.formTabKey = layout.tabs[index - 1].key;
     }
   }
 
