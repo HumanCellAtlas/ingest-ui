@@ -44,13 +44,6 @@ export const layout: MetadataFormLayout = {
 })
 export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
-  questionnaireData: object = {
-    'technologyType': ['Sequencing'],
-    'libraryPreparation': ['Droplet-based (e.g. 10X chromium, dropSeq, InDrop)'],
-    'identifyingOrganisms': ['Human'],
-    'preNatalQuantity': ['No, None'],
-    'specimenType': ['Primary Tissue']
-  };
   config: MetadataFormConfig = {
     layout: layout,
     submitButtonLabel: 'Generate Spreadsheet',
@@ -100,6 +93,7 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
             `Error: ${message} <br/> <br/> Please try again later.  If the error persists, please email email hca-ingest-dev@ebi.ac.uk.`);
           window.scroll(0, 0);
         }
+
       );
   }
 

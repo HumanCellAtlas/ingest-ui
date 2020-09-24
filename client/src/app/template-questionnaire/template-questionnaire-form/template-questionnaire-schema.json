@@ -102,7 +102,7 @@
       ]
     }
   },
-  "required": ["technologyType"],
+  "required": ["technologyType", "identifyingOrganisms", "specimenType"],
   "title": "Generate your metadata spreadsheet",
   "type": "object"
 }
