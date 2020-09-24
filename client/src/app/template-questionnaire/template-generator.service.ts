@@ -66,7 +66,7 @@ export class TemplateGeneratorService {
         'types': templateSpec.getTypes()
       }
     };
-    
+
     return this.brokerService.generateTemplate(param as TemplateGenerationRequestParam)
       .map(data => data as TemplateGenerationResponse);
   }

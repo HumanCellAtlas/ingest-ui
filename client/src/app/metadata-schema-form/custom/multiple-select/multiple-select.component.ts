@@ -5,7 +5,7 @@ import {COMMA, DOWN_ARROW, ENTER, ESCAPE, TAB} from '@angular/cdk/keycodes';
 import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {MetadataFormService} from '../../metadata-form.service';
-import {FormItemData} from "../../form-item/form-item.component";
+import {FormItemData} from '../../form-item/form-item.component';
 
 @Component({
   selector: 'app-multiple-select',
@@ -19,7 +19,7 @@ export class MultipleSelectComponent implements OnInit {
   @Input()
   value: any;
 
-  //TODO form data
+  // TODO form data
   @Input()
   label: string;
 
@@ -33,7 +33,7 @@ export class MultipleSelectComponent implements OnInit {
   disabled: boolean;
 
   data: FormItemData;
-  //end form data
+  // end form data
 
   @Input()
   error: string;
@@ -80,7 +80,7 @@ export class MultipleSelectComponent implements OnInit {
 
 
   ngOnInit() {
-    this.removable = this.disabled ? false : true;
+    this.removable = !this.disabled;
     const value = this.metadataFormService.cleanFormData(this.value);
     this.selectedValues = value && value.length > 0 ? value : [];
     this.searchControl = this.createSearchControl();
@@ -88,13 +88,13 @@ export class MultipleSelectComponent implements OnInit {
       this.onSearchValueChanged(val ? val : '');
     });
 
-    //TODO form data
+    // TODO form data
     this.data = <FormItemData> {
       label: this.label,
       helperText: this.helperText,
       disabled: this.disabled,
       isRequired: this.isRequired
-    }
+    };
   }
 
   onSearchValueChanged(value: any) {
@@ -163,8 +163,7 @@ export class MultipleSelectComponent implements OnInit {
 
   createSearchControl() {
     const state = {value: this.value, disabled: this.disabled};
-    const formControl = this.isRequired ? new FormControl(state, Validators.required) : new FormControl(state);
-    return formControl;
+    return this.isRequired ? new FormControl(state, Validators.required) : new FormControl(state);
   }
 
   onFocusOut(value: any) {

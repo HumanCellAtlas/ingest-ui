@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Metadata} from '../../models/metadata';
 import {AbstractControl, FormControl} from '@angular/forms';
-import {FormItemData} from "../../form-item/form-item.component";
+import {FormItemData} from '../../form-item/form-item.component';
 
 @Component({
   selector: 'app-base-input',
@@ -13,7 +13,7 @@ export class BaseInputComponent implements OnInit {
   control: AbstractControl;
   id: string;
 
-  //TODO consolidate form item data
+  // TODO consolidate form item data
   label: string;
   helperText: string;
   isRequired: boolean;
@@ -35,7 +35,7 @@ export class BaseInputComponent implements OnInit {
     const guidelines = this.metadata.schema.guidelines;
     const description = this.metadata.schema.description;
 
-    //TODO consolidate form item data
+    // TODO consolidate form item data
     this.label = userFriendly ? userFriendly : title ? title : this.metadata.key;
     this.helperText = guidelines ? guidelines : description;
     this.isRequired = this.metadata.isRequired;
@@ -45,7 +45,7 @@ export class BaseInputComponent implements OnInit {
       helperText: this.helperText,
       isRequired: this.isRequired,
       disabled: this.disabled
-    }
+    };
 
     this.placeholder = this.metadata.schema.example;
   }

@@ -1,4 +1,4 @@
-<form-item [data]="data" [rootClass]="{'vf-form__item--checkbox':  inputType ==='checkbox'}">
+<app-form-item [data]="data" [rootClass]="{'vf-form__item--checkbox':  inputType ==='checkbox'}">
   <div *ngIf="!disabled; else readOnlyView">
     <ng-container *ngIf="inputType ==='text' || inputType ==='number'; else checkboxInput">
       <input id="text_{{id}}" [attr.disabled]="disabled ? disabled : null" type="{{inputType}}"
@@ -18,4 +18,4 @@
   <ng-template #readOnlyView>
     <span class="content read-only">{{staticView()}}</span>
   </ng-template>
-</form-item>
+</app-form-item>

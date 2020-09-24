@@ -1,5 +1,5 @@
 import * as answerKey from './answer-key.json';
-import * as defaultFields from './default_fields.json'
+import * as defaultFields from './default_fields.json';
 
 const answers = (answerKey as any).default;
 const schemaFields = (defaultFields as any).default;
@@ -31,16 +31,16 @@ export interface TypeSpec {
   implications on built-in JSON typing (i.e. <Type>{ "json": "data" }), it's done this way.
 */
 export function merge(spec: TypeSpec, other: TypeSpec): void {
-  if (!spec || !other || spec.schemaName != other.schemaName) return;
+  if (!spec || !other || spec.schemaName !== other.schemaName) { return; }
   if (!spec.linkSpec) {
     spec.linkSpec = {
       linkEntities: [],
       linkProtocols: []
     };
   }
-  if (other.includeModules == 'ALL') {
+  if (other.includeModules === 'ALL') {
     spec.includeModules = other.includeModules;
-  } else if (spec.includeModules != 'ALL') {
+  } else if (spec.includeModules !== 'ALL') {
     spec.includeModules = union(spec.includeModules, other.includeModules);
   }
   spec.linkSpec.linkEntities = union(spec.linkSpec.linkEntities, other.linkSpec?.linkEntities);
@@ -94,18 +94,18 @@ const default_type_specs = [
           ]
         }
   }
-]
+];
 
 export class TemplateSpecification {
   private types = new Map<String, TypeSpec>();
 
   static convert(questionnaire: QuestionnaireData): TemplateSpecification {
-    let specification = new TemplateSpecification();
-    let recordInfo: boolean = 'experimentInfo' in questionnaire && questionnaire.experimentInfo.toLowerCase() == 'yes';
+    const specification = new TemplateSpecification();
+    const recordInfo: boolean = 'experimentInfo' in questionnaire && questionnaire.experimentInfo.toLowerCase() === 'yes';
     default_type_specs.forEach((ts: any) => specification.addTypeSpec(ts, recordInfo));
-    for (let question in questionnaire) {
-      if (!(question in answers)) continue;
-      let userInput = questionnaire[question];
+    for (const question in questionnaire) {
+      if (!(question in answers)) { continue; }
+      const userInput = questionnaire[question];
       if (userInput instanceof Array) {
         userInput
           .filter(input => input in answers[question])
@@ -132,15 +132,15 @@ export class TemplateSpecification {
   }
 
   private addTypeSpec(ts: TypeSpec, recordInfo: boolean): void {
-    //cloning to ensure the source object doesn't get overwritten by merges
-    let clone = Object.assign({}, ts);
-    clone.embedProcess = 'category' in clone && clone['category'] == 'biomaterial' ? recordInfo : false;
+    // cloning to ensure the source object doesn't get overwritten by merges
+    const clone = Object.assign({}, ts);
+    clone.embedProcess = 'category' in clone && clone['category'] === 'biomaterial' ? recordInfo : false;
     delete clone['category'];
     this.addModules(clone, schemaFields[ts.schemaName]);
     this.types.set(ts.schemaName, clone);
   }
 
-  //Similar note to merge method.
+  // Similar note to merge method.
   private addModules(spec: TypeSpec, fields: string[]): void {
     const modules = new Set<string>(spec.includeModules);
     if (fields) {

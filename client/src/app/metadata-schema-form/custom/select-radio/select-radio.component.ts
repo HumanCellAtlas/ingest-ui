@@ -7,7 +7,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class SelectRadioComponent {
   @Input()
-  id: string
+  id: string;
 
   @Input()
   value: string;
@@ -34,7 +34,7 @@ export class SelectRadioComponent {
   options: string[];
 
   @Input()
-  inline: boolean = true;
+  inline = true;
 
   @Output()
   valueChanged = new EventEmitter<string>();

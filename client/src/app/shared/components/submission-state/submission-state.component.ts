@@ -44,7 +44,10 @@ export class SubmissionStateComponent implements OnInit {
       return 'secondary';
     }
 
-    if (submissionState === 'Processing' || submissionState === 'Cleanup' || submissionState === 'Archiving' || submissionState === 'Exporting') {
+    if (submissionState === 'Processing'
+      || submissionState === 'Cleanup'
+      || submissionState === 'Archiving'
+      || submissionState === 'Exporting') {
       return 'warning-invert';
     }
 

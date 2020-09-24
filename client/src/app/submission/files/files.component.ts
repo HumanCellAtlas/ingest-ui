@@ -1,9 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {IngestService} from "../../shared/services/ingest.service";
-import {SubmissionEnvelope} from "../../shared/models/submissionEnvelope";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
-import {FlattenService} from "../../shared/services/flatten.service";
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-files',
@@ -16,7 +11,7 @@ export class FilesComponent implements OnInit {
   @Input() files$;
   @Input() manifest;
 
-  files : Object[];
+  files: Object[];
 
   config: Object;
 
@@ -28,7 +23,7 @@ export class FilesComponent implements OnInit {
       displayContent: true,
       displayState: true,
       displayAll: false,
-      displayColumns:[
+      displayColumns: [
         'cloudUrl'
       ]
     };

@@ -1,4 +1,4 @@
-<form-item [data]="data">
+<app-form-item [data]="data">
   <div *ngIf="!disabled; else readOnlyView" style="display: flex; align-items: center">
     <mat-form-field>
       <input matInput class="vf-form__input" [disabled]="disabled" [matDatepicker]="picker"
@@ -15,4 +15,4 @@
   <ng-template #readOnlyView>
     <span class="content read-only">{{value ? formattedDate : '(not specified)'}}</span>
   </ng-template>
-</form-item>
+</app-form-item>

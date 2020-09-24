@@ -1,4 +1,4 @@
-import {merge, QuestionnaireData, TemplateSpecification, TypeSpec} from "./template-questionnaire.data";
+import {merge, QuestionnaireData, TemplateSpecification, TypeSpec} from './template-questionnaire.data';
 
 describe('Template Specification conversion', () => {
 
@@ -48,7 +48,7 @@ describe('Template Specification conversion', () => {
     }
   ].forEach(param => {
     it(`should correctly translate ${param.question} "${param.answer}"`, () => {
-      //given:
+      // given:
       const data = <QuestionnaireData>{};
       if (param.arrayType) {
         data[param.question] = [param.answer];
@@ -56,10 +56,10 @@ describe('Template Specification conversion', () => {
         data[param.question] = param.answer;
       }
 
-      //when:
+      // when:
       const specification = TemplateSpecification.convert(data);
 
-      //then:
+      // then:
       expect(specification).not.toBeNull();
       const schemaNames = specification.getTypes().map(t => t.schemaName);
       param.schemaNames.forEach(name => expect(schemaNames).toContain(name));
@@ -67,20 +67,20 @@ describe('Template Specification conversion', () => {
   });
 
   it('should ensure type specifications are unique', () => {
-    //given:
+    // given:
     const data = <QuestionnaireData>{
       identifyingOrganisms: ['Human', 'Mouse']
     };
 
-    //when:
+    // when:
     const specification = TemplateSpecification.convert(data);
 
-    //then:
+    // then:
     const types = specification.getTypes();
-    const typeSpecs = types.filter(ts => ts.schemaName == 'donor_organism');
+    const typeSpecs = types.filter(ts => ts.schemaName === 'donor_organism');
     expect(typeSpecs.length).toBe(1);
 
-    //and:
+    // and:
     const donorOrganism = types[0];
     const expectedModules = ['human_specific', 'medical_history', 'height_unit', 'mouse_specific'];
     expect(donorOrganism.includeModules.length >= expectedModules.length).toBe(true);
@@ -88,17 +88,17 @@ describe('Template Specification conversion', () => {
   });
 
   it('should embed process into biomaterials when experiment info are recorded', () => {
-    //given:
+    // given:
     const data = <QuestionnaireData>{
       experimentInfo: 'Yes',
       identifyingOrganisms: ['Mouse'],
       libraryPreparation: ['Other']
     };
 
-    //when:
+    // when:
     const specification = TemplateSpecification.convert(data);
 
-    //then:
+    // then:
     const biomaterials = new Set<string>([
       'donor_organism', 'cell_suspension',
       'library_preparation', 'specimen_from_organism'
@@ -113,7 +113,7 @@ describe('Template Specification conversion', () => {
 describe('Merging', () => {
 
   it('should merge included modules', () => {
-    //given:
+    // given:
     const modules = <TypeSpec> {
       schemaName: 'name',
       includeModules: ['contributors', 'funders']
@@ -123,10 +123,10 @@ describe('Merging', () => {
       includeModules: ['funders', 'contacts']
     };
 
-    //when:
+    // when:
     merge(modules, otherModules);
 
-    //then:
+    // then:
     expect(modules.includeModules).toEqual(['contributors', 'funders', 'contacts']);
   });
 
@@ -143,20 +143,20 @@ describe('Merging', () => {
     }
   ].forEach((param, index) => {
     it(`should merge included modules set to ALL (var ${index + 1})`, () => {
-      //given:
+      // given:
       const spec = param.spec;
       const other = param.other;
 
-      //when:
+      // when:
       merge(spec, other);
 
-      //then:
+      // then:
       expect(spec.includeModules).toEqual('ALL');
     });
   });
 
   it('should merge modules with matching schema names', () => {
-    //given:
+    // given:
     const donor = <TypeSpec> {
       schemaName: 'donor_organism',
       includeModules: []
@@ -164,36 +164,36 @@ describe('Merging', () => {
     const otherDonor = <TypeSpec> {
       schemaName: 'donor_organism',
       includeModules: ['name']
-    }
+    };
     const imageFile = <TypeSpec> {
       schemaName: 'image_file',
       includeModules: ['file_name']
-    }
+    };
 
-    //when:
+    // when:
     merge(donor, otherDonor);
     merge(donor, imageFile);
 
-    //then:
-    expect(donor.includeModules).toEqual(otherDonor.includeModules)
+    // then:
+    expect(donor.includeModules).toEqual(otherDonor.includeModules);
   });
 
   it('should merge empty linking specifications', () => {
-    //given:
+    // given:
     const empty = <TypeSpec> {schemaName: 'name'};
     const otherEmpty = <TypeSpec> {schemaName: 'name'};
 
-    //when:
+    // when:
     merge(empty, otherEmpty);
 
-    //then:
+    // then:
     expect(empty.linkSpec).not.toBeUndefined();
     expect(empty.linkSpec.linkEntities).toEqual([]);
     expect(empty.linkSpec.linkProtocols).toEqual([]);
   });
 
   it('should merge link entities', () => {
-    //given:
+    // given:
     const entities = <TypeSpec> {
       schemaName: 'name',
       linkSpec: {
@@ -207,16 +207,16 @@ describe('Merging', () => {
       }
     };
 
-    //when:
+    // when:
     merge(entities, otherEntities);
 
-    //then:
+    // then:
     expect(entities.linkSpec).not.toBeUndefined();
     expect(entities.linkSpec.linkEntities).toEqual(['organoid', 'specimen_from_organism', 'donor_organism']);
   });
 
   it('should merge link protocols', () => {
-    //given:
+    // given:
     const protocols = <TypeSpec> {
       schemaName: 'name',
       linkSpec: {
@@ -230,10 +230,10 @@ describe('Merging', () => {
       }
     };
 
-    //when:
+    // when:
     merge(protocols, otherProtocols);
 
-    //then:
+    // then:
     expect(protocols.linkSpec).not.toBeUndefined();
     const merged_protocols = ['dissociation_protocol', 'sequencing_protocol', 'analysis_protocol'];
     expect(protocols.linkSpec.linkProtocols).toEqual(merged_protocols);

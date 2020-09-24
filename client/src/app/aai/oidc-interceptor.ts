@@ -13,7 +13,7 @@ export class OidcInterceptor implements HttpInterceptor {
   constructor(private aai: AaiService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const hostName = this.getHostName(request.url);
+    const hostName = OidcInterceptor.getHostName(request.url);
     if (hostName && environment.DOMAIN_WHITELIST.indexOf(hostName) > -1) {
       return this.aai.getAuthorizationHeaderValue().pipe(concatMap(authHeader => {
         const headerRequest = request.clone({
@@ -28,13 +28,13 @@ export class OidcInterceptor implements HttpInterceptor {
     }
   }
 
-  private getHostName(url: string): string {
+  private static getHostName(url: string): string {
     let hostName;
     try {
       hostName = (new URL(url)).hostname;
     } catch (e) {
       // TypeError non URL requests (e.g. file system access)
-      console.debug(e);
+      console.log(e);
     }
     return hostName;
   }

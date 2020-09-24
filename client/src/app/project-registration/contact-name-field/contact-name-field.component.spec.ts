@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ContactNameFieldComponent} from './contact-name-field.component';
-import {AbstractControl, FormControl} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 
 describe('ContactNameFieldComponent', () => {
   let component: ContactNameFieldComponent;
@@ -17,7 +17,7 @@ describe('ContactNameFieldComponent', () => {
 
   beforeEach(() => {
     control = new FormControl();
-    control.setValue('first,,last')
+    control.setValue('first,,last');
     fixture = TestBed.createComponent(ContactNameFieldComponent);
     component = fixture.componentInstance;
     component.control = control;

@@ -5,21 +5,21 @@ import {AaiSecurity} from '../../aai/aai.module';
 import {IngestService} from '../services/ingest.service';
 import {Project} from '../models/project';
 import {Account} from '../../core/account';
-import {AlertService} from "../services/alert.service";
+import {AlertService} from '../services/alert.service';
 
 @Injectable({
   providedIn: AaiSecurity,
 })
 export class WranglerOrOwnerGuard implements CanActivate {
 
-  constructor(private ingestService: IngestService, private alertService:AlertService, private router: Router) {
+  constructor(private ingestService: IngestService, private alertService: AlertService, private router: Router) {
   }
 
   // TODO restriction to view project should be implemented in Ingest API
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     let accessChecks: Observable<boolean>;
     let getProject: Observable<any>;
-    let params = {...route.queryParams, ...route.params};
+    const params = {...route.queryParams, ...route.params};
     if (route.url.map(url => url.path).includes('projects') && params.hasOwnProperty('uuid')) {
       getProject = this.ingestService.getProjectByUuid(params.uuid);
     } else if (route.url.map(url => url.path).includes('projects') && params.hasOwnProperty('id')) {
@@ -36,8 +36,8 @@ export class WranglerOrOwnerGuard implements CanActivate {
   }
 
   private accessDenied(url: string): UrlTree {
-    this.alertService.error('Access Denied', `You cannot access the resource: ${url}`, true, true)
-    return this.router.parseUrl('/home')
+    this.alertService.error('Access Denied', `You cannot access the resource: ${url}`, true, true);
+    return this.router.parseUrl('/home');
   }
 
   isWranglerOrOwner(account$: Observable<Account>, project$: Observable<Project>): Observable<boolean> {

@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
 import {LoaderService} from '../../shared/services/loader.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DatePipe} from "@angular/common";
+import {DatePipe} from '@angular/common';
 
 export const layout: MetadataFormLayout = {
   tabs: [

@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input} from '@angular/core';
 
 export interface FormItemData {
 
@@ -10,7 +10,7 @@ export interface FormItemData {
 }
 
 @Component({
-  selector: 'form-item',
+  selector: 'app-form-item',
   templateUrl: './form-item.component.html',
   styleUrls: ['./form-item.component.css']
 })
@@ -20,8 +20,8 @@ export class FormItemComponent {
   data: FormItemData;
 
   private _rootClass = <any> {
-    "vf-form__item": true
-  }
+    'vf-form__item': true
+  };
 
   @Input()
   get rootClass(): any {

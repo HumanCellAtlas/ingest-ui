@@ -7,7 +7,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class SelectListComponent {
   @Input()
-  id: string
+  id: string;
 
   @Input()
   value: string;
