@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {BaseInputComponent} from '../base-input/base-input.component';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-date-input',
@@ -9,6 +10,7 @@ import {BaseInputComponent} from '../base-input/base-input.component';
 })
 export class DateInputComponent extends BaseInputComponent implements OnInit {
   value: Date;
+  formattedDate: string;
 
   constructor() {
     super();
@@ -17,6 +19,7 @@ export class DateInputComponent extends BaseInputComponent implements OnInit {
   ngOnInit(): void {
     super.ngOnInit();
     this.value = this.control.value ? new Date(this.control.value) : undefined;
+    this.formattedDate = this.control.value ? formatDate(this.value, 'fullDate', 'en-GB') : undefined;
   }
 
   onDateChanged($event: MatDatepickerInputEvent<any>) {
