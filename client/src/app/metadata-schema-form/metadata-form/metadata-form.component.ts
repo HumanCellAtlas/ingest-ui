@@ -4,7 +4,7 @@ import {MetadataFormService} from '../metadata-form.service';
 import {JsonSchema} from '../models/json-schema';
 import {MetadataFormConfig} from '../models/metadata-form-config';
 import {MetadataForm} from '../models/metadata-form';
-import {MetadataFormTab} from "../models/metadata-form-layout";
+import {MetadataFormTab} from '../models/metadata-form-layout';
 
 @Component({
   selector: 'app-metadata-form',
@@ -72,7 +72,7 @@ export class MetadataFormComponent implements OnInit {
       if (tab.key === tab.items[0]) {
         let data = this.data;
         let chain = true;
-        let keys = tab.key.split('.');
+        const keys = tab.key.split('.');
         keys.shift();
 
         for (const key of keys) {

@@ -29,7 +29,7 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
-        concatMap(value => this.onSearchValueChanged(value))
+        concatMap(newSearch => this.onSearchValueChanged(newSearch))
       );
   }
 

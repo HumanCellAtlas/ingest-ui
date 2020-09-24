@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Profile} from 'oidc-client';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {Account} from '../core/account';
 
 @Component({

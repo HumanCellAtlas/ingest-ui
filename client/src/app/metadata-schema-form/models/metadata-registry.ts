@@ -42,19 +42,19 @@ export class MetadataRegistry {
     let isRequired = requiredFields.indexOf(key) >= 0;
     let isHidden = hiddenFields.indexOf(key) >= 0;
     let isDisabled = this.config && this.config.viewMode || disabledFields.indexOf(key) >= 0;
-    let isReadOnly = this.config && this.config.viewMode && this.config.removeEmptyFields;
+    const isReadOnly = this.config && this.config.viewMode && this.config.removeEmptyFields;
     let inputType = this.config && this.config.inputType && this.config.inputType[key] ? this.config.inputType[key] : undefined;
 
-    if(metadataKey) {
+    if (metadataKey) {
       isRequired = isRequired || requiredFields.indexOf(metadataKey) >= 0;
       isHidden = isHidden || hiddenFields.indexOf(metadataKey) >= 0;
       isDisabled = isDisabled || disabledFields.indexOf(metadataKey) >= 0;
 
-      if (this.config && this.config.inputType && metadataKey && this.config.inputType[metadataKey]){
+      if (this.config && this.config.inputType && metadataKey && this.config.inputType[metadataKey]) {
         inputType = this.config.inputType[metadataKey];
       }
     }
-    if (inputType == undefined) {
+    if (inputType === undefined) {
       inputType = INPUT_TYPE[property ? property.type : jsonSchema.type];
     }
 

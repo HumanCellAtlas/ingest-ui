@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {BaseInputComponent} from '../base-input/base-input.component';
-import { formatDate } from "@angular/common";
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-date-input',

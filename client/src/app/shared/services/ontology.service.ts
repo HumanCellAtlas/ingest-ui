@@ -28,7 +28,7 @@ export class OntologyService {
   }
 
   createSearchParams(schema: JsonSchema, searchText?: string): Observable<object> {
-    let searchParams = {
+    const searchParams = {
       groupField: 'iri',
       start: 0,
       ontology: 'efo',

@@ -23,7 +23,7 @@ export class ProjectComponent implements OnInit {
 
   projectId: string;
   projectUuid: string;
-  upload: boolean = false;
+  upload = false;
   selectedProjectTabKey: string;
   userIsWrangler: boolean;
 
@@ -103,7 +103,7 @@ export class ProjectComponent implements OnInit {
     if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
-        data => {
+        () => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.initProject();
@@ -130,7 +130,7 @@ export class ProjectComponent implements OnInit {
     if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteProject(this.projectId).subscribe(
-        data => {
+        () => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.loaderService.display(false);
@@ -153,7 +153,7 @@ export class ProjectComponent implements OnInit {
   canSubmit(project: Project) {
     return this.userIsWrangler &&
       !project.hasOpenSubmission &&
-      project.validationState.toUpperCase() != 'INVALID' &&
+      project.validationState.toUpperCase() !== 'INVALID' &&
       !(project.validationErrors && project.validationErrors.length > 0);
   }
 

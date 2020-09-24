@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {LoaderService} from './shared/services/loader.service';
 import {AaiService} from './aai/aai.service';
 import {IngestService} from './shared/services/ingest.service';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {Profile} from 'oidc-client';
-import {Account} from "./core/account";
+import {Account} from './core/account';
 
 
 @Component({
@@ -12,7 +12,7 @@ import {Account} from "./core/account";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   showLoader: boolean;
   loaderMessage: string;
   isSafari: boolean;
