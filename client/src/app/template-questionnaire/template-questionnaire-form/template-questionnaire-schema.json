@@ -58,8 +58,8 @@
       ]
     },
     "specimenType": {
-      "user_friendly": "What type of specimens did you use?",
-      "guidelines": "The type of specimen tells us whether we should add fields related to the biospecimen type, for example ‘organ’ for primary tissue or ‘organ model’ for a cell line model.",
+      "user_friendly": "What type of tissue did you use?",
+      "guidelines": "The type of specimen tells us whether we should add fields related to the biomaterial type, for example ‘organ’ for primary tissue or ‘organ model’ for a cell line model.",
       "type": "array",
       "items": {
         "type": "string"
@@ -70,8 +70,8 @@
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase your specimens?",
-      "guidelines": "Add fields for capturing purchase information. Not required if all specimens are Primary Tissue",
+      "user_friendly": "Did you purchase your cell line or organoid culture?",
+      "guidelines": "If 'Yes', it will add fields for capturing purchase information.",
       "type": "string",
       "example": "No",
       "enum": [
@@ -90,8 +90,8 @@
       ]
     },
     "protocols": {
-      "user_friendly": "Which of the following protocols did you use?",
-      "guidelines": "The protocol types tell us whether to add fields specific to certain protocol types, for example ‘dissociation method’ for a dissociation protocol and ‘markers’ for an enrichment protocol.",
+      "user_friendly": "Did you use any of the following additional protocols?",
+      "guidelines": "The protocol types tell us whether to add a tab to record information specific to a certain protocol type, for example ‘markers’ for an enrichment protocol.",
       "type": "array",
       "items": {
         "type": "string"
@@ -102,7 +102,7 @@
       ]
     },
     "timecourse": {
-      "user_friendly": "Does your experiment involve a timecourse?",
+      "user_friendly": "Did your experiment involve a timecourse?",
       "guidelines": "Answering yes will add timecourse-specific questions to the template.",
       "type": "string",
       "enum": [
@@ -111,7 +111,7 @@
       ]
     },
     "timecourseBiomaterialType": {
-      "user_friendly": "Which biomaterial had a timecourse?",
+      "user_friendly": "Which biomaterial underwent a timecourse?",
       "guidelines": "This indicates which biomaterial type involved a timecourse.",
       "type": "array",
       "items": {
