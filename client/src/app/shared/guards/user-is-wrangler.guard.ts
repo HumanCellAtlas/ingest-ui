@@ -5,6 +5,7 @@ import {AaiSecurity} from '../../aai/aai.module';
 import {IngestService} from '../services/ingest.service';
 import {Account} from '../../core/account';
 import {AlertService} from '../services/alert.service';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -15,8 +16,7 @@ export class UserIsWranglerGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    return this.ingestService.getUserAccount()
-      .map((account: Account) => account.isWrangler() || this.accessDenied(state.url) );
+    return this.ingestService.getUserAccount().pipe(map((account: Account) => account.isWrangler() || this.accessDenied(state.url)));
   }
 
   private accessDenied(url: string): UrlTree {

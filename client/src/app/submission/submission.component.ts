@@ -1,16 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {IngestService} from '../shared/services/ingest.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TimerObservable} from 'rxjs/observable/TimerObservable';
-import {AlertService} from '../shared/services/alert.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {interval, Observable} from 'rxjs';
+import {concatMap, delay, filter, map, takeWhile} from 'rxjs/operators';
+import {IngestService} from '../shared/services/ingest.service';
+import {AlertService} from '../shared/services/alert.service';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
 import {LoaderService} from '../shared/services/loader.service';
 import {BrokerService} from '../shared/services/broker.service';
 import {Project} from '../shared/models/project';
 import {ArchiveEntity} from '../shared/models/archiveEntity';
-import {concatMap, map} from 'rxjs/operators';
 import {ListResult} from '../shared/models/hateoas';
 
 
@@ -160,7 +159,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
-        data => {
+        () => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess, true, true);
           this.loaderService.display(false);
@@ -189,8 +188,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   private pollSubmissionEnvelope() {
-    TimerObservable.create(0, this.pollInterval)
-      .takeWhile(() => this.alive) // only fires when component is alive
+    interval(this.pollInterval)
+      .pipe(takeWhile(() => this.alive)) // only fires when component is alive
       .subscribe(() => {
         this.getSubmissionEnvelope();
         if (this.submissionEnvelope) {
@@ -201,33 +200,21 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   private pollEntities() {
-    TimerObservable.create(500, this.pollInterval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        if (this.submissionEnvelopeId) {
-          this.getSubmissionProject(this.submissionEnvelopeId);
-        }
-      });
+    interval(this.pollInterval)
+      .pipe(
+        delay(500),
+        takeWhile(() => this.alive), // only fires when component is alive);
+        filter(() => this.submissionEnvelopeId.length > 0)
+      ).subscribe(() => this.getSubmissionProject(this.submissionEnvelopeId));
   }
 
   private getArchiveEntitiesFromSubmission(submissionUuid: string): Observable<ArchiveEntity[]> {
     return this.ingestService.getArchiveSubmission(submissionUuid)
       .pipe(
-        concatMap(data => {
-          if (data) {
-            return this.ingestService.get(data._links['entities']['href'])
-              .map(response => response as Observable<ListResult<ArchiveEntity>>);
-          } else {
-            return [];
-          }
-
-        }),
-        map(data => {
-          if (data._embedded) {
-            return data._embedded.archiveEntities;
-          }
-          return [];
-        })
+        filter(data => 'entities' in data._links),
+        filter(data => 'href' in data._links['entities']),
+        concatMap(data => this.ingestService.getAs<ListResult<ArchiveEntity>>(data._links['entities']['href'])),
+        map(data => data._embedded ? data._embedded.archiveEntities : [])
       );
   }
 
@@ -288,12 +275,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   private getArchiveEntities(submissionUuid: string) {
-    this.getArchiveEntitiesFromSubmission(submissionUuid)
-      .subscribe(
-        data => {
-          this.archiveEntities = data;
-        }
-      );
+    this.getArchiveEntitiesFromSubmission(submissionUuid).subscribe(data => this.archiveEntities = data);
   }
 
   private getSubmissionManifest() {

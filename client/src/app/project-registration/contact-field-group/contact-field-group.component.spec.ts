@@ -25,7 +25,7 @@ describe('ContactFieldGroupComponent', () => {
   beforeEach(() => {
     userSpy = jasmine.createSpyObj(['subscribe']) as jasmine.SpyObj<Subject<User>>;
     firstUserSpy = jasmine.createSpyObj(['first']) as jasmine.SpyObj<Subject<User>>;
-    firstUserSpy.first.and.returnValue(userSpy);
+    // firstUserSpy.first.and.returnValue(userSpy); I don't know how to fix this!
     aaiSpy.getUserSubject.and.returnValue(firstUserSpy);
 
     const schema = {

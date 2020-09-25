@@ -5,6 +5,7 @@ import {IngestService} from './shared/services/ingest.service';
 import {Observable} from 'rxjs';
 import {Profile} from 'oidc-client';
 import {Account} from './core/account';
+import {concatMap, filter, map} from 'rxjs/operators';
 
 
 @Component({
@@ -32,8 +33,14 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.userProfile$ = this.aai.user$.filter(user => user && !user.expired).map(user => user.profile);
-    this.userAccount$ = this.aai.user$.filter(user => user && !user.expired).concatMap(() => this.ingestService.getUserAccount());
+    this.userProfile$ = this.aai.user$.pipe(
+      filter(user => user && !user.expired),
+      map(user => user.profile)
+    );
+    this.userAccount$ = this.aai.user$.pipe(
+      filter(user => user && !user.expired),
+      concatMap(() => this.ingestService.getUserAccount())
+    );
   }
 
   onLogout($event: any) {

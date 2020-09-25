@@ -1,11 +1,13 @@
-import {User, UserManager} from 'oidc-client';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {AlertService} from '../shared/services/alert.service';
 import {Router} from '@angular/router';
-import {AaiSecurity} from './aai.module';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {BehaviorSubject, Observable, Subject, from} from 'rxjs';
+import {map} from 'rxjs/operators';
+
+import {User, UserManager} from 'oidc-client';
+import {AlertService} from '../shared/services/alert.service';
 import {IngestService} from '../shared/services/ingest.service';
+import {AaiSecurity} from './aai.module';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -31,18 +33,18 @@ export class AaiService {
   }
 
   getUser(): Observable<User> {
-    return from(this.manager.getUser()).map(user => {
+    return from(this.manager.getUser()).pipe(map(user => {
       this.user$.next(user);
       return user;
-    });
+    }));
   }
 
   isUserLoggedIn(): Observable<boolean> {
-    return this.getUser().map(user => user && !user.expired);
+    return this.getUser().pipe(map(user => user && !user.expired));
   }
 
   getAuthorizationHeaderValue(): Observable<string> {
-    return this.getUser().map(user => user ? `${user.token_type} ${user.access_token}` : '');
+    return this.getUser().pipe(map(user => user ? `${user.token_type} ${user.access_token}` : ''));
   }
 
   startAuthentication(redirect: string): Promise<void> {
@@ -78,7 +80,7 @@ export class AaiService {
 
   private checkForUserAccountRegistration(user: User) {
     this.ingestService.getUserAccount()
-      .subscribe(account => {
+      .subscribe(() => {
         const redirect = user.state;
         if (redirect) {
           this.router.navigateByUrl(decodeURIComponent(redirect));

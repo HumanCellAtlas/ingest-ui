@@ -3,7 +3,7 @@ import {async, TestBed} from '@angular/core/testing';
 import {User, UserManager} from 'oidc-client';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AlertService} from '../shared/services/alert.service';
-import {Observable} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {Account} from '../core/account';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -59,7 +59,7 @@ describe('Complete Authentication', () => {
     signInToRemoteService();
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.of(new Account({
+    ingestSvc.getUserAccount.and.returnValue(of(new Account({
       id: '',
       providerReference: '',
       roles: []
@@ -80,7 +80,7 @@ describe('Complete Authentication', () => {
     user.state = '/redirect_url';
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.of(new Account({
+    ingestSvc.getUserAccount.and.returnValue(of(new Account({
       id: '',
       providerReference: '',
       roles: []
@@ -100,7 +100,7 @@ describe('Complete Authentication', () => {
     signInToRemoteService();
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.throwError(new HttpErrorResponse({status: 404})));
+    ingestSvc.getUserAccount.and.returnValue(throwError(new HttpErrorResponse({status: 404})));
 
     // expect:
     aaiService.completeAuthentication().then(() => {
@@ -116,10 +116,10 @@ describe('Complete Authentication', () => {
     signInToRemoteService();
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.throwError(new HttpErrorResponse({status: 0})));
+    ingestSvc.getUserAccount.and.returnValue(throwError(new HttpErrorResponse({status: 0})));
 
     // and:
-    userManager.removeUser.and.returnValue(Observable.of(undefined).toPromise());
+    userManager.removeUser.and.returnValue(of(undefined).toPromise());
 
     // expect:
     aaiService.completeAuthentication().then(() => {
@@ -133,8 +133,8 @@ describe('Complete Authentication', () => {
   }));
 
   function signInToRemoteService() {
-    userManager.getUser.and.returnValue(Observable.of(user).toPromise());
-    userManager.signinRedirectCallback.and.returnValue(Observable.of(user).toPromise());
+    userManager.getUser.and.returnValue(of(user).toPromise());
+    userManager.signinRedirectCallback.and.returnValue(of(user).toPromise());
   }
 
 });

@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {Project, ProjectColumn} from '../shared/models/project';
 import {IngestService} from '../shared/services/ingest.service';
-import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
-import {tap} from 'rxjs/operators';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {interval} from 'rxjs';
+import {takeWhile, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-all-projects',
@@ -71,7 +71,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  queryProjects(text: string, params) {
+  searchProjects(text: string, params) {
     const query = [];
     const fields = [
       'content.project_core.project_description',
@@ -89,17 +89,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     params['operator'] = 'or';
-    this.ingestService.queryProjects(query, params)
-      .subscribe({
-        next: data => {
-          this.projects = data._embedded ? data._embedded.projects : [];
-          this.pagination = data.page;
-          this.getCurrentPageInfo(this.pagination);
-        },
-        error: err => {
-          console.error('err', err);
-        }
-      });
+    this.queryProjects(query, params);
   }
 
   getDefaultProjects(params) {
@@ -109,13 +99,16 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       'value': false
     }];
     params['operator'] = 'and';
+    this.queryProjects(query, params);
+  }
+
+  private queryProjects(query: any[], params) {
     this.ingestService.queryProjects(query, params)
       .subscribe({
         next: data => {
           this.projects = data._embedded ? data._embedded.projects : [];
           this.pagination = data.page;
           this.getCurrentPageInfo(this.pagination);
-
         },
         error: err => {
           console.error('err', err);
@@ -124,8 +117,8 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   pollProjects() {
-    TimerObservable.create(0, this.interval)
-      .takeWhile(() => this.alive) // only fires when component is alive
+    interval(this.interval)
+      .pipe(takeWhile(() => this.alive)) // only fires when component is alive
       .subscribe(() => {
         this.getProjects();
       });
@@ -136,7 +129,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.params['size'] = this.paginator.pageSize;
 
     if (this.searchText) {
-      this.queryProjects(this.searchText, this.params);
+      this.searchProjects(this.searchText, this.params);
     } else {
       this.getDefaultProjects(this.params);
     }

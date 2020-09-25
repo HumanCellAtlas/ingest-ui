@@ -1,11 +1,9 @@
-import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {catchError, tap} from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
 import {UploadResults} from '../models/uploadResults';
-
 import {environment} from '../../../environments/environment';
-import {throwError} from 'rxjs/index';
 import {TemplateGenerationRequestParam, TemplateGenerationResponse} from '../../template-questionnaire/template-generator.service';
 
 // Making use of https://stackoverflow.com/questions/35326689/how-to-catch-exception-correctly-from-http-request
@@ -31,22 +29,20 @@ export class BrokerService {
     return this.http
       .get(`${this.API_URL}/submissions/${submissionUuid}/spreadsheet`,
         {observe: 'response', responseType: 'blob'}
-      ).map((res) => {
+      ).pipe(map((res) => {
         const contentDisposition = res.headers.get('content-disposition');
         const filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
-        const response = {
+        return {
           'data': res.body,
           'filename': filename
         };
-        return response;
-      });
+      }));
   }
 
   generateTemplate(spec: TemplateGenerationRequestParam): Observable<TemplateGenerationResponse> {
     console.log('requesting');
     const url = `${this.API_URL}/spreadsheets`;
-    return this.http.post(url, spec)
-      .map(response => response as TemplateGenerationResponse);
+    return this.http.post(url, spec).pipe(map(response => response as TemplateGenerationResponse));
   }
 
   downloadTemplate(relativeUrl: string): Observable<HttpResponse<Blob>> {

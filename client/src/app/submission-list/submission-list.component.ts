@@ -2,13 +2,12 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulatio
 import {IngestService} from '../shared/services/ingest.service';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
 import {ActivatedRoute, Router} from '@angular/router';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
 import {AlertService} from '../shared/services/alert.service';
-import {tap} from 'rxjs/operators';
+import {takeWhile, tap} from 'rxjs/operators';
 import {LoaderService} from '../shared/services/loader.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {Subscription} from 'rxjs';
+import {interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-submission-list',
@@ -115,11 +114,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   pollSubmissions() {
-    this.pollingSubscription = TimerObservable.create(0, this.interval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        this.getSubmissions();
-      });
+    this.pollingSubscription =
+      interval(this.interval)
+        .pipe(takeWhile(() => this.alive)) // only fires when component is alive
+        .subscribe(() => this.getSubmissions());
   }
 
   getSubmissions() {

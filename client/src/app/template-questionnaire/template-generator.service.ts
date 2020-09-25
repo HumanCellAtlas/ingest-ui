@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {TemplateSpecification, TypeSpec} from './template-questionnaire.data';
 import {HttpClient} from '@angular/common/http';
+import {Observable, from, interval, throwError} from 'rxjs';
+import {filter, flatMap, map, take, timeoutWith} from 'rxjs/operators';
+import {TemplateSpecification, TypeSpec} from './template-questionnaire.data';
 import {BrokerService} from '../shared/services/broker.service';
-import {Observable, throwError} from 'rxjs';
 
 export interface TemplateGenerationRequestParam {
   filename: string;
@@ -35,28 +36,25 @@ export class TemplateGeneratorService {
   }
 
   generateTemplate(templateSpec: TemplateSpecification): Observable<Blob> {
-    return Observable
-      .from(this._requestToGenerate(templateSpec))
-      .flatMap(data =>
-        Observable.interval(this.POLLING_INTERVAL)
-          .flatMap(() => this._requestToDownload(data._links.download.href))
-          .filter(template => template.complete)
-          .take(1)
-          .map(template => template.data)
-          .timeoutWith(this.TIMEOUT,
-            throwError(new Error('Retrieval of template spreadsheet has timed out.'))
-          ));
+    return from(this._requestToGenerate(templateSpec))
+      .pipe(flatMap(data =>
+        interval(this.POLLING_INTERVAL)
+          .pipe(
+            flatMap(() => this._requestToDownload(data._links.download.href)),
+            filter(template => template.complete),
+            take(1),
+            map(template => template.data),
+            timeoutWith(this.TIMEOUT, throwError(new Error('Retrieval of template spreadsheet has timed out.')))
+          )
+      ));
   }
 
   private _requestToDownload(url: string): Observable<{ complete: boolean, data: Blob | undefined }> {
     return this.brokerService.downloadTemplate(url)
-      .map(response => {
-        if (response.status === 200) {
-          return {complete: true, data: response.body as Blob};
-        } else {
-          return {complete: false, data: undefined};
-        }
-      });
+      .pipe(map(response => response.status === 200 ?
+        {complete: true, data: response.body as Blob} :
+        {complete: false, data: undefined}
+      ));
   }
 
   private _requestToGenerate(templateSpec: TemplateSpecification): Observable<TemplateGenerationResponse> {
@@ -67,8 +65,9 @@ export class TemplateGeneratorService {
       }
     };
 
-    return this.brokerService.generateTemplate(param as TemplateGenerationRequestParam)
-      .map(data => data as TemplateGenerationResponse);
+    return this.brokerService
+      .generateTemplate(param as TemplateGenerationRequestParam)
+      .pipe(map(data => data as TemplateGenerationResponse));
   }
 
 }

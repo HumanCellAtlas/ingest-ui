@@ -13,6 +13,11 @@ import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
   styleUrls: ['./project-id.component.css']
 })
 export class ProjectIdComponent implements OnInit {
+
+
+  constructor(private metadataFormService: MetadataFormService,
+              private ingestService: IngestService) {
+  }
   metadataForm: MetadataForm;
 
   projectShortNameKey = 'project.content.project_core.project_short_name';
@@ -45,9 +50,18 @@ export class ProjectIdComponent implements OnInit {
 
   index = 0;
 
+  private static camelize(str: string): string {
+    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/\s+/g, '');
+  }
 
-  constructor(private metadataFormService: MetadataFormService,
-              private ingestService: IngestService) {
+  private static removeSpecialChars(str: string): string {
+    return str.replace(/[\W]+/g, '');
+  }
+
+  private static capitalize(str: string): string {
+    return str.replace(/\b(\w)/g, s => s.toUpperCase());
   }
 
   ngOnInit(): void {
@@ -99,9 +113,7 @@ export class ProjectIdComponent implements OnInit {
       'value': projectId
     };
     query.push(criteria);
-    return this.ingestService.queryProjects(query).map(data => {
-      return data.page['totalElements'];
-    });
+    return this.ingestService.queryProjects(query).pipe(map(data => data.page['totalElements']));
   }
 
   private setUpValueChangeHandlers() {
@@ -143,20 +155,6 @@ export class ProjectIdComponent implements OnInit {
     }
   }
 
-  private camelize(str: string): string {
-    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-      return index === 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/\s+/g, '');
-  }
-
-  private removeSpecialChars(str: string): string {
-    return str.replace(/[\W]+/g, '');
-  }
-
-  private capitalize(str: string): string {
-    return str.replace(/\b(\w)/g, s => s.toUpperCase());
-  }
-
   private onContributorChange(val: any) {
     const contributors = this.metadataFormService.cleanFormData(val);
     const correspondents = contributors.filter(contributor => contributor['corresponding_contributor'] === true);
@@ -164,9 +162,9 @@ export class ProjectIdComponent implements OnInit {
     name = name ? name : contributors && contributors.length > 0 ? contributors[0]['name'] : '';
     name = name || '';
     name = name.split(',').pop();
-    name = this.camelize(name);
-    name = this.capitalize(name);
-    this.contributor = this.removeSpecialChars(name);
+    name = ProjectIdComponent.camelize(name);
+    name = ProjectIdComponent.capitalize(name);
+    this.contributor = ProjectIdComponent.removeSpecialChars(name);
     this.generateProjectId();
   }
 
@@ -174,23 +172,21 @@ export class ProjectIdComponent implements OnInit {
     const technologies = this.metadataFormService.cleanFormData(val);
     let technology = technologies && technologies.length > 0 ? technologies[0]['ontology_label'] : '';
     technology = technology.replace(/\'/g, 'p');
-    technology = this.removeSpecialChars(technology);
-    technology = this.camelize(technology);
-    technology = this.capitalize(technology);
+    technology = ProjectIdComponent.removeSpecialChars(technology);
+    technology = ProjectIdComponent.camelize(technology);
+    technology = ProjectIdComponent.capitalize(technology);
     this.technology = technology;
     this.generateProjectId();
-
-    const other = this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
-
+    this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
   }
 
   private onOtherTechnologyChange(val: any) {
     const otherTechnologies = this.metadataFormService.cleanFormData(val);
     let technology = otherTechnologies && otherTechnologies.length > 0 ? otherTechnologies[0] : '';
     technology = technology.replace(/\'/g, 'p');
-    technology = this.removeSpecialChars(technology);
-    technology = this.camelize(technology);
-    technology = this.capitalize(technology);
+    technology = ProjectIdComponent.removeSpecialChars(technology);
+    technology = ProjectIdComponent.camelize(technology);
+    technology = ProjectIdComponent.capitalize(technology);
     this.otherTechnology = technology;
     this.generateProjectId();
   }

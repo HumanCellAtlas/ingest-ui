@@ -4,7 +4,7 @@ import {RegistrationComponent} from './registration.component';
 import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from '../core/registration.service';
 import {AaiService} from '../aai/aai.service';
 import {User} from 'oidc-client';
-import {Observable} from 'rxjs';
+import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import SpyObj = jasmine.SpyObj;
@@ -48,7 +48,7 @@ describe('Registration', () => {
 
   it('should register through the service if terms are accepted', fakeAsync(() => {
     // given:
-    aaiService.getUser.and.returnValue(Observable.of(user));
+    aaiService.getUser.and.returnValue(of(user));
     registration.termsAccepted = true;
 
     // and:
@@ -68,7 +68,7 @@ describe('Registration', () => {
 
   it('should set status when registration fails with account duplication', fakeAsync(() => {
     // given:
-    aaiService.getUser.and.returnValue(Observable.of(user));
+    aaiService.getUser.and.returnValue(of(user));
     registration.termsAccepted = true;
 
     // and:
@@ -88,7 +88,7 @@ describe('Registration', () => {
 
   it('should NOT proceed if terms are not accepted', async(() => {
     // given:
-    aaiService.getUser.and.returnValue(Observable.of(user));
+    aaiService.getUser.and.returnValue(of(user));
     registration.termsAccepted = false;
 
     // when:
