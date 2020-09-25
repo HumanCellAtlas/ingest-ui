@@ -47,7 +47,18 @@ export const layout: MetadataFormLayout = {
 export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
-  };
+        donorsRelated: '',
+        experimentInfo: 'Yes',
+        identifyingOrganisms: [],
+        libraryPreparation: [],
+        preNatalQuantity: '',
+        protocols: [],
+        specimenPurchased: '',
+        specimenType: [],
+        technologyType: [],
+        timecourse: '',
+        timecourseBiomaterialType: []
+      };
   config: MetadataFormConfig = {
     layout: layout,
     submitButtonLabel: 'Generate Spreadsheet',
@@ -68,9 +79,13 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
 
   onSave($event: object) {
     const data: QuestionnaireData = $event['value'];
-    this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
+    const valid = $event['valid'];
+
+    if (valid) {
+      this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
       ' please don\'t refresh while this is happening.');
     const templateSpec = TemplateSpecification.convert(data);
+
     this.templateGenerator.generateTemplate(templateSpec)
       .subscribe(
         blob => {
@@ -99,6 +114,13 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
         }
 
       );
+    } else {
+      {
+        this.alertService.clear();
+        const message = 'Some required fields in the form have not been filled out. Please enter all required information before generating a spreadsheet.';
+        this.alertService.error('Missing required information:', message);
+      }
+    }
   }
 
   onCancel($event) {
