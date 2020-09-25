@@ -8,7 +8,6 @@
     "is_living",
     "provenance",
     "sex",
-    "timecourse",
     "weight",
     "weight_unit"
   ],
@@ -29,8 +28,7 @@
     "estimated_cell_count",
     "genus_species",
     "provenance",
-    "selected_cell_types",
-    "timecourse"
+    "selected_cell_types"
   ],
   "library_preparation_protocol": [
     "cdna_library_amplification_method",
@@ -123,7 +121,6 @@
     "provenance",
     "publication",
     "supplier",
-    "timecourse",
     "tissue",
     "type"
   ],
