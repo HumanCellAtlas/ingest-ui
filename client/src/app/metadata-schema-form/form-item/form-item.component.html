@@ -8,6 +8,6 @@
   <ng-content></ng-content>
 
   <div *ngIf="!data.disabled">
-    <p *ngIf="data.helperText" class="vf-form__helper">{{data.helperText}} </p>
+    <p *ngIf="data.helperText" class="vf-form__helper" [innerHtml]="data.helperText"></p>
   </div>
 </div>

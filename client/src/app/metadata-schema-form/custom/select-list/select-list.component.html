@@ -1,10 +1,10 @@
 <div class="vf-form__item">
-  <div>
+  <div [ngClass]="{'label': true, 'read-only': disabled}">
     <label class="vf-form__label" for="{{id}}">{{label}}</label>
-    <app-vf-asterisk [isRequired]="isRequired"></app-vf-asterisk>
+    <app-vf-asterisk *ngIf="!disabled" [isRequired]="isRequired"></app-vf-asterisk>
   </div>
   <div></div>
-  <div>
+  <div *ngIf="!disabled">
     <select class="vf-form__select" id="{{id}}" [disabled]="disabled" (change)="onSelectedValueChange($event.target.value)">
       <option [defaultSelected]="true"></option>
       <option *ngFor="let option of options" [defaultSelected]="(value ? value : placeholder) === option" [ngValue]="option">
@@ -12,7 +12,8 @@
       </option>
     </select>
   </div>
-  <div>
+  <span *ngIf="disabled" class="content read-only" id="{{id}}">{{value}}</span>
+  <div *ngIf="!disabled" >
     <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
     <p class="vf-form__helper vf-form__helper--error">{{error}}</p>
   </div>

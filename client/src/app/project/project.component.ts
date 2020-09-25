@@ -23,8 +23,8 @@ export class ProjectComponent implements OnInit {
 
   projectId: string;
   projectUuid: string;
-  upload: boolean = false;
-  selectedProjectTab: number = 0;
+  upload = false;
+  selectedProjectTabKey: string;
   userIsWrangler: boolean;
 
   constructor(
@@ -67,10 +67,8 @@ export class ProjectComponent implements OnInit {
   setProjectData(projectData) {
     this.project = projectData;
     const submissions_url = projectData['_links']['submissionEnvelopes']['href'];
-    this.ingestService.get(submissions_url).subscribe(
-      submissionData => {
-        const submissions = submissionData['_embedded'] ? submissionData['_embedded']['submissionEnvelopes'] : [];
-        this.submissionEnvelopes = submissions;
+    this.ingestService.get(submissions_url).subscribe(submission => {
+        this.submissionEnvelopes = submission['_embedded'] ? submission['_embedded']['submissionEnvelopes'] : [];
       }
     );
   }
@@ -105,7 +103,7 @@ export class ProjectComponent implements OnInit {
     if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
-        data => {
+        () => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.initProject();
@@ -132,7 +130,7 @@ export class ProjectComponent implements OnInit {
     if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteProject(this.projectId).subscribe(
-        data => {
+        () => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.loaderService.display(false);
@@ -155,7 +153,7 @@ export class ProjectComponent implements OnInit {
   canSubmit(project: Project) {
     return this.userIsWrangler &&
       !project.hasOpenSubmission &&
-      project.validationState.toUpperCase() != 'INVALID' &&
+      project.validationState.toUpperCase() !== 'INVALID' &&
       !(project.validationErrors && project.validationErrors.length > 0);
   }
 
@@ -179,7 +177,7 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  projectTabChange(tab: number) {
-    this.selectedProjectTab = tab;
+  projectTabChange(tabKey: string) {
+    this.selectedProjectTabKey = tabKey;
   }
 }

@@ -11,10 +11,10 @@
                      [schema]="projectIngestSchema"
                      [data]="projectFormData"
                      [config]="config"
+                     [selectedTabKey]="formTabKey"
                      (cancel)="onCancel($event)"
                      (back)="decrementTab()"
                      (tabChange)="onTabChange($event)"
-                     [selectedTabIndex]="formTabIndex"
                      (save)="onSave($event)">
   </app-metadata-form>
 </ng-container>

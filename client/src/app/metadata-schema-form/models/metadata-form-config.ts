@@ -11,4 +11,5 @@ export interface MetadataFormConfig {
   submitButtonLabel?: string;
   cancelButtonLabel?: string;
   showResetButton?: boolean;
+  showCancelButton?: boolean;
 }

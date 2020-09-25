@@ -26,7 +26,7 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
   ngOnInit(): void {
     super.ngOnInit();
     const value = this.metadataFormService.cleanFormData(this.control.value);
-    this.value = this.metadataFormService.isEmpty(value) ? value : undefined;
+    this.value = this.metadataFormService.isEmpty(value) ? undefined : value;
     this.searchControl = this.createSearchControl(value);
     this.options$ = this.searchControl.valueChanges
       .pipe(

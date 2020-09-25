@@ -1,11 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Profile} from 'oidc-client';
-import {Router} from '@angular/router';
-import {AaiService} from '../aai/aai.service';
-import {concatMap, map} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Account} from '../core/account';
-import {IngestService} from '../shared/services/ingest.service';
 
 @Component({
   selector: 'app-global-header',
@@ -13,33 +9,16 @@ import {IngestService} from '../shared/services/ingest.service';
   styleUrls: ['./global-header.component.css']
 })
 export class GlobalHeaderComponent implements OnInit {
-  isLoggedIn: boolean;
-  userInfo: Profile;
-  account$: Observable<Account | undefined>;
+  @Input() isLoggedIn$: Observable<any>;
+  @Input() userProfile$: Observable<Profile | undefined>;
+  @Input() userAccount$: Observable<Account | undefined>;
+  @Output() logout = new EventEmitter<any>();
 
-  constructor(private router: Router, private ingestService: IngestService, private aai: AaiService) {
+  ngOnInit(): void {
   }
 
-  ngOnInit() {
-    this.account$ = this.aai.user$.pipe(
-      map(user => {
-        this.isLoggedIn = user && !user.expired;
-        this.userInfo = user ? user.profile : undefined;
-        return this.isLoggedIn;
-      }),
-      concatMap(loggedIn => {
-        if (loggedIn) {
-          return this.ingestService.getUserAccount();
-        }
-        return of(undefined);
-      })
-    );
+  onLogout($event: any) {
+    this.logout.emit($event);
   }
 
-  logout(e) {
-    e.preventDefault();
-    if (confirm('Are you sure you want to logout?')) {
-      this.aai.logout();
-    }
-  }
 }

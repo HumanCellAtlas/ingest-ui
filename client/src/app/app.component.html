@@ -1,4 +1,9 @@
-<app-global-header></app-global-header>
+<app-global-header
+  [isLoggedIn$]="userProfile$"
+  [userProfile$]="userProfile$"
+  [userAccount$]="userAccount$"
+  (logout)="onLogout($event)"
+></app-global-header>
 
 <div class="vf-body">
   <div *ngIf="showLoader">
@@ -8,7 +13,7 @@
   </div>
   <div></div>
   <div class="vf-component__container">
-    <app-navigation *ngIf="user$ | async"></app-navigation>
+    <app-global-navigation *ngIf="userAccount$ | async" [userAccount$]="userAccount$"></app-global-navigation>
     <main>
       <br/>
       <alert></alert>
@@ -30,4 +35,7 @@
   </div>
   <div></div>
 </div>
-<app-footer [user$]="user$"></app-footer>
+<app-global-footer
+  [isLoggedIn$]="userProfile$"
+  (logout)="onLogout($event)"
+></app-global-footer>

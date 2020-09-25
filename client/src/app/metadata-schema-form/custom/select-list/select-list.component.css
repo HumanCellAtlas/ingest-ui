@@ -1,0 +1,14 @@
+.label.read-only {
+  padding: 10px 10px 0;
+  background: #f0f0f0;
+}
+
+div.content, .content.read-only {
+  padding: 20px 40px;
+}
+
+.content.read-only {
+  color: #555;
+  line-height: 1.25em;
+  text-align: justify;
+}

@@ -13,7 +13,7 @@
 
   </div>
   <div>
-    <p *ngIf="helperText" class="vf-form__helper">{{helperText}}</p>
+    <p *ngIf="helperText" class="vf-form__helper" [innerHtml]="helperText"></p>
 
   </div>
 </div>

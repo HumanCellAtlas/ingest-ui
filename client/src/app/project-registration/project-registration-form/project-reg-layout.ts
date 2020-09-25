@@ -9,7 +9,7 @@ export const projectRegLayout: MetadataFormLayout = {
   tabs: [
     {
       title: 'Project',
-      key: '',
+      key: 'project',
       items: [
         'project.content.project_core.project_title',
         'project.content.project_core.project_description',
@@ -45,7 +45,7 @@ export const projectRegLayout: MetadataFormLayout = {
     },
     {
       title: 'Contacts',
-      key: '',
+      key: 'contacts',
       items: [
         {
           keys: [
@@ -63,7 +63,7 @@ export const projectRegLayout: MetadataFormLayout = {
     },
     {
       title: 'Summary',
-      key: '',
+      key: 'summary',
       items: [
         {
           keys: [],

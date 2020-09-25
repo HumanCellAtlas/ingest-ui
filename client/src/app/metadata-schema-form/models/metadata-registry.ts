@@ -21,7 +21,7 @@ export class MetadataRegistry {
     this.jsonSchema = jsonSchema;
     this.config = config;
     this.metadataRegistry = {};
-    
+
     this.buildMetadataRegistry(this.key, jsonSchema);
 
     if (this.config && this.config.overrideRequiredFields) {
@@ -33,28 +33,40 @@ export class MetadataRegistry {
     return this.metadataRegistry[key];
   }
 
-  private createMetadata(jsonSchema: JsonSchema, key: string): Metadata {
+  private createMetadata(jsonSchema: JsonSchema, key: string, metadataKey?: string): Metadata {
     const property = SchemaHelper.getProperty(key, jsonSchema);
 
     const requiredFields = jsonSchema.required ? jsonSchema.required : [];
     const hiddenFields = this.config && this.config.hideFields ? this.config.hideFields : [];
     const disabledFields = this.config && this.config.disableFields ? this.config.hideFields : [];
-    const isRequired = requiredFields.indexOf(key) >= 0;
-    const isHidden = hiddenFields.indexOf(key) >= 0;
-    const isDisabled = this.config && this.config.viewMode || disabledFields.indexOf(key) >= 0;
-    const inputType = this.config && this.config.inputType && this.config.inputType[key] ?
-      this.config.inputType[key] : INPUT_TYPE[property ? property.type : jsonSchema.type];
+    let isRequired = requiredFields.indexOf(key) >= 0;
+    let isHidden = hiddenFields.indexOf(key) >= 0;
+    let isDisabled = this.config && this.config.viewMode || disabledFields.indexOf(key) >= 0;
+    const isReadOnly = this.config && this.config.viewMode && this.config.removeEmptyFields;
+    let inputType = this.config && this.config.inputType && this.config.inputType[key] ? this.config.inputType[key] : undefined;
 
-    const metadataField = new Metadata({
+    if (metadataKey) {
+      isRequired = isRequired || requiredFields.indexOf(metadataKey) >= 0;
+      isHidden = isHidden || hiddenFields.indexOf(metadataKey) >= 0;
+      isDisabled = isDisabled || disabledFields.indexOf(metadataKey) >= 0;
+
+      if (this.config && this.config.inputType && metadataKey && this.config.inputType[metadataKey]) {
+        inputType = this.config.inputType[metadataKey];
+      }
+    }
+    if (inputType === undefined) {
+      inputType = INPUT_TYPE[property ? property.type : jsonSchema.type];
+    }
+
+    return new Metadata({
       isRequired: isRequired,
       isHidden: isHidden,
       isDisabled: isDisabled,
+      isReadOnly: isReadOnly,
       key: key,
       schema: property ? property : jsonSchema as JsonSchemaProperty,
       inputType: inputType
     });
-
-    return metadataField;
   }
 
   private buildMetadataRegistry(parentKey: string, jsonSchema: JsonSchema): void {
@@ -72,7 +84,7 @@ export class MetadataRegistry {
       let metadata: Metadata;
       const metadataKey = parentKey ? parentKey + '.' + key : key;
       if (registry[metadataKey] === undefined) {
-        metadata = this.createMetadata(jsonSchema, key);
+        metadata = this.createMetadata(jsonSchema, key, metadataKey);
         registry[metadataKey] = metadata;
       } else {
         metadata = registry[metadataKey];

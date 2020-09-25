@@ -4,7 +4,7 @@ import {MetadataFormService} from '../metadata-form.service';
 import {JsonSchema} from '../models/json-schema';
 import {MetadataFormConfig} from '../models/metadata-form-config';
 import {MetadataForm} from '../models/metadata-form';
-import {LoaderService} from '../../shared/services/loader.service';
+import {MetadataFormTab} from '../models/metadata-form-layout';
 
 @Component({
   selector: 'app-metadata-form',
@@ -20,9 +20,9 @@ export class MetadataFormComponent implements OnInit {
 
   @Input() config: MetadataFormConfig;
 
-  @Input() data: object;
+  @Input() selectedTabKey: string;
 
-  @Input() selectedTabIndex = 0;
+  @Input() data: object;
 
   @Output() save = new EventEmitter<object>();
 
@@ -32,11 +32,13 @@ export class MetadataFormComponent implements OnInit {
 
   @Output() back = new EventEmitter<boolean>();
 
-  @Output() tabChange = new EventEmitter<number>();
+  @Output() tabChange = new EventEmitter<string>();
 
   formGroup: FormGroup;
 
   metadataForm: MetadataForm;
+
+  visibleTabs: MetadataFormTab[];
 
   form: object = {};
 
@@ -44,14 +46,47 @@ export class MetadataFormComponent implements OnInit {
 
   done: boolean;
 
-  constructor(private metadataFormService: MetadataFormService,
-              private loaderService: LoaderService) {
+  constructor(private metadataFormService: MetadataFormService) {
   }
 
   ngOnInit(): void {
     this.metadataForm = this.metadataFormService.createForm(this.schema.name, this.schema, this.data, this.config);
     this.formGroup = this.metadataForm.formGroup;
+    this.visibleTabs = this.config.layout.tabs.filter(tab => this.tabIsVisible(tab));
+    if (this.lookupTabIndex(this.selectedTabKey) === -1) {
+      this.selectedTabKey = this.visibleTabs[0].key;
+    }
     this.done = true;
+  }
+
+  lookupTabIndex(tabKey: string): number {
+    if (tabKey) {
+      return this.visibleTabs.findIndex(tab => tab.key === tabKey);
+    } else {
+      return -1;
+    }
+  }
+
+  tabIsVisible(tab: MetadataFormTab): boolean {
+    if (this.config.viewMode && this.config.removeEmptyFields && tab.items.length === 1) {
+      if (tab.key === tab.items[0]) {
+        let data = this.data;
+        let chain = true;
+        const keys = tab.key.split('.');
+        keys.shift();
+
+        for (const key of keys) {
+          if ((key in data)) {
+            data = data[key];
+          } else {
+            chain = false;
+            break;
+          }
+        }
+        return chain;
+      }
+    }
+    return true;
   }
 
   onSubmit(e) {
@@ -62,7 +97,7 @@ export class MetadataFormComponent implements OnInit {
     console.log('form valid?', this.formGroup.valid);
     console.log('form group', this.formGroup);
 
-    if (this.selectedTabIndex === this.config.layout.tabs.length - 1) {
+    if (this.lookupTabIndex(this.selectedTabKey) === this.config.layout.tabs.length - 1) {
       this.formGroup.markAllAsTouched();
     }
 
@@ -83,7 +118,7 @@ export class MetadataFormComponent implements OnInit {
   }
 
   onSelectedIndexChange(tabIndex: number) {
-    this.tabChange.emit(tabIndex);
+    this.tabChange.emit(this.visibleTabs[tabIndex].key);
   }
 
   onBack($event: MouseEvent) {

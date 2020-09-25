@@ -14,7 +14,7 @@ import {MetadataFormConfig} from '../../../metadata-schema-form/models/metadata-
 })
 export class ProjectViewComponent implements OnInit {
   @Input() project: Project;
-  @Output() tabChange = new EventEmitter<number>();
+  @Output() tabChange = new EventEmitter<string>();
   title: string;
   subtitle: string;
   projectMetadataSchema: any = (metadataSchema as any).default;
@@ -22,8 +22,8 @@ export class ProjectViewComponent implements OnInit {
 
   config: MetadataFormConfig = {
     hideFields: ['describedBy', 'schema_version', 'schema_type', 'provenance'],
-    removeEmptyFields: true,
     viewMode: true,
+    removeEmptyFields: true,
     layout: layout
   };
 
@@ -54,7 +54,7 @@ export class ProjectViewComponent implements OnInit {
     this.alertService.error('JSON Validation Error', message, false, false);
   }
 
-  onTabChange(tabIndex: number) {
-    this.tabChange.emit(tabIndex);
+  onTabChange($tabKey: string) {
+    this.tabChange.emit($tabKey);
   }
 }
