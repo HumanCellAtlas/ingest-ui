@@ -151,7 +151,7 @@
     ]
   },
   "preNatalQuantity": {
-    "Yes, Some": [
+    "Yes, some are prenatal": [
       {
         "schemaName": "donor_organism",
         "category": "biomaterial",
@@ -166,7 +166,7 @@
         ]
       }
     ],
-    "No, None": [
+    "No": [
       {
         "schemaName": "donor_organism",
         "category": "biomaterial",
@@ -179,7 +179,7 @@
         ]
       }
     ],
-    "Yes, All": [
+    "Yes, all are prenatal": [
       {
         "schemaName": "donor_organism",
         "category": "biomaterial",
@@ -269,6 +269,35 @@
         "includeModules": [
           "purchased_reagents",
           "purchased_specimen"
+        ]
+      }
+    ]
+  },
+  "timecourseBiomaterialType":{
+    "Donor": [
+      {
+        "schemaName": "donor_organism",
+        "category": "biomaterial",
+        "includeModules": [
+          "timecourse"
+        ]
+      }
+    ],
+    "Cell line": [
+      {
+        "schemaName": "cell_line",
+        "category": "biomaterial",
+        "includeModules": [
+          "timecourse"
+        ]
+      }
+    ],
+    "Cell suspension": [
+      {
+        "schemaName": "cell_suspension",
+        "category": "biomaterial",
+        "includeModules": [
+          "timecourse"
         ]
       }
     ]

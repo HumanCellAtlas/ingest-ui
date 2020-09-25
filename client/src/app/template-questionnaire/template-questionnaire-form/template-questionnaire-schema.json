@@ -14,7 +14,7 @@
       ]
     },
     "libraryPreparation": {
-      "user_friendly": "What type of library preparation did you use?",
+      "user_friendly": "What type of library preparation technique did you use?",
       "guidelines": "The library preparation method tells us whether we should add fields like ‘well id’ for plate-based sequencing or ‘cell barcode-containing read’ for droplet-based sequencing.",
       "type": "array",
       "enum": [
@@ -47,14 +47,14 @@
       ]
     },
     "preNatalQuantity": {
-      "user_friendly": "Are any of your donor samples prenatal?",
+      "user_friendly": "Are any of your samples from prenatal donors?",
       "guidelines": "This information tells us whether we should include fields to record pre-birth age.",
       "type": "string",
-      "example": "No, None",
+      "example": "No",
       "enum": [
-        "Yes, All",
-        "Yes, Some",
-        "No, None"
+        "Yes, all are prenatal",
+        "Yes, some are prenatal",
+        "No"
       ]
     },
     "specimenType": {
@@ -99,6 +99,28 @@
       "enum": [
         "Enrichment",
         "Induction"
+      ]
+    },
+    "timecourse": {
+      "user_friendly": "Does your experiment involve a timecourse?",
+      "guidelines": "Answering yes will add timecourse-specific questions to the template.",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "timecourseBiomaterialType": {
+      "user_friendly": "Which biomaterial had a timecourse?",
+      "guidelines": "This indicates which biomaterial type involved a timecourse.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Donor",
+        "Cell line",
+        "Cell suspension"
       ]
     }
   },

@@ -5,6 +5,7 @@ import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-for
 import {SpecimenGroupComponent} from '../specimen-group/specimen-group.component';
 import {DonorGroupComponent} from '../donor-group/donor-group.component';
 import {TechnologyGroupComponent} from '../technology-group/technology-group.component';
+import {ExperimentDetailGroupComponent} from "../experiment-detail-group/experiment-detail-group.component";
 
 import {QuestionnaireData, TemplateSpecification} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
@@ -30,8 +31,9 @@ export const layout: MetadataFormLayout = {
         {
           component: SpecimenGroupComponent
         },
-        'template-questionnaire.experimentInfo',
-        'template-questionnaire.protocols'
+        {
+          component: ExperimentDetailGroupComponent
+        }
       ]
     }
   ]
@@ -44,6 +46,9 @@ export const layout: MetadataFormLayout = {
 })
 export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
+  questionnaireData: object = {
+    'preNatalQuantity': ['No']
+  };
   config: MetadataFormConfig = {
     layout: layout,
     submitButtonLabel: 'Generate Spreadsheet',
