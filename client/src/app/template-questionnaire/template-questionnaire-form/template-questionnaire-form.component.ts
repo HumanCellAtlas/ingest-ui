@@ -112,7 +112,6 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
             `Error: ${message} <br/> <br/> Please try again later.  If the error persists, please email email hca-ingest-dev@ebi.ac.uk.`);
           window.scroll(0, 0);
         }
-
       );
     } else {
       {
