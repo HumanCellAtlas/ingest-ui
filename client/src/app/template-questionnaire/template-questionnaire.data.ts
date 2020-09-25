@@ -14,7 +14,7 @@ export interface QuestionnaireData {
   donorsRelated: string;
   specimenPurchased: string;
   protocols: string[];
-  timecourse: string[];
+  timecourse: string;
   timecourseBiomaterialType: string[]
 }
 

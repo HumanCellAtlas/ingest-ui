@@ -47,7 +47,6 @@ export const layout: MetadataFormLayout = {
 export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
-    'preNatalQuantity': ['No']
   };
   config: MetadataFormConfig = {
     layout: layout,

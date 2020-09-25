@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 
 @Component({
-  selector: 'app-experiment-detail-group',
+  selector: 'app-specimen-group',
   templateUrl: './experiment-detail-group.component.html',
   styleUrls: ['./experiment-detail-group.component.css']
 })
@@ -21,10 +21,10 @@ export class ExperimentDetailGroupComponent implements OnInit {
     });
   }
 
-  onTimecourseChange(timecourse: string[]) {
-    this.showTimecourseBiomaterialType = timecourse.includes('Yes');
+  onTimecourseChange(timecourse: string) {
+    this.showTimecourseBiomaterialType = timecourse === 'Yes';
     if (!this.showTimecourseBiomaterialType) {
-      this.metadataForm.getControl('template-questionnaire.TimecourseBiomaterialType').reset();
+      this.metadataForm.getControl('template-questionnaire.timecourseBiomaterialType').reset();
     }
   }
 }

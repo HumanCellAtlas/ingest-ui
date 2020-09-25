@@ -4,7 +4,7 @@ import {ExperimentDetailGroupComponent} from './experiment-detail-group.componen
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
 import {FormControl} from '@angular/forms';
 
-describe('DonorGroupComponent', () => {
+describe('ExperimentGroupComponent', () => {
   let component: ExperimentDetailGroupComponent;
   let fixture: ComponentFixture<ExperimentDetailGroupComponent>;
   let metadataFormSpy: jasmine.SpyObj<MetadataForm>;
