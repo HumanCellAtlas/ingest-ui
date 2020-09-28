@@ -4,6 +4,18 @@
 </app-metadata-field>
 
 <app-metadata-field
+  [metadata]="metadataForm.get('template-questionnaire.preservedTissue')"
+  [control]="metadataForm.getControl('template-questionnaire.preservedTissue')"
+  [id]="'template-questionnaire.preservedTissue'">
+</app-metadata-field>
+
+<app-metadata-field
+  [metadata]="metadataForm.get('template-questionnaire.tissueState')"
+  [control]="metadataForm.getControl('template-questionnaire.tissueState')"
+  [id]="'template-questionnaire.tissueState'">
+</app-metadata-field>
+
+<app-metadata-field
   [metadata]="metadataForm.get('template-questionnaire.timecourse')"
   [control]="metadataForm.getControl('template-questionnaire.timecourse')"
   [id]="'template-questionnaire.timecourse'">

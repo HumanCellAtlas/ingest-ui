@@ -15,7 +15,7 @@ export interface QuestionnaireData {
   specimenPurchased: string;
   protocols: string[];
   timecourse: string;
-  timecourseBiomaterialType: string[]
+  timecourseBiomaterialType: string[];
 }
 
 export interface TypeSpec {
@@ -68,7 +68,6 @@ const default_type_specs = [
       'weight',
       'weight_unit',
       'sex',
-      'timecourse'
     ]
   },
   {
@@ -83,20 +82,18 @@ const default_type_specs = [
       'genus_species',
       'organ',
       'organ_parts',
-      'diseases',
-      'state_of_specimen',
-      'preservation_storage'
+      'diseases'
     ],
     linkSpec: {
-          "linkEntities": [
-            "donor_organism"
+          'linkEntities': [
+            'donor_organism'
           ],
-          "linkProtocols": [
-            "collection_protocol"
+          'linkProtocols': [
+            'collection_protocol'
           ]
         }
   }
-]
+];
 
 export class TemplateSpecification {
   private types = new Map<String, TypeSpec>();

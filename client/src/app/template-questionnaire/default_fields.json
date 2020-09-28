@@ -18,9 +18,7 @@
     "genus_species",
     "organ",
     "organ_parts",
-    "preservation_storage",
-    "provenance",
-    "state_of_specimen"
+    "provenance"
   ],
   "cell_suspension": [
     "biomaterial_core",

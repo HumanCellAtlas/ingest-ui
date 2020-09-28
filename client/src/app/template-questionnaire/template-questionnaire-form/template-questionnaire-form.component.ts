@@ -48,7 +48,7 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
         donorsRelated: '',
-        experimentInfo: 'Yes',
+        experimentInfo: '',
         identifyingOrganisms: [],
         libraryPreparation: [],
         preNatalQuantity: '',
@@ -116,8 +116,10 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     } else {
       {
         this.alertService.clear();
-        const message = 'Some required fields in the form have not been filled out. Please enter all required information before generating a spreadsheet.';
+        const message = 'Some required fields in the form have not been filled out. Please enter all required ' +
+          'information before generating a spreadsheet.';
         this.alertService.error('Missing required information:', message);
+        window.scroll(0, 0);
       }
     }
   }

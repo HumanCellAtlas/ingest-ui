@@ -70,7 +70,7 @@
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase your cell line or organoid culture?",
+      "user_friendly": "Did you purchase your tissue?",
       "guidelines": "If 'Yes', it will add fields for capturing purchase information.",
       "type": "string",
       "example": "No",
@@ -103,7 +103,7 @@
     },
     "timecourse": {
       "user_friendly": "Did your experiment involve a timecourse?",
-      "guidelines": "Answering yes will add timecourse-specific questions to the template.",
+      "guidelines": "Answering yes will add timecourse-specific fields to the template.",
       "type": "string",
       "enum": [
         "Yes",
@@ -121,6 +121,24 @@
         "Donor",
         "Cell line",
         "Cell suspension"
+      ]
+    },
+    "preservedTissue": {
+      "user_friendly": "Did you preserve or store your tissue?",
+      "guidelines": "Answering yes will add fields related to the preservation and storage of the tissue such as the type and duration.",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "tissueState": {
+      "user_friendly": "Do you wish to record information about the state of the tissue?",
+      "guidelines": "Answering yes will add fields related to the condition of the tissue such as ischemic temperature and descriptive text and images.",
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
       ]
     }
   },

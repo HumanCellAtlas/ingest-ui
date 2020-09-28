@@ -336,5 +336,27 @@
         }
       }
     ]
+  },
+  "preservedTissue": {
+    "Yes": [
+      {
+        "schemaName": "specimen_from_organism",
+        "category": "biomaterial",
+        "includeModules": [
+          "preservation_storage"
+          ]
+      }
+    ]
+  },
+  "tissueState": {
+    "Yes": [
+      {
+        "schemaName": "specimen_from_organism",
+        "category": "biomaterial",
+        "includeModules": [
+          "state_of_specimen"
+        ]
+      }
+    ]
   }
 }
