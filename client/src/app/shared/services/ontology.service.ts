@@ -53,7 +53,7 @@ export class OntologyService {
       .map(ontologyClass => ontologyClass.replace(':', '_'))
       .map(olsClass => this.select({q: olsClass}))
     ).pipe(
-      map(responses => responses
+      map(responseArray => responseArray
         .map(ols => ols.response)
         .filter(olsResponse => olsResponse.numFound === 1)
         .map(olsResponse => olsResponse.docs[0].iri)),

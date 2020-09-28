@@ -86,11 +86,11 @@ const default_type_specs = [
       'preservation_storage'
     ],
     linkSpec: {
-          "linkEntities": [
-            "donor_organism"
+          'linkEntities': [
+            'donor_organism'
           ],
-          "linkProtocols": [
-            "collection_protocol"
+          'linkProtocols': [
+            'collection_protocol'
           ]
         }
   }

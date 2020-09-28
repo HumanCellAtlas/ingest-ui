@@ -45,9 +45,7 @@ export class ContactFieldGroupComponent implements OnInit {
 
     const fieldList = this.contactFieldList;
 
-    this.contactFieldMetadataList = fieldList.map(field => {
-      return this.metadataForm.get(field);
-    });
+    this.contactFieldMetadataList = fieldList.map(field => this.metadataForm.get(field));
 
     const contactEmailCtrl = this.contributorsControl['controls'][0]['controls']['email'];
     const contactNameCtrl = this.contributorsControl['controls'][0]['controls']['name'];

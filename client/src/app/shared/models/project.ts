@@ -5,6 +5,9 @@ export interface Project extends MetadataDocument {
   releaseDate?: string;
   accessionDate?: string;
   primaryWrangler?: string;
+  dataAccess?: object;
+  technology?: object;
+  identifyingOrganisms?: object;
   _links: object;
 }
 
