@@ -63,7 +63,15 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     layout: layout,
     submitButtonLabel: 'Generate Spreadsheet',
     cancelButtonLabel: 'Cancel',
-    showResetButton: true
+    showResetButton: true,
+    inputType: {
+      'preNatalQuantity': 'radioInLine',
+      'specimenPurchased': 'radioInline',
+      'preservedTissue': 'radioInLine',
+      'tissueState': 'radioInline',
+      'timecourse': 'radioInLine',
+      'experimentInfo': 'radioInLine'
+    }
   };
 
   constructor(private templateGenerator: TemplateGeneratorService,

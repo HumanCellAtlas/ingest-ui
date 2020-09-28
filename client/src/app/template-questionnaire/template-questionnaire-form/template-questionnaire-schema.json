@@ -70,8 +70,8 @@
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase your tissue?",
-      "guidelines": "If 'Yes', it will add fields for capturing purchase information.",
+      "user_friendly": "Did you purchase your tissue sample/s?",
+      "guidelines": "If 'Yes', we will add fields for capturing purchasing information.",
       "type": "string",
       "example": "No",
       "enum": [
@@ -124,7 +124,7 @@
       ]
     },
     "preservedTissue": {
-      "user_friendly": "Did you preserve or store the tissue sample?",
+      "user_friendly": "Did you preserve or store the tissue sample/s?",
       "guidelines": "Answering yes will add fields related to the preservation and storage of the tissue such as the type and duration of storage.",
       "type": "string",
       "enum": [
@@ -133,7 +133,7 @@
       ]
     },
     "tissueState": {
-      "user_friendly": "Do you wish to record information about the state of the tissue sample?",
+      "user_friendly": "Do you wish to record information about the state of the tissue sample/s?",
       "guidelines": "Answering yes will add fields related to the condition of the tissue at the time of collection such as ischemic temperature and descriptive text and images.",
       "type": "string",
       "enum": [
