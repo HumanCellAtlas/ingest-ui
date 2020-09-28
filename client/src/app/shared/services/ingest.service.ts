@@ -81,16 +81,16 @@ export class IngestService {
     return this.http.get<SubmissionEnvelope>(`${this.API_URL}/submissionEnvelopes/search/findByUuidUuid?uuid=${uuid}`);
   }
 
-  public getProject(id): Observable<Object> {
-    return this.http.get(`${this.API_URL}/projects/${id}`);
+  public getProject(id): Observable<Project> {
+    return this.http.get<Project>(`${this.API_URL}/projects/${id}`);
   }
 
   public deleteProject(id: string): Observable<Object> {
     return this.http.delete(`${this.API_URL}/projects/${id}`);
   }
 
-  public getProjectByUuid(uuid): Observable<Object> {
-    return this.http.get(`${this.API_URL}/projects/search/findByUuid?uuid=${uuid}`);
+  public getProjectByUuid(uuid): Observable<Project> {
+    return this.http.get<Project>(`${this.API_URL}/projects/search/findByUuid?uuid=${uuid}`);
   }
 
   public getSubmissionManifest(submissionId): Observable<Object> {
@@ -105,20 +105,16 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
   }
 
-  public patchProject(projectResource, patch): Observable<Object> {
+  public patchProject(projectResource, patch): Observable<Project> {
     const projectLink: string = projectResource['_links']['self']['href'];
     patch['validationState'] = 'Draft';
-    return this.http.patch(projectLink, patch);
+    return this.http.patch<Project>(projectLink, patch);
   }
 
   public getSubmissionProject(submissionId): Observable<Project> {
     return this.http
-      .get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
-      .pipe(map((data: ListResult<Object>) =>
-        data._embedded && data._embedded.projects ?
-          _.values(data._embedded.projects)[0] :
-          null
-      ));
+      .get<ListResult<Project>>(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
+      .pipe(map(data => data._embedded && data._embedded.projects ? data._embedded.projects[0] : null));
   }
 
   public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData<MetadataDocument>> {
@@ -139,8 +135,8 @@ export class IngestService {
 
     }
     return this.http
-      .get(url, {params: params})
-      .pipe(map((data: ListResult<MetadataDocument>) => {
+      .get<ListResult<MetadataDocument>>(url, {params: params})
+      .pipe(map(data => {
         const pagedData: PagedData<MetadataDocument> = {data: [], page: undefined};
         if (data._embedded && data._embedded[entityType]) {
           pagedData.data = _.values(data._embedded[entityType]);
@@ -170,30 +166,27 @@ export class IngestService {
   }
 
   public getLatestSchemas(): Observable<ListResult<MetadataSchema>> {
-    return this
-      .get(`${this.API_URL}/schemas/search/filterLatestSchemas?highLevelEntity=type`)
-      .pipe(map(data => data as ListResult<MetadataSchema>));
+    return this.http.get<ListResult<MetadataSchema>>(`${this.API_URL}/schemas/search/filterLatestSchemas?highLevelEntity=type`);
   }
 
   public getArchiveSubmission(submissionUuid: string): Observable<ArchiveSubmission> {
-    return this
-      .get(`${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`)
-      .pipe(map(data => {
-        const archiveSubmissions = data['_embedded']['archiveSubmissions'];
+    return this.http.get<ListResult<ArchiveSubmission>>(
+      `${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`
+    ).pipe(
+      map(result => {
+        const archiveSubmissions = result._embedded.archiveSubmissions;
         // TODO Adjust the UI to be able to display all archive submissions
         // just display the last
-        let archiveSubmission: ArchiveSubmission;
         if (archiveSubmissions.length > 0) {
-          const idx = archiveSubmissions.length - 1;
-          archiveSubmission = archiveSubmissions[idx];
+          archiveSubmissions.reverse();
+          return archiveSubmissions[0];
         }
-        return archiveSubmission;
-      }));
+        return undefined;
+      })
+    );
   }
 
   public getArchiveEntity(dspUuid: string): Observable<ArchiveEntity> {
-    return this
-      .get(`${this.API_URL}/archiveEntities/search/findByDspUuid?dspUuid=${dspUuid}`)
-      .pipe(map(data => data as ArchiveEntity));
+    return this.http.get<ArchiveEntity>(`${this.API_URL}/archiveEntities/search/findByDspUuid?dspUuid=${dspUuid}`);
   }
 }

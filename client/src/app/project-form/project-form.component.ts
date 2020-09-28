@@ -11,7 +11,7 @@ import {LoaderService} from '../shared/services/loader.service';
 import {Observable} from 'rxjs';
 import {MatTabGroup} from '@angular/material/tabs';
 import {MetadataFormConfig} from '../metadata-schema-form/models/metadata-form-config';
-import {concatMap, map} from 'rxjs/operators';
+import {concatMap} from 'rxjs/operators';
 
 
 @Component({
@@ -99,7 +99,6 @@ export class ProjectFormComponent implements OnInit {
 
   setProjectContent(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
-      .pipe(map(data => data as Project))
       .subscribe(projectResource => {
         console.log('Retrieved project', projectResource);
         this.projectResource = projectResource;
@@ -210,13 +209,12 @@ export class ProjectFormComponent implements OnInit {
     console.log('formValue', formValue);
     if (this.createMode) {
       this.patch = formValue;
-      return this.ingestService.postProject(this.patch).pipe(
-        concatMap(createdProject => this.ingestService.patchProject(createdProject, this.patch)), // save fields outside content
-        map(project => project as Project)
-      );
+      return this.ingestService
+        .postProject(this.patch)
+        .pipe(concatMap(createdProject => this.ingestService.patchProject(createdProject, this.patch))); // save fields outside content
     } else {
       this.patch = formValue;
-      return this.ingestService.patchProject(this.projectResource, this.patch).pipe(map(project => project as Project));
+      return this.ingestService.patchProject(this.projectResource, this.patch);
     }
   }
 }

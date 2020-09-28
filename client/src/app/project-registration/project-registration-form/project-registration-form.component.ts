@@ -11,7 +11,7 @@ import {LoaderService} from '../../shared/services/loader.service';
 import {SchemaService} from '../../shared/services/schema.service';
 import {projectRegLayout} from './project-reg-layout';
 import {Observable} from 'rxjs';
-import {concatMap, map} from 'rxjs/operators';
+import {concatMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-registration-form',
@@ -162,9 +162,8 @@ export class ProjectRegistrationFormComponent implements OnInit {
   private createProject(formValue: object): Observable<Project> {
     console.log('formValue', formValue);
     this.patch = formValue;
-    return this.ingestService.postProject(this.patch).pipe(
-      concatMap(createdProject => this.ingestService.patchProject(createdProject, this.patch)), // save fields outside content
-      map(project => project as Project)
-    );
+    return this.ingestService
+      .postProject(this.patch)
+      .pipe(concatMap(createdProject => this.ingestService.patchProject(createdProject, this.patch))); // save fields outside content
   }
 }

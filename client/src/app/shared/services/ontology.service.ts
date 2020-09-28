@@ -75,8 +75,7 @@ export class OntologyService {
   }
 
   select(params): Observable<OlsHttpResponse> {
-    return this.http.get(`${this.API_URL}/api/select`, {params: params})
-      .pipe(map(response => response as OlsHttpResponse));
+    return this.http.get<OlsHttpResponse>(`${this.API_URL}/api/select`, {params: params});
   }
 
 

@@ -18,7 +18,7 @@ export class WranglerOrOwnerGuard implements CanActivate {
 
   // TODO restriction to view project should be implemented in Ingest API
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    let getProject: Observable<any>;
+    let getProject: Observable<Project>;
     const params = {...route.queryParams, ...route.params};
     if (route.url.map(url => url.path).includes('projects') && params.hasOwnProperty('uuid')) {
       getProject = this.ingestService.getProjectByUuid(params.uuid);
@@ -28,7 +28,8 @@ export class WranglerOrOwnerGuard implements CanActivate {
       getProject = this.ingestService.getProjectByUuid(params.project);
     }
 
-    return ( getProject ? this.isWranglerOrOwner(this.ingestService.getUserAccount(), getProject) :
+    return ( getProject ?
+      this.isWranglerOrOwner(this.ingestService.getUserAccount(), getProject) :
       this.isWrangler(this.ingestService.getUserAccount())
     ).pipe(
       map(access => access || this.accessDenied(state.url)),

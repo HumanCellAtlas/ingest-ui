@@ -42,7 +42,7 @@ export class BrokerService {
   generateTemplate(spec: TemplateGenerationRequestParam): Observable<TemplateGenerationResponse> {
     console.log('requesting');
     const url = `${this.API_URL}/spreadsheets`;
-    return this.http.post(url, spec).pipe(map(response => response as TemplateGenerationResponse));
+    return this.http.post<TemplateGenerationResponse>(url, spec);
   }
 
   downloadTemplate(relativeUrl: string): Observable<HttpResponse<Blob>> {
