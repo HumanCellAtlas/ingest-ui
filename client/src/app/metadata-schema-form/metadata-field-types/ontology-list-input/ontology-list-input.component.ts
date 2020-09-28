@@ -28,6 +28,7 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
     const value = this.metadataFormService.cleanFormData(this.control.value);
     this.value = this.metadataFormService.isEmpty(value) ? undefined : value;
     this.searchControl = this.createSearchControl(value);
+    // noinspection JSDeprecatedSymbols
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),

@@ -26,6 +26,7 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
     super.ngOnInit();
     const value: Ontology = this.metadataFormService.cleanFormData(this.control.value);
     this.searchControl = this.createSearchControl(value);
+    // noinspection JSDeprecatedSymbols
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),

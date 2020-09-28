@@ -36,6 +36,7 @@ export class EnumListInputComponent extends BaseInputComponent implements OnInit
 
     this.enumValues = this.metadata.schema.enum;
 
+    // noinspection JSDeprecatedSymbols
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(null),
