@@ -1,5 +1,5 @@
 import {AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {interval, Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, timer} from 'rxjs';
 import {takeWhile} from 'rxjs/operators';
 import {IngestService} from '../../shared/services/ingest.service';
 import {FlattenService} from '../../shared/services/flatten.service';
@@ -52,7 +52,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.alive = true;
     this.page.number = 0;
     this.page.size = 20;
-    this.pollingTimer = interval(this.pollInterval).pipe(takeWhile(() => this.alive)); // only fires when component is alive
+    this.pollingTimer = timer(0, this.pollInterval).pipe(takeWhile(() => this.alive)); // only fires when component is alive
 
     this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid'];
   }
@@ -205,10 +205,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   startPolling(pageInfo) {
-    this.pollingSubscription = this.pollingTimer.subscribe(() => {
-      this.fetchData(pageInfo);
-    });
-
+    this.pollingSubscription = this.pollingTimer.subscribe(() => this.fetchData(pageInfo));
   }
 
   stopPolling() {

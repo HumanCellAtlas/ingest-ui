@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/c
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {Project, ProjectColumn} from '../shared/models/project';
 import {IngestService} from '../shared/services/ingest.service';
-import {interval} from 'rxjs';
+import {timer} from 'rxjs';
 import {takeWhile, tap} from 'rxjs/operators';
 
 @Component({
@@ -117,11 +117,9 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   pollProjects() {
-    interval(this.interval)
+    timer(0, this.interval)
       .pipe(takeWhile(() => this.alive)) // only fires when component is alive
-      .subscribe(() => {
-        this.getProjects();
-      });
+      .subscribe(() => this.getProjects());
   }
 
   getProjects() {

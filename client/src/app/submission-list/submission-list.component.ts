@@ -7,7 +7,7 @@ import {AlertService} from '../shared/services/alert.service';
 import {takeWhile, tap} from 'rxjs/operators';
 import {LoaderService} from '../shared/services/loader.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {interval, Subscription} from 'rxjs';
+import {Subscription, timer} from 'rxjs';
 
 @Component({
   selector: 'app-submission-list',
@@ -115,7 +115,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
 
   pollSubmissions() {
     this.pollingSubscription =
-      interval(this.interval)
+      timer(0, this.interval)
         .pipe(takeWhile(() => this.alive)) // only fires when component is alive
         .subscribe(() => this.getSubmissions());
   }

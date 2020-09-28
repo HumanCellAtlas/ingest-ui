@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {interval, Observable, of} from 'rxjs';
+import {Observable, of, timer} from 'rxjs';
 import {concatMap, takeWhile, tap} from 'rxjs/operators';
 import {AaiService} from '../aai/aai.service';
 import {IngestService} from '../shared/services/ingest.service';
@@ -96,8 +96,9 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
   pollProjects() {
-    interval(this.interval)
+    timer(0, this.interval)
       .pipe(takeWhile(() => this.alive))// only fires when component is alive
       .subscribe(() => this.getProjects());
   }

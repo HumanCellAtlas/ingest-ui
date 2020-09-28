@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
-import {interval, Observable} from 'rxjs';
-import {concatMap, delay, filter, map, takeWhile} from 'rxjs/operators';
+import {Observable, timer} from 'rxjs';
+import {concatMap, filter, map, takeWhile} from 'rxjs/operators';
 import {IngestService} from '../shared/services/ingest.service';
 import {AlertService} from '../shared/services/alert.service';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
@@ -188,7 +188,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   private pollSubmissionEnvelope() {
-    interval(this.pollInterval)
+    timer(0, this.pollInterval)
       .pipe(takeWhile(() => this.alive)) // only fires when component is alive
       .subscribe(() => {
         this.getSubmissionEnvelope();
@@ -200,9 +200,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   private pollEntities() {
-    interval(this.pollInterval)
+    timer(500, this.pollInterval)
       .pipe(
-        delay(500),
         takeWhile(() => this.alive), // only fires when component is alive);
         filter(() => this.submissionEnvelopeId.length > 0)
       ).subscribe(() => this.getSubmissionProject(this.submissionEnvelopeId));
