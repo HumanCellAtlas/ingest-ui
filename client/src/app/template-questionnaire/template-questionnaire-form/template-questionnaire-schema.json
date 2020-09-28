@@ -112,7 +112,7 @@
     },
     "timecourseBiomaterialType": {
       "user_friendly": "Which biomaterial underwent a timecourse?",
-      "guidelines": "This indicates which biomaterial type involved a timecourse.",
+      "guidelines": "This will add timecourse related fields to the selected biomaterial/s.",
       "type": "array",
       "items": {
         "type": "string"
@@ -124,8 +124,8 @@
       ]
     },
     "preservedTissue": {
-      "user_friendly": "Did you preserve or store your tissue?",
-      "guidelines": "Answering yes will add fields related to the preservation and storage of the tissue such as the type and duration.",
+      "user_friendly": "Did you preserve or store the tissue sample?",
+      "guidelines": "Answering yes will add fields related to the preservation and storage of the tissue such as the type and duration of storage.",
       "type": "string",
       "enum": [
         "Yes",
@@ -133,8 +133,8 @@
       ]
     },
     "tissueState": {
-      "user_friendly": "Do you wish to record information about the state of the tissue?",
-      "guidelines": "Answering yes will add fields related to the condition of the tissue such as ischemic temperature and descriptive text and images.",
+      "user_friendly": "Do you wish to record information about the state of the tissue sample?",
+      "guidelines": "Answering yes will add fields related to the condition of the tissue at the time of collection such as ischemic temperature and descriptive text and images.",
       "type": "string",
       "enum": [
         "Yes",
