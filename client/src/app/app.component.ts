@@ -5,7 +5,7 @@ import {IngestService} from './shared/services/ingest.service';
 import {Observable} from 'rxjs';
 import {Profile} from 'oidc-client';
 import {Account} from './core/account';
-import {concatMap, filter, map} from 'rxjs/operators';
+import {filter, map, switchMapTo} from 'rxjs/operators';
 
 
 @Component({
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     );
     this.userAccount$ = this.aai.user$.pipe(
       filter(user => user && !user.expired),
-      concatMap(() => this.ingestService.getUserAccount())
+      switchMapTo(this.ingestService.getUserAccount())
     );
   }
 

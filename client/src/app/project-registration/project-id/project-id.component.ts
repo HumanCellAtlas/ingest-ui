@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
-import {AbstractControl, FormControl} from '@angular/forms';
+import {AbstractControl, FormControl, ValidationErrors} from '@angular/forms';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {MetadataFormService} from '../../metadata-schema-form/metadata-form.service';
 import {IngestService} from '../../shared/services/ingest.service';
-import {Observable, timer} from 'rxjs';
-import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {distinctUntilChanged, map, mapTo, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-id',
@@ -64,6 +64,14 @@ export class ProjectIdComponent implements OnInit {
     return str.replace(/\b(\w)/g, s => s.toUpperCase());
   }
 
+  private static sanitiseTechnology(technology: string): string {
+    technology = technology.replace(/'/g, 'p');
+    technology = ProjectIdComponent.removeSpecialChars(technology);
+    technology = ProjectIdComponent.camelize(technology);
+    technology = ProjectIdComponent.capitalize(technology);
+    return technology;
+  }
+
   ngOnInit(): void {
     this.projectIdMetadata = this.metadataForm.get(this.projectShortNameKey);
     this.technologyMetadata = this.metadataForm.get(this.technologyKey);
@@ -79,7 +87,7 @@ export class ProjectIdComponent implements OnInit {
     this.parentTechnologyCtrl.setValidators([requireTechnologyValidator(this.metadataFormService)]);
     this.parentTechnologyCtrl.updateValueAndValidity();
 
-    this.projectIdCtrl.setAsyncValidators([uniqueProjectIdAsyncValidator(this.ingestService)]);
+    this.projectIdCtrl.setAsyncValidators([uniqueProjectIdAsyncValidator(this.ingestService, this.projectIdCtrl.valueChanges)]);
     this.projectIdCtrl.updateValueAndValidity();
 
     this.setUpValueChangeHandlers();
@@ -170,24 +178,22 @@ export class ProjectIdComponent implements OnInit {
 
   private onTechnologyChange(val: any) {
     const technologies = this.metadataFormService.cleanFormData(val);
-    let technology = technologies && technologies.length > 0 ? technologies[0]['ontology_label'] : '';
-    technology = technology.replace(/\'/g, 'p');
-    technology = ProjectIdComponent.removeSpecialChars(technology);
-    technology = ProjectIdComponent.camelize(technology);
-    technology = ProjectIdComponent.capitalize(technology);
-    this.technology = technology;
+    if (technologies && technologies.length > 0) {
+      this.technology = ProjectIdComponent.sanitiseTechnology(technologies[0]['ontology_label']);
+    } else {
+      this.technology = '';
+    }
     this.generateProjectId();
     this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
   }
 
   private onOtherTechnologyChange(val: any) {
     const otherTechnologies = this.metadataFormService.cleanFormData(val);
-    let technology = otherTechnologies && otherTechnologies.length > 0 ? otherTechnologies[0] : '';
-    technology = technology.replace(/\'/g, 'p');
-    technology = ProjectIdComponent.removeSpecialChars(technology);
-    technology = ProjectIdComponent.camelize(technology);
-    technology = ProjectIdComponent.capitalize(technology);
-    this.otherTechnology = technology;
+    if (otherTechnologies && otherTechnologies.length > 0 ) {
+      this.otherTechnology = ProjectIdComponent.sanitiseTechnology(otherTechnologies[0]);
+    } else {
+      this.otherTechnology = '';
+    }
     this.generateProjectId();
   }
 
@@ -200,22 +206,17 @@ export class ProjectIdComponent implements OnInit {
 }
 
 
-export const uniqueProjectIdAsyncValidator = (ingestService: IngestService, time: number = 500) => {
+export const uniqueProjectIdAsyncValidator = (ingestService: IngestService, valueChanges: Observable<any>) => {
   return (input: FormControl) => {
-    const query = [];
-    const criteria = {
-      'contentField': 'content.project_core.project_short_name',
-      'operator': 'IS',
-      'value': input.value
-    };
-    query.push(criteria);
-
-    return timer(time).pipe(
+    return valueChanges.pipe(
+      mapTo(input.value),
       distinctUntilChanged(),
-      switchMap(() => ingestService.queryProjects(query)),
-      map(res => {
-        return res.page['totalElements'] === 0 ? null : {exists: true};
-      })
+      switchMap(projectId => ingestService.queryProjects([{
+        'contentField': 'content.project_core.project_short_name',
+        'operator': 'IS',
+        'value': projectId
+      }])),
+      map(res => res.page['totalElements'] === 0 ? null : {exists: true} as ValidationErrors)
     );
   };
 };

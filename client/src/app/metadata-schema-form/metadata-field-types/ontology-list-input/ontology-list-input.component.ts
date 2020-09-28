@@ -7,7 +7,7 @@ import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {OntologyBaseComponent} from '../ontology-base/ontology-base.component';
 import {Observable} from 'rxjs';
 import {MetadataFormService} from '../../metadata-form.service';
-import {concatMap, startWith} from 'rxjs/operators';
+import {startWith, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-ontology-list-input',
@@ -32,7 +32,7 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
-        concatMap(val => this.onSearchValueChanged(val))
+        switchMap(val => this.onSearchValueChanged(val))
       );
   }
 
