@@ -5,7 +5,7 @@ import {combineLatest, Observable, of} from 'rxjs';
 import {OlsHttpResponse} from '../models/ols';
 import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
 import {Ontology} from '../models/ontology';
-import {map, switchMap} from 'rxjs/operators';
+import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
 
 
 @Injectable({
@@ -24,7 +24,10 @@ export class OntologyService {
 
   lookup(schema: JsonSchema, searchText: string): Observable<Ontology[]> {
     return this
-      .createSearchParams(schema, searchText).pipe(switchMap(params => this.searchOntologies(params)));
+      .createSearchParams(schema, searchText).pipe(
+        distinctUntilChanged(),
+        switchMap(params => this.searchOntologies(params))
+      );
   }
 
   createSearchParams(schema: JsonSchema, searchText?: string): Observable<object> {

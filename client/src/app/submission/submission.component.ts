@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Observable, timer} from 'rxjs';
-import {filter, map, switchMap, takeWhile} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, switchMap, takeWhile} from 'rxjs/operators';
 import {IngestService} from '../shared/services/ingest.service';
 import {AlertService} from '../shared/services/alert.service';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
@@ -211,7 +211,9 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     return this.ingestService.getArchiveSubmission(submissionUuid)
       .pipe(
         filter(data => 'entities' in data._links && 'href' in data._links['entities']),
-        switchMap(data => this.ingestService.getAs<ListResult<ArchiveEntity>>(data._links['entities']['href'])),
+        map(data => data._links['entities']['href']),
+        distinctUntilChanged(),
+        switchMap(href => this.ingestService.getAs<ListResult<ArchiveEntity>>(href)),
         map(data => data._embedded ? data._embedded.archiveEntities : [])
       );
   }

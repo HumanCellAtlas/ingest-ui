@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, throwError, timer} from 'rxjs';
-import {filter, flatMap, map, take, timeoutWith} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, mergeMapTo, switchMap, take, timeoutWith} from 'rxjs/operators';
 import {TemplateSpecification, TypeSpec} from './template-questionnaire.data';
 import {BrokerService} from '../shared/services/broker.service';
 
@@ -37,9 +37,11 @@ export class TemplateGeneratorService {
 
   generateTemplate(templateSpec: TemplateSpecification): Observable<Blob> {
     return timer(0, this.POLLING_INTERVAL).pipe(
-      flatMap(() => this._requestToGenerate(templateSpec)),
+      mergeMapTo(this._requestToGenerate(templateSpec)),
       filter(data => data._links.download.href.length > 0),
-      flatMap(data => this._requestToDownload(data._links.download.href)),
+      map(data => data._links.download.href),
+      distinctUntilChanged(),
+      switchMap(href => this._requestToDownload(href)),
       timeoutWith(this.TIMEOUT, throwError(new Error('Retrieval of template spreadsheet has timed out.'))),
       filter(template => template.complete),
       take(1),
@@ -63,9 +65,7 @@ export class TemplateGeneratorService {
       }
     };
 
-    return this.brokerService
-      .generateTemplate(param as TemplateGenerationRequestParam)
-      .pipe(map(data => data as TemplateGenerationResponse));
+    return this.brokerService.generateTemplate(param as TemplateGenerationRequestParam);
   }
 
 }
