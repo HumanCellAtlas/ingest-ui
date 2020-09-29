@@ -26,14 +26,16 @@ export class OidcInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const hostName = OidcInterceptor.getHostName(request.url);
     if (hostName && environment.DOMAIN_WHITELIST.indexOf(hostName) > -1) {
-      return this.aai.getAuthorizationHeaderValue().pipe(concatMap(authHeader => {
-        const headerRequest = request.clone({
-          setHeaders: {
-            Authorization: authHeader
-          }
-        });
-        return next.handle(headerRequest);
-      }));
+      return this.aai.getAuthorizationHeaderValue().pipe(
+        concatMap(authHeader => {
+          const headerRequest = request.clone({
+            setHeaders: {
+              Authorization: authHeader
+            }
+          });
+          return next.handle(headerRequest);
+        })
+      );
     } else {
       return next.handle(request);
     }
