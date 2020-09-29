@@ -14,7 +14,7 @@ import {Account} from '../core/account';
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   account$: Observable<Account>;
-  isLoggedIn$: Observable<Boolean>;
+  isLoggedIn$: Observable<boolean>;
   isWrangler: Boolean;
   introduction: String;
   columns: ProjectColumn[];
@@ -54,7 +54,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.isLoggedIn$ = this.aai.isUserLoggedIn();
     this.account$ = this.isLoggedIn$.pipe(
-      filter(loggedIn => loggedIn.valueOf()),
+      filter(loggedIn => loggedIn),
       switchMapTo(this.ingestService.getUserAccount())
     );
     this.pollAccount();
