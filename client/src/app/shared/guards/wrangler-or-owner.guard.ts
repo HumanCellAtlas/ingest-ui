@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {forkJoin, Observable, of} from 'rxjs';
+import {combineLatest, Observable, of} from 'rxjs';
 import {AaiSecurity} from '../../aai/aai.module';
 import {IngestService} from '../services/ingest.service';
 import {Project} from '../models/project';
@@ -33,7 +33,7 @@ export class WranglerOrOwnerGuard implements CanActivate {
       this.isWrangler(this.ingestService.getUserAccount())
     ).pipe(
       map(access => access || this.accessDenied(state.url)),
-      catchError(() => of(false))
+      catchError(err => of(this.unexpectedError(state.url, err)))
     );
   }
 
@@ -42,11 +42,18 @@ export class WranglerOrOwnerGuard implements CanActivate {
     return this.router.parseUrl('/home');
   }
 
+  private unexpectedError(url: string, errorMessage: string): UrlTree {
+    this.alertService.error('Error checking access', `You cannot access the resource: ${url} due to error ${errorMessage}`, true, true);
+    return this.router.parseUrl('/home');
+  }
+
   isWranglerOrOwner(account$: Observable<Account>, project$: Observable<Project>): Observable<boolean> {
-    const canAccess = new Array<Observable<boolean>>();
-    canAccess.push(this.isWrangler(account$));
-    canAccess.push(this.isOwner(account$, project$));
-    return forkJoin(canAccess).pipe(map(access => access.includes(true)));
+    return combineLatest([
+        this.isWrangler(account$),
+        this.isOwner(account$, project$)
+    ]).pipe(
+      map(([isWrangler, isOwner]) => isWrangler || isOwner)
+    );
   }
 
   isWrangler(account: Observable<Account>): Observable<boolean> {
@@ -54,10 +61,11 @@ export class WranglerOrOwnerGuard implements CanActivate {
   }
 
   isOwner(account: Observable<Account>, project: Observable<Project>): Observable<boolean> {
-    const userIds = new Array<Observable<any>>();
-    userIds.push(account.pipe(map((userAccount: Account) => userAccount.id)));
-    userIds.push(project.pipe(map((p: Project) => p.user)));
-
-    return forkJoin(userIds).pipe(map(input => input[0] === input[1]));
+    return combineLatest([
+      account.pipe(map(userAccount => userAccount.id)),
+      project.pipe(map(proj => proj.user as string))
+    ]).pipe(
+      map(([userId, projectUserId]) => userId === projectUserId)
+    );
   }
 }
