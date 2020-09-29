@@ -133,7 +133,7 @@ export class TemplateSpecification {
   private addTypeSpec(ts: TypeSpec, recordInfo: boolean): void {
     //cloning to ensure the source object doesn't get overwritten by merges
     let clone = Object.assign({}, ts);
-    clone.embedProcess = 'category' in clone && clone['category'] == 'biomaterial' ? recordInfo : false;
+    clone.embedProcess = 'category' in clone && clone['schemaName'] !== 'donor_organism' && clone['category'] === 'biomaterial' ? recordInfo : false;
     delete clone['category'];
     this.addModules(clone, schemaFields[ts.schemaName]);
     this.types.set(ts.schemaName, clone);
