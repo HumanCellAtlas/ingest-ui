@@ -93,8 +93,8 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
   }
 
-  public patchProject(projectResource, patch): Observable<Object> {
-    const projectLink: string = projectResource['_links']['self']['href'];
+  public patchProject(projectResource, patch, partial: boolean = false): Observable<Object> {
+    const projectLink: string = projectResource['_links']['self']['href'] + `?partial=${partial}`;
     patch['validationState'] = 'Draft';
     return this.http.patch(projectLink, patch);
   }
