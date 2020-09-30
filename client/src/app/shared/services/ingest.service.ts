@@ -97,7 +97,7 @@ export class IngestService {
     return this.doPatchProject(projectResource, patch);
   }
 
-  public partialPatchProject(projectResource, patch): Observable<Object> {
+  public partiallyPatchProject(projectResource, patch): Observable<Object> {
     return this.doPatchProject(projectResource, patch, true);
   }
 

@@ -213,7 +213,7 @@ export class ProjectFormComponent implements OnInit {
       return this.ingestService.postProject(this.patch)
         .pipe(
           concatMap(createdProject => {
-            return this.ingestService.partialPatchProject(createdProject, this.patch) // save fields outside content
+            return this.ingestService.partiallyPatchProject(createdProject, this.patch) // save fields outside content
               .map(project => project as Project);
           }));
     } else {
