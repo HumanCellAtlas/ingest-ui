@@ -14,7 +14,6 @@ export interface QuestionnaireData {
   donorsRelated: string;
   specimenPurchased: string;
   protocols: string[];
-  timecourse: string;
   timecourseBiomaterialType: string[];
 }
 
@@ -100,7 +99,7 @@ export class TemplateSpecification {
 
   static convert(questionnaire: QuestionnaireData): TemplateSpecification {
     let specification = new TemplateSpecification();
-    let recordInfo: boolean = 'experimentInfo' in questionnaire && questionnaire.experimentInfo.toLowerCase() == 'yes';
+    let recordInfo: boolean = 'experimentInfo' in questionnaire && questionnaire.experimentInfo.includes('Location, time and performer of the experimental processes');
     default_type_specs.forEach((ts: any) => specification.addTypeSpec(ts, recordInfo));
     for (let question in questionnaire) {
       if (!(question in answers)) continue;

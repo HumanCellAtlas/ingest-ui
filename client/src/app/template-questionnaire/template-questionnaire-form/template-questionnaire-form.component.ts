@@ -48,16 +48,13 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
         donorsRelated: '',
-        experimentInfo: '',
         identifyingOrganisms: [],
         libraryPreparation: [],
         preNatalQuantity: '',
-        otherExperimentInfo: [],
-        // protocols: [],
-        // specimenPurchased: '',
+        protocols: [],
         specimenType: [],
         technologyType: [],
-        // timecourse: '',
+        experimentInfo: [],
         timecourseBiomaterialType: []
       };
   config: MetadataFormConfig = {
@@ -66,12 +63,9 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     cancelButtonLabel: 'Cancel',
     showResetButton: true,
     inputType: {
-      'preNatalQuantity': 'radioInLine',
+      'preNatalQuantity': 'radioList',
       'specimenPurchased': 'radioInline',
       'donorsRelated': 'radioInline',
-      // 'preservedTissue': 'radioInLine',
-      // 'tissueState': 'radioInline',
-      // 'timecourse': 'radioInLine',
       'experimentInfo': 'radioInLine'
     }
   };

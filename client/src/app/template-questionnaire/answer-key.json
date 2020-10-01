@@ -105,29 +105,6 @@
           "plate_based_sequencing"
         ]
       }
-    ],
-    "Other": [
-      {
-        "schemaName": "cell_suspension",
-        "category": "biomaterial",
-        "includeModules": [
-          "plate_based_sequencing"
-        ]
-      },
-      {
-        "schemaName": "sequencing_protocol",
-        "category": "other",
-        "includeModules": [
-          "10x"
-        ]
-      },
-      {
-        "schemaName": "library_preparation_protocol",
-        "category": "biomaterial",
-        "includeModules": [
-          "cell_barcode"
-        ]
-      }
     ]
   },
   "identifyingOrganisms": {
@@ -136,7 +113,10 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "human_specific"
+          "human_specific",
+          "medical_history",
+          "height",
+          "height_unit"
         ]
       }
     ],
@@ -151,16 +131,13 @@
     ]
   },
   "preNatalQuantity": {
-    "Yes, some are prenatal": [
+    "Yes, some are pre-natal and some are post-natal": [
       {
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
           "organism_age_unit",
           "organism_age",
-          "medical_history",
-          "height",
-          "height_unit",
           "gestational_age_unit",
           "gestational_age"
         ]
@@ -172,14 +149,11 @@
         "category": "biomaterial",
         "includeModules": [
           "organism_age_unit",
-          "organism_age",
-          "medical_history",
-          "height",
-          "height_unit"
+          "organism_age"
         ]
       }
     ],
-    "Yes, all are prenatal": [
+    "Yes, all are pre-natal": [
       {
         "schemaName": "donor_organism",
         "category": "biomaterial",
@@ -273,41 +247,43 @@
       }
     ]
   },
- "otherExperimentInfo": {
-   "Enrichment protocol": [
-     {
-       "schemaName": "enrichment_protocol",
-       "category": "other"
-     },
-     {
-       "schemaName": "cell_suspension",
-       "category": "biomaterial",
-       "linkSpec": {
-         "linkProtocols": [
-           "enrichment_protocol"
-         ]
-       }
-     }
-   ],
-   "iPSC induction protocol": [
-     {
-       "schemaName": "ipsc_induction_protocol",
-       "category": "other"
-     },
-     {
-       "schemaName": "cell_line",
-       "category": "biomaterial",
-       "linkSpec": {
-         "linkEntities": [
-           "specimen_from_organism"
-         ],
-         "linkProtocols": [
-           "ipsc_induction_protocol"
-         ]
-       }
-     }
-   ],
-   "Information about preserved or stored tissue samples": [
+  "protocols": {
+    "Enrichment protocol": [
+      {
+        "schemaName": "enrichment_protocol",
+        "category": "other"
+      },
+      {
+        "schemaName": "cell_suspension",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkProtocols": [
+            "enrichment_protocol"
+          ]
+        }
+      }
+    ],
+    "iPSC induction protocol": [
+      {
+        "schemaName": "ipsc_induction_protocol",
+        "category": "other"
+      },
+      {
+        "schemaName": "cell_line",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "ipsc_induction_protocol"
+          ]
+        }
+      }
+    ]
+  },
+ "experimentInfo": {
+   "Tissue preservation and storage": [
      {
        "schemaName": "specimen_from_organism",
        "category": "biomaterial",
@@ -316,7 +292,7 @@
        ]
      }
    ],
-   "Information about the condition of the tissue samples": [
+   "Tissue condition": [
      {
        "schemaName": "specimen_from_organism",
        "category": "biomaterial",
@@ -351,63 +327,6 @@
         "category": "biomaterial",
         "includeModules": [
           "timecourse"
-        ]
-      }
-    ]
-  },
-  "protocols": {
-    "Enrichment": [
-      {
-        "schemaName": "enrichment_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "cell_suspension",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkProtocols": [
-            "enrichment_protocol"
-          ]
-        }
-      }
-    ],
-    "Induction": [
-      {
-        "schemaName": "ipsc_induction_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "cell_line",
-        "category": "biomaterial",
-        "linkSpec": {
-          "linkEntities": [
-            "specimen_from_organism"
-          ],
-          "linkProtocols": [
-            "ipsc_induction_protocol"
-          ]
-        }
-      }
-    ]
-  },
-  "preservedTissue": {
-    "Yes": [
-      {
-        "schemaName": "specimen_from_organism",
-        "category": "biomaterial",
-        "includeModules": [
-          "preservation_storage"
-          ]
-      }
-    ]
-  },
-  "tissueState": {
-    "Yes": [
-      {
-        "schemaName": "specimen_from_organism",
-        "category": "biomaterial",
-        "includeModules": [
-          "state_of_specimen"
         ]
       }
     ]
