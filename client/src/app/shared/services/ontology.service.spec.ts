@@ -105,7 +105,7 @@ describe('createSearchParams', () => {
         groupField: 'iri',
         start: 0,
         ontology: 'efo',
-        allChildrenOf: 'http://www.ebi.ac.uk/efo/EFO_0009736',
+        allChildrenOf: ['http://www.ebi.ac.uk/efo/EFO_0009736'],
         q: 'text',
         rows: 30
       });
