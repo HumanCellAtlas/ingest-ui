@@ -5,7 +5,7 @@ import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {MetadataFormService} from '../../metadata-schema-form/metadata-form.service';
 import {IngestService} from '../../shared/services/ingest.service';
 import {Observable} from 'rxjs';
-import {distinctUntilChanged, map, mapTo, switchMap} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-id',
@@ -87,7 +87,7 @@ export class ProjectIdComponent implements OnInit {
     this.parentTechnologyCtrl.setValidators([requireTechnologyValidator(this.metadataFormService)]);
     this.parentTechnologyCtrl.updateValueAndValidity();
 
-    this.projectIdCtrl.setAsyncValidators([uniqueProjectIdAsyncValidator(this.ingestService, this.projectIdCtrl.valueChanges)]);
+    this.projectIdCtrl.setAsyncValidators([uniqueProjectIdAsyncValidator(this.ingestService)]);
     this.projectIdCtrl.updateValueAndValidity();
 
     this.setUpValueChangeHandlers();
@@ -205,18 +205,16 @@ export class ProjectIdComponent implements OnInit {
 
 }
 
-
-export const uniqueProjectIdAsyncValidator = (ingestService: IngestService, valueChanges: Observable<any>) => {
+export const uniqueProjectIdAsyncValidator = (ingestService: IngestService) => {
   return (input: FormControl) => {
-    return valueChanges.pipe(
-      mapTo(input.value),
-      distinctUntilChanged(),
-      switchMap(projectId => ingestService.queryProjects([{
-        'contentField': 'content.project_core.project_short_name',
-        'operator': 'IS',
-        'value': projectId
-      }])),
-      map(res => res.page['totalElements'] === 0 ? null : {exists: true} as ValidationErrors)
+    const query = [{
+      'contentField': 'content.project_core.project_short_name',
+      'operator': 'IS',
+      'value': input.value
+    }];
+    return ingestService.queryProjects(query).pipe(
+      first(),
+      map(response => response.page['totalElements'] === 0 ? null : {exists: true} as ValidationErrors)
     );
   };
 };
@@ -225,7 +223,7 @@ export const requireTechnologyValidator = (metadataFormService: MetadataFormServ
   return (input: FormControl) => {
     const technology = metadataFormService.cleanFormData(input.value);
     if (metadataFormService.isEmpty(technology)) {
-      return {required: true};
+      return {required: true} as ValidationErrors;
     }
   };
 };
