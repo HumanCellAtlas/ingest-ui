@@ -103,7 +103,7 @@ export class IngestService {
 
   private doPatchProject(projectResource, patch, partial: boolean = false): Observable<Object> {
     const projectLink: string = projectResource['_links']['self']['href'] + `?partial=${partial}`;
-    patch['validationState'] = 'Draft';
+    patch['validationState'] = 'DRAFT';
     return this.http.patch(projectLink, patch);
   }
 
