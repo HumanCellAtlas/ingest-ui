@@ -273,6 +273,59 @@
       }
     ]
   },
+ "otherExperimentInfo": {
+   "Enrichment protocol": [
+     {
+       "schemaName": "enrichment_protocol",
+       "category": "other"
+     },
+     {
+       "schemaName": "cell_suspension",
+       "category": "biomaterial",
+       "linkSpec": {
+         "linkProtocols": [
+           "enrichment_protocol"
+         ]
+       }
+     }
+   ],
+   "iPSC induction protocol": [
+     {
+       "schemaName": "ipsc_induction_protocol",
+       "category": "other"
+     },
+     {
+       "schemaName": "cell_line",
+       "category": "biomaterial",
+       "linkSpec": {
+         "linkEntities": [
+           "specimen_from_organism"
+         ],
+         "linkProtocols": [
+           "ipsc_induction_protocol"
+         ]
+       }
+     }
+   ],
+   "Information about preserved or stored tissue samples": [
+     {
+       "schemaName": "specimen_from_organism",
+       "category": "biomaterial",
+       "includeModules": [
+         "preservation_storage"
+       ]
+     }
+   ],
+   "Information about the condition of the tissue samples": [
+     {
+       "schemaName": "specimen_from_organism",
+       "category": "biomaterial",
+       "includeModules": [
+         "state_of_specimen"
+       ]
+     }
+   ]
+ },
   "timecourseBiomaterialType":{
     "Donor": [
       {

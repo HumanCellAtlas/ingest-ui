@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "description": "Information required about your experiments to trigger the creation of a metadata spreadsheet.",
+  "description": "Information required about your experiments to enable creation of a custom metadata spreadsheet.",
   "name": "template-questionnaire",
   "properties": {
     "technologyType": {
       "user_friendly": "Did you use imaging and/or sequencing to generate your data?",
-      "guidelines": "The technology type tells us whether we should add fields like ‘sequencing method’ for a sequencing experiment or ‘imaged sliced thickness’ for an imaging experiment.",
+      "guidelines": "This will add fields to describe the sequencing and/or imaging techniques that were used.",
       "type": "array",
       "enum": [
         "Sequencing",
@@ -14,8 +14,8 @@
       ]
     },
     "libraryPreparation": {
-      "user_friendly": "What type of library preparation technique did you use?",
-      "guidelines": "The library preparation method tells us whether we should add fields like ‘well id’ for plate-based sequencing or ‘cell barcode-containing read’ for droplet-based sequencing.",
+      "user_friendly": "What type of sequencing library preparation technique did you use?",
+      "guidelines": "This will add fields specific to the library preparation type.",
       "type": "array",
       "enum": [
         "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)",
@@ -25,7 +25,7 @@
     },
     "identifyingOrganisms": {
       "user_friendly": "What species are the donors of your experiment?",
-      "guidelines": "The species of your donors tells us whether we should add fields like ‘strain’ for mouse experiments and ‘ethnicity’ and ‘medical history’ for human experiments.",
+      "guidelines": "This will add fields like ‘strain’ for mouse experiments and ‘medical history’ for human experiments.",
       "type": "array",
       "items": {
         "type": "string"
@@ -38,7 +38,7 @@
     },
     "donorsRelated": {
       "user_friendly": "Are any of your donors related to one another?",
-      "guidelines": "Answering yes to this question allows you to link related donors, for example a sample from a mother to that of its embryo.",
+      "guidelines": "'Yes' will add fields to link related donors, e.g. a mother to her embryo.",
       "example": "No",
       "type": "string",
       "enum": [
@@ -48,7 +48,7 @@
     },
     "preNatalQuantity": {
       "user_friendly": "Are any of your samples from prenatal donors?",
-      "guidelines": "This information tells us whether we should include fields to record pre-birth age.",
+      "guidelines": "'Yes' will include fields to record pre-birth age.",
       "type": "string",
       "example": "No",
       "enum": [
@@ -58,8 +58,8 @@
       ]
     },
     "specimenType": {
-      "user_friendly": "What type of tissue did you use?",
-      "guidelines": "The type of specimen tells us whether we should add fields related to the biomaterial type, for example ‘organ’ for primary tissue or ‘organ model’ for a cell line model.",
+      "user_friendly": "What type of tissue sample did you use?",
+      "guidelines": "This determines whether tabs should be added to capture specific Organoid and Cell line information.",
       "type": "array",
       "items": {
         "type": "string"
@@ -71,7 +71,7 @@
     },
     "specimenPurchased": {
       "user_friendly": "Did you purchase your tissue sample/s?",
-      "guidelines": "If 'Yes', we will add fields for capturing purchasing information.",
+      "guidelines": "'Yes' will add fields for capturing purchasing information.",
       "type": "string",
       "example": "No",
       "enum": [
@@ -81,7 +81,7 @@
     },
     "experimentInfo": {
       "user_friendly": "Do you wish to record information about the where, when and who of your experiment?",
-      "guidelines": "Answering yes to this question will add fields to record the location, name/initials of the performer, and the date and time when your experiment was performed.",
+      "guidelines": "'Yes' will add fields to record the location, name/initials of the performer, and the date and time when each protocol was performed.",
       "example": "No",
       "type": "string",
       "enum": [
@@ -89,9 +89,24 @@
         "No"
       ]
     },
+    "otherExperimentInfo": {
+      "user_friendly": "Do you have information about any of the following? Tick all that apply",
+      "guidelines": "This will add extra tabs and fields related to each aspect to the template.git ",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Enrichment protocol",
+        "iPSC induction protocol",
+        "Timecourse component",
+        "Information about preserved or stored tissue samples",
+        "Information about the condition of the tissue samples"
+      ]
+    },
     "protocols": {
-      "user_friendly": "Did you use any of the following additional protocols?",
-      "guidelines": "The protocol types tell us whether to add a tab to record information specific to a certain protocol type, for example ‘markers’ for an enrichment protocol.",
+      "user_friendly": "Did you use any of the following protocols?",
+      "guidelines": "This determines whether to add tabs to record information specific each protocol type.",
       "type": "array",
       "items": {
         "type": "string"
@@ -124,7 +139,7 @@
       ]
     },
     "preservedTissue": {
-      "user_friendly": "Did you preserve or store the tissue sample/s?",
+      "user_friendly": "Do you have information about the preservation and/or storage of the tissue sample/s?",
       "guidelines": "Answering yes will add fields related to the preservation and storage of the tissue such as the type and duration of storage.",
       "type": "string",
       "enum": [
@@ -133,7 +148,7 @@
       ]
     },
     "tissueState": {
-      "user_friendly": "Do you wish to record information about the state of the tissue sample/s?",
+      "user_friendly": "Do you have information about the state of the tissue sample/s?",
       "guidelines": "Answering yes will add fields related to the condition of the tissue at the time of collection such as ischemic temperature and descriptive text and images.",
       "type": "string",
       "enum": [
@@ -143,6 +158,6 @@
     }
   },
   "required": ["technologyType", "identifyingOrganisms", "specimenType"],
-  "title": "Generate your metadata spreadsheet",
+  "title": "Generate a metadata spreadsheet",
   "type": "object"
 }

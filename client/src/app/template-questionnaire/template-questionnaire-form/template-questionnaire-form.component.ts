@@ -5,7 +5,7 @@ import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-for
 import {SpecimenGroupComponent} from '../specimen-group/specimen-group.component';
 import {DonorGroupComponent} from '../donor-group/donor-group.component';
 import {TechnologyGroupComponent} from '../technology-group/technology-group.component';
-import {ExperimentDetailGroupComponent} from "../experiment-detail-group/experiment-detail-group.component";
+import {ExperimentDetailGroupComponent} from '../experiment-detail-group/experiment-detail-group.component';
 
 import {QuestionnaireData, TemplateSpecification} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
@@ -52,11 +52,12 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
         identifyingOrganisms: [],
         libraryPreparation: [],
         preNatalQuantity: '',
-        protocols: [],
-        specimenPurchased: '',
+        otherExperimentInfo: [],
+        // protocols: [],
+        // specimenPurchased: '',
         specimenType: [],
         technologyType: [],
-        timecourse: '',
+        // timecourse: '',
         timecourseBiomaterialType: []
       };
   config: MetadataFormConfig = {
@@ -67,9 +68,10 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
     inputType: {
       'preNatalQuantity': 'radioInLine',
       'specimenPurchased': 'radioInline',
-      'preservedTissue': 'radioInLine',
-      'tissueState': 'radioInline',
-      'timecourse': 'radioInLine',
+      'donorsRelated': 'radioInline',
+      // 'preservedTissue': 'radioInLine',
+      // 'tissueState': 'radioInline',
+      // 'timecourse': 'radioInLine',
       'experimentInfo': 'radioInLine'
     }
   };

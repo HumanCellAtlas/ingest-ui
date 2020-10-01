@@ -13,16 +13,16 @@ export class ExperimentDetailGroupComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.onTimecourseChange(this.metadataForm.getControl('template-questionnaire.timecourse').value);
-    this.metadataForm.getControl('template-questionnaire.timecourse').valueChanges.subscribe({
+    this.onTimecourseChange(this.metadataForm.getControl('template-questionnaire.otherExperimentInfo').value);
+    this.metadataForm.getControl('template-questionnaire.otherExperimentInfo').valueChanges.subscribe({
       next: data => {
         this.onTimecourseChange(data);
       }
     });
   }
 
-  onTimecourseChange(timecourse: string) {
-    this.showTimecourseBiomaterialType = timecourse === 'Yes';
+  onTimecourseChange(otherExperimentInfo: string) {
+    this.showTimecourseBiomaterialType = otherExperimentInfo.includes('Timecourse component');
     if (!this.showTimecourseBiomaterialType) {
       this.metadataForm.getControl('template-questionnaire.timecourseBiomaterialType').reset();
     }
