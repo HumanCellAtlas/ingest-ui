@@ -40,7 +40,7 @@ export class ProjectIdComponent implements OnInit {
 
   technology: string;
   otherTechnology: string;
-  contributor: string;
+  contributor_name: string;
   organism: string;
 
   autogenerate = false;
@@ -155,7 +155,7 @@ export class ProjectIdComponent implements OnInit {
     if (this.autogenerate) {
       const technology = this.technology ? this.technology : this.otherTechnology ? this.otherTechnology : 'Unspecified';
       const organism = this.organism ? this.organism : 'Unspecified';
-      const projectId = [this.contributor, organism, technology].join(this.delimiter);
+      const projectId = [this.contributor_name, organism, technology].join(this.delimiter);
       this.checkProjectCount(projectId).subscribe(count => {
         const suffix = count ? '--' + (++count).toString() : '';
         this.projectIdCtrl.setValue(projectId + suffix, {emitEvent: false});
@@ -172,8 +172,11 @@ export class ProjectIdComponent implements OnInit {
     name = name.split(',').pop();
     name = ProjectIdComponent.camelize(name);
     name = ProjectIdComponent.capitalize(name);
-    this.contributor = ProjectIdComponent.removeSpecialChars(name);
-    this.generateProjectId();
+    name = ProjectIdComponent.removeSpecialChars(name);
+    if (this.contributor_name !== name) {
+      this.contributor_name = name;
+      this.generateProjectId();
+    }
   }
 
   private onTechnologyChange(val: any) {
