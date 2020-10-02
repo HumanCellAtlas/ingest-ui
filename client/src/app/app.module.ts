@@ -54,6 +54,9 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ProjectRegistrationModule} from './project-registration/project-registration.module';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {TemplateQuestionnaireModule} from './template-questionnaire/template-questionnaire.module';
+import {FooterComponent} from './footer/footer.component';
+import {ErrorComponent} from './error/error.component';
+import {HttpErrorInterceptor} from './http-interceptors/http-error-interceptor';
 import { GlobalFooterComponent } from './global-footer/global-footer.component';
 
 const BROWSER_LOCALE = navigator.language;
@@ -83,6 +86,8 @@ const BROWSER_LOCALE = navigator.language;
     GlobalHeaderComponent,
     RegistrationComponent,
     WelcomeComponent,
+    FooterComponent,
+    ErrorComponent,
     GlobalFooterComponent
   ],
   imports: [
@@ -107,6 +112,11 @@ const BROWSER_LOCALE = navigator.language;
       provide: HTTP_INTERCEPTORS,
       useClass: OidcInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
     },
     {provide: MAT_DATE_LOCALE, useValue: BROWSER_LOCALE},
     IngestService,
