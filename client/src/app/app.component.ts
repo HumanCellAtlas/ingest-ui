@@ -37,8 +37,6 @@ export class AppComponent implements OnInit {
   }
 
   onLogout($event: any) {
-    if (confirm('Are you sure you want to logout?')) {
-      this.aai.logout();
-    }
+    this.aai.logout();
   }
 }
