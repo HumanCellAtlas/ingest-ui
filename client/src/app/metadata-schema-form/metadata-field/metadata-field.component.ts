@@ -10,9 +10,9 @@ import {MetadataFormItemDirective} from '../metadata-form-item.directive';
 import {JsonSchema} from '../models/json-schema';
 import {OntologyListInputComponent} from '../metadata-field-types/ontology-list-input/ontology-list-input.component';
 import {EnumListInputComponent} from '../metadata-field-types/enum-list-input/enum-list-input.component';
-import {EnumRadioListComponent} from "../metadata-field-types/enum-radio-list/enum-radio-list.component";
-import {EnumRadioInlineComponent} from "../metadata-field-types/enum-radio-inline/enum-radio-inline.component";
-import {EnumDropDownComponent} from "../metadata-field-types/enum-drop-down/enum-drop-down.component";
+import {EnumRadioListComponent} from '../metadata-field-types/enum-radio-list/enum-radio-list.component';
+import {EnumRadioInlineComponent} from '../metadata-field-types/enum-radio-inline/enum-radio-inline.component';
+import {EnumDropDownComponent} from '../metadata-field-types/enum-drop-down/enum-drop-down.component';
 
 const components = {
   text: InputComponent,
@@ -21,6 +21,7 @@ const components = {
   textarea: TextAreaComponent
 };
 const enumComponents = {
+  text: EnumDropDownComponent,
   radio: EnumRadioListComponent,
   radioInline: EnumRadioInlineComponent,
   dropdown: EnumDropDownComponent
@@ -66,6 +67,7 @@ export class MetadataFieldComponent implements OnInit {
 
   private selectComponent(metadata: Metadata, control: AbstractControl, id: string) {
     let component;
+    let hasValue: boolean;
 
     if (metadata.isScalar()) {
       if (metadata.schema.enum) {
@@ -74,24 +76,25 @@ export class MetadataFieldComponent implements OnInit {
         component = metadata.inputType && components[metadata.inputType] ? components[metadata.inputType] : InputComponent;
         component = metadata.schema.format === 'date-time' ? DateInputComponent : component;
       }
+      hasValue = control.value;
     } else if (metadata.isScalarList()) {
       if (metadata.schema.enum) {
         component = EnumListInputComponent;
       } else {
         component = TextListInputComponent;
       }
+      hasValue = control.value?.length > 0;
     } else if (metadata.isObject()) {
-
       if (metadata.schema && metadata.schema.$id && metadata.schema.$id.indexOf('/module/ontology/') >= 0) {
         component = OntologyInputComponent;
       } else {
         component = InputComponent;
         const formGroup = control as FormGroup;
         for (const child of metadata.childrenMetadata) {
-          this.selectComponent(child, formGroup['controls'][child.key], `${id}'-'${child.key}`);
+          this.loadComponent(child, formGroup['controls'][child.key], `${id}-${child.key}`);
         }
       }
-
+      hasValue = Object.keys(control.value).length > 0;
     } else { // object list
       const schema = metadata.schema.items as JsonSchema;
       if (schema.$id.indexOf('/module/ontology/') >= 0) {
@@ -99,6 +102,10 @@ export class MetadataFieldComponent implements OnInit {
       } else {
         component = InputComponent;
       }
+      hasValue = control.value;
+    }
+    if (metadata.isDisabled && metadata.isReadOnly && !hasValue) {
+      return undefined;
     }
     return component;
   }

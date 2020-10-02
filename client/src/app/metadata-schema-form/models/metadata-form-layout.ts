@@ -6,7 +6,7 @@ export interface MetadataFormLayout {
 
 export interface MetadataFormTab {
   title: string;
-  key?: string;
+  key: string;
   items: (MetadataFieldGroup | string) [];
 }
 

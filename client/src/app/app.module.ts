@@ -18,7 +18,7 @@ import {ROUTES} from './app.routes';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {SubmissionListComponent} from './submission-list/submission-list.component';
-import {NavigationComponent} from './navigation/navigation.component';
+import {GlobalNavigationComponent} from './global-navigation/global-navigation.component';
 import {SubmissionComponent} from './submission/submission.component';
 import {TabComponent} from './shared/components/tab/tab.component';
 import {TabsComponent} from './shared/components/tabs/tabs.component';
@@ -57,6 +57,7 @@ import {TemplateQuestionnaireModule} from './template-questionnaire/template-que
 import {FooterComponent} from './footer/footer.component';
 import {ErrorComponent} from './error/error.component';
 import {HttpErrorInterceptor} from './http-interceptors/http-error-interceptor';
+import { GlobalFooterComponent } from './global-footer/global-footer.component';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -64,7 +65,7 @@ const BROWSER_LOCALE = navigator.language;
   declarations: [
     AppComponent,
     SubmissionListComponent,
-    NavigationComponent,
+    GlobalNavigationComponent,
     ProjectComponent,
     SubmissionComponent,
     TabComponent,
@@ -86,7 +87,8 @@ const BROWSER_LOCALE = navigator.language;
     RegistrationComponent,
     WelcomeComponent,
     FooterComponent,
-    ErrorComponent
+    ErrorComponent,
+    GlobalFooterComponent
   ],
   imports: [
     BrowserModule,

@@ -72,7 +72,7 @@ webpack                           4.42.0
 
 ## Development server
 
-Run `ng serve -c=[local|dev|integration|staging|prod]` for a dev server pointing to the ingest api urls configuration in the `environment.<env>.ts`. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` or `ng serve -c=[dev|staging|prod]` for a dev server pointing to the ingest api urls configuration in the `environment.<env>.ts`. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Deployment
 Please check `ingest-kube-deployment` repo

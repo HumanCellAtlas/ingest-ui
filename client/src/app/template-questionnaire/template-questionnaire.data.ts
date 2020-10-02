@@ -26,6 +26,33 @@ export interface TypeSpec {
   };
 }
 
+/*
+  Ideally, this should be defined in TypeSpec, but due to my limited understanding of TS interface VS class and its
+  implications on built-in JSON typing (i.e. <Type>{ "json": "data" }), it's done this way.
+*/
+export function merge(spec: TypeSpec, other: TypeSpec): void {
+  if (!spec || !other || spec.schemaName != other.schemaName) return;
+  if (!spec.linkSpec) {
+    spec.linkSpec = {
+      linkEntities: [],
+      linkProtocols: []
+    };
+  }
+  if (other.includeModules == 'ALL') {
+    spec.includeModules = other.includeModules;
+  } else if (spec.includeModules != 'ALL') {
+    spec.includeModules = union(spec.includeModules, other.includeModules);
+  }
+  spec.linkSpec.linkEntities = union(spec.linkSpec.linkEntities, other.linkSpec?.linkEntities);
+  spec.linkSpec.linkProtocols = union(spec.linkSpec.linkProtocols, other.linkSpec?.linkProtocols);
+}
+
+function union(a: string[], b: string[]): string[] {
+  const result = new Set<string>(a);
+  b?.forEach(i => result.add(i));
+  return [...result];
+}
+
 const default_type_specs = [
   {
     schemaName: 'donor_organism',
@@ -35,7 +62,11 @@ const default_type_specs = [
       'development_stage',
       'diseases',
       'death',
-      'weight'
+      'is_living',
+      'weight',
+      'weight_unit',
+      'sex',
+      'timecourse'
     ]
   },
   {
@@ -53,37 +84,15 @@ const default_type_specs = [
       'diseases',
       'state_of_specimen',
       'preservation_storage'
-    ]
-  },
-  {
-    schemaName: 'cell_suspension',
-    category: 'biomaterial',
-    includeModules: [
-      'cell_morphology',
-      'genus_species',
-      'selected_cell_types'
-    ]
-  },
-  {
-    schemaName: 'library_preparation_protocol',
-    category: 'other',
-    includeModules: [
-      'input_nucleic_acid_molecule',
-      'library_construction_method',
-      'library_construction_kit',
-      'nucleic_acid_conversion_kit',
-      'umi_barcode',
-      'library_preamplification_method',
-      'cdna_library_amplification_method'
-    ]
-  },
-  {
-    schemaName: 'sequencing_protocol',
-    category: 'other',
-    includeModules: [
-      'instrument_manufacturer_model',
-      'method'
-    ]
+    ],
+    linkSpec: {
+          "linkEntities": [
+            "donor_organism"
+          ],
+          "linkProtocols": [
+            "collection_protocol"
+          ]
+        }
   }
 ]
 
@@ -115,7 +124,7 @@ export class TemplateSpecification {
   private addTypeSpecFromAnswers(question: string, answer: string, recordInfo: boolean): void {
     answers[question][answer].forEach((ts: TypeSpec) => {
       if (this.types.has(ts.schemaName)) {
-        this.merge(this.types.get(ts.schemaName), ts);
+        merge(this.types.get(ts.schemaName), ts);
       } else {
         this.addTypeSpec(ts, recordInfo);
       }
@@ -129,24 +138,6 @@ export class TemplateSpecification {
     delete clone['category'];
     this.addModules(clone, schemaFields[ts.schemaName]);
     this.types.set(ts.schemaName, clone);
-  }
-
-  /*
-  Ideally, this should be defined in TypeSpec, but due to my limited understanding of TS interface VS class and its
-  implications on built-in JSON typing (i.e. <Type>{ "json": "data" }), it's done this way.
-   */
-  private merge(spec: TypeSpec, other: TypeSpec): void {
-    if (spec.schemaName == other.schemaName) {
-      let unique = new Set<string>(spec.includeModules);
-      if (other.includeModules == 'ALL') {
-        spec.includeModules = other.includeModules;
-      } else {
-        if (other.includeModules) {
-          other.includeModules.forEach(it => unique.add(it));
-        }
-      }
-      spec.includeModules = [...unique];
-    }
   }
 
   //Similar note to merge method.

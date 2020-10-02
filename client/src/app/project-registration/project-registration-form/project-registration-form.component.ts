@@ -33,7 +33,7 @@ export class ProjectRegistrationFormComponent implements OnInit {
   projectContent: object;
 
   projectFormData: object;
-  formTabIndex = 0;
+  formTabKey: string;
 
   config: MetadataFormConfig;
 
@@ -61,7 +61,6 @@ export class ProjectRegistrationFormComponent implements OnInit {
         'schema_type',
         'provenance'
       ],
-      removeEmptyFields: true,
       layout: projectRegLayout,
       inputType: {
         'project_description': 'textarea',
@@ -75,9 +74,7 @@ export class ProjectRegistrationFormComponent implements OnInit {
       cancelButtonLabel: 'Or Cancel project registration'
     };
 
-    if (this.route.snapshot.paramMap.has('tab')) {
-      this.formTabIndex = +this.route.snapshot.paramMap.get('tab');
-    }
+    this.formTabKey = this.config.layout.tabs[0].key;
 
     this.projectResource = null;
     this.projectContent = {};
@@ -97,9 +94,7 @@ export class ProjectRegistrationFormComponent implements OnInit {
     const formValue = formData['value'];
     const valid = formData['valid'];
 
-    if (this.formTabIndex + 1 < projectRegLayout.tabs.length) {
-      this.incrementTab();
-    } else {
+    if (!this.incrementTab()) {
       if (valid) {
         this.saveProject(formValue);
       } else {
@@ -118,14 +113,28 @@ export class ProjectRegistrationFormComponent implements OnInit {
     }
   }
 
-  onTabChange($event: number) {
-    this.formTabIndex = $event;
+  onTabChange($tabKey: string) {
+    this.formTabKey = $tabKey;
+  }
+
+  incrementTab() {
+    let index =  projectRegLayout.tabs.findIndex(tab => tab.key === this.formTabKey);
+    if (index + 1 < projectRegLayout.tabs.length) {
+      index++;
+      this.formTabKey = projectRegLayout.tabs[index].key;
+      return true;
+    }
+    return false;
   }
 
   decrementTab() {
-    if (this.formTabIndex > 0) {
-      this.formTabIndex--;
+    let index =  projectRegLayout.tabs.findIndex(tab => tab.key === this.formTabKey);
+    if (index > 0) {
+      index--;
+      this.formTabKey = projectRegLayout.tabs[index].key;
+      return true;
     }
+    return false;
   }
 
   private setSchema(obj: object) {
@@ -150,15 +159,11 @@ export class ProjectRegistrationFormComponent implements OnInit {
       });
   }
 
-  private incrementTab() {
-    this.formTabIndex++;
-  }
-
   private createProject(formValue: object): Observable<Project> {
     console.log('formValue', formValue);
     this.patch = formValue;
     return this.ingestService.postProject(this.patch).pipe(concatMap(createdProject => {
-      return this.ingestService.patchProject(createdProject, this.patch) // save fields outside content
+      return this.ingestService.partiallyPatchProject(createdProject, this.patch) // save fields outside content
         .map(project => project as Project);
     }));
 

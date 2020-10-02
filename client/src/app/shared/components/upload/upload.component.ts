@@ -1,10 +1,10 @@
 import {Component, Output, EventEmitter, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {BrokerService} from "../../services/broker.service";
-import {Observable} from "rxjs";
-import {UploadResults} from "../../models/uploadResults";
-import {Router} from "@angular/router";
-import {AlertService} from "../../services/alert.service";
-import {LoaderService} from "../../services/loader.service";
+import {BrokerService} from '../../services/broker.service';
+import {Observable} from 'rxjs';
+import {UploadResults} from '../../models/uploadResults';
+import {Router} from '@angular/router';
+import {AlertService} from '../../services/alert.service';
+import {LoaderService} from '../../services/loader.service';
 
 @Component({
   selector: 'app-upload',
@@ -25,33 +25,36 @@ export class UploadComponent implements OnInit {
 
   @Output() fileUpload = new EventEmitter();
 
+  isUpdate = false;
+
   constructor(private brokerService: BrokerService,
               private router: Router,
               private alertService: AlertService,
               private loaderService: LoaderService) {
+    this.isUpdate = false;
   }
 
   ngOnInit() {}
 
   upload() {
-    let fileBrowser = this.fileInput.nativeElement;
+    const fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
       this.loaderService.display(true);
       const formData = new FormData();
-      formData.append("file", fileBrowser.files[0]);
+      formData.append('file', fileBrowser.files[0]);
 
-      let projectUuid = this.projectIdInput.nativeElement.value;
+      const projectUuid = this.projectIdInput.nativeElement.value;
 
-      if(projectUuid){
-        formData.append("projectUuid", projectUuid );
+      if (projectUuid) {
+        formData.append('projectUuid', projectUuid );
       }
 
-      this.brokerService.uploadSpreadsheet(formData).subscribe({
+      this.brokerService.uploadSpreadsheet(formData, this.isUpdate).subscribe({
         next: data => {
           this.uploadResults$ = <any>data;
-          let submissionId = this.uploadResults$['details']['submission_id'];
+          const submissionId = this.uploadResults$['details']['submission_id'];
           this.loaderService.display(false);
-          this.alertService.success("Upload Success", this.uploadResults$['message'], true, true);
+          this.alertService.success('Upload Success', this.uploadResults$['message'], true, true);
           this.router.navigate(['/submissions/detail'], { queryParams: { id: submissionId, project: this.projectUuid } } );
         },
         error: err => {
@@ -62,7 +65,7 @@ export class UploadComponent implements OnInit {
       });
     } else {
       this.alertService.clear();
-      this.alertService.error("No file chosen!", "Please choose a spreadsheet to upload.", false, true)
+      this.alertService.error('No file chosen!', 'Please choose a spreadsheet to upload.', false, true);
     }
   }
 }

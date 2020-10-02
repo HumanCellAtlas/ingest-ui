@@ -13,10 +13,11 @@
                      [schema]="projectIngestSchema"
                      [data]="projectFormData"
                      [config]="config"
+                     [selectedTabKey]="formTabKey"
                      (cancel)="onCancel($event)"
-                     (tabChange)="onTabChange($event)"
-                     [selectedTabIndex]="formTabIndex"
-                     (save)="onSave($event)">
+                     (back)="onBack($event)"
+                     (save)="onSave($event)"
+                     (tabChange)="onTabChange($event)">
   </app-metadata-form>
 
 

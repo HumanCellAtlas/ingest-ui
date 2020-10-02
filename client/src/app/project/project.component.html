@@ -5,7 +5,7 @@
 <ng-container *ngIf="project">
   <div>
     <a class="vf-button vf-button--sm {{upload ? '' : 'vf-button--primary'}}" role="button"
-       routerLink="/projects/{{project?.uuid?.uuid}}/{{selectedProjectTab}}">Edit Project</a>
+       routerLink="/projects/{{project?.uuid?.uuid}}/{{selectedProjectTabKey}}">Edit Project</a>
     <button
       *ngIf="canSubmit(project)"
       type="button" class="vf-button vf-button--sm {{upload ? '' : 'vf-button--primary'}}"

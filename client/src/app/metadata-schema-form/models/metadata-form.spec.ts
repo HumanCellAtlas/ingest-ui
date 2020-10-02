@@ -74,8 +74,7 @@ describe('MetadataForm', () => {
         'schema_version',
         'schema_type',
         'provenance'
-      ],
-      removeEmptyFields: true
+      ]
     };
 
     // when

@@ -15,7 +15,28 @@
       },
       {
         "schemaName": "imaged_specimen",
-        "category": "other"
+        "category": "other",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "imaging_preparation_protocol"
+          ]
+        }
+      },
+      {
+        "schemaName": "image_file",
+        "includeModules": "ALL",
+        "category": "other",
+        "linkSpec": {
+          "linkEntities": [
+            "imaged_specimen"
+          ],
+          "linkProtocols": [
+            "imaging_protocol"
+          ]
+        }
       }
     ],
     "Sequencing": [
@@ -25,7 +46,15 @@
       },
       {
         "schemaName": "cell_suspension",
-        "category": "biomaterial"
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "dissociation_protocol"
+          ]
+        }
       },
       {
         "schemaName": "library_preparation_protocol",
@@ -34,6 +63,20 @@
       {
         "schemaName": "sequencing_protocol",
         "category": "other"
+      },
+      {
+        "schemaName": "sequence_file",
+        "includeModules": "ALL",
+        "category": "other",
+        "linkSpec": {
+          "linkEntities": [
+            "cell_suspension"
+          ],
+          "linkProtocols": [
+            "sequencing_protocol",
+            "library_preparation_protocol"
+          ]
+        }
       }
     ]
   },
@@ -93,9 +136,7 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "human_specific",
-          "medical_history",
-          "height_unit"
+          "human_specific"
         ]
       }
     ],
@@ -117,6 +158,9 @@
         "includeModules": [
           "organism_age_unit",
           "organism_age",
+          "medical_history",
+          "height",
+          "height_unit",
           "gestational_age_unit",
           "gestational_age"
         ]
@@ -128,7 +172,20 @@
         "category": "biomaterial",
         "includeModules": [
           "organism_age_unit",
-          "organism_age"
+          "organism_age",
+          "medical_history",
+          "height",
+          "height_unit"
+        ]
+      }
+    ],
+    "Yes, All": [
+      {
+        "schemaName": "donor_organism",
+        "category": "biomaterial",
+        "includeModules": [
+          "gestational_age_unit",
+          "gestational_age"
         ]
       }
     ]
@@ -139,37 +196,68 @@
         "schemaName": "donor_organism",
         "category": "biomaterial",
         "includeModules": [
-          "familial_relationship"
+          "familial_relationships"
         ]
       }
     ]
   },
   "specimenType": {
-    "Organoid": [
+    "Organoid and/or Cell Line": [
       {
         "schemaName": "organoid",
-        "category": "biomaterial"
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "differentiation_protocol",
+            "aggregate_generation_protocol"
+          ]
+        }
+      },
+      {
+        "schemaName": "cell_line",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "differentiation_protocol"
+          ]
+        }
       },
       {
         "schemaName": "aggregate_generation_protocol",
-        "category": "other"
-      }
-    ],
-    "Cell Line": [
-      {
-        "schemaName": "cell_suspension",
-        "category": "biomaterial",
-        "includeModules": [
-          "growth_conditions"
-        ]
-      },
-      {
-        "schemaName": "ipsc_induction_protocol",
         "category": "other"
       },
       {
         "schemaName": "differentiation_protocol",
         "category": "other"
+      },
+      {
+        "schemaName": "cell_suspension",
+        "category": "biomaterial",
+        "includeModules": [
+          "growth_conditions"
+        ],
+        "linkSpec": {
+          "linkEntities": [
+            "organoid",
+            "cell_line"
+          ]
+        }
+      },
+      {
+        "schemaName": "imaged_specimen",
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "organoid",
+            "cell_line"
+          ]
+        }
       }
     ]
   },
@@ -193,31 +281,12 @@
       },
       {
         "schemaName": "cell_suspension",
-        "category": "biomaterial"
-      }
-    ],
-    "Differentiation": [
-      {
-        "schemaName": "differentiation_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "organoid",
-        "category": "biomaterial"
-      },
-      {
-        "schemaName": "cell_line",
-        "category": "biomaterial"
-      }
-    ],
-    "Aggregate Generation": [
-      {
-        "schemaName": "aggregate_generation_protocol",
-        "category": "other"
-      },
-      {
-        "schemaName": "organoid",
-        "category": "biomaterial"
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkProtocols": [
+            "enrichment_protocol"
+          ]
+        }
       }
     ],
     "Induction": [
@@ -227,7 +296,15 @@
       },
       {
         "schemaName": "cell_line",
-        "category": "biomaterial"
+        "category": "biomaterial",
+        "linkSpec": {
+          "linkEntities": [
+            "specimen_from_organism"
+          ],
+          "linkProtocols": [
+            "ipsc_induction_protocol"
+          ]
+        }
       }
     ]
   }
