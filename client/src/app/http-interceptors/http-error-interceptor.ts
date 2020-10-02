@@ -22,11 +22,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-    // skip auth urls
-    //if (req.url.endsWith('/auth/account') ) {
-    //  return next.handle(req);
-    //}
-
     return next.handle(req).pipe(retry(1), catchError(
       (error: HttpErrorResponse) => {
         
@@ -37,10 +32,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         //console.log(req.url)
         if (error.error instanceof ErrorEvent) {
           // client-side or network error
-          console.error(error.error.message)
+          console.error(error.error)
         } else {
           // server-side/backend service error
-          console.error(error.message)
+          console.error(error)
 
           // todo: catch any other 5xx server errors
           if (error.status === 0 || // unreachable server
