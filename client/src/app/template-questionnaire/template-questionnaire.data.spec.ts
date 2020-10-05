@@ -90,7 +90,7 @@ describe('Template Specification conversion', () => {
   it('should embed process into biomaterials (except donors) when experiment info are recorded', () => {
     // given:
     const data = <QuestionnaireData>{
-      experimentInfo: 'Yes',
+      experimentInfo: 'Location, time and performer of the experimental processes',
       identifyingOrganisms: ['Mouse'],
       libraryPreparation: ['Other']
     };
