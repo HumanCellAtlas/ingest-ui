@@ -5,6 +5,7 @@ import {MetadataFormLayout} from '../../metadata-schema-form/models/metadata-for
 import {SpecimenGroupComponent} from '../specimen-group/specimen-group.component';
 import {DonorGroupComponent} from '../donor-group/donor-group.component';
 import {TechnologyGroupComponent} from '../technology-group/technology-group.component';
+import {ExperimentDetailGroupComponent} from '../experiment-detail-group/experiment-detail-group.component';
 
 import {QuestionnaireData, TemplateSpecification} from '../template-questionnaire.data';
 import {TemplateGeneratorService} from '../template-generator.service';
@@ -13,7 +14,7 @@ import {Router} from '@angular/router';
 import {LoaderService} from '../../shared/services/loader.service';
 import {AlertService} from '../../shared/services/alert.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DatePipe} from "@angular/common";
+import {DatePipe} from '@angular/common';
 
 export const layout: MetadataFormLayout = {
   tabs: [
@@ -30,8 +31,9 @@ export const layout: MetadataFormLayout = {
         {
           component: SpecimenGroupComponent
         },
-        'template-questionnaire.experimentInfo',
-        'template-questionnaire.protocols'
+        {
+          component: ExperimentDetailGroupComponent
+        }
       ]
     }
   ]
@@ -45,17 +47,27 @@ export const layout: MetadataFormLayout = {
 export class TemplateQuestionnaireFormComponent implements OnInit {
   templateQuestionnaireSchema: any = (questionnaireSchema as any).default;
   questionnaireData: object = {
-    'technologyType': ['Sequencing'],
-    'libraryPreparation': ['Droplet-based (e.g. 10X chromium, dropSeq, InDrop)'],
-    'identifyingOrganisms': ['Human'],
-    'preNatalQuantity': ['No, None'],
-    'specimenType': ['Primary Tissue']
-  };
+        donorsRelated: '',
+        identifyingOrganisms: [],
+        libraryPreparation: [],
+        preNatalQuantity: '',
+        protocols: [],
+        specimenType: [],
+        technologyType: [],
+        experimentInfo: [],
+        timecourseBiomaterialType: []
+      };
   config: MetadataFormConfig = {
     layout: layout,
     submitButtonLabel: 'Generate Spreadsheet',
     cancelButtonLabel: 'Cancel',
-    showResetButton: true
+    showResetButton: true,
+    inputType: {
+      'preNatalQuantity': 'radioList',
+      'specimenPurchased': 'radioInline',
+      'donorsRelated': 'radioInline',
+      'experimentInfo': 'radioInLine'
+    }
   };
 
   constructor(private templateGenerator: TemplateGeneratorService,
@@ -71,9 +83,13 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
 
   onSave($event: object) {
     const data: QuestionnaireData = $event['value'];
-    this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
+    const valid = $event['valid'];
+
+    if (valid) {
+      this.loaderService.display(true, 'Generating your spreadsheet could take up to a minute,' +
       ' please don\'t refresh while this is happening.');
     const templateSpec = TemplateSpecification.convert(data);
+
     this.templateGenerator.generateTemplate(templateSpec)
       .subscribe(
         blob => {
@@ -101,6 +117,15 @@ export class TemplateQuestionnaireFormComponent implements OnInit {
           window.scroll(0, 0);
         }
       );
+    } else {
+      {
+        this.alertService.clear();
+        const message = 'Some required fields in the form have not been filled out. Please enter all required ' +
+          'information before generating a spreadsheet.';
+        this.alertService.error('Missing required information:', message);
+        window.scroll(0, 0);
+      }
+    }
   }
 
   onCancel($event) {

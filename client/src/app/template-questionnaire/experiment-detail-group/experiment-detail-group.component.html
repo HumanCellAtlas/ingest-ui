@@ -1,0 +1,16 @@
+<app-metadata-field [metadata]="metadataForm.get('template-questionnaire.protocols')"
+                    [control]="metadataForm.getControl('template-questionnaire.protocols')"
+                    [id]="'template-questionnaire.protocols'">
+</app-metadata-field>
+
+<app-metadata-field
+  [metadata]="metadataForm.get('template-questionnaire.experimentInfo')"
+  [control]="metadataForm.getControl('template-questionnaire.experimentInfo')"
+  [id]="'template-questionnaire.experimentInfo'">
+</app-metadata-field>
+
+<app-metadata-field *ngIf="showTimecourseBiomaterialType"
+  [metadata]="metadataForm.get('template-questionnaire.timecourseBiomaterialType')"
+  [control]="metadataForm.getControl('template-questionnaire.timecourseBiomaterialType')"
+  [id]="'template-questionnaire.timecourseBiomaterialType'">
+</app-metadata-field>
