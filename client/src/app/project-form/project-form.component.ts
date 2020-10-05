@@ -218,7 +218,7 @@ export class ProjectFormComponent implements OnInit {
           }));
     } else {
       this.patch = formValue;
-      return this.ingestService.patchProject(this.projectResource, this.patch)
+      return this.ingestService.partiallyPatchProject(this.projectResource, this.patch)
         .map(project => project as Project);
     }
   }
