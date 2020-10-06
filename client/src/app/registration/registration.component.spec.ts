@@ -1,10 +1,9 @@
 import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
-
 import {RegistrationComponent} from './registration.component';
 import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from '../core/registration.service';
 import {AaiService} from '../aai/aai.service';
 import {User} from 'oidc-client';
-import {of} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import SpyObj = jasmine.SpyObj;
@@ -45,10 +44,11 @@ describe('Registration', () => {
 
   const accessToken = '78dea90';
   const user: User = <User>{access_token: accessToken};
+  const behaviourUser = new BehaviorSubject<User>(user);
 
   it('should register through the service if terms are accepted', fakeAsync(() => {
     // given:
-    aaiService.getUser.and.returnValue(of(user));
+    aaiService.getUser.and.returnValue(behaviourUser);
     registration.termsAccepted = true;
 
     // and:
@@ -61,6 +61,7 @@ describe('Registration', () => {
 
     // then:
     flushMicrotasks();
+    expect(aaiService.getUser).toHaveBeenCalled();
     expect(registrationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(true);
     expect(registration.status.message).not.toBe(undefined);
@@ -68,7 +69,7 @@ describe('Registration', () => {
 
   it('should set status when registration fails with account duplication', fakeAsync(() => {
     // given:
-    aaiService.getUser.and.returnValue(of(user));
+    aaiService.getUser.and.returnValue(behaviourUser);
     registration.termsAccepted = true;
 
     // and:
@@ -81,6 +82,7 @@ describe('Registration', () => {
 
     // then:
     flushMicrotasks();
+    expect(aaiService.getUser).toHaveBeenCalled();
     expect(registrationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
     expect(registration.status.message).not.toBe(undefined);
@@ -88,13 +90,14 @@ describe('Registration', () => {
 
   it('should NOT proceed if terms are not accepted', async(() => {
     // given:
-    aaiService.getUser.and.returnValue(of(user));
+    aaiService.getUser.and.returnValue(behaviourUser);
     registration.termsAccepted = false;
 
     // when:
     registration.proceed();
 
     // then:
+    expect(aaiService.getUser).not.toHaveBeenCalled();
     expect(registrationService.register).not.toHaveBeenCalled();
   }));
 });

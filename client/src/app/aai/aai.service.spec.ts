@@ -51,7 +51,7 @@ describe('Complete Authentication', () => {
       imports: [HttpClientTestingModule],
     });
 
-    aaiService = TestBed.get(AaiService);
+    aaiService = TestBed.inject(AaiService);
   });
 
   it('should redirect home when the user is registered', async(() => {
@@ -70,7 +70,7 @@ describe('Complete Authentication', () => {
       expect(ingestSvc.getUserAccount).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledWith('/home');
-      expect(aaiService.user$.getValue()).toBe(user);
+      expect(aaiService.getUser().getValue()).toBe(user);
     });
   }));
 
@@ -91,7 +91,7 @@ describe('Complete Authentication', () => {
       expect(ingestSvc.getUserAccount).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledWith('/redirect_url');
-      expect(aaiService.user$.getValue()).toBe(user);
+      expect(aaiService.getUser().getValue()).toBe(user);
     });
   }));
 
@@ -107,7 +107,7 @@ describe('Complete Authentication', () => {
       expect(ingestSvc.getUserAccount).toHaveBeenCalledTimes(1);
       expect(router.navigate).toHaveBeenCalledTimes(1);
       expect(router.navigate).toHaveBeenCalledWith(['/registration']);
-      expect(aaiService.user$.getValue()).toBe(user);
+      expect(aaiService.getUser().getValue()).toBe(user);
     });
   }));
 
@@ -128,7 +128,7 @@ describe('Complete Authentication', () => {
       expect(router.navigateByUrl).toHaveBeenCalledTimes(0);
       expect(alertService.error).toHaveBeenCalledTimes(1);
       expect(userManager.removeUser).toHaveBeenCalledTimes(1);
-      expect(aaiService.user$.getValue()).toBeFalsy();
+      expect(aaiService.getUser().getValue()).toBeFalsy();
     });
   }));
 
