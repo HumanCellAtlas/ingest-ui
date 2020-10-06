@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {Observable, timer} from 'rxjs';
-import {filter, switchMapTo, takeWhile, tap} from 'rxjs/operators';
+import {takeWhile, tap} from 'rxjs/operators';
 import {AaiService} from '../aai/aai.service';
 import {IngestService} from '../shared/services/ingest.service';
 import {Project, ProjectColumn} from '../shared/models/project';
@@ -14,7 +14,6 @@ import {Account} from '../core/account';
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   account$: Observable<Account>;
-  isLoggedIn$: Observable<boolean>;
   isWrangler: Boolean;
   introduction: String;
   columns: ProjectColumn[];
@@ -52,11 +51,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.isLoggedIn$ = this.aai.isUserLoggedIn();
-    this.account$ = this.isLoggedIn$.pipe(
-      filter(loggedIn => loggedIn),
-      switchMapTo(this.ingestService.getUserAccount())
-    );
+    // protected against null user by the user-is-logged-in guard
+    this.account$ = this.ingestService.getUserAccount();
     this.pollAccount();
     this.pollProjects();
   }

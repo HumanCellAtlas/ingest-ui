@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from '../core/registration.service';
 import {AaiService} from '../aai/aai.service';
-import {User} from 'oidc-client';
 
 const messages = {
   success: 'Your account was successfully created. Click OK to return to the home page.',
@@ -36,19 +35,20 @@ export class RegistrationComponent implements OnInit {
   }
 
   proceed() {
-    this.aaiService.getUser().subscribe((user: User) => {
-      if (this.termsAccepted) {
-        this.status = <RegistrationStatus>{};
-        this.registrationService.register(user.access_token)
-          .then(() => {
-            this.status.success = true;
-            this.status.message = messages.success;
-          })
-          .catch((failure: RegistrationFailed) => {
-            this.status.success = false;
-            this.status.message = messages.error[failure.errorCode];
-          });
-      }
-    });
+    if (this.termsAccepted) {
+      this.status = <RegistrationStatus>{};
+      this.registrationService.register(this.aaiService.getUser().value.access_token)
+        .then(() => {
+          this.status.success = true;
+          this.status.message = messages.success;
+          // re-trigger subscribers to .getUser
+          // ToDo Host a similar BehaviourSubject somewhere for userAccount for separate subscription, rather than using aai.getUser()
+          this.aaiService.getUser().next(this.aaiService.getUser().value);
+        })
+        .catch((failure: RegistrationFailed) => {
+          this.status.success = false;
+          this.status.message = messages.error[failure.errorCode];
+        });
+    }
   }
 }

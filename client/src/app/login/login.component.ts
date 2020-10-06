@@ -15,21 +15,17 @@ export class LoginComponent {
               private router: Router,
               private route: ActivatedRoute) {
     this.redirect = this.route.snapshot.queryParamMap.get('redirect');
-    this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        this.navigate();
-      }
-    });
+    if ( this.aai.userLoggedIn() ) {
+      this.navigate();
+    }
   }
 
   login(): void {
-    this.aai.isUserLoggedIn().subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        this.navigate();
-      } else {
-        this.aai.startAuthentication(this.redirect);
-      }
-    });
+    if (this.aai.userLoggedIn()) {
+      this.navigate();
+    } else {
+      this.aai.startAuthentication(this.redirect);
+    }
   }
 
   navigate() {

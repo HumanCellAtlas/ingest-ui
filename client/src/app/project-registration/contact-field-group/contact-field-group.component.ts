@@ -5,7 +5,6 @@ import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {MetadataFormHelper} from '../../metadata-schema-form/models/metadata-form-helper';
 import {AaiService} from '../../aai/aai.service';
 import {Profile} from 'oidc-client';
-import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-contact-field-group',
@@ -54,15 +53,16 @@ export class ContactFieldGroupComponent implements OnInit {
     // default
     correspondingCtrl.setValue(true);
 
-    this.aai.getUserSubject().pipe(first()).subscribe(user => {
-      this.userInfo = user ? user.profile : null;
+    const user = this.aai.getUser().value;
+    if (AaiService.loggedIn(user) && !this.userInfo && user.profile) {
+      this.userInfo = user.profile;
       const previousValue = contactNameCtrl.value;
       const name = [this.userInfo.given_name, '', this.userInfo.family_name].join(',');
       if (previousValue !== name) {
         contactNameCtrl.setValue(name);
         contactEmailCtrl.setValue(this.userInfo.email);
       }
-    });
+    }
   }
 
   removeFormControl(control: AbstractControl, i: number) {
