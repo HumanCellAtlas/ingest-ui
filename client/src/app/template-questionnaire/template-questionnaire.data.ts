@@ -14,6 +14,7 @@ export interface QuestionnaireData {
   donorsRelated: string;
   specimenPurchased: string;
   protocols: string[];
+  timecourseBiomaterialType: string[];
 }
 
 export interface TypeSpec {
@@ -66,7 +67,6 @@ const default_type_specs = [
       'weight',
       'weight_unit',
       'sex',
-      'timecourse'
     ]
   },
   {
@@ -81,9 +81,7 @@ const default_type_specs = [
       'genus_species',
       'organ',
       'organ_parts',
-      'diseases',
-      'state_of_specimen',
-      'preservation_storage'
+      'diseases'
     ],
     linkSpec: {
           'linkEntities': [
@@ -101,7 +99,8 @@ export class TemplateSpecification {
 
   static convert(questionnaire: QuestionnaireData): TemplateSpecification {
     const specification = new TemplateSpecification();
-    const recordInfo: boolean = 'experimentInfo' in questionnaire && questionnaire.experimentInfo.toLowerCase() === 'yes';
+    const recordInfo: boolean = 'experimentInfo' in questionnaire &&
+      questionnaire.experimentInfo.includes('Location, time and performer of the experimental processes');
     default_type_specs.forEach((ts: any) => specification.addTypeSpec(ts, recordInfo));
     for (const question in questionnaire) {
       if (!(question in answers)) { continue; }
@@ -134,7 +133,10 @@ export class TemplateSpecification {
   private addTypeSpec(ts: TypeSpec, recordInfo: boolean): void {
     // cloning to ensure the source object doesn't get overwritten by merges
     const clone = Object.assign({}, ts);
-    clone.embedProcess = 'category' in clone && clone['category'] === 'biomaterial' ? recordInfo : false;
+    clone.embedProcess = ('category' in clone &&
+      clone['schemaName'] !== 'donor_organism' &&
+      clone['category'] === 'biomaterial'
+    ) ? recordInfo : false;
     delete clone['category'];
     this.addModules(clone, schemaFields[ts.schemaName]);
     this.types.set(ts.schemaName, clone);

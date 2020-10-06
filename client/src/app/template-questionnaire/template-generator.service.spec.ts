@@ -39,7 +39,9 @@ describe('TemplateGeneratorService', () => {
         protocols: [],
         specimenPurchased: '',
         specimenType: [],
-        technologyType: []
+        technologyType: [],
+        timecourse: '',
+        timecourseBiomaterialType: []
       };
 
       const tSpec = TemplateSpecification.convert(qData);
@@ -71,7 +73,9 @@ describe('TemplateGeneratorService', () => {
         protocols: [],
         specimenPurchased: '',
         specimenType: [],
-        technologyType: []
+        technologyType: [],
+        timecourse: '',
+        timecourseBiomaterialType: []
       };
 
       const tSpec = TemplateSpecification.convert(qData);

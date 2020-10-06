@@ -82,9 +82,6 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
             ProjectColumn.last_updated
           ];
         }
-      },
-      error: err => {
-        console.log('err', err);
       }
     });
   }
@@ -104,9 +101,6 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projects = data._embedded ? data._embedded.projects : [];
           this.pagination = data.page;
           this.getCurrentPageInfo(this.pagination);
-        },
-        error: err => {
-          console.log('err', err);
         }
       });
   }

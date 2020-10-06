@@ -26,7 +26,7 @@ describe('Template Specification conversion', () => {
       question: 'libraryPreparation',
       answer: 'Droplet-based (e.g. 10X chromium, dropSeq, InDrop)',
       arrayType: true,
-      schemaNames: ['sequencing_protocol', 'library_preparation']
+      schemaNames: ['sequencing_protocol', 'library_preparation_protocol']
     },
     {
       question: 'libraryPreparation',
@@ -82,15 +82,15 @@ describe('Template Specification conversion', () => {
 
     // and:
     const donorOrganism = types[0];
-    const expectedModules = ['human_specific', 'medical_history', 'height_unit', 'mouse_specific'];
+    const expectedModules = ['human_specific', 'mouse_specific'];
     expect(donorOrganism.includeModules.length >= expectedModules.length).toBe(true);
     expectedModules.forEach(module => expect(donorOrganism.includeModules).toContain(module));
   });
 
-  it('should embed process into biomaterials when experiment info are recorded', () => {
+  it('should embed process into biomaterials (except donors) when experiment info are recorded', () => {
     // given:
     const data = <QuestionnaireData>{
-      experimentInfo: 'Yes',
+      experimentInfo: 'Location, time and performer of the experimental processes',
       identifyingOrganisms: ['Mouse'],
       libraryPreparation: ['Other']
     };
@@ -99,12 +99,15 @@ describe('Template Specification conversion', () => {
     const specification = TemplateSpecification.convert(data);
 
     // then:
-    const biomaterials = new Set<string>([
-      'donor_organism', 'cell_suspension',
-      'library_preparation', 'specimen_from_organism'
+    // TODO should library_preparation_protocol have embedded process???
+    // where is embedProcess being used?
+    // the spreadsheet doesn't seem to have any process column for these worksheets
+    const entities_with_process = new Set<string>([
+      'cell_suspension', 'specimen_from_organism', 'library_preparation_protocol'
     ]);
     specification.getTypes().forEach(ts => {
-      expect(ts.embedProcess).withContext(ts.schemaName).toBe(biomaterials.has(ts.schemaName));
+      expect(ts.embedProcess).withContext(ts.schemaName).toBe(entities_with_process.has(ts.schemaName));
+      console.log(ts.schemaName, ts.embedProcess);
     });
   });
 
@@ -114,11 +117,11 @@ describe('Merging', () => {
 
   it('should merge included modules', () => {
     // given:
-    const modules = <TypeSpec> {
+    const modules = <TypeSpec>{
       schemaName: 'name',
       includeModules: ['contributors', 'funders']
     };
-    const otherModules = <TypeSpec> {
+    const otherModules = <TypeSpec>{
       schemaName: 'name',
       includeModules: ['funders', 'contacts']
     };
@@ -157,15 +160,15 @@ describe('Merging', () => {
 
   it('should merge modules with matching schema names', () => {
     // given:
-    const donor = <TypeSpec> {
+    const donor = <TypeSpec>{
       schemaName: 'donor_organism',
       includeModules: []
     };
-    const otherDonor = <TypeSpec> {
+    const otherDonor = <TypeSpec>{
       schemaName: 'donor_organism',
       includeModules: ['name']
     };
-    const imageFile = <TypeSpec> {
+    const imageFile = <TypeSpec>{
       schemaName: 'image_file',
       includeModules: ['file_name']
     };
@@ -180,8 +183,8 @@ describe('Merging', () => {
 
   it('should merge empty linking specifications', () => {
     // given:
-    const empty = <TypeSpec> {schemaName: 'name'};
-    const otherEmpty = <TypeSpec> {schemaName: 'name'};
+    const empty = <TypeSpec>{schemaName: 'name'};
+    const otherEmpty = <TypeSpec>{schemaName: 'name'};
 
     // when:
     merge(empty, otherEmpty);
@@ -194,13 +197,13 @@ describe('Merging', () => {
 
   it('should merge link entities', () => {
     // given:
-    const entities = <TypeSpec> {
+    const entities = <TypeSpec>{
       schemaName: 'name',
       linkSpec: {
         linkEntities: ['organoid', 'specimen_from_organism']
       }
     };
-    const otherEntities = <TypeSpec> {
+    const otherEntities = <TypeSpec>{
       schemaName: 'name',
       linkSpec: {
         linkEntities: ['donor_organism', 'organoid']
@@ -217,13 +220,13 @@ describe('Merging', () => {
 
   it('should merge link protocols', () => {
     // given:
-    const protocols = <TypeSpec> {
+    const protocols = <TypeSpec>{
       schemaName: 'name',
       linkSpec: {
         linkProtocols: ['dissociation_protocol', 'sequencing_protocol']
       }
     };
-    const otherProtocols = <TypeSpec> {
+    const otherProtocols = <TypeSpec>{
       schemaName: 'name',
       linkSpec: {
         linkProtocols: ['sequencing_protocol', 'analysis_protocol']

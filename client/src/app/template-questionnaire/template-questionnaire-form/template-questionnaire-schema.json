@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "description": "Information required about your experiments to trigger the creation of a metadata spreadsheet.",
+  "description": "Information required about your experiments to enable creation of a custom metadata spreadsheet.",
   "name": "template-questionnaire",
   "properties": {
     "technologyType": {
-      "user_friendly": "Did you use imaging and/or sequencing to generate your data?",
-      "guidelines": "The technology type tells us whether we should add fields like ‘sequencing method’ for a sequencing experiment or ‘imaged sliced thickness’ for an imaging experiment.",
+      "user_friendly": "What type of technology did you use to generate your cellular resolution data?",
+      "guidelines": "",
       "type": "array",
       "enum": [
         "Sequencing",
@@ -14,31 +14,29 @@
       ]
     },
     "libraryPreparation": {
-      "user_friendly": "What type of library preparation did you use?",
-      "guidelines": "The library preparation method tells us whether we should add fields like ‘well id’ for plate-based sequencing or ‘cell barcode-containing read’ for droplet-based sequencing.",
+      "user_friendly": "Which library preparation technique did you use for sequencing?",
+      "guidelines": "",
       "type": "array",
       "enum": [
-        "Droplet-based (e.g. 10X chromium, dropSeq, InDrop)",
-        "Plate-based (e.g. SmartSeq2)",
-        "Other"
+        "Droplet-based (e.g. 10X, dropSeq, InDrop)",
+        "Plate-based (e.g. SmartSeq2)"
       ]
     },
     "identifyingOrganisms": {
-      "user_friendly": "What species are the donors of your experiment?",
-      "guidelines": "The species of your donors tells us whether we should add fields like ‘strain’ for mouse experiments and ‘ethnicity’ and ‘medical history’ for human experiments.",
+      "user_friendly": "What species are the samples in your experiment?",
+      "guidelines": "",
       "type": "array",
       "items": {
         "type": "string"
       },
       "enum": [
         "Human",
-        "Mouse",
-        "Other"
+        "Mouse"
       ]
     },
     "donorsRelated": {
       "user_friendly": "Are any of your donors related to one another?",
-      "guidelines": "Answering yes to this question allows you to link related donors, for example a sample from a mother to that of its embryo.",
+      "guidelines": "'Yes' will add fields to link related donors, e.g. a mother to her embryo.",
       "example": "No",
       "type": "string",
       "enum": [
@@ -47,19 +45,19 @@
       ]
     },
     "preNatalQuantity": {
-      "user_friendly": "Are any of your donor samples prenatal?",
-      "guidelines": "This information tells us whether we should include fields to record pre-birth age.",
+      "user_friendly": "Does the experiment include pre-natal samples?",
+      "guidelines": "'Yes' will include fields to record pre-birth age.",
       "type": "string",
-      "example": "No, None",
+      "example": "No",
       "enum": [
-        "Yes, All",
-        "Yes, Some",
-        "No, None"
+        "Yes, all are pre-natal",
+        "Yes, some are pre-natal and some are post-natal",
+        "No"
       ]
     },
     "specimenType": {
-      "user_friendly": "What type of specimens did you use?",
-      "guidelines": "The type of specimen tells us whether we should add fields related to the biospecimen type, for example ‘organ’ for primary tissue or ‘organ model’ for a cell line model.",
+      "user_friendly": "What type of biomaterial are the samples?",
+      "guidelines": "This determines whether tabs should be added to record Organoid and Cell line information.",
       "type": "array",
       "items": {
         "type": "string"
@@ -70,39 +68,56 @@
       ]
     },
     "specimenPurchased": {
-      "user_friendly": "Did you purchase your specimens?",
-      "guidelines": "Add fields for capturing purchase information. Not required if all specimens are Primary Tissue",
+      "user_friendly": "Did you purchase any samples?",
+      "guidelines": "'Yes' will add fields for capturing purchasing information.",
       "type": "string",
       "example": "No",
-      "enum": [
-        "Yes",
-        "No"
-      ]
-    },
-    "experimentInfo": {
-      "user_friendly": "Do you wish to record information about the where, when and who of your experiment?",
-      "guidelines": "Answering yes to this question will add fields to record the location, name/initials of the performer, and the date and time when your experiment was performed.",
-      "example": "No",
-      "type": "string",
       "enum": [
         "Yes",
         "No"
       ]
     },
     "protocols": {
-      "user_friendly": "Which of the following protocols did you use?",
-      "guidelines": "The protocol types tell us whether to add fields specific to certain protocol types, for example ‘dissociation method’ for a dissociation protocol and ‘markers’ for an enrichment protocol.",
+      "user_friendly": "Which of the following protocols are relevant to your experiment?",
+      "guidelines": "",
       "type": "array",
       "items": {
         "type": "string"
       },
       "enum": [
-        "Enrichment",
-        "Induction"
+        "Enrichment protocol",
+        "iPSC induction protocol"
+      ]
+    },
+    "experimentInfo": {
+      "user_friendly": "Please select from the list if any additional metadata are relevant to your experiment:",
+      "guidelines": "Tick all that apply. Tabs or fields will be added to capture information for any that are selected. ",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Timecourse",
+        "Tissue preservation and storage",
+        "Tissue condition",
+        "Location, time and performer of the experimental processes"
+      ]
+    },
+    "timecourseBiomaterialType": {
+      "user_friendly": "Which type of biomaterial underwent a timecourse?",
+      "guidelines": "",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "Donor",
+        "Cell line",
+        "Cell suspension"
       ]
     }
   },
-  "required": ["technologyType"],
-  "title": "Generate your metadata spreadsheet",
+  "required": ["technologyType", "identifyingOrganisms", "specimenType"],
+  "title": "Generate a metadata template",
   "type": "object"
 }

@@ -106,8 +106,16 @@ export class IngestService {
   }
 
   public patchProject(projectResource, patch): Observable<Project> {
-    const projectLink: string = projectResource['_links']['self']['href'];
-    patch['validationState'] = 'Draft';
+    return this.doPatchProject(projectResource, patch);
+  }
+
+  public partiallyPatchProject(projectResource, patch): Observable<Project> {
+    return this.doPatchProject(projectResource, patch, true);
+  }
+
+  private doPatchProject(projectResource, patch, partial: boolean = false): Observable<Project> {
+    const projectLink: string = projectResource['_links']['self']['href'] + `?partial=${partial}`;
+    patch['validationState'] = 'DRAFT';
     return this.http.patch<Project>(projectLink, patch);
   }
 

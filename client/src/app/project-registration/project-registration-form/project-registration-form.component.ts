@@ -164,6 +164,9 @@ export class ProjectRegistrationFormComponent implements OnInit {
     this.patch = formValue;
     return this.ingestService
       .postProject(this.patch)
-      .pipe(concatMap(createdProject => this.ingestService.patchProject(createdProject, this.patch))); // save fields outside content
+      .pipe(
+        // save fields outside content
+        concatMap(createdProject => this.ingestService.partiallyPatchProject(createdProject, this.patch))
+      );
   }
 }

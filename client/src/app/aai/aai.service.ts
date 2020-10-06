@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {BehaviorSubject, from} from 'rxjs';
-
 import {User, UserManager} from 'oidc-client';
 import {AlertService} from '../shared/services/alert.service';
 import {IngestService} from '../shared/services/ingest.service';
@@ -92,7 +91,7 @@ export class AaiService {
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          if (error.status === 404) {
+          if (error.status === 404) { // Not found - isn't captured by http error interceptor
             this.router.navigate(['/registration']);
           } else {
             this.alertService.error('Ingest Service Error',
