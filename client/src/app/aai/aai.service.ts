@@ -97,6 +97,7 @@ export class AaiService {
             this.alertService.error('Ingest Service Error',
               'A problem occurred while trying to check the user account from the Ingest Service.' +
               ' Please try again later. If the error is persistent, please email hca-ingest-dev@ebi.ac.uk');
+            this.removeUser();
           }
         }
       });
