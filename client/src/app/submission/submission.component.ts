@@ -203,14 +203,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     timer(500, this.pollInterval)
       .pipe(
         takeWhile(() => this.alive), // only fires when component is alive);
-        filter(() => this.submissionEnvelopeId.length > 0)
+        filter(() => this.submissionEnvelopeId && this.submissionEnvelopeId.length > 0)
       ).subscribe(() => this.getSubmissionProject(this.submissionEnvelopeId));
   }
 
   private getArchiveEntitiesFromSubmission(submissionUuid: string): Observable<ArchiveEntity[]> {
     return this.ingestService.getArchiveSubmission(submissionUuid)
       .pipe(
-        filter(data => 'entities' in data._links && 'href' in data._links['entities']),
+        filter(data => data && 'entities' in data._links && 'href' in data._links['entities']),
         map(data => data._links['entities']['href']),
         distinctUntilChanged(),
         switchMap(href => this.ingestService.getAs<ListResult<ArchiveEntity>>(href)),
