@@ -3,7 +3,7 @@ import {RegistrationComponent} from './registration.component';
 import {RegistrationService, RegistrationErrorCode, RegistrationFailed} from '../core/registration.service';
 import {AaiService} from '../aai/aai.service';
 import {User} from 'oidc-client';
-import {BehaviorSubject} from 'rxjs';
+import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import SpyObj = jasmine.SpyObj;
@@ -19,7 +19,7 @@ let aaiService: SpyObj<AaiService>;
 
 function configureTestEnvironment(): void {
   registrationService = createSpyObj('AuthenticationService', ['register']);
-  aaiService = createSpyObj('AaiService', ['getUser']);
+  aaiService = createSpyObj('AaiService', ['getUser', 'setUserSubject']);
 
   TestBed.configureTestingModule({
     declarations: [RegistrationComponent],
@@ -44,11 +44,11 @@ describe('Registration', () => {
 
   const accessToken = '78dea90';
   const user: User = <User>{access_token: accessToken};
-  const behaviourUser = new BehaviorSubject<User>(user);
+  const observableUser = of(user);
 
   it('should register through the service if terms are accepted', fakeAsync(() => {
     // given:
-    aaiService.getUser.and.returnValue(behaviourUser);
+    aaiService.getUser.and.returnValue(observableUser);
     registration.termsAccepted = true;
 
     // and:
@@ -62,6 +62,7 @@ describe('Registration', () => {
     // then:
     flushMicrotasks();
     expect(aaiService.getUser).toHaveBeenCalled();
+    expect(aaiService.setUserSubject).toHaveBeenCalledWith(user);
     expect(registrationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(true);
     expect(registration.status.message).not.toBe(undefined);
@@ -69,7 +70,7 @@ describe('Registration', () => {
 
   it('should set status when registration fails with account duplication', fakeAsync(() => {
     // given:
-    aaiService.getUser.and.returnValue(behaviourUser);
+    aaiService.getUser.and.returnValue(observableUser);
     registration.termsAccepted = true;
 
     // and:
@@ -83,6 +84,7 @@ describe('Registration', () => {
     // then:
     flushMicrotasks();
     expect(aaiService.getUser).toHaveBeenCalled();
+    expect(aaiService.setUserSubject).not.toHaveBeenCalled();
     expect(registrationService.register).toHaveBeenCalledWith(accessToken);
     expect(registration.status.success).toEqual(false);
     expect(registration.status.message).not.toBe(undefined);
@@ -90,7 +92,7 @@ describe('Registration', () => {
 
   it('should NOT proceed if terms are not accepted', async(() => {
     // given:
-    aaiService.getUser.and.returnValue(behaviourUser);
+    aaiService.getUser.and.returnValue(observableUser);
     registration.termsAccepted = false;
 
     // when:
@@ -98,6 +100,7 @@ describe('Registration', () => {
 
     // then:
     expect(aaiService.getUser).not.toHaveBeenCalled();
+    expect(aaiService.setUserSubject).not.toHaveBeenCalled();
     expect(registrationService.register).not.toHaveBeenCalled();
   }));
 });

@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {BehaviorSubject, from} from 'rxjs';
+import {BehaviorSubject, from, Observable, of, Subscription} from 'rxjs';
 import {User, UserManager} from 'oidc-client';
 import {AlertService} from '../shared/services/alert.service';
 import {IngestService} from '../shared/services/ingest.service';
 import {AaiSecurity} from './aai.module';
+import {map, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: AaiSecurity,
@@ -18,7 +19,9 @@ export class AaiService {
               private router: Router) {
 
   }
-  private cachedUser$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  private userSubject = new BehaviorSubject<User>(undefined);
+  private aaiReturned = false;
+  private cachedUser: User;
 
   static authHeader(user: User): string {
     return user ? `${user.token_type} ${user.access_token}` : '';
@@ -28,26 +31,49 @@ export class AaiService {
     return user && !user.expired;
   }
 
-  // Cannot pipe from BehaviorSubject, Only use .subscriptions or .value
-  getUser(): BehaviorSubject<User> {
-    // Cannot pipe from promises
-    from(this.manager.getUser()).subscribe(user => this.setUser(user));
-    return this.cachedUser$;
-  }
-
-  private setUser(user: User) {
-    // Every call to .next will trigger subscribers, Only call when valid and different
-    if (AaiService.loggedIn(user) && user.id_token !== this.cachedUser$.value?.id_token) {
-      this.cachedUser$.next(user);
+  // For short lived / single-call components:
+  // The response will always reflect the value in aai, but subscribers will not be triggered with subsequent changes.
+  // Pipelines have limited functionality from Promises, especially triggering side-effects, mapping seems fine.
+  getUser(): Observable<User> {
+    if (this.aaiReturned) {
+      return of(this.cachedUser);
+    } else {
+      return from(this.manager.getUser()).pipe(
+        tap(user => this.setUser(user))
+      );
     }
   }
 
-  userLoggedIn(): boolean {
-    return AaiService.loggedIn(this.cachedUser$.value);
+  // For long lived / responsive components
+  // Subscribers to the BehaviourSubject will receive the current value immediately, and be triggered when the user changes
+  // The response may be initially be undefined (if not yet retrieved from aai) so do not use .value or .GetValue.
+  // Pipelines have limited functionality from BehaviorSubject, recommend subscription.
+  // Ignore the appendix, returned so that the thread is not killed.
+  // ToDo is this the best we can do here?
+  getUserSubject(): { subject: BehaviorSubject<User>; appendix: Subscription } {
+    return {subject: this.userSubject, appendix: this.getUser().subscribe()};
   }
 
-  userAuthHeader(): string {
-    return AaiService.authHeader(this.cachedUser$.value);
+  // Publish user changes to subscribers of getUserSubject
+  setUserSubject(user: User) {
+    this.userSubject.next(user);
+  }
+
+  private setUser(user: User) {
+    // Every call to .next will trigger getUserSubject subscribers, Only call when valid and different
+    if (AaiService.loggedIn(user) && user.id_token !== this.cachedUser?.id_token) {
+      this.cachedUser = user;
+      this.userSubject.next(user);
+    }
+    this.aaiReturned = true;
+  }
+
+  userLoggedIn(): Observable<boolean> {
+    return this.getUser().pipe(map(user => AaiService.loggedIn(user)));
+  }
+
+  userAuthHeader(): Observable<string> {
+    return this.getUser().pipe(map(user => AaiService.authHeader(user)));
   }
 
   startAuthentication(redirect: string): Promise<void> {
@@ -75,7 +101,8 @@ export class AaiService {
     this.manager.removeUser().then(
       () => {
         console.log('removing user');
-        this.cachedUser$.next(null);
+        this.cachedUser = undefined;
+        this.userSubject.next(undefined);
       }
     );
   }

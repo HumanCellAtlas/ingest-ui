@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.aai.getUser().subscribe(user => {
+    this.aai.getUserSubject().subject.subscribe(user => {
       if (AaiService.loggedIn(user)) {
         this.userProfile$.next(user.profile);
         // ToDo Host a similar BehaviourSubject somewhere for userAccount for separate subscription, rather than using aai.getUser()

@@ -36,19 +36,21 @@ export class RegistrationComponent implements OnInit {
 
   proceed() {
     if (this.termsAccepted) {
-      this.status = <RegistrationStatus>{};
-      this.registrationService.register(this.aaiService.getUser().value.access_token)
-        .then(() => {
-          this.status.success = true;
-          this.status.message = messages.success;
-          // re-trigger subscribers to .getUser
-          // ToDo Host a similar BehaviourSubject somewhere for userAccount for separate subscription, rather than using aai.getUser()
-          this.aaiService.getUser().next(this.aaiService.getUser().value);
-        })
-        .catch((failure: RegistrationFailed) => {
-          this.status.success = false;
-          this.status.message = messages.error[failure.errorCode];
-        });
+      this.aaiService.getUser().subscribe(user => {
+        this.status = <RegistrationStatus>{};
+        this.registrationService.register(user.access_token)
+          .then(() => {
+            this.status.success = true;
+            this.status.message = messages.success;
+            // re-trigger subscribers to .getUserSubject
+            // ToDo Host a similar BehaviourSubject somewhere for userAccount for separate subscription
+            this.aaiService.setUserSubject(user);
+          })
+          .catch((failure: RegistrationFailed) => {
+            this.status.success = false;
+            this.status.message = messages.error[failure.errorCode];
+          });
+      });
     }
   }
 }

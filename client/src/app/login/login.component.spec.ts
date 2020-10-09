@@ -4,6 +4,7 @@ import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AaiService} from '../aai/aai.service';
 import {AlertService} from '../shared/services/alert.service';
+import {of} from 'rxjs';
 
 
 describe('LoginComponent', () => {
@@ -41,7 +42,7 @@ describe('LoginComponent', () => {
 
 
   it('should create', () => {
-    mockAaiSvc.userLoggedIn.and.returnValue(false);
+    mockAaiSvc.userLoggedIn.and.returnValue(of(false));
     loginFixture = TestBed.createComponent(LoginComponent);
     component = loginFixture.componentInstance;
     expect(component).toBeTruthy();
@@ -49,7 +50,7 @@ describe('LoginComponent', () => {
 
   describe('login method', function () {
     it('should redirect and authorise the user', () => {
-      isAuthenticatedSpy = mockAaiSvc.userLoggedIn.and.returnValue(false);
+      isAuthenticatedSpy = mockAaiSvc.userLoggedIn.and.returnValue(of(false));
 
       component = new LoginComponent(mockAaiSvc, mockRouterSvc, mockActivatedRoute);
       component.login();
@@ -60,7 +61,7 @@ describe('LoginComponent', () => {
     });
 
     it('should redirect to home when no given url', () => {
-      isAuthenticatedSpy = mockAaiSvc.userLoggedIn.and.returnValue(true);
+      isAuthenticatedSpy = mockAaiSvc.userLoggedIn.and.returnValue(of(true));
 
       const queryParamMap = jasmine.createSpyObj(['get']);
       queryParamMap.get.and.returnValue('');
@@ -79,7 +80,7 @@ describe('LoginComponent', () => {
     });
 
     it('should redirect to given url', () => {
-      isAuthenticatedSpy = mockAaiSvc.userLoggedIn.and.returnValue(true);
+      isAuthenticatedSpy = mockAaiSvc.userLoggedIn.and.returnValue(of(true));
 
       const queryParamMap = jasmine.createSpyObj(['get']);
       queryParamMap.get.and.returnValue('/redirect_url');
