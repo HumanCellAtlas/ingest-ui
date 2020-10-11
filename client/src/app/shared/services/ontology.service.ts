@@ -48,7 +48,9 @@ export class OntologyService {
     const graphRestriction = properties['ontology']['graph_restriction'];
     const ontologyClasses: string[] = graphRestriction['classes'];
     const ontologyRelation: string = graphRestriction['relations'][0]; // TODO support only 1 relation for now
+    const ontology: string = graphRestriction['ontologies'][0]; // TODO support only 1 ontology for now
 
+    searchParams['ontology'] = ontology.replace('obo:', '');
     return combineLatest(ontologyClasses
       .map(ontologyClass => ontologyClass.replace(':', '_'))
       .map(olsClass => this.select({q: olsClass}))
