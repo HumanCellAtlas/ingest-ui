@@ -99,29 +99,28 @@ export class ProjectFormComponent implements OnInit {
 
   setProjectContent(projectUuid) {
     this.ingestService.getProjectByUuid(projectUuid)
-      .map(data => data as Project)
       .subscribe(projectResource => {
-          console.log('Retrieved project', projectResource);
-          this.projectResource = projectResource;
-          if (projectResource && projectResource.content &&
-            !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
-            this.schemaService.getUrlOfLatestSchema('project')
-              .subscribe(schemaUrl => {
-                projectResource.content['describedBy'] = schemaUrl;
-                projectResource.content['schema_type'] = 'project';
-                this.schema = projectResource.content['describedBy'];
-              });
-          }
+        console.log('Retrieved project', projectResource);
+        this.projectResource = projectResource;
+        if (projectResource && projectResource.content &&
+          !projectResource.content.hasOwnProperty('describedBy') || !projectResource.content.hasOwnProperty('schema_type')) {
+          this.schemaService.getUrlOfLatestSchema('project')
+            .subscribe(schemaUrl => {
+              projectResource.content['describedBy'] = schemaUrl;
+              projectResource.content['schema_type'] = 'project';
+              this.schema = projectResource.content['describedBy'];
+            });
+        }
 
-          this.schema = projectResource.content['describedBy'];
+        this.schema = projectResource.content['describedBy'];
 
-          this.projectContent = projectResource.content;
-          this.projectFormData = this.projectResource;
-          this.displayPostValidationErrors();
-        },
-        error => {
-          this.alertService.error('Project could not be retrieved.', error.message);
-        });
+        this.projectContent = projectResource.content;
+        this.projectFormData = this.projectResource;
+        this.displayPostValidationErrors();
+      },
+      error => {
+        this.alertService.error('Project could not be retrieved.', error.message);
+      });
   }
 
   onTabChange($tabKey: string) {
@@ -210,16 +209,15 @@ export class ProjectFormComponent implements OnInit {
     console.log('formValue', formValue);
     if (this.createMode) {
       this.patch = formValue;
-      return this.ingestService.postProject(this.patch)
+      return this.ingestService
+        .postProject(this.patch)
         .pipe(
-          concatMap(createdProject => {
-            return this.ingestService.partiallyPatchProject(createdProject, this.patch) // save fields outside content
-              .map(project => project as Project);
-          }));
+          // save fields outside content
+          concatMap(createdProject => this.ingestService.partiallyPatchProject(createdProject, this.patch))
+        );
     } else {
       this.patch = formValue;
-      return this.ingestService.partiallyPatchProject(this.projectResource, this.patch)
-        .map(project => project as Project);
+      return this.ingestService.partiallyPatchProject(this.projectResource, this.patch);
     }
   }
 }

@@ -8,13 +8,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ErrorComponent implements OnInit {
 
-  errorMsg: string = 'Error - Service unavailable';
-  redirect: string;
+  errorMsg = 'Error - Service unavailable';
+  reload: string;
 
   constructor(private route: ActivatedRoute ) { }
 
   ngOnInit(): void {
-    this.redirect = this.route.snapshot.queryParamMap.get('redirect');
+    this.reload = decodeURI(this.route.snapshot.queryParamMap.get('reload'));
   }
-
 }

@@ -102,7 +102,7 @@ describe('AccessionFieldGroupComponent', () => {
     component.defaultAccessionField = 'project.array_express_accessions';
 
     fixture.detectChanges();
-    
+
     arrayExpressCtrl = component.metadataForm.getControl('project.array_express_accessions') as FormArray;
     geoSeriesCtrl = component.metadataForm.getControl('project.geo_series_accessions') as FormArray;
     insdcProjCtrl = component.metadataForm.getControl('project.insdc_project_accessions') as FormArray;

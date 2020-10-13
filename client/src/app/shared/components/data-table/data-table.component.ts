@@ -17,7 +17,7 @@ export class DataTableComponent implements OnInit {
   isPaginated: boolean;
   currentPageInfo: {};
   private alive: boolean;
-  private isLoading = false;
+  isLoading = false;
 
 
   constructor(private flattenService: FlattenService) {
@@ -39,7 +39,7 @@ export class DataTableComponent implements OnInit {
       });
     });
 
-    const filteredColumns = Object.keys(columns)
+    const filteredColumns = Object.keys(columns);
     filteredColumns.filter(column => {
       return (!column.match('[\[]')); // exclude attributes which are of list type
     });

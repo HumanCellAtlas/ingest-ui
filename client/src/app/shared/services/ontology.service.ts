@@ -5,6 +5,7 @@ import {combineLatest, Observable, of} from 'rxjs';
 import {OlsHttpResponse} from '../models/ols';
 import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
 import {Ontology} from '../models/ontology';
+import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
 
 
 @Injectable({
@@ -23,8 +24,10 @@ export class OntologyService {
 
   lookup(schema: JsonSchema, searchText: string): Observable<Ontology[]> {
     return this
-      .createSearchParams(schema, searchText)
-      .concatMap(params => this.searchOntologies(params));
+      .createSearchParams(schema, searchText).pipe(
+        distinctUntilChanged(),
+        switchMap(params => this.searchOntologies(params))
+      );
   }
 
   createSearchParams(schema: JsonSchema, searchText?: string): Observable<object> {
@@ -49,18 +52,20 @@ export class OntologyService {
     return combineLatest(ontologyClasses
       .map(ontologyClass => ontologyClass.replace(':', '_'))
       .map(olsClass => this.select({q: olsClass}))
-    ).map(responses => responses
-      .map(ols => ols.response)
-      .filter(olsResponse => olsResponse.numFound === 1)
-      .map(olsResponse => olsResponse.docs[0].iri)
-    ).map(iriArray => {
-      searchParams[this.OLS_RELATION[ontologyRelation]] = iriArray;
-      return searchParams;
-    });
+    ).pipe(
+      map(responseArray => responseArray
+        .map(ols => ols.response)
+        .filter(olsResponse => olsResponse.numFound === 1)
+        .map(olsResponse => olsResponse.docs[0].iri)),
+      map(iriArray => {
+        searchParams[this.OLS_RELATION[ontologyRelation]] = iriArray;
+        return searchParams;
+      })
+    );
   }
 
   searchOntologies(params): Observable<Ontology[]> {
-    return this.select(params).map(result => {
+    return this.select(params).pipe(map(result => {
       return result.response.docs.map(doc => {
         const ontology: Ontology = {
           ontology: doc.obo_id,
@@ -69,12 +74,11 @@ export class OntologyService {
         };
         return ontology;
       });
-    });
+    }));
   }
 
   select(params): Observable<OlsHttpResponse> {
-    return this.http.get(`${this.API_URL}/api/select`, {params: params})
-      .map(response => response as OlsHttpResponse);
+    return this.http.get<OlsHttpResponse>(`${this.API_URL}/api/select`, {params: params});
   }
 
 

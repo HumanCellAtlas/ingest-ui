@@ -1,5 +1,5 @@
 export class Summary {
-  draftSubmissions : number;
-  pendingSubmissions : number;
+  draftSubmissions: number;
+  pendingSubmissions: number;
   completedSubmissions: number;
 }

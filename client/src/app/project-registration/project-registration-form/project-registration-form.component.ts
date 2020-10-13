@@ -162,11 +162,11 @@ export class ProjectRegistrationFormComponent implements OnInit {
   private createProject(formValue: object): Observable<Project> {
     console.log('formValue', formValue);
     this.patch = formValue;
-    return this.ingestService.postProject(this.patch).pipe(concatMap(createdProject => {
-      return this.ingestService.partiallyPatchProject(createdProject, this.patch) // save fields outside content
-        .map(project => project as Project);
-    }));
-
+    return this.ingestService
+      .postProject(this.patch)
+      .pipe(
+        // save fields outside content
+        concatMap(createdProject => this.ingestService.partiallyPatchProject(createdProject, this.patch))
+      );
   }
-
 }

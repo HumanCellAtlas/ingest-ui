@@ -1,4 +1,4 @@
-<form-item [data]="data">
+<app-form-item [data]="data">
   <div *ngIf="!disabled; else readOnlyView">
     <textarea [id]="id" rows="{{rows}}" class="vf-form__textarea"
               [attr.disabled]="disabled ? disabled : null" type="text"
@@ -14,4 +14,4 @@
       <span *ngFor="let item of control.value; last as last">{{item}} <br *ngIf="!last"></span>
     </div>
   </ng-template>
-</form-item>
+</app-form-item>

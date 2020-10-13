@@ -1,10 +1,9 @@
 import {AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Observable, Subscription, timer} from 'rxjs';
+import {takeWhile} from 'rxjs/operators';
 import {IngestService} from '../../shared/services/ingest.service';
 import {FlattenService} from '../../shared/services/flatten.service';
 import {Page, PagedData} from '../../shared/models/page';
-import {Observable, Subscription} from 'rxjs';
-import {TimerObservable} from 'rxjs/observable/TimerObservable';
-import 'rxjs-compat/add/operator/takeWhile';
 import {MetadataDocument} from '../../shared/models/metadata-document';
 
 @Component({
@@ -44,7 +43,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   currentPageInfo: {};
   private alive: boolean;
   private pollInterval: number;
-  private isLoading = false;
+  isLoading = false;
 
 
   constructor(private ingestService: IngestService,
@@ -53,8 +52,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.alive = true;
     this.page.number = 0;
     this.page.size = 20;
-    this.pollingTimer = TimerObservable.create(0, this.pollInterval)
-      .takeWhile(() => this.alive); // only fires when component is alive
+    this.pollingTimer = timer(0, this.pollInterval).pipe(takeWhile(() => this.alive)); // only fires when component is alive
 
     this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid'];
   }
@@ -86,7 +84,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   getColumns(row) {
-    let columns = [];
+    let columns: any[];
 
     if (this.config && this.config.displayAll) {
       columns = Object.keys(row)
@@ -140,8 +138,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
-
-    const oldValue = this.rows[rowIndex][cell];
     const newValue = event.target.value;
 
     console.log('newValue', newValue);
@@ -209,10 +205,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   startPolling(pageInfo) {
-    this.pollingSubscription = this.pollingTimer.subscribe(() => {
-      this.fetchData(pageInfo);
-    });
-
+    this.pollingSubscription = this.pollingTimer.subscribe(() => this.fetchData(pageInfo));
   }
 
   stopPolling() {
@@ -222,8 +215,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   filterByState(event) {
-    const filterState = event.value;
-    this.filterState = filterState;
+    this.filterState = event.value;
     this.setPage(this.currentPageInfo);
   }
 

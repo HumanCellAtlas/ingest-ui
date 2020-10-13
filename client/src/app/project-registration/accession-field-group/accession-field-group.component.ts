@@ -35,7 +35,7 @@ export class AccessionFieldGroupComponent implements OnInit {
   }
 
   onIsAccessionedChange(isAccessioned: string) {
-    this.isAccessioned = isAccessioned == 'Yes';
+    this.isAccessioned = isAccessioned === 'Yes';
     if (!this.isAccessioned) {
       this.clearAccessionFields();
     }

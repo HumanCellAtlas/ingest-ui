@@ -3,8 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {JsonSchema} from '../../metadata-schema-form/models/json-schema';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {JsonSchemaProperty} from '../../metadata-schema-form/models/json-schema-property';
-import {OlsHttpResponse} from "../models/ols";
-import {of} from "rxjs";
+import {OlsHttpResponse} from '../models/ols';
+import {of} from 'rxjs';
 
 
 describe('createSearchParams', () => {

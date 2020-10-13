@@ -7,7 +7,7 @@ import {MetadataFormHelper} from '../../models/metadata-form-helper';
 import {OntologyBaseComponent} from '../ontology-base/ontology-base.component';
 import {Observable} from 'rxjs';
 import {MetadataFormService} from '../../metadata-form.service';
-import {concatMap, startWith} from 'rxjs/operators';
+import {distinctUntilChanged, startWith, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-ontology-list-input',
@@ -28,10 +28,12 @@ export class OntologyListInputComponent extends OntologyBaseComponent implements
     const value = this.metadataFormService.cleanFormData(this.control.value);
     this.value = this.metadataFormService.isEmpty(value) ? undefined : value;
     this.searchControl = this.createSearchControl(value);
+    // noinspection JSDeprecatedSymbols false-positive see: ReactiveX/rxjs#4772
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
-        concatMap(val => this.onSearchValueChanged(val))
+        distinctUntilChanged(),
+        switchMap(val => this.onSearchValueChanged(val))
       );
   }
 

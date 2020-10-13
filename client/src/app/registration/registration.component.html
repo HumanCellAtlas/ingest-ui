@@ -28,7 +28,7 @@
       <span class="registration-message">{{status.message}}</span><br/>
       <div *ngIf="status.success">
         <span>&nbsp;</span><br/>
-        <input type="button" name="ok" value="OK" (click)="router.navigate(['/home'])"/>
+        <input type="button" name="ok" value="OK" routerLink="/home"/>
       </div>
     </div>
   </div>

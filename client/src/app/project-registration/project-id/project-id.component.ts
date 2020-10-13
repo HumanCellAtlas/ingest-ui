@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MetadataForm} from '../../metadata-schema-form/models/metadata-form';
-import {AbstractControl, FormControl} from '@angular/forms';
+import {AbstractControl, FormControl, ValidationErrors} from '@angular/forms';
 import {Metadata} from '../../metadata-schema-form/models/metadata';
 import {MetadataFormService} from '../../metadata-schema-form/metadata-form.service';
 import {IngestService} from '../../shared/services/ingest.service';
-import {Observable, timer} from 'rxjs';
-import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-id',
@@ -13,6 +13,11 @@ import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
   styleUrls: ['./project-id.component.css']
 })
 export class ProjectIdComponent implements OnInit {
+
+
+  constructor(private metadataFormService: MetadataFormService,
+              private ingestService: IngestService) {
+  }
   metadataForm: MetadataForm;
 
   projectShortNameKey = 'project.content.project_core.project_short_name';
@@ -35,7 +40,7 @@ export class ProjectIdComponent implements OnInit {
 
   technology: string;
   otherTechnology: string;
-  contributor: string;
+  contributor_name: string;
   organism: string;
 
   autogenerate = false;
@@ -45,9 +50,26 @@ export class ProjectIdComponent implements OnInit {
 
   index = 0;
 
+  private static camelize(str: string): string {
+    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/\s+/g, '');
+  }
 
-  constructor(private metadataFormService: MetadataFormService,
-              private ingestService: IngestService) {
+  private static removeSpecialChars(str: string): string {
+    return str.replace(/[\W]+/g, '');
+  }
+
+  private static capitalize(str: string): string {
+    return str.replace(/\b(\w)/g, s => s.toUpperCase());
+  }
+
+  private static sanitiseTechnology(technology: string): string {
+    technology = technology.replace(/'/g, 'p');
+    technology = ProjectIdComponent.removeSpecialChars(technology);
+    technology = ProjectIdComponent.camelize(technology);
+    technology = ProjectIdComponent.capitalize(technology);
+    return technology;
   }
 
   ngOnInit(): void {
@@ -99,9 +121,7 @@ export class ProjectIdComponent implements OnInit {
       'value': projectId
     };
     query.push(criteria);
-    return this.ingestService.queryProjects(query).map(data => {
-      return data.page['totalElements'];
-    });
+    return this.ingestService.queryProjects(query).pipe(map(data => data.page['totalElements']));
   }
 
   private setUpValueChangeHandlers() {
@@ -135,26 +155,12 @@ export class ProjectIdComponent implements OnInit {
     if (this.autogenerate) {
       const technology = this.technology ? this.technology : this.otherTechnology ? this.otherTechnology : 'Unspecified';
       const organism = this.organism ? this.organism : 'Unspecified';
-      const projectId = [this.contributor, organism, technology].join(this.delimiter);
+      const projectId = [this.contributor_name, organism, technology].join(this.delimiter);
       this.checkProjectCount(projectId).subscribe(count => {
         const suffix = count ? '--' + (++count).toString() : '';
         this.projectIdCtrl.setValue(projectId + suffix, {emitEvent: false});
       });
     }
-  }
-
-  private camelize(str: string): string {
-    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-      return index === 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/\s+/g, '');
-  }
-
-  private removeSpecialChars(str: string): string {
-    return str.replace(/[\W]+/g, '');
-  }
-
-  private capitalize(str: string): string {
-    return str.replace(/\b(\w)/g, s => s.toUpperCase());
   }
 
   private onContributorChange(val: any) {
@@ -164,34 +170,33 @@ export class ProjectIdComponent implements OnInit {
     name = name ? name : contributors && contributors.length > 0 ? contributors[0]['name'] : '';
     name = name || '';
     name = name.split(',').pop();
-    name = this.camelize(name);
-    name = this.capitalize(name);
-    this.contributor = this.removeSpecialChars(name);
-    this.generateProjectId();
+    name = ProjectIdComponent.camelize(name);
+    name = ProjectIdComponent.capitalize(name);
+    name = ProjectIdComponent.removeSpecialChars(name);
+    if (this.contributor_name !== name) {
+      this.contributor_name = name;
+      this.generateProjectId();
+    }
   }
 
   private onTechnologyChange(val: any) {
     const technologies = this.metadataFormService.cleanFormData(val);
-    let technology = technologies && technologies.length > 0 ? technologies[0]['ontology_label'] : '';
-    technology = technology.replace(/\'/g, 'p');
-    technology = this.removeSpecialChars(technology);
-    technology = this.camelize(technology);
-    technology = this.capitalize(technology);
-    this.technology = technology;
+    if (technologies && technologies.length > 0) {
+      this.technology = ProjectIdComponent.sanitiseTechnology(technologies[0]['ontology_label']);
+    } else {
+      this.technology = '';
+    }
     this.generateProjectId();
-
-    const other = this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
-
+    this.metadataFormService.cleanFormData(this.otherTechnologyCtrl.value);
   }
 
   private onOtherTechnologyChange(val: any) {
     const otherTechnologies = this.metadataFormService.cleanFormData(val);
-    let technology = otherTechnologies && otherTechnologies.length > 0 ? otherTechnologies[0] : '';
-    technology = technology.replace(/\'/g, 'p');
-    technology = this.removeSpecialChars(technology);
-    technology = this.camelize(technology);
-    technology = this.capitalize(technology);
-    this.otherTechnology = technology;
+    if (otherTechnologies && otherTechnologies.length > 0 ) {
+      this.otherTechnology = ProjectIdComponent.sanitiseTechnology(otherTechnologies[0]);
+    } else {
+      this.otherTechnology = '';
+    }
     this.generateProjectId();
   }
 
@@ -203,23 +208,16 @@ export class ProjectIdComponent implements OnInit {
 
 }
 
-
-export const uniqueProjectIdAsyncValidator = (ingestService: IngestService, time: number = 500) => {
+export const uniqueProjectIdAsyncValidator = (ingestService: IngestService) => {
   return (input: FormControl) => {
-    const query = [];
-    const criteria = {
+    const query = [{
       'contentField': 'content.project_core.project_short_name',
       'operator': 'IS',
       'value': input.value
-    };
-    query.push(criteria);
-
-    return timer(time).pipe(
-      distinctUntilChanged(),
-      switchMap(() => ingestService.queryProjects(query)),
-      map(res => {
-        return res.page['totalElements'] === 0 ? null : {exists: true};
-      })
+    }];
+    return ingestService.queryProjects(query).pipe(
+      first(),
+      map(response => response.page['totalElements'] === 0 ? null : {exists: true} as ValidationErrors)
     );
   };
 };
@@ -228,7 +226,7 @@ export const requireTechnologyValidator = (metadataFormService: MetadataFormServ
   return (input: FormControl) => {
     const technology = metadataFormService.cleanFormData(input.value);
     if (metadataFormService.isEmpty(technology)) {
-      return {required: true};
+      return {required: true} as ValidationErrors;
     }
   };
 };

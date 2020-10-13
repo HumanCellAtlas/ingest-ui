@@ -1,4 +1,4 @@
 export class UploadResults {
-  message: string
-  details: any
+  message: string;
+  details: any;
 }

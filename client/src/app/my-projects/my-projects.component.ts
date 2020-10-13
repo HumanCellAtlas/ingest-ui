@@ -1,11 +1,10 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Observable, timer} from 'rxjs';
+import {takeWhile, tap} from 'rxjs/operators';
+import {AaiService} from '../aai/aai.service';
 import {IngestService} from '../shared/services/ingest.service';
 import {Project, ProjectColumn} from '../shared/models/project';
-import {TimerObservable} from 'rxjs-compat/observable/TimerObservable';
-import {concatMap, tap} from 'rxjs/operators';
-import {AaiService} from '../aai/aai.service';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {Observable, of} from 'rxjs';
 import {Account} from '../core/account';
 
 @Component({
@@ -15,7 +14,6 @@ import {Account} from '../core/account';
 })
 export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   account$: Observable<Account>;
-  isLoggedIn$: Observable<Boolean>;
   isWrangler: Boolean;
   introduction: String;
   columns: ProjectColumn[];
@@ -53,15 +51,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.isLoggedIn$ = this.aai.isUserLoggedIn();
-    this.account$ = this.isLoggedIn$.pipe(
-      concatMap(loggedIn => {
-        if (loggedIn) {
-          return this.ingestService.getUserAccount();
-        }
-        return of(undefined);
-      })
-    );
+    // protected against null user by the user-is-logged-in guard
+    this.account$ = this.ingestService.getUserAccount();
     this.pollAccount();
     this.pollProjects();
   }
@@ -94,12 +85,11 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
   pollProjects() {
-    TimerObservable.create(0, this.interval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        this.getProjects();
-      });
+    timer(0, this.interval)
+      .pipe(takeWhile(() => this.alive))// only fires when component is alive
+      .subscribe(() => this.getProjects());
   }
 
   getProjects() {

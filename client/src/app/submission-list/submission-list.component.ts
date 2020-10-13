@@ -2,13 +2,12 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulatio
 import {IngestService} from '../shared/services/ingest.service';
 import {SubmissionEnvelope} from '../shared/models/submissionEnvelope';
 import {ActivatedRoute, Router} from '@angular/router';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
 import {AlertService} from '../shared/services/alert.service';
-import {tap} from 'rxjs/operators';
+import {takeWhile, tap} from 'rxjs/operators';
 import {LoaderService} from '../shared/services/loader.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {Subscription} from 'rxjs';
+import {Subscription, timer} from 'rxjs';
 
 @Component({
   selector: 'app-submission-list',
@@ -30,9 +29,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   private alive: boolean;
 
   private showAll;
-
-  pageFromUrl;
-
   pollingSubscription: Subscription;
 
 
@@ -43,7 +39,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   pageEvent: PageEvent;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  upload: boolean = false;
+  upload = false;
 
   constructor(private ingestService: IngestService,
               private router: Router,
@@ -66,7 +62,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.params = {'page': 0, 'size': 20, 'sort' : 'submissionDate,desc'};
 
-    route.params.subscribe(val => {
+    route.params.subscribe(() => {
       this.showAll = this.route.snapshot.paramMap.get('all');
       this.resetPolling();
     });
@@ -118,49 +114,32 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   pollSubmissions() {
-    this.pollingSubscription = TimerObservable.create(0, this.interval)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        this.getSubmissions();
-      });
+    this.pollingSubscription =
+      timer(0, this.interval)
+        .pipe(takeWhile(() => this.alive)) // only fires when component is alive
+        .subscribe(() => this.getSubmissions());
   }
 
   getSubmissions() {
     this.params['page'] = this.paginator.pageIndex;
     this.params['size'] = this.paginator.pageSize;
 
-
-    if (this.showAll) {
-      this.ingestService.getAllSubmissions(this.params)
-        .subscribe(data => {
-          const submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
-          this.submissionEnvelopes = submissions;
-          this.pagination = data.page;
-          this.links = data._links;
-          this.getCurrentPageInfo(this.pagination);
-          this.initSubmissionProjects(submissions);
-        });
-
-    } else {
-      this.ingestService.getUserSubmissions(this.params)
-        .subscribe(data => {
-          const submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
-          this.submissionEnvelopes = submissions;
-          this.pagination = data.page;
-          this.links = data._links;
-          this.getCurrentPageInfo(this.pagination);
-          this.initSubmissionProjects(submissions);
-        });
-
-    }
-
+    (this.showAll ? this.ingestService.getAllSubmissions(this.params) : this.ingestService.getUserSubmissions(this.params))
+      .subscribe(data => {
+        const submissions = data._embedded ? data._embedded.submissionEnvelopes : [];
+        this.submissionEnvelopes = submissions;
+        this.pagination = data.page;
+        this.links = data._links;
+        this.getCurrentPageInfo(this.pagination);
+        this.initSubmissionProjects(submissions);
+      });
   }
 
   initSubmissionProjects(submissions) {
     for (const submission of submissions) {
       const submissionId = this.getSubmissionId(submission);
 
-      if (this.submissionProjects[submissionId] == undefined) {
+      if (this.submissionProjects[submissionId] === undefined) {
         this.submissionProjects[submissionId] = '';
         this.ingestService.getSubmissionProject(submissionId)
           .subscribe(data => {
@@ -208,7 +187,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy, AfterViewInit
     if (confirm(message)) {
       this.loaderService.display(true);
       this.ingestService.deleteSubmission(submissionId).subscribe(
-        data => {
+        () => {
           this.alertService.clear();
           this.alertService.success('', messageOnSuccess);
           this.loadSubmissions();

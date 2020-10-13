@@ -1,17 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
+import {map} from 'rxjs/operators';
 import * as _ from 'lodash';
 
-import {AlertService} from './alert.service';
 import {ListResult} from '../models/hateoas';
 import {Summary} from '../models/summary';
 import {PagedData} from '../models/page';
 import {SubmissionEnvelope} from '../models/submissionEnvelope';
 
 import {environment} from '../../../environments/environment';
-import {LoaderService} from './loader.service';
 import {MetadataDocument} from '../models/metadata-document';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Account} from '../../core/account';
@@ -23,10 +21,22 @@ import {ArchiveEntity} from '../models/archiveEntity';
 @Injectable()
 export class IngestService {
 
+  constructor(private http: HttpClient) {
+    console.log('api url', this.API_URL);
+  }
+
   API_URL: string = environment.INGEST_API_URL;
 
-  constructor(private http: HttpClient, private alertService: AlertService, private loaderService: LoaderService) {
-    console.log('api url', this.API_URL);
+  private static reduceColumnsForBundleManifests(entityType, data) {
+    if (entityType === 'bundleManifests') {
+      return data.map(function (row) {
+        return {
+          '_links': row['_links'],
+          'dataFiles': row['dataFiles']
+        };
+      });
+    }
+    return data;
   }
 
   public getAllSubmissions(params): Observable<any> {
@@ -50,11 +60,13 @@ export class IngestService {
   }
 
   public getUserAccount(): Observable<Account> {
-    return this.http.get(`${this.API_URL}/auth/account`).map(data => new Account({
-      id: data['id'],
-      providerReference: data['providerReference'],
-      roles: data['roles']
-    }));
+    return this.http
+      .get(`${this.API_URL}/auth/account`)
+      .pipe(map(data => new Account({
+        id: data['id'],
+        providerReference: data['providerReference'],
+        roles: data['roles']
+      })));
   }
 
   public deleteSubmission(submissionId) {
@@ -69,16 +81,16 @@ export class IngestService {
     return this.http.get<SubmissionEnvelope>(`${this.API_URL}/submissionEnvelopes/search/findByUuidUuid?uuid=${uuid}`);
   }
 
-  public getProject(id): Observable<Object> {
-    return this.http.get(`${this.API_URL}/projects/${id}`);
+  public getProject(id): Observable<Project> {
+    return this.http.get<Project>(`${this.API_URL}/projects/${id}`);
   }
 
   public deleteProject(id: string): Observable<Object> {
     return this.http.delete(`${this.API_URL}/projects/${id}`);
   }
 
-  public getProjectByUuid(uuid): Observable<Object> {
-    return this.http.get(`${this.API_URL}/projects/search/findByUuid?uuid=${uuid}`);
+  public getProjectByUuid(uuid): Observable<Project> {
+    return this.http.get<Project>(`${this.API_URL}/projects/search/findByUuid?uuid=${uuid}`);
   }
 
   public getSubmissionManifest(submissionId): Observable<Object> {
@@ -93,29 +105,24 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
   }
 
-  public patchProject(projectResource, patch): Observable<Object> {
+  public patchProject(projectResource, patch): Observable<Project> {
     return this.doPatchProject(projectResource, patch);
   }
 
-  public partiallyPatchProject(projectResource, patch): Observable<Object> {
+  public partiallyPatchProject(projectResource, patch): Observable<Project> {
     return this.doPatchProject(projectResource, patch, true);
   }
 
-  private doPatchProject(projectResource, patch, partial: boolean = false): Observable<Object> {
+  private doPatchProject(projectResource, patch, partial: boolean = false): Observable<Project> {
     const projectLink: string = projectResource['_links']['self']['href'] + `?partial=${partial}`;
     patch['validationState'] = 'DRAFT';
-    return this.http.patch(projectLink, patch);
+    return this.http.patch<Project>(projectLink, patch);
   }
 
   public getSubmissionProject(submissionId): Observable<Project> {
-    return this.http.get(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
-      .map((data: ListResult<Object>) => {
-        if (data._embedded && data._embedded.projects) {
-          return _.values(data._embedded.projects)[0];
-        } else {
-          return null;
-        }
-      });
+    return this.http
+      .get<ListResult<Project>>(`${this.API_URL}/submissionEnvelopes/${submissionId}/projects`)
+      .pipe(map(data => data._embedded && data._embedded.projects ? data._embedded.projects[0] : null));
   }
 
   public fetchSubmissionData(submissionId, entityType, filterState, params): Observable<PagedData<MetadataDocument>> {
@@ -135,18 +142,19 @@ export class IngestService {
       params['state'] = filterState.toUpperCase();
 
     }
-    return this.http.get(url, {params: params})
-      .map((data: ListResult<MetadataDocument>) => {
+    return this.http
+      .get<ListResult<MetadataDocument>>(url, {params: params})
+      .pipe(map(data => {
         const pagedData: PagedData<MetadataDocument> = {data: [], page: undefined};
         if (data._embedded && data._embedded[entityType]) {
           pagedData.data = _.values(data._embedded[entityType]);
-          pagedData.data = this.reduceColumnsForBundleManifests(entityType, pagedData.data);
+          pagedData.data = IngestService.reduceColumnsForBundleManifests(entityType, pagedData.data);
         } else {
           pagedData.data = [];
         }
         pagedData.page = data.page;
         return pagedData;
-      });
+      }));
   }
 
   public put(ingestLink, body) {
@@ -161,43 +169,32 @@ export class IngestService {
     return this.http.get(url);
   }
 
+  public getAs<T>(url): Observable<T> {
+    return this.http.get(url).pipe(map(data => data as T));
+  }
+
   public getLatestSchemas(): Observable<ListResult<MetadataSchema>> {
-    return this.get(`${this.API_URL}/schemas/search/filterLatestSchemas?highLevelEntity=type`)
-      .map(data => data as ListResult<MetadataSchema>);
+    return this.http.get<ListResult<MetadataSchema>>(`${this.API_URL}/schemas/search/filterLatestSchemas?highLevelEntity=type`);
   }
 
   public getArchiveSubmission(submissionUuid: string): Observable<ArchiveSubmission> {
-    return this.get(`${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`)
-      .map(data => {
-        const archiveSubmissions = data['_embedded']['archiveSubmissions'];
+    return this.http.get<ListResult<ArchiveSubmission>>(
+      `${this.API_URL}/archiveSubmissions/search/findBySubmissionUuid?submissionUuid=${submissionUuid}`
+    ).pipe(
+      map(result => {
+        const archiveSubmissions = result._embedded.archiveSubmissions;
         // TODO Adjust the UI to be able to display all archive submissions
         // just display the last
-        let archiveSubmission: ArchiveSubmission;
         if (archiveSubmissions.length > 0) {
-          const idx = archiveSubmissions.length - 1;
-          archiveSubmission = archiveSubmissions[idx];
+          archiveSubmissions.reverse();
+          return archiveSubmissions[0];
         }
-        return archiveSubmission;
-      });
+        return undefined;
+      })
+    );
   }
 
   public getArchiveEntity(dspUuid: string): Observable<ArchiveEntity> {
-    return this.get(`${this.API_URL}/archiveEntities/search/findByDspUuid?dspUuid=${dspUuid}`)
-      .map(data => data as ArchiveEntity);
-  }
-
-  private reduceColumnsForBundleManifests(entityType, data) {
-    if (entityType === 'bundleManifests') {
-      return data.map(function (row) {
-        const newRow = {
-          '_links': row['_links'],
-          'dataFiles': row['dataFiles']
-        };
-        return newRow;
-      });
-    }
-    return data;
-
-
+    return this.http.get<ArchiveEntity>(`${this.API_URL}/archiveEntities/search/findByDspUuid?dspUuid=${dspUuid}`);
   }
 }

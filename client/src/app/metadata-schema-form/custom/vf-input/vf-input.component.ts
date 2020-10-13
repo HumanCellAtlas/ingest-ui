@@ -1,7 +1,7 @@
 import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {FormItemData} from "../../form-item/form-item.component";
-import {toTitleCase} from "codelyzer/util/utils";
+import {FormItemData} from '../../form-item/form-item.component';
+import {toTitleCase} from 'codelyzer/util/utils';
 
 export const VF_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -16,10 +16,18 @@ export const VF_INPUT_VALUE_ACCESSOR: any = {
   styleUrls: ['./vf-input.component.css', '../../form-item/form-item.component.css']
 })
 export class VfInputComponent implements ControlValueAccessor, OnInit {
+
+  constructor() {
+  }
+
+  static CHECKBOX_VIEW = {
+    true: 'yes',
+    false: 'no'
+  };
   @Input()
   id: string;
 
-  //TODO form item data
+  // TODO form item data
   @Input()
   label: string;
 
@@ -33,7 +41,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   disabled: boolean;
 
   data: FormItemData;
-  //end form item data
+  // end form item data
 
   inputType: string;
 
@@ -43,7 +51,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   value: any;
 
   @Input()
-  readonly : boolean;
+  readonly: boolean;
 
   @Input()
   dataType: string;
@@ -59,29 +67,21 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
     'integer': 'number'
   };
 
-  static CHECKBOX_VIEW = {
-    true: 'yes',
-    false: 'no'
-  }
-
-  constructor() {
-  }
-
   onChange = (text: string) => {
-  };
+  }
 
   onTouched = () => {
-  };
+  }
 
   ngOnInit(): void {
     this.inputType = this.INPUT_TYPE[this.dataType];
-    //TODO form item data
+    // TODO form item data
     this.data = <FormItemData> {
       label: this.label,
       helperText: this.helperText,
       isRequired: this.isRequired,
       disabled: this.disabled
-    }
+    };
   }
 
   registerOnChange(fn: (text: string) => void): void {
@@ -94,7 +94,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
-    this.data.disabled = isDisabled; //TODO merge these
+    this.data.disabled = isDisabled; // TODO merge these
   }
 
   writeValue(value: any): void {
@@ -102,7 +102,7 @@ export class VfInputComponent implements ControlValueAccessor, OnInit {
   }
 
   staticView(): string {
-    if (!this.value) return '(not specified)';
+    if (!this.value) { return '(not specified)'; }
     let content = this.value as string;
     if (this.inputType === 'checkbox' && content in VfInputComponent.CHECKBOX_VIEW) {
       content = toTitleCase(VfInputComponent.CHECKBOX_VIEW[content]);

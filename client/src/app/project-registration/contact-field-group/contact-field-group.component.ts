@@ -44,9 +44,7 @@ export class ContactFieldGroupComponent implements OnInit {
 
     const fieldList = this.contactFieldList;
 
-    this.contactFieldMetadataList = fieldList.map(field => {
-      return this.metadataForm.get(field);
-    });
+    this.contactFieldMetadataList = fieldList.map(field => this.metadataForm.get(field));
 
     const contactEmailCtrl = this.contributorsControl['controls'][0]['controls']['email'];
     const contactNameCtrl = this.contributorsControl['controls'][0]['controls']['name'];
@@ -55,13 +53,15 @@ export class ContactFieldGroupComponent implements OnInit {
     // default
     correspondingCtrl.setValue(true);
 
-    this.aai.getUserSubject().first().subscribe(user => {
-      this.userInfo = user ? user.profile : null;
-      const previousValue = contactNameCtrl.value;
-      const name = [this.userInfo.given_name, '', this.userInfo.family_name].join(',');
-      if (previousValue !== name) {
-        contactNameCtrl.setValue(name);
-        contactEmailCtrl.setValue(this.userInfo.email);
+    this.aai.getUser().subscribe(user => {
+      if (AaiService.loggedIn(user) && !this.userInfo && user.profile) {
+        this.userInfo = user.profile;
+        const previousValue = contactNameCtrl.value;
+        const name = [this.userInfo.given_name, '', this.userInfo.family_name].join(',');
+        if (previousValue !== name) {
+          contactNameCtrl.setValue(name);
+          contactEmailCtrl.setValue(this.userInfo.email);
+        }
       }
     });
   }

@@ -1,7 +1,7 @@
-import {NgModule} from "@angular/core";
-import {CoreSecurity} from "../core/security.module";
-import {UserManager, WebStorageStateStore} from "oidc-client";
-import {environment} from "../../environments/environment";
+import {NgModule} from '@angular/core';
+import {CoreSecurity} from '../core/security.module';
+import {UserManager, WebStorageStateStore} from 'oidc-client';
+import {environment} from '../../environments/environment';
 
 const userManager = new UserManager({
   authority: environment.AAI_AUTHORITY,
@@ -23,4 +23,4 @@ const userManager = new UserManager({
     }
   ]
 })
-export class AaiSecurity{}
+export class AaiSecurity {}

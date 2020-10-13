@@ -1,9 +1,9 @@
 import {AaiService} from './aai.service';
-import {async, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {User, UserManager} from 'oidc-client';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AlertService} from '../shared/services/alert.service';
-import {Observable} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {Account} from '../core/account';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -51,15 +51,15 @@ describe('Complete Authentication', () => {
       imports: [HttpClientTestingModule],
     });
 
-    aaiService = TestBed.get(AaiService);
+    aaiService = TestBed.inject(AaiService);
   });
 
-  it('should redirect home when the user is registered', async(() => {
+  it('should redirect home when the user is registered', (done) => {
     // given:
     signInToRemoteService();
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.of(new Account({
+    ingestSvc.getUserAccount.and.returnValue(of(new Account({
       id: '',
       providerReference: '',
       roles: []
@@ -70,17 +70,20 @@ describe('Complete Authentication', () => {
       expect(ingestSvc.getUserAccount).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledWith('/home');
-      expect(aaiService.user$.getValue()).toBe(user);
+      aaiService.getUser().subscribe(usr => {
+        expect(usr).toBe(user);
+        done();
+      });
     });
-  }));
+  });
 
-  it('should redirect to url when the user is registered', async(() => {
+  it('should redirect to url when the user is registered', (done) => {
     // given:
     signInToRemoteService();
     user.state = '/redirect_url';
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.of(new Account({
+    ingestSvc.getUserAccount.and.returnValue(of(new Account({
       id: '',
       providerReference: '',
       roles: []
@@ -91,35 +94,41 @@ describe('Complete Authentication', () => {
       expect(ingestSvc.getUserAccount).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
       expect(router.navigateByUrl).toHaveBeenCalledWith('/redirect_url');
-      expect(aaiService.user$.getValue()).toBe(user);
+      aaiService.getUser().subscribe(usr => {
+        expect(usr).toBe(user);
+        done();
+      });
     });
-  }));
+  });
 
-  it('should redirect to registration page when User has not registered yet', async(() => {
+  it('should redirect to registration page when User has not registered yet', (done) => {
     // given:
     signInToRemoteService();
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.throwError(new HttpErrorResponse({status: 404})));
+    ingestSvc.getUserAccount.and.returnValue(throwError(new HttpErrorResponse({status: 404})));
 
     // expect:
     aaiService.completeAuthentication().then(() => {
       expect(ingestSvc.getUserAccount).toHaveBeenCalledTimes(1);
       expect(router.navigate).toHaveBeenCalledTimes(1);
       expect(router.navigate).toHaveBeenCalledWith(['/registration']);
-      expect(aaiService.user$.getValue()).toBe(user);
+      aaiService.getUser().subscribe(usr => {
+        expect(usr).toBe(user);
+        done();
+      });
     });
-  }));
+  });
 
-  it('should display error and reset user when it could not communicate successfully with Ingest API', async(() => {
+  it('should display error and reset user when it could not communicate successfully with Ingest API', (done) => {
     // given:
     signInToRemoteService();
 
     // and:
-    ingestSvc.getUserAccount.and.returnValue(Observable.throwError(new HttpErrorResponse({status: 0})));
+    ingestSvc.getUserAccount.and.returnValue(throwError(new HttpErrorResponse({status: 0})));
 
     // and:
-    userManager.removeUser.and.returnValue(Observable.of(undefined).toPromise());
+    userManager.removeUser.and.returnValue(of(undefined).toPromise());
 
     // expect:
     aaiService.completeAuthentication().then(() => {
@@ -128,13 +137,16 @@ describe('Complete Authentication', () => {
       expect(router.navigateByUrl).toHaveBeenCalledTimes(0);
       expect(alertService.error).toHaveBeenCalledTimes(1);
       expect(userManager.removeUser).toHaveBeenCalledTimes(1);
-      expect(aaiService.user$.getValue()).toBeFalsy();
+      aaiService.getUser().subscribe(usr => {
+        expect(usr).toBe(undefined);
+        done();
+      });
     });
-  }));
+  });
 
   function signInToRemoteService() {
-    userManager.getUser.and.returnValue(Observable.of(user).toPromise());
-    userManager.signinRedirectCallback.and.returnValue(Observable.of(user).toPromise());
+    userManager.getUser.and.returnValue(of(user).toPromise());
+    userManager.signinRedirectCallback.and.returnValue(of(user).toPromise());
   }
 
 });

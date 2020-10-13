@@ -1,4 +1,4 @@
-<form-item [data]="data">
+<app-form-item [data]="data">
   <div *ngIf="!disabled; else readOnlyView">
     <input type="text"
            placeholder="{{placeholder}}"
@@ -18,4 +18,4 @@
   <ng-template #readOnlyView>
     <span class="content read-only">{{ value ? displayWith(value) : '(not specified)'}}</span>
   </ng-template>
-</form-item>
+</app-form-item>

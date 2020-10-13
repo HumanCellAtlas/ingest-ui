@@ -17,9 +17,9 @@ export class UploadInfoComponent implements OnInit {
   }
 
   // I log Clipboard "copy" errors.
-  public logError( error: Error ) : void {
+  public logError( error: Error ): void {
 
-    console.group( "Clipboard Error" );
+    console.group( 'Clipboard Error' );
     console.error( error );
     console.groupEnd();
 
@@ -27,9 +27,9 @@ export class UploadInfoComponent implements OnInit {
 
 
   // I log Clipboard "copy" successes.
-  public logSuccess( value: string ) : void {
+  public logSuccess( value: string ): void {
 
-    console.group( "Clipboard Success" );
+    console.group( 'Clipboard Success' );
     console.groupEnd();
 
   }
