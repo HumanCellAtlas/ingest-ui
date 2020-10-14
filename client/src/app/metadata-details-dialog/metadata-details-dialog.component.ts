@@ -7,6 +7,7 @@ import {SchemaService} from '../shared/services/schema.service';
 import {concatMap} from 'rxjs/operators';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {LoaderService} from '../shared/services/loader.service';
+import {MetadataDocument} from '../shared/models/metadata-document';
 
 @Component({
   selector: 'app-metadata-details',
@@ -14,7 +15,8 @@ import {LoaderService} from '../shared/services/loader.service';
   styleUrls: ['./metadata-details-dialog.component.css']
 })
 export class MetadataDetailsDialogComponent implements OnInit {
-  data: any;
+  content: any;
+  metadata: MetadataDocument;
 
   config: MetadataFormConfig = {
     hideFields: [
@@ -44,8 +46,10 @@ export class MetadataDetailsDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.data = this.dialogData['metadata']['content'];
-    console.log('content', this.dialogData['metadata']['content']);
+    this.metadata = this.dialogData['metadata'];
+    this.content = this.metadata.content;
+    console.log('content', this.content);
+
     this.schemaUrl = this.dialogData['metadata']['content']['describedBy'];
     this.schema = this.dialogData['schema'];
     const concreteType = this.schemaUrl.split('/').pop();
@@ -70,19 +74,21 @@ export class MetadataDetailsDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onCancel($event: boolean) {
+  onSave(formData: object) {
+    console.log('saving data', formData);
+    const selfLink = this.metadata._links['self']['href'];
+    const newContent = formData['value'];
+    this.metadata['content'] = newContent;
+    this.metadata['validationState'] = 'Draft';
+    this.ingestService.patch(selfLink, this.metadata)
+      .subscribe(response => {
+        console.log('successful update', response);
+        this.dialogRef.close();
+      }, err => {
+        console.error('error', err);
+        this.dialogRef.close();
+      });
 
   }
 
-  onBack($event: boolean) {
-
-  }
-
-  onSave($event: object) {
-
-  }
-
-  onTabChange($event: string) {
-
-  }
 }

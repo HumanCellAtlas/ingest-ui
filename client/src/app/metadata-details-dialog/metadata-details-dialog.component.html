@@ -6,13 +6,11 @@
 <mat-dialog-content class="mat-typography">
   <app-metadata-form *ngIf="schema" name="project"
                      [schema]="schema"
-                     [data]="data"
+                     [data]="content"
                      [config]="config"
                      [selectedTabKey]="formTabKey"
-                     (cancel)="onCancel($event)"
-                     (back)="onBack($event)"
                      (save)="onSave($event)"
-                     (tabChange)="onTabChange($event)">
+  >
   </app-metadata-form>
 </mat-dialog-content>
 

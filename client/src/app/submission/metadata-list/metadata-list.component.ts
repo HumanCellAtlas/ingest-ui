@@ -60,7 +60,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   private pollInterval: number;
   isLoading = false;
 
-
   constructor(private ingestService: IngestService,
               private flattenService: FlattenService,
               private schemaService: SchemaService,
@@ -262,7 +261,8 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     const metadata = this.metadataList[rowIndex];
     console.log('data', metadata);
     this.loaderService.display(true);
-    this.schemaService.getDerefSchema(metadata['content']['describedBy'])
+    const schemaUrl = metadata['content']['describedBy'];
+    this.schemaService.getDereferencedSchema(schemaUrl)
       .subscribe(data => {
         this.loaderService.display(false);
         console.log('schema', data);
