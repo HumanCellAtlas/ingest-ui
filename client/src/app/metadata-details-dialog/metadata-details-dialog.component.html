@@ -1,0 +1,22 @@
+<h1 class="vf-text vf-text-heading--2">{{type}} {{id}}</h1>
+<br/>
+<br/>
+
+<h2 mat-dialog-title> Edit {{dialogData['metadata']['type']}} - {{dialogData['metadata']['uuid']['uuid']}}</h2>
+<mat-dialog-content class="mat-typography">
+  <app-metadata-form *ngIf="schema" name="project"
+                     [schema]="schema"
+                     [data]="data"
+                     [config]="config"
+                     [selectedTabKey]="formTabKey"
+                     (cancel)="onCancel($event)"
+                     (back)="onBack($event)"
+                     (save)="onSave($event)"
+                     (tabChange)="onTabChange($event)">
+  </app-metadata-form>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+</mat-dialog-actions>

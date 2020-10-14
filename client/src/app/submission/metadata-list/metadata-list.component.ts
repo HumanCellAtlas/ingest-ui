@@ -5,6 +5,10 @@ import {IngestService} from '../../shared/services/ingest.service';
 import {FlattenService} from '../../shared/services/flatten.service';
 import {Page, PagedData} from '../../shared/models/page';
 import {MetadataDocument} from '../../shared/models/metadata-document';
+import {MetadataDetailsDialogComponent} from '../../metadata-details-dialog/metadata-details-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {SchemaService} from '../../shared/services/schema.service';
+import {LoaderService} from '../../shared/services/loader.service';
 
 @Component({
   selector: 'app-metadata-list',
@@ -58,7 +62,10 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
 
   constructor(private ingestService: IngestService,
-              private flattenService: FlattenService) {
+              private flattenService: FlattenService,
+              private schemaService: SchemaService,
+              private loaderService: LoaderService,
+              public dialog: MatDialog) {
     this.pollInterval = 4000; // 4s
     this.alive = true;
     this.page.number = 0;
@@ -249,5 +256,26 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   getRowId(row) {
     return row['uuid.uuid'];
+  }
+
+  openDialog(rowIndex: number): void {
+    const metadata = this.metadataList[rowIndex];
+    console.log('data', metadata);
+    this.loaderService.display(true);
+    this.schemaService.getDerefSchema(metadata['content']['describedBy'])
+      .subscribe(data => {
+        this.loaderService.display(false);
+        console.log('schema', data);
+
+        const dialogRef = this.dialog.open(MetadataDetailsDialogComponent, {
+          data: {metadata: metadata, schema: data}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+        });
+      });
+
+
   }
 }

@@ -57,6 +57,8 @@ import {TemplateQuestionnaireModule} from './template-questionnaire/template-que
 import {ErrorComponent} from './error/error.component';
 import {HttpErrorInterceptor} from './http-interceptors/http-error-interceptor';
 import { GlobalFooterComponent } from './global-footer/global-footer.component';
+import { MetadataDetailsDialogComponent } from './metadata-details-dialog/metadata-details-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -87,7 +89,8 @@ const BROWSER_LOCALE = navigator.language;
     RegistrationComponent,
     WelcomeComponent,
     ErrorComponent,
-    GlobalFooterComponent
+    GlobalFooterComponent,
+    MetadataDetailsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -104,7 +107,8 @@ const BROWSER_LOCALE = navigator.language;
     AaiSecurity,
     MetadataSchemaFormModule,
     ProjectRegistrationModule,
-    TemplateQuestionnaireModule
+    TemplateQuestionnaireModule,
+    MatDialogModule
   ],
   providers: [
     {

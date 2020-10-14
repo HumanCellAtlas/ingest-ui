@@ -4,6 +4,7 @@ import {environment} from '../../../environments/environment';
 import {IngestService} from './ingest.service';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Observable, of} from 'rxjs';
+import {BrokerService} from './broker.service';
 import {map} from 'rxjs/operators';
 
 @Injectable()
@@ -11,19 +12,26 @@ export class SchemaService {
   API_URL: string = environment.SCHEMA_API_URL;
   latestSchemaMap: Map<string, MetadataSchema>;
 
-  constructor(private http: HttpClient, private ingestService: IngestService) {
+  constructor(private http: HttpClient,
+              private ingestService: IngestService,
+              private brokerService: BrokerService) {
     console.log('schema api url', this.API_URL);
   }
 
+  public getDerefSchema(schemaUrl: string): Observable<any> {
+    return this.brokerService.getDerefSchema(schemaUrl);
+  }
+
   public getUrlOfLatestSchema(concreteType: string): Observable<string> {
-    return this.getLatestSchemas().pipe(map(schemaMap => {
-      const schema: MetadataSchema = schemaMap.get(concreteType);
-      const schemaUrl = schema['_links']['json-schema']['href'];
-      if (schemaUrl.includes('humancellatlas.orgtype')) {
-        return schemaUrl.replace('humancellatlas.orgtype', 'humancellatlas.org/type');
-      }
-      return schemaUrl;
-    }));
+    return this.getLatestSchemas().pipe(
+      map(schemaMap => {
+        const schema: MetadataSchema = schemaMap.get(concreteType);
+        const schemaUrl = schema['_links']['json-schema']['href'];
+        if (schemaUrl.includes('humancellatlas.orgtype')) {
+          return schemaUrl.replace('humancellatlas.orgtype', 'humancellatlas.org/type');
+        }
+        return schemaUrl;
+      }));
   }
 
   private getLatestSchemas(): Observable<Map<string, MetadataSchema>> {

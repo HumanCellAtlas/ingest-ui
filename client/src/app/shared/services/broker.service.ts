@@ -51,6 +51,11 @@ export class BrokerService {
     return this.http.get(url, {responseType: 'blob', observe: 'response'});
   }
 
+  getDerefSchema(schemaUrl: string) {
+    const url = `${this.API_URL}/schemas?url=${schemaUrl}&json&deref`;
+    return this.http.get(url);
+  }
+
   private handleError(operation: any) {
     return (err: any) => {
       const errMsg = `error in ${operation}()`;
@@ -65,4 +70,5 @@ export class BrokerService {
       return throwError(error);
     };
   }
+
 }

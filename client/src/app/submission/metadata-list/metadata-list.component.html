@@ -63,6 +63,12 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <!--edit-->
+  <ngx-datatable-column prop="_links.self.href" name="edit" [width]="'130'" >
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <a href="javascript:void(0)" (click)="openDialog(rowIndex)" ><mat-icon [ngStyle]="{'color': 'lightgrey'}" >edit</mat-icon></a>
+    </ng-template>
+  </ngx-datatable-column>
 
   <!--State Column-->
   <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'" >
@@ -85,6 +91,7 @@
       <a href="{{value}}" target="_blank"><mat-icon [ngStyle]="{'color': 'lightgrey'}" >link</mat-icon></a>
     </ng-template>
   </ngx-datatable-column>
+
 
   <!--uuid-->
   <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
