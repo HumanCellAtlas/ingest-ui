@@ -51,7 +51,7 @@ export class BrokerService {
     return this.http.get(url, {responseType: 'blob', observe: 'response'});
   }
 
-  getDerefSchema(schemaUrl: string) {
+  getDereferencedSchema(schemaUrl: string) {
     const url = `${this.API_URL}/schemas?url=${schemaUrl}&json&deref`;
     return this.http.get(url);
   }

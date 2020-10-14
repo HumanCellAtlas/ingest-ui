@@ -5,21 +5,33 @@ import {IngestService} from './ingest.service';
 import {MetadataSchema} from '../models/metadata-schema';
 import {Observable, of} from 'rxjs';
 import {BrokerService} from './broker.service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Injectable()
 export class SchemaService {
   API_URL: string = environment.SCHEMA_API_URL;
   latestSchemaMap: Map<string, MetadataSchema>;
 
+  // TODO should caching be in Ingest Broker API or here?
+  schemaCache = {};
+
   constructor(private http: HttpClient,
               private ingestService: IngestService,
               private brokerService: BrokerService) {
     console.log('schema api url', this.API_URL);
+
   }
 
-  public getDerefSchema(schemaUrl: string): Observable<any> {
-    return this.brokerService.getDerefSchema(schemaUrl);
+  public getDereferencedSchema(schemaUrl: string): Observable<any> {
+    if (this.schemaCache[schemaUrl]) {
+      return of(this.schemaCache[schemaUrl]);
+    } else {
+      return this.brokerService.getDereferencedSchema(schemaUrl).pipe(
+        tap(data => {
+          this.schemaCache[schemaUrl] = data;
+        })
+      );
+    }
   }
 
   public getUrlOfLatestSchema(concreteType: string): Observable<string> {
