@@ -73,8 +73,9 @@
 
   <!--Linked-->
   <ngx-datatable-column *ngIf="config && config.displayLinking" prop="linked" name="linked" [width]="'130'" >
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <span>{{value}}</span>
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-linked="value" let-row="row">
+      <mat-icon *ngIf="linked" style="color: darkgreen">swap_horiz</mat-icon>
+      <mat-icon *ngIf="!linked" style="color: orange">warning</mat-icon>
     </ng-template>
   </ngx-datatable-column>
 
