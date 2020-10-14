@@ -24,13 +24,24 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
   @Input() metadataType;
   @Input() expectedCount;
 
-  @Input() config = {
+  private _config = {
     displayContent: true,
     displayState: true,
     displayAll: false,
+    displayLinking: false,
     displayColumns: [],
     hideWhenEmptyRows: false
   };
+
+  @Input()
+  get config() {
+    return this._config;
+  }
+
+  set config(config: any) {
+    Object.assign(this._config, config);
+  }
+
   metadataList$: Observable<PagedData<MetadataDocument>>;
   @Input() submissionEnvelopeId: string;
   editing = {};

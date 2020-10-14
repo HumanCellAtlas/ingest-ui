@@ -42,6 +42,7 @@
     <mat-tab label="Biomaterials">
       <ng-template matTabContent>
         <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'biomaterials'"
+                           [config]="{displayLinking: true}"
                            [expectedCount]="manifest ? manifest['expectedBiomaterials'] : null"></app-metadata-list>
       </ng-template>
     </mat-tab>
