@@ -43,7 +43,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   archiveEntities: ArchiveEntity[];
   private alive: boolean;
   private pollInterval: number;
-  private MAX_ERRORS = 9;
+  private MAX_ERRORS = 1;
 
   constructor(
     private alertService: AlertService,
