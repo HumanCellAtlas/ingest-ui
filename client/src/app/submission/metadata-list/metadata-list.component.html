@@ -71,6 +71,14 @@
     </ng-template>
   </ngx-datatable-column>
 
+  <!--Linked-->
+  <ngx-datatable-column *ngIf="config && config.displayLinking" prop="linked" name="linked" [width]="'130'" >
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-linked="value" let-row="row">
+      <mat-icon *ngIf="linked" style="color: darkgreen" matTooltip="linked to other entities">swap_horiz</mat-icon>
+      <mat-icon *ngIf="!linked" style="color: orange" matTooltip="no links with other entities">warning</mat-icon>
+    </ng-template>
+  </ngx-datatable-column>
+
   <!--ingest link-->
   <ngx-datatable-column prop="_links.self.href" name="ingest api url" [width]="'130'" >
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
