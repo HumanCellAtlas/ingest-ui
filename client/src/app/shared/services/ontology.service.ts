@@ -34,7 +34,6 @@ export class OntologyService {
     const searchParams = {
       groupField: 'iri',
       start: 0,
-      ontology: 'efo',
       q: searchText ? searchText : '*',
       rows: 30 // TODO max result we have for project role and technology is 27,
       // increasing the rows for now to let the users see all the options
@@ -48,22 +47,26 @@ export class OntologyService {
     const graphRestriction = properties['ontology']['graph_restriction'];
     const ontologyClasses: string[] = graphRestriction['classes'];
     const ontologyRelation: string = graphRestriction['relations'][0]; // TODO support only 1 relation for now
-    const ontology: string = graphRestriction['ontologies'][0]; // TODO support only 1 ontology for now
+    const ontologies: string[] = graphRestriction['ontologies'];
+    searchParams['ontology'] = ontologies.map(ontology => ontology.replace('obo:', ''));
 
-    searchParams['ontology'] = ontology.replace('obo:', '');
-    return combineLatest(ontologyClasses
-      .map(ontologyClass => ontologyClass.replace(':', '_'))
-      .map(olsClass => this.select({q: olsClass}))
+    return combineLatest(
+      ontologyClasses
+        .map(ontologyClass => ontologyClass.replace(':', '_'))
+        .map(olsClass => this.select({q: olsClass}))
     ).pipe(
-      map(responseArray => responseArray
-        .map(ols => ols.response)
-        .filter(olsResponse => olsResponse.numFound === 1)
-        .map(olsResponse => olsResponse.docs[0].iri)),
+      map(responseArray => {
+          return responseArray.map(ols => ols.response)
+            .filter(olsResponse => olsResponse.numFound === 1)
+            .map(olsResponse => olsResponse.docs[0].iri);
+        }
+      ),
       map(iriArray => {
         searchParams[this.OLS_RELATION[ontologyRelation]] = iriArray;
         return searchParams;
       })
     );
+
   }
 
   searchOntologies(params): Observable<Ontology[]> {
