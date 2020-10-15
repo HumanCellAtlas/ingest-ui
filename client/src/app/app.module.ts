@@ -56,13 +56,12 @@ import {WelcomeComponent} from './welcome/welcome.component';
 import {TemplateQuestionnaireModule} from './template-questionnaire/template-questionnaire.module';
 import {ErrorComponent} from './error/error.component';
 import {HttpErrorInterceptor} from './http-interceptors/http-error-interceptor';
-import { GlobalFooterComponent } from './global-footer/global-footer.component';
-import { MetadataDetailsDialogComponent } from './metadata-details-dialog/metadata-details-dialog.component';
+import {GlobalFooterComponent} from './global-footer/global-footer.component';
+import {MetadataDetailsDialogComponent} from './metadata-details-dialog/metadata-details-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 
 const BROWSER_LOCALE = navigator.language;
 
-//
 @NgModule({
   declarations: [
     AppComponent,
