@@ -42,80 +42,99 @@
   [messages]="{totalMessage: expectedCount ? '/ ' + expectedCount : ''}"
 >
 
-   <!--Row Detail Template -->
+  <ngx-datatable-column
+    [width]="50"
+    [resizeable]="false"
+    [sortable]="false"
+    [draggable]="false"
+    [canAutoResize]="false"
+  >
+    <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+      <a
+        href="javascript:void(0)"
+        title="Expand/Collapse Row"
+        (click)="toggleExpandRow(row, rowIndex)"
+      >
+        <mat-icon *ngIf="!expanded" matTooltip="Expand more" matTooltipPosition="after">expand_more</mat-icon>
+        <mat-icon *ngIf="expanded" matTooltip="Expand less" matTooltipPosition="after">expand_less</mat-icon>
+      </a>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
     <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+      <h3 *ngIf="['Valid', 'Invalid'].indexOf(row['validationState']) >= 0"> Validation Report: </h3>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
         <ng-container *ngFor="let error of getValidationErrors(row)">
           <span class="vf-u-text-color--red" title="{{error}}">{{error}}</span><br>
         </ng-container>
       </div>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
-        <span class="text-success" title="{{getDefaultValidMessage()}}">{{getDefaultValidMessage()}}</span>
+        <span class="vf-u-text-color--green" title="{{getDefaultValidMessage()}}">{{getDefaultValidMessage()}}</span>
       </div>
     </ng-template>
   </ngx-datatable-row-detail>
 
   <!--patch-->
-  <ngx-datatable-column prop="_links.patch.href" name="" [width]="'130'" >
+  <ngx-datatable-column prop="_links.patch.href" name="" [width]="'130'">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <a *ngIf="row['isUpdate']" href="{{value}}" target="_blank"><mat-icon [ngStyle]="{'color': 'lightgrey'}" matTooltip="See patch">compare</mat-icon></a>
+      <a *ngIf="row['isUpdate']" href="{{value}}" target="_blank">
+        <mat-icon [ngStyle]="{'color': 'lightgrey'}" matTooltip="See patch">compare</mat-icon>
+      </a>
     </ng-template>
   </ngx-datatable-column>
 
   <!--edit-->
-  <ngx-datatable-column prop="_links.self.href" name="edit" [width]="'130'" >
+  <ngx-datatable-column prop="_links.self.href" name="edit" [width]="'130'">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <a href="javascript:void(0)" (click)="openDialog(rowIndex)" ><mat-icon [ngStyle]="{'color': 'lightgrey'}" >edit</mat-icon></a>
+      <a href="javascript:void(0)" (click)="openDialog(rowIndex)">
+        <mat-icon [ngStyle]="{'color': 'lightgrey'}">edit</mat-icon>
+      </a>
     </ng-template>
   </ngx-datatable-column>
 
   <!--State Column-->
-  <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'" >
+  <ngx-datatable-column *ngIf="config && config.displayState" prop="validationState" name="state" [width]="'130'">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <app-metadata-state [state]="value"></app-metadata-state>
     </ng-template>
   </ngx-datatable-column>
 
   <!--Linked-->
-  <ngx-datatable-column *ngIf="config && config.displayLinking" prop="linked" name="linked" [width]="'130'" >
+  <ngx-datatable-column *ngIf="config && config.displayLinking" prop="linked" name="linked" [width]="'130'">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-linked="value" let-row="row">
-      <mat-icon *ngIf="linked" style="color: darkgreen" matTooltip="linked to other entities">swap_horiz</mat-icon>
-      <mat-icon *ngIf="!linked" style="color: orange" matTooltip="no links with other entities">warning</mat-icon>
+      <mat-icon *ngIf="linked" style="color: darkgreen" matTooltip="linked to other entities"
+                matTooltipPosition="after">swap_horiz
+      </mat-icon>
+      <mat-icon *ngIf="!linked" style="color: orange" matTooltip="no links with other entities"
+                matTooltipPosition="after">warning
+      </mat-icon>
     </ng-template>
   </ngx-datatable-column>
 
   <!--ingest link-->
-  <ngx-datatable-column prop="_links.self.href" name="ingest api url" [width]="'130'" >
+  <ngx-datatable-column prop="_links.self.href" name="ingest api url" [width]="'130'">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <a href="{{value}}" target="_blank"><mat-icon [ngStyle]="{'color': 'lightgrey'}" >link</mat-icon></a>
+      <a href="{{value}}" target="_blank">
+        <mat-icon [ngStyle]="{'color': 'lightgrey'}">link</mat-icon>
+      </a>
     </ng-template>
   </ngx-datatable-column>
 
 
   <!--uuid-->
   <ngx-datatable-column prop="uuid.uuid" name="uuid" *ngIf="metadataType != 'bundleManifests'">
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
-      <span
-        title="{{value}}"
-        (dblclick)="editing[rowIndex + '-' + column] = true"
-        *ngIf="!editing[rowIndex + '-' + column]">
-            {{value}}
-          </span>
-      <input
-        autofocus
-        (blur)="updateValue($event, column, rowIndex)"
-        *ngIf="editing[rowIndex+ '-' + column]"
-        type="text"
-        [value]="value"
-      />
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                 let-column="column">
+      <span title="{{value}}">{{value}}</span>
     </ng-template>
   </ngx-datatable-column>
 
   <ng-container *ngFor="let column of getAllColumns(rows)">
 
     <!--Core.type column-->
-    <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type" >
+    <ngx-datatable-column *ngIf="column == 'content.core.type';else textColumn" prop="{{column}}" name="core.type">
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
         <a href="{{row['content.describedBy']}}"> {{ getMetadataType(rowIndex) }}</a>
       </ng-template>
@@ -125,19 +144,9 @@
     <ng-template #textColumn>
       <ngx-datatable-column *ngIf="!column.startsWith('_')" prop="{{column}}" name="{{column.replace('content.','')}}">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <span
-            title="{{value}}"
-            (dblclick)="editing[rowIndex + '-' + column] = true"
-            *ngIf="!editing[rowIndex + '-' + column]">
+          <span title="{{value}}">
             {{value}}
           </span>
-          <input
-            autofocus
-            (blur)="updateValue($event, column, rowIndex)"
-            *ngIf="editing[rowIndex+ '-' + column]"
-            type="text"
-            [value]="value"
-          />
         </ng-template>
       </ngx-datatable-column>
     </ng-template>

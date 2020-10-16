@@ -1,6 +1,6 @@
 import {AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {Observable, Subscription, timer} from 'rxjs';
-import {takeWhile} from 'rxjs/operators';
+import {Observable, of, Subscription, timer} from 'rxjs';
+import {takeWhile, tap} from 'rxjs/operators';
 import {IngestService} from '../../shared/services/ingest.service';
 import {FlattenService} from '../../shared/services/flatten.service';
 import {Page, PagedData} from '../../shared/models/page';
@@ -9,6 +9,8 @@ import {MetadataDetailsDialogComponent} from '../../metadata-details-dialog/meta
 import {MatDialog} from '@angular/material/dialog';
 import {SchemaService} from '../../shared/services/schema.service';
 import {LoaderService} from '../../shared/services/loader.service';
+import {ListResult} from '../../shared/models/hateoas';
+import {MetadataSchema} from '../../shared/models/metadata-schema';
 
 @Component({
   selector: 'app-metadata-list',
@@ -17,7 +19,7 @@ import {LoaderService} from '../../shared/services/loader.service';
   encapsulation: ViewEncapsulation.None
 })
 
-export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class MetadataListComponent implements OnInit, OnDestroy {
   pollingSubscription: Subscription;
   pollingTimer: Observable<number>;
 
@@ -48,7 +50,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   metadataList$: Observable<PagedData<MetadataDocument>>;
   @Input() submissionEnvelopeId: string;
-  editing = {};
   page: Page = {number: 0, size: 0, sort: '', totalElements: 0, totalPages: 0};
   rows: any[];
   expandAll: boolean;
@@ -65,12 +66,11 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
               private schemaService: SchemaService,
               private loaderService: LoaderService,
               public dialog: MatDialog) {
-    this.pollInterval = 4000; // 4s
+    this.pollInterval = 5000; // 5s
     this.alive = true;
     this.page.number = 0;
     this.page.size = 20;
     this.pollingTimer = timer(0, this.pollInterval).pipe(takeWhile(() => this.alive)); // only fires when component is alive
-
     this.validationStates = ['Draft', 'Validating', 'Valid', 'Invalid'];
   }
 
@@ -80,13 +80,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.setPage({offset: 0});
-  }
-
-  ngAfterViewChecked() {
-    // added a flag to keep the rows expanded even after polling refreshes the rows
-    if (this.expandAll) {
-      this.table.rowDetail.expandAllRows();
-    }
   }
 
   getAllColumns(rows) {
@@ -152,20 +145,6 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     return validMessage;
   }
 
-  updateValue(event, cell, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex);
-    this.editing[rowIndex + '-' + cell] = false;
-    const newValue = event.target.value;
-
-    console.log('newValue', newValue);
-
-    this.rows[rowIndex][cell] = newValue;
-    this.rows = [...this.rows];
-
-    console.log('METADATA LIST ROW!', this.metadataList[rowIndex]);
-    console.log('ROWS!', this.rows);
-  }
-
   getValidationErrors(row) {
     const columns = Object.keys(row)
       .filter(column => {
@@ -197,9 +176,7 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
     this.alive = true;
   }
 
-
   fetchData(pageInfo) {
-
     if (this.submissionEnvelopeId) {
       const params = {
         page: pageInfo['offset'],
@@ -275,7 +252,12 @@ export class MetadataListComponent implements OnInit, AfterViewChecked, OnDestro
           console.log('The dialog was closed');
         });
       });
-
-
   }
+
+  toggleExpandRow(row: object, rowIndex: number) {
+    const metadata = this.metadataList[rowIndex];
+    this.table.rowDetail.toggleExpandRow(row);
+  }
+
+
 }
