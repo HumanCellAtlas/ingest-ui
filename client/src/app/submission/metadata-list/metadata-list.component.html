@@ -64,7 +64,6 @@
   <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
     <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <h3 *ngIf="['Valid', 'Invalid'].indexOf(row['validationState']) >= 0"> Validation Report: </h3>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
         <ng-container *ngFor="let error of getValidationErrors(row)">
           <span class="vf-u-text-color--red" title="{{error}}">{{error}}</span><br>
