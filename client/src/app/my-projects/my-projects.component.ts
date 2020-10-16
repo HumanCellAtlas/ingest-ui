@@ -93,8 +93,10 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getProjects() {
-    this.params['page'] = this.paginator.pageIndex;
-    this.params['size'] = this.paginator.pageSize;
+    if (this.paginator) {
+      this.params['page'] = this.paginator.pageIndex;
+      this.params['size'] = this.paginator.pageSize;
+    }
     this.ingestService.getUserProjects(this.params)
       .subscribe({
         next: data => {
@@ -107,11 +109,13 @@ export class MyProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // TODO Create a component which supports dynamic(polled data) datatable loading and pagination
   ngAfterViewInit() {
-    this.paginator.page
-      .pipe(
-        tap(() => this.getProjects())
-      )
-      .subscribe();
+    if (this.paginator) {
+      this.paginator.page
+        .pipe(
+          tap(() => this.getProjects())
+        )
+        .subscribe();
+    }
   }
 
   getCurrentPageInfo(pagination) {
