@@ -81,7 +81,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     for (const field of fields) {
       const criteria = {
-        'contentField': field,
+        'field': field,
         'operator': 'REGEX',
         'value': text.replace(/\s+/g, '\\s+')
       };
@@ -94,7 +94,7 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getDefaultProjects(params) {
     const query = [{
-      'contentField': 'isUpdate',
+      'field': 'isUpdate',
       'operator': 'IS',
       'value': false
     }];
