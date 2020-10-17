@@ -8,10 +8,9 @@ export interface EmbeddedList<T> {
   submissionEnvelopes: T[];
   projects: T[];
   files: T[];
-  samples: T[];
-  analyses: T[];
-  assays: T[];
+  biomaterials: T[];
   protocols: T[];
+  processes: T[];
   bundleManifests: T[];
   schemas: T[];
   archiveEntities: T[];
