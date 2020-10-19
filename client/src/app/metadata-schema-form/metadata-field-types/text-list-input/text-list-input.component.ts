@@ -37,7 +37,13 @@ export class TextListInputComponent extends BaseInputComponent implements OnInit
         for (const elem of data) {
           const val = elem.trim();
           if (val) {
-            const elemFormControl = this.formHelper.toFormControl(this.metadata, elem.trim());
+            let elemFormControl;
+            if (this.metadata.schema.items['type'] === 'integer') {
+              elemFormControl = this.formHelper.toFormControl(this.metadata, parseInt(val, 10));
+            } else {
+              elemFormControl = this.formHelper.toFormControl(this.metadata, val);
+            }
+
             formArray.push(elemFormControl);
           }
         }
