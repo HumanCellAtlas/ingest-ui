@@ -104,7 +104,7 @@ describe('createSearchParams', () => {
       expect(data).toEqual({
         groupField: 'iri',
         start: 0,
-        ontology: 'efo',
+        ontology: ['efo'],
         allChildrenOf: ['http://www.ebi.ac.uk/efo/EFO_0009736'],
         q: 'text',
         rows: 30
@@ -125,7 +125,6 @@ describe('createSearchParams', () => {
       expect(data).toEqual({
         groupField: 'iri',
         start: 0,
-        ontology: 'efo',
         q: '*',
         rows: 30
       });
