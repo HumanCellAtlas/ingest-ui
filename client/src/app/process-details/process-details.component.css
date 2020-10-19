@@ -1,0 +1,9 @@
+.process-details {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: auto auto;
+  align-items: start;
+  column-gap: 1em;
+  margin: 1em;
+  word-break: break-all;
+}
