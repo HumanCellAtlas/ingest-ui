@@ -81,7 +81,8 @@ export class MetadataDetailsDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onSave(formData: object) {
+  onSave() {
+    const formData = this.metadataFormComponent.getFormData();
     console.log('saving data', formData);
     const selfLink = this.metadata._links['self']['href'];
     const newContent = formData['value'];

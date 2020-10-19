@@ -21,7 +21,7 @@
                              [data]="content"
                              [config]="config"
                              [selectedTabKey]="formTabKey"
-                             (save)="onSave($event)"
+                             (save)="onSave()"
           >
           </app-metadata-form>
         </div>
@@ -32,5 +32,5 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onSave({'value': metadataFormComponent.formGroup.value})">Save</button>
+  <button mat-button (click)="onSave()">Save</button>
 </mat-dialog-actions>
