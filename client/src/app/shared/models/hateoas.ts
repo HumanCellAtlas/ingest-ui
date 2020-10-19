@@ -1,7 +1,9 @@
+import {Page} from './page';
+
 export interface ListResult<T> {
   _embedded: EmbeddedList<T>;
   _links: any;
-  page: any;
+  page: Page;
 }
 
 export interface EmbeddedList<T> {

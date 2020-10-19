@@ -1,9 +1,11 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, Query, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {Project, ProjectColumn} from '../shared/models/project';
 import {IngestService} from '../shared/services/ingest.service';
 import {timer} from 'rxjs';
-import {takeWhile, tap} from 'rxjs/operators';
+import {map, takeWhile, tap} from 'rxjs/operators';
+import {Criteria} from '../shared/models/criteria';
+import {ListResult} from '../shared/models/hateoas';
 
 @Component({
   selector: 'app-all-projects',
@@ -93,17 +95,18 @@ export class AllProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getDefaultProjects(params) {
-    const query = [{
-      'field': 'isUpdate',
-      'operator': 'IS',
-      'value': false
-    }];
+    const criteria = {
+      field: 'isUpdate',
+      operator: 'IS',
+      value: false
+    } as Criteria;
     params['operator'] = 'and';
-    this.queryProjects(query, params);
+    this.queryProjects([criteria], params);
   }
 
-  private queryProjects(query: any[], params) {
+  private queryProjects(query: Criteria[], params) {
     this.ingestService.queryProjects(query, params)
+      .pipe(map(data => data as ListResult<Project>))
       .subscribe({
         next: data => {
           this.projects = data._embedded ? data._embedded.projects : [];
