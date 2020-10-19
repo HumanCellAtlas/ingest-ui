@@ -3,7 +3,8 @@
     <h4>Inputs</h4>
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
       <ng-container *ngFor="let input of inputBiomaterials">
-        <mat-card>
+        <mat-card class="wrap-text">
+          <mat-card-content>
           <p class="vf-text-body vf-text-body--3">
             <strong>id: </strong> {{input?.content['biomaterial_core']['biomaterial_id']}}</p>
           <p><strong>concrete type: </strong> {{getConcreteType(input)}}</p>
@@ -11,6 +12,7 @@
           <p><strong>uuid: </strong> {{input?.uuid?.uuid}}</p>
           <p><strong>name: </strong> {{input?.content['biomaterial_core']['biomaterial_name']}}</p>
           <p><strong>description: </strong> {{input?.content['biomaterial_core']['biomaterial_description']}}</p>
+          </mat-card-content>
         </mat-card>
       </ng-container>
     </div>
@@ -21,7 +23,8 @@
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
       <ng-container *ngFor="let protocol of protocols">
         <div class="vf-u-padding__bottom--xl">
-          <mat-card>
+          <mat-card class="wrap-text">
+            <mat-card-content>
             <p class="vf-text-body vf-text-body--3">
               <strong>id: </strong> {{protocol?.content['protocol_core']['protocol_id']}}</p>
             <p><strong>concrete type: </strong> {{getConcreteType(protocol)}}</p>
@@ -29,6 +32,7 @@
             <p><strong>uuid: </strong> {{protocol?.uuid?.uuid}}</p>
             <p><strong>name: </strong> {{protocol?.content['protocol_core']['protocol_name']}}</p>
             <p><strong>description: </strong> {{protocol?.content['protocol_core']['protocol_description']}}</p>
+            </mat-card-content>
           </mat-card>
         </div>
       </ng-container>
@@ -39,26 +43,30 @@
     <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
       <ng-container *ngFor="let output of derivedBiomaterials">
         <div class="vf-u-padding__bottom--xl">
-          <mat-card>
-            <p class="vf-text-body vf-text-body--3">
-              <strong>id: </strong> {{output?.content['biomaterial_core']['biomaterial_id']}}</p>
-            <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
-            <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
-            <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
-            <p><strong>name: </strong> {{output?.content['biomaterial_core']['biomaterial_name']}}</p>
-            <p><strong>description: </strong> {{output?.content['biomaterial_core']['biomaterial_description']}}</p>
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{output?.content['biomaterial_core']['biomaterial_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
+              <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
+              <p><strong >name: </strong> {{output?.content['biomaterial_core']['biomaterial_name']}}</p>
+              <p><strong >description: </strong> {{output?.content['biomaterial_core']['biomaterial_description']}}</p>
+            </mat-card-content>
           </mat-card>
         </div>
       </ng-container>
       <ng-container *ngFor="let output of derivedFiles">
         <div class="vf-u-padding__bottom--xl">
-          <mat-card>
+          <mat-card class="wrap-text">
+            <mat-card-content>
             <p class="vf-text-body vf-text-body--3">
               <strong>id: </strong> {{output?.content['file_core']['file_name']}}</p>
             <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
             <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
             <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
-            <p><strong>description: </strong> {{output?.content['file_core']['biomaterial_description']}}</p>
+            <p><strong >description: </strong> {{output?.content['file_core']['biomaterial_description']}}</p>
+            </mat-card-content>
           </mat-card>
         </div>
       </ng-container>
