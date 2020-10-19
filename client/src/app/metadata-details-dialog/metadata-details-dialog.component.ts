@@ -43,7 +43,6 @@ export class MetadataDetailsDialogComponent implements OnInit {
   type: string;
   id: string;
 
-  inputBiomaterials: MetadataDocument[];
 
   constructor(private route: ActivatedRoute,
               private ingestService: IngestService,
@@ -57,7 +56,6 @@ export class MetadataDetailsDialogComponent implements OnInit {
   ngOnInit(): void {
     this.metadata = this.dialogData['metadata'];
     this.content = this.metadata.content;
-    console.log('content', this.content);
     this.type = this.metadata['type'];
     this.id = this.metadata['uuid']['uuid'];
 
@@ -74,7 +72,8 @@ export class MetadataDetailsDialogComponent implements OnInit {
 
     layout.tabs = [tab];
     this.config.layout = layout;
-    this.getInputBiomaterials(this.metadata).subscribe();
+
+
   }
 
   onNoClick(): void {
@@ -105,19 +104,13 @@ export class MetadataDetailsDialogComponent implements OnInit {
   }
 
   addInput() {
+    // TODO
     console.log('add input');
   }
 
-  getInputBiomaterials(metadata: MetadataDocument): Observable<ListResult<MetadataDocument>> {
-    const selfUrl = metadata._links['self']['href'];
-    return this.ingestService.getAs<ListResult<MetadataDocument>>(`${selfUrl}/inputBiomaterials`).pipe(
-      tap(data => {
-        const inputs = data._embedded ? data._embedded.biomaterials : [];
-        this.inputBiomaterials = inputs;
-      }));
-  }
-
   removeInput(input: MetadataDocument) {
+    // TODO
     console.log('remove input');
   }
+
 }

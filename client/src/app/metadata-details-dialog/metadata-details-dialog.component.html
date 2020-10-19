@@ -27,6 +27,17 @@
         </div>
       </div>
     </mat-tab>
+
+    <mat-tab *ngIf="type === 'Process'">
+      <ng-template mat-tab-label>
+        <label>
+          Links
+        </label>
+      </ng-template>
+      <app-process-details [selfUrl]="metadata._links['self']['href']"
+                           [schemaUrl]="metadata.content['describedBy']"></app-process-details>
+    </mat-tab>
+
   </mat-tab-group>
 </mat-dialog-content>
 

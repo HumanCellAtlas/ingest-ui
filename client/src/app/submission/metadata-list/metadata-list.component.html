@@ -1,4 +1,5 @@
-<h3 *ngIf="rows && rows.length > 0 && title" class="vf-text vf-text-heading--3">{{title}}</h3>
+<link rel="stylesheet" href="../../process-details/process-details.component.css"><h3
+  *ngIf="rows && rows.length > 0 && title" class="vf-text vf-text-heading--3">{{title}}</h3>
 <ng-container *ngIf="showFilterState()">
   <div>
     <mat-form-field>
@@ -64,14 +65,21 @@
   <!--Row Detail Template -->
   <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
     <ng-template let-rowIndex="rowIndex" let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+      <h3 *ngIf="row['validationState'] == 'Invalid' || row['validationState'] == 'Valid'">Validation Report</h3>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Invalid'">
         <ng-container *ngFor="let error of getValidationErrors(row)">
           <span class="vf-u-text-color--red" title="{{error}}">{{error}}</span><br>
         </ng-container>
       </div>
       <div style="padding-left:35px;" *ngIf="row['validationState'] == 'Valid'">
-        <span class="vf-u-text-color--green" title="{{getDefaultValidMessage()}}">{{getDefaultValidMessage()}}</span>
+        <span class="vf-u-text-color--green">{{getDefaultValidMessage()}}</span>
       </div>
+
+      <ng-container *ngIf="row['type'] === 'Process'">
+        <h3>Process Details</h3>
+        <app-process-details [selfUrl]="row['_links.self.href']"
+                             [schemaUrl]="row['content.describedBy']"></app-process-details>
+      </ng-container>
     </ng-template>
   </ngx-datatable-row-detail>
 
