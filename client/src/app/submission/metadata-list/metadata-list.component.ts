@@ -245,7 +245,9 @@ export class MetadataListComponent implements OnInit, OnDestroy {
         console.log('schema', data);
 
         const dialogRef = this.dialog.open(MetadataDetailsDialogComponent, {
-          data: {metadata: metadata, schema: data}
+          data: {metadata: metadata, schema: data},
+          width: '60%',
+          disableClose: true
         });
 
         dialogRef.afterClosed().subscribe(result => {

@@ -1,20 +1,36 @@
-<h1 class="vf-text vf-text-heading--2">{{type}} {{id}}</h1>
-<br/>
-<br/>
-
 <h2 mat-dialog-title> Edit {{dialogData['metadata']['type']}} - {{dialogData['metadata']['uuid']['uuid']}}</h2>
-<mat-dialog-content class="mat-typography">
-  <app-metadata-form *ngIf="schema" name="project"
-                     [schema]="schema"
-                     [data]="content"
-                     [config]="config"
-                     [selectedTabKey]="formTabKey"
-                     (save)="onSave($event)"
-  >
-  </app-metadata-form>
-</mat-dialog-content>
+<br/>
+<ng-container *ngFor="let error of metadata['validationErrors']">
+  <span class="vf-u-text-color--red" title="{{error['message']}}">{{error['absoluteDataPath']}}
+    : {{error['message']}}</span><br>
+</ng-container>
+<br/>
+<mat-dialog-content>
 
+  <mat-tab-group>
+    <mat-tab>
+      <div>
+        <ng-template mat-tab-label>
+          <label>
+            Details
+          </label>
+        </ng-template>
+        <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+          <app-metadata-form *ngIf="schema" name="project"
+                             [schema]="schema"
+                             [data]="content"
+                             [config]="config"
+                             [selectedTabKey]="formTabKey"
+                             (save)="onSave($event)"
+          >
+          </app-metadata-form>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSave({'value': metadataFormComponent.formGroup.value})">Save</button>
 </mat-dialog-actions>

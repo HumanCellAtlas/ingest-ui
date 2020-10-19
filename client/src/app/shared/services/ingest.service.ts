@@ -107,6 +107,12 @@ export class IngestService {
       .pipe(map(data => data as ListResult<MetadataDocument>));
   }
 
+  queryBiomaterials(query: Criteria[], params?): Observable<ListResult<MetadataDocument>> {
+    console.log('start query biomaterials');
+    return this.http.post(`${this.API_URL}/biomaterials/query`, query, {params: params})
+      .pipe(map(data => data as ListResult<MetadataDocument>));
+  }
+
   public patchProject(projectResource, patch): Observable<Project> {
     return this.doPatchProject(projectResource, patch);
   }
