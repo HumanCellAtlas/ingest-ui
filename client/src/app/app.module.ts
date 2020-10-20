@@ -60,6 +60,7 @@ import {GlobalFooterComponent} from './global-footer/global-footer.component';
 import {MetadataDetailsDialogComponent} from './metadata-details-dialog/metadata-details-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ProcessDetailsComponent } from './process-details/process-details.component';
+import {NgxGraphModule} from '@swimlane/ngx-graph';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -109,7 +110,8 @@ const BROWSER_LOCALE = navigator.language;
     MetadataSchemaFormModule,
     ProjectRegistrationModule,
     TemplateQuestionnaireModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxGraphModule
   ],
   providers: [
     {
