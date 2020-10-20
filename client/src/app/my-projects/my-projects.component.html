@@ -15,9 +15,12 @@
 <ng-container *ngIf="account$ | async as account">
   <app-project-list [projects]=projects [columns]="columns" [showUnassignedActions]="isWrangler"></app-project-list>
 </ng-container>
-<mat-paginator [length]="currentPageInfo['totalElements']"
-               [pageSize]="currentPageInfo['size']"
-               [pageIndex]="currentPageInfo['number']"
-               [pageSizeOptions]="pageSizeOptions"
-               (page)="pageEvent = $event">
-</mat-paginator>
+
+<ng-container *ngIf="currentPageInfo['totalElements'] > 0">
+  <mat-paginator [length]="currentPageInfo['totalElements']"
+                 [pageSize]="currentPageInfo['size']"
+                 [pageIndex]="currentPageInfo['number']"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="pageEvent = $event">
+  </mat-paginator>
+</ng-container>

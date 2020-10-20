@@ -5,7 +5,11 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176603863-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
     gtag('config', 'UA-176603863-1');
   </script>
@@ -13,7 +17,8 @@
   <title>Contribute data to the Human Cell Atlas: Data Coordination Platform</title>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1, minimum-scale=1" name="viewport">
-  <meta name="description" content="How to submit data at single cell resolution for the Human Cell Atlas. Register a project, upload a dataset, receive an accession, view it on the data portal.">
+  <meta name="description"
+        content="How to submit data at single cell resolution for the Human Cell Atlas. Register a project, upload a dataset, receive an accession, view it on the data portal.">
   <meta name="author" content="">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
@@ -26,7 +31,10 @@
 
   <link rel="stylesheet" media="all" href="https://dev.assets.emblstatic.net/vf/v2.2.0/css/styles.css"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="https://dev.assets.emblstatic.net/vf/v2.2.0/scripts/scripts.js"></script>
+  <!-- TODO confirm with VF guys if the VF script is safe to not use with VF 2.0 stylesheet,
+   i think we don't need this and it has unnecessary logging inside -->
+  <!--  <script src="https://dev.assets.emblstatic.net/vf/v2.2.0/scripts/scripts.js"></script>-->
+
   <script src="https://cdn.auth0.com/js/auth0/8.10.1/auth0.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 

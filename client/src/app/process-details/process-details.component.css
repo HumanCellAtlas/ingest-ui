@@ -1,0 +1,13 @@
+.process-details {
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  grid-template-rows: auto auto;
+  align-items: start;
+  column-gap: 1em;
+  margin: 1em;
+}
+
+.wrap-text {
+  white-space: pre-wrap;
+}
+

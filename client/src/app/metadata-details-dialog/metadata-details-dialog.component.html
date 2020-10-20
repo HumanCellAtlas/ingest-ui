@@ -1,0 +1,47 @@
+<h2 mat-dialog-title> Edit {{dialogData['metadata']['type']}} - {{dialogData['metadata']['uuid']['uuid']}}</h2>
+<br/>
+<ng-container *ngFor="let error of metadata['validationErrors']">
+  <span class="vf-u-text-color--red" title="{{error['message']}}">{{error['absoluteDataPath']}}
+    : {{error['message']}}</span><br>
+</ng-container>
+<br/>
+<mat-dialog-content>
+
+  <mat-tab-group>
+    <mat-tab>
+      <div>
+        <ng-template mat-tab-label>
+          <label>
+            Details
+          </label>
+        </ng-template>
+        <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+          <app-metadata-form *ngIf="schema" name="project"
+                             [schema]="schema"
+                             [data]="content"
+                             [config]="config"
+                             [selectedTabKey]="formTabKey"
+                             (save)="onSave()"
+          >
+          </app-metadata-form>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="type === 'Process'">
+      <ng-template mat-tab-label>
+        <label>
+          Links
+        </label>
+      </ng-template>
+      <app-process-details [selfUrl]="metadata._links['self']['href']"
+                           [schemaUrl]="metadata.content['describedBy']"></app-process-details>
+    </mat-tab>
+
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSave()">Save</button>
+</mat-dialog-actions>

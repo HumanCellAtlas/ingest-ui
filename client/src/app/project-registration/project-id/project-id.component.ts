@@ -116,12 +116,12 @@ export class ProjectIdComponent implements OnInit {
   checkProjectCount(projectId: string): Observable<number> {
     const query = [];
     const criteria = {
-      'contentField': 'content.project_core.project_short_name',
+      'field': 'content.project_core.project_short_name',
       'operator': 'REGEX',
       'value': projectId
     };
     query.push(criteria);
-    return this.ingestService.queryProjects(query).pipe(map(data => data.page['totalElements']));
+    return this.ingestService.queryProjects(query).pipe(map(data => data.page.totalElements));
   }
 
   private setUpValueChangeHandlers() {
@@ -211,13 +211,13 @@ export class ProjectIdComponent implements OnInit {
 export const uniqueProjectIdAsyncValidator = (ingestService: IngestService) => {
   return (input: FormControl) => {
     const query = [{
-      'contentField': 'content.project_core.project_short_name',
+      'field': 'content.project_core.project_short_name',
       'operator': 'IS',
       'value': input.value
     }];
     return ingestService.queryProjects(query).pipe(
       first(),
-      map(response => response.page['totalElements'] === 0 ? null : {exists: true} as ValidationErrors)
+      map(response => response.page.totalElements === 0 ? null : {exists: true} as ValidationErrors)
     );
   };
 };

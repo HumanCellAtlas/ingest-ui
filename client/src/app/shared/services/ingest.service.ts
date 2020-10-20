@@ -16,6 +16,7 @@ import {Account} from '../../core/account';
 import {Project} from '../models/project';
 import {ArchiveSubmission} from '../models/archiveSubmission';
 import {ArchiveEntity} from '../models/archiveEntity';
+import {Criteria} from '../models/criteria';
 
 
 @Injectable()
@@ -101,8 +102,14 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
-  public queryProjects(query: Object[], params?): Observable<any> {
-    return this.http.post(`${this.API_URL}/projects/query`, query, {params: params});
+  public queryProjects(query: Criteria[], params?): Observable<ListResult<MetadataDocument>> {
+    return this.http.post(`${this.API_URL}/projects/query`, query, {params: params})
+      .pipe(map(data => data as ListResult<MetadataDocument>));
+  }
+
+  queryBiomaterials(query: Criteria[], params?): Observable<ListResult<MetadataDocument>> {
+    return this.http.post(`${this.API_URL}/biomaterials/query`, query, {params: params})
+      .pipe(map(data => data as ListResult<MetadataDocument>));
   }
 
   public patchProject(projectResource, patch): Observable<Project> {

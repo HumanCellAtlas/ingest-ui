@@ -69,6 +69,10 @@ export class MetadataFieldComponent implements OnInit {
     let component;
     let hasValue: boolean;
 
+    if (!control) {
+      return undefined;
+    }
+
     if (metadata.isScalar()) {
       if (metadata.schema.enum) {
         component = metadata.inputType && enumComponents[metadata.inputType] ? enumComponents[metadata.inputType] : EnumRadioInlineComponent;
@@ -89,12 +93,10 @@ export class MetadataFieldComponent implements OnInit {
         component = OntologyInputComponent;
       } else {
         component = InputComponent;
-        const formGroup = control as FormGroup;
-        for (const child of metadata.childrenMetadata) {
-          this.loadComponent(child, formGroup['controls'][child.key], `${id}-${child.key}`);
-        }
       }
-      hasValue = Object.keys(control.value).length > 0;
+
+      hasValue = control ? Object.keys(control.value).length > 0 : false;
+
     } else { // object list
       const schema = metadata.schema.items as JsonSchema;
       if (schema.$id.indexOf('/module/ontology/') >= 0) {

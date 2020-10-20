@@ -4,7 +4,7 @@ import {FormControl} from '@angular/forms';
 import {OntologyService} from '../../../shared/services/ontology.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
-import {distinctUntilChanged, startWith, switchMap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, startWith, switchMap} from 'rxjs/operators';
 import {BaseInputComponent} from '../base-input/base-input.component';
 import {MetadataFormService} from '../../metadata-form.service';
 
@@ -30,6 +30,8 @@ export class OntologyBaseComponent extends BaseInputComponent implements OnInit 
     this.options$ = this.searchControl.valueChanges
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
+        filter(text => text.length === 0 || text.length > 2),
+        debounceTime(10),
         distinctUntilChanged(),
         switchMap(newSearch => this.onSearchValueChanged(newSearch))
       );

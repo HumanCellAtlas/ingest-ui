@@ -89,23 +89,28 @@ export class MetadataFormComponent implements OnInit {
     return true;
   }
 
+
   onSubmit(e) {
     e.preventDefault();
-    const formValue = this.metadataForm.formGroup.getRawValue();
-    const formData = this.metadataFormService.cleanFormData(formValue);
+    const formData = this.getFormData();
     console.log('clean form data', formData);
-    console.log('form valid?', this.formGroup.valid);
-    console.log('form group', this.formGroup);
 
     if (this.lookupTabIndex(this.selectedTabKey) === this.config.layout.tabs.length - 1) {
       this.formGroup.markAllAsTouched();
     }
 
-    this.save.emit({
+    this.save.emit(formData);
+
+  }
+
+  getFormData() {
+    const formValue = this.metadataForm.formGroup.getRawValue();
+    const formData = this.metadataFormService.cleanFormData(formValue);
+
+    return {
       value: formData,
       valid: this.formGroup.valid
-    });
-
+    };
   }
 
   confirmCancel(e) {

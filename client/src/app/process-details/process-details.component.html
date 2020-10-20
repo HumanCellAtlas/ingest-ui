@@ -1,0 +1,123 @@
+<div>
+  <h4>Graph</h4>
+  <ngx-graph *ngIf="done"
+             class="chart-container"
+             [view]="[800, 550]"
+             [enableZoom]="true"
+             [autoCenter]="true"
+             [autoZoom]="true"
+             [draggingEnabled]="true"
+             [panningEnabled]="true"
+             [links]="links"
+             [nodes]="nodes"
+             [zoomToFit$]="zoomToFit$"
+             [showMiniMap]="true"
+  >
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label">
+        <svg:rect
+          [attr.width]="node.dimension.width"
+          [attr.height]="node.dimension.height"
+          [attr.fill]="node.data.color"
+        />
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+          {{node.label}}
+        </svg:text>
+      </svg:g>
+    </ng-template>
+
+    <ng-template #linkTemplate let-link>
+      <svg:g class="edge">
+        <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath
+            class="text-path"
+            [attr.href]="'#' + link.id"
+            [style.dominant-baseline]="link.dominantBaseline"
+            startOffset="50%"
+          >
+            {{link.label}}
+          </textPath>
+        </svg:text>
+      </svg:g>
+    </ng-template>
+  </ngx-graph>
+
+</div>
+<div class="process-details">
+  <div>
+    <h4>Inputs</h4>
+    <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+      <ng-container *ngFor="let input of inputBiomaterials">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{input?.content['biomaterial_core']['biomaterial_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(input)}}</p>
+              <p><strong>type: </strong> {{input?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{input?.uuid?.uuid}}</p>
+              <p><strong>name: </strong> {{input?.content['biomaterial_core']['biomaterial_name']}}</p>
+              <p><strong>description: </strong> {{input?.content['biomaterial_core']['biomaterial_description']}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div>
+    <h4>Protocols</h4>
+    <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+      <ng-container *ngFor="let protocol of protocols">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{protocol?.content['protocol_core']['protocol_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(protocol)}}</p>
+              <p><strong>type: </strong> {{protocol?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{protocol?.uuid?.uuid}}</p>
+              <p><strong>name: </strong> {{protocol?.content['protocol_core']['protocol_name']}}</p>
+              <p><strong>description: </strong> {{protocol?.content['protocol_core']['protocol_description']}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div>
+    <h4>Outputs</h4>
+    <div class="vf-u-margin__top--xxl vf-u-margin__bottom--xxl">
+      <ng-container *ngFor="let output of derivedBiomaterials">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{output?.content['biomaterial_core']['biomaterial_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
+              <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
+              <p><strong>name: </strong> {{output?.content['biomaterial_core']['biomaterial_name']}}</p>
+              <p><strong>description: </strong> {{output?.content['biomaterial_core']['biomaterial_description']}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let output of derivedFiles">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{output?.content['file_core']['file_name']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
+              <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
+              <p><strong>description: </strong> {{output?.content['file_core']['biomaterial_description']}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

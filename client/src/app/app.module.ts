@@ -56,11 +56,14 @@ import {WelcomeComponent} from './welcome/welcome.component';
 import {TemplateQuestionnaireModule} from './template-questionnaire/template-questionnaire.module';
 import {ErrorComponent} from './error/error.component';
 import {HttpErrorInterceptor} from './http-interceptors/http-error-interceptor';
-import { GlobalFooterComponent } from './global-footer/global-footer.component';
+import {GlobalFooterComponent} from './global-footer/global-footer.component';
+import {MetadataDetailsDialogComponent} from './metadata-details-dialog/metadata-details-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ProcessDetailsComponent } from './process-details/process-details.component';
+import {NgxGraphModule} from '@swimlane/ngx-graph';
 
 const BROWSER_LOCALE = navigator.language;
 
-//
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,7 +90,9 @@ const BROWSER_LOCALE = navigator.language;
     RegistrationComponent,
     WelcomeComponent,
     ErrorComponent,
-    GlobalFooterComponent
+    GlobalFooterComponent,
+    MetadataDetailsDialogComponent,
+    ProcessDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -104,7 +109,9 @@ const BROWSER_LOCALE = navigator.language;
     AaiSecurity,
     MetadataSchemaFormModule,
     ProjectRegistrationModule,
-    TemplateQuestionnaireModule
+    TemplateQuestionnaireModule,
+    MatDialogModule,
+    NgxGraphModule
   ],
   providers: [
     {

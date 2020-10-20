@@ -1,17 +1,18 @@
+import {Page} from './page';
+
 export interface ListResult<T> {
   _embedded: EmbeddedList<T>;
   _links: any;
-  page: any;
+  page: Page;
 }
 
 export interface EmbeddedList<T> {
   submissionEnvelopes: T[];
   projects: T[];
   files: T[];
-  samples: T[];
-  analyses: T[];
-  assays: T[];
+  biomaterials: T[];
   protocols: T[];
+  processes: T[];
   bundleManifests: T[];
   schemas: T[];
   archiveEntities: T[];
