@@ -55,6 +55,7 @@
     <mat-tab label="Protocols">
       <ng-template matTabContent>
         <app-metadata-list [submissionEnvelopeId]="submissionEnvelopeId" [metadataType]="'protocols'"
+                           [config]="{displayLinking: true}"
                            [expectedCount]="manifest ? manifest['expectedProtocols'] : null"></app-metadata-list>
       </ng-template>
     </mat-tab>
