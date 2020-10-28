@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {IngestService} from '../shared/services/ingest.service';
 import {Criteria} from '../shared/models/criteria';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {ListResult} from '../shared/models/hateoas';
 
 @Component({
   selector: 'app-metadata-picker',
@@ -79,13 +80,7 @@ export class MetadataPickerComponent implements OnInit {
           value: value
         }
       ];
-      return this.ingestService.queryBiomaterials(query)
-        .pipe(map(data => {
-            return data && data._embedded ? data._embedded.biomaterials : [];
-          }),
-          tap(data => {
-            console.log('query biomaterials', data);
-          }));
+      return this.queryEntity(this.entityType, query);
     }
   }
 
@@ -97,5 +92,44 @@ export class MetadataPickerComponent implements OnInit {
     console.log('metadata picked', $event.option.value);
     this.picked.emit($event.option.value);
     this.searchControl.reset();
+  }
+
+  // TODO is there a better way to do this?
+  private queryEntity(entityType: string, query: Criteria[]): Observable<MetadataDocument[]> {
+    let response: Observable<MetadataDocument[]>;
+    if (this.entityType === 'biomaterials') {
+      response = this.ingestService.queryBiomaterials(query).pipe(
+        map(data => {
+          return data && data._embedded ? data._embedded.biomaterials : [];
+        }),
+        tap(data => {
+          console.log(`query ${this.entityType}`, data);
+        })
+      );
+    }
+
+    if (this.entityType === 'protocols') {
+      response = this.ingestService.queryProtocols(query).pipe(
+        map(data => {
+          return data && data._embedded ? data._embedded.protocols : [];
+        }),
+        tap(data => {
+          console.log(`query ${this.entityType}`, data);
+        })
+      );
+    }
+
+    if (this.entityType === 'files') {
+      response = this.ingestService.queryFiles(query).pipe(
+        map(data => {
+          return data && data._embedded ? data._embedded.files : [];
+        }),
+        tap(data => {
+          console.log(`query ${this.entityType}`, data);
+        })
+      );
+    }
+    return response;
+
   }
 }

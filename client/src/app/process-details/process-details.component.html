@@ -60,11 +60,28 @@
               <p><strong>name: </strong> {{input?.content['biomaterial_core']['biomaterial_name']}}</p>
               <p><strong>description: </strong> {{input?.content['biomaterial_core']['biomaterial_description']}}</p>
             </mat-card-content>
+            <button>Remove input biomaterial</button>
           </mat-card>
         </div>
       </ng-container>
-      <app-metadata-picker [entityType]="'biomaterials'"></app-metadata-picker>
-      <button>Add input biomaterial </button>
+      <app-metadata-picker [entityType]="'biomaterials'"
+                           (picked)="onInputBiomaterialPicked($event)"></app-metadata-picker>
+      <ng-container *ngFor="let input of inputBiomaterialsToAdd">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{input?.content['biomaterial_core']['biomaterial_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(input)}}</p>
+              <p><strong>type: </strong> {{input?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{input?.uuid?.uuid}}</p>
+              <p><strong>name: </strong> {{input?.content['biomaterial_core']['biomaterial_name']}}</p>
+              <p><strong>description: </strong> {{input?.content['biomaterial_core']['biomaterial_description']}}</p>
+            </mat-card-content>
+            <button>Add input biomaterial</button>
+          </mat-card>
+        </div>
+      </ng-container>
     </div>
   </div>
 
@@ -83,11 +100,28 @@
               <p><strong>name: </strong> {{protocol?.content['protocol_core']['protocol_name']}}</p>
               <p><strong>description: </strong> {{protocol?.content['protocol_core']['protocol_description']}}</p>
             </mat-card-content>
+            <button>Remove protocol</button>
           </mat-card>
         </div>
       </ng-container>
-      <app-metadata-picker [entityType]="'protocols'"></app-metadata-picker>
-      <button>Add protocol </button>
+      <app-metadata-picker [entityType]="'protocols'" (picked)="onProtocolPicked($event)"></app-metadata-picker>
+      <ng-container *ngFor="let protocol of protocolsToAdd">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{protocol?.content['protocol_core']['protocol_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(protocol)}}</p>
+              <p><strong>type: </strong> {{protocol?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{protocol?.uuid?.uuid}}</p>
+              <p><strong>name: </strong> {{protocol?.content['protocol_core']['protocol_name']}}</p>
+              <p><strong>description: </strong> {{protocol?.content['protocol_core']['protocol_description']}}</p>
+            </mat-card-content>
+            <button>Add protocol</button>
+          </mat-card>
+        </div>
+      </ng-container>
+
     </div>
   </div>
   <div>
@@ -105,6 +139,7 @@
               <p><strong>name: </strong> {{output?.content['biomaterial_core']['biomaterial_name']}}</p>
               <p><strong>description: </strong> {{output?.content['biomaterial_core']['biomaterial_description']}}</p>
             </mat-card-content>
+            <button>Remove output biomaterial</button>
           </mat-card>
         </div>
       </ng-container>
@@ -117,15 +152,49 @@
               <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
               <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
               <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
-              <p><strong>description: </strong> {{output?.content['file_core']['biomaterial_description']}}</p>
             </mat-card-content>
+            <button>Remove output file</button>
           </mat-card>
         </div>
       </ng-container>
-      <app-metadata-picker [entityType]="'files'"></app-metadata-picker>
-      <button>Add output file </button>
-      <app-metadata-picker [entityType]="'biomaterials'"></app-metadata-picker>
-      <button>Add output biomaterial </button>
+
+      <app-metadata-picker [entityType]="'biomaterials'"
+                           (picked)="onDerivedBiomaterialPicked($event)"></app-metadata-picker>
+
+      <ng-container *ngFor="let output of derivedBiomaterialsToAdd">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{output?.content['biomaterial_core']['biomaterial_id']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
+              <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
+              <p><strong>name: </strong> {{output?.content['biomaterial_core']['biomaterial_name']}}</p>
+              <p><strong>description: </strong> {{output?.content['biomaterial_core']['biomaterial_description']}}</p>
+            </mat-card-content>
+            <button>Add output biomaterial</button>
+          </mat-card>
+        </div>
+      </ng-container>
+
+      <app-metadata-picker [entityType]="'files'"
+                           (picked)="onDerivedFilePicked($event)"></app-metadata-picker>
+
+      <ng-container *ngFor="let output of derivedFilesToAdd">
+        <div class="vf-u-padding__bottom--xl">
+          <mat-card class="wrap-text">
+            <mat-card-content>
+              <p class="vf-text-body vf-text-body--3">
+                <strong>id: </strong> {{output?.content['file_core']['file_name']}}</p>
+              <p><strong>concrete type: </strong> {{getConcreteType(output)}}</p>
+              <p><strong>type: </strong> {{output?.content['schema_type']}}</p>
+              <p><strong>uuid: </strong> {{output?.uuid?.uuid}}</p>
+            </mat-card-content>
+            <button>Add output file</button>
+          </mat-card>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

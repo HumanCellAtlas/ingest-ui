@@ -25,6 +25,11 @@ export class ProcessDetailsComponent implements OnInit {
   derivedBiomaterials: MetadataDocument[];
   derivedFiles: MetadataDocument[];
 
+  protocolsToAdd: MetadataDocument[] = [];
+  inputBiomaterialsToAdd: MetadataDocument[] = [];
+  derivedBiomaterialsToAdd: MetadataDocument[] = [];
+  derivedFilesToAdd: MetadataDocument[] = [];
+
   links: Link[] = [];
   nodes: NgxNode[] = [{
     id: 'process',
@@ -144,5 +149,23 @@ export class ProcessDetailsComponent implements OnInit {
   fitGraph() {
     this.zoomToFit$.next(true);
   }
+
+  onProtocolPicked($event: MetadataDocument) {
+    this.protocolsToAdd.push($event);
+  }
+
+  onDerivedBiomaterialPicked($event: MetadataDocument) {
+    this.derivedBiomaterialsToAdd.push($event);
+  }
+
+  onDerivedFilePicked($event: MetadataDocument) {
+    this.derivedFilesToAdd.push($event);
+  }
+
+  onInputBiomaterialPicked($event: MetadataDocument) {
+    this.inputBiomaterialsToAdd.push($event);
+  }
+
 }
+
 
