@@ -28,6 +28,8 @@ export class IngestService {
 
   API_URL: string = environment.INGEST_API_URL;
 
+  public queryProjects = this.getQueryEntity('projects');
+  public queryBiomaterials = this.getQueryEntity('biomaterials');
   private static reduceColumnsForBundleManifests(entityType, data) {
     if (entityType === 'bundleManifests') {
       return data.map(function (row) {
@@ -102,14 +104,14 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
-  public queryProjects(query: Criteria[], params?): Observable<ListResult<MetadataDocument>> {
-    return this.http.post(`${this.API_URL}/projects/query`, query, {params: params})
-      .pipe(map(data => data as ListResult<MetadataDocument>));
-  }
-
-  queryBiomaterials(query: Criteria[], params?): Observable<ListResult<MetadataDocument>> {
-    return this.http.post(`${this.API_URL}/biomaterials/query`, query, {params: params})
-      .pipe(map(data => data as ListResult<MetadataDocument>));
+  private getQueryEntity(entityType: string): (query: Criteria[], params?) => Observable<ListResult<MetadataDocument>> {
+   const acceptedEntityTypes: string[] = ['files', 'processes', 'biomaterials', 'projects', 'protocols'];
+    if (!acceptedEntityTypes.includes(entityType)) {
+      throw new Error(`entityType must be one of ${acceptedEntityTypes.join()}`);
+    }
+    return (query: Criteria[], params?) =>
+      this.http.post(`${this.API_URL}/${entityType}/query`, query, {params: params})
+        .pipe(map(data => data as ListResult<MetadataDocument>));
   }
 
   public patchProject(projectResource, patch): Observable<Project> {
