@@ -30,6 +30,10 @@ export class IngestService {
 
   public queryProjects = this.getQueryEntity('projects');
   public queryBiomaterials = this.getQueryEntity('biomaterials');
+  public queryProtocols = this.getQueryEntity('protocols');
+  public queryFiles = this.getQueryEntity('files');
+  public queryProcesses = this.getQueryEntity('processes');
+
   private static reduceColumnsForBundleManifests(entityType, data) {
     if (entityType === 'bundleManifests') {
       return data.map(function (row) {
