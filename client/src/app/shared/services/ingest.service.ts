@@ -118,55 +118,55 @@ export class IngestService {
         .pipe(map(data => data as ListResult<MetadataDocument>));
   }
 
-  public addInputBiomaterialToProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+  public addInputBiomaterialToProcess(processId: string, biomaterialId: string): Observable<Object> {
     return this.http.post(
-      `${this.API_URL}/biomaterials/${biomaterialUuid}/inputToProcesses`,
-      `${this.API_URL}/processes/${processUuid}`
+      `${this.API_URL}/biomaterials/${biomaterialId}/inputToProcesses`,
+      `${this.API_URL}/processes/${processId}`
     );
   }
 
-  public addOutputBiomaterialToProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+  public addOutputBiomaterialToProcess(processId: string, biomaterialId: string): Observable<Object> {
     return this.http.post(
-      `${this.API_URL}/biomaterials/${biomaterialUuid}/derivedByProcesses`,
-      `${this.API_URL}/processes/${processUuid}`
+      `${this.API_URL}/biomaterials/${biomaterialId}/derivedByProcesses`,
+      `${this.API_URL}/processes/${processId}`
     );
   }
 
-  public addProtocolToProcess(processUuid: string, protocolUuid: string): Observable<Object> {
+  public addProtocolToProcess(processId: string, protocolId: string): Observable<Object> {
     return this.http.post(
-      `${this.API_URL}/processes/${processUuid}/protocols`,
-      `${this.API_URL}/protocols/${protocolUuid}`
+      `${this.API_URL}/processes/${processId}/protocols`,
+      `${this.API_URL}/protocols/${protocolId}`
     );
   }
 
-  public addOutputFileToProcess(processUuid: string, fileUuid: string): Observable<Object> {
+  public addOutputFileToProcess(processId: string, fileId: string): Observable<Object> {
     return this.http.post(
-      `${this.API_URL}/files/${fileUuid}/derivedByProcesses`,
-      `${this.API_URL}/processes/${processUuid}`
+      `${this.API_URL}/files/${fileId}/derivedByProcesses`,
+      `${this.API_URL}/processes/${processId}`
     );
   }
 
-  public deleteInputBiomaterialFromProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+  public deleteInputBiomaterialFromProcess(processId: string, biomaterialId: string): Observable<Object> {
     return this.http.delete(
-      `${this.API_URL}/biomaterials/${biomaterialUuid}/inputToProcesses/${processUuid}`
+      `${this.API_URL}/biomaterials/${biomaterialId}/inputToProcesses/${processId}`
     );
   }
 
-  public deleteOutputBiomaterialFromProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+  public deleteOutputBiomaterialFromProcess(processId: string, biomaterialId: string): Observable<Object> {
     return this.http.delete(
-      `${this.API_URL}/biomaterials/${biomaterialUuid}/derivedByProcesses/${processUuid}`
+      `${this.API_URL}/biomaterials/${biomaterialId}/derivedByProcesses/${processId}`
     );
   }
 
-  public deleteProtocolFromProcess(processUuid: string, protocolUuid: string): Observable<Object> {
+  public deleteProtocolFromProcess(processId: string, protocolId: string): Observable<Object> {
     return this.http.delete(
-      `${this.API_URL}/processes/${processUuid}/protocols/${protocolUuid}`
+      `${this.API_URL}/processes/${processId}/protocols/${protocolId}`
     );
   }
 
-  public deleteOutputFileFromProcess(processUuid: string, fileUuid: string): Observable<Object> {
+  public deleteOutputFileFromProcess(processId: string, fileId: string): Observable<Object> {
     return this.http.delete(
-      `${this.API_URL}/files/${fileUuid}/derivedByProcesses/${processUuid}`
+      `${this.API_URL}/files/${fileId}/derivedByProcesses/${processId}`
     );
   }
 
