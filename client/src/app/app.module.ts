@@ -61,6 +61,8 @@ import {MetadataDetailsDialogComponent} from './metadata-details-dialog/metadata
 import {MatDialogModule} from '@angular/material/dialog';
 import { ProcessDetailsComponent } from './process-details/process-details.component';
 import {NgxGraphModule} from '@swimlane/ngx-graph';
+import { MetadataPickerComponent } from './metadata-picker/metadata-picker.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 const BROWSER_LOCALE = navigator.language;
 
@@ -92,7 +94,8 @@ const BROWSER_LOCALE = navigator.language;
     ErrorComponent,
     GlobalFooterComponent,
     MetadataDetailsDialogComponent,
-    ProcessDetailsComponent
+    ProcessDetailsComponent,
+    MetadataPickerComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +114,8 @@ const BROWSER_LOCALE = navigator.language;
     ProjectRegistrationModule,
     TemplateQuestionnaireModule,
     MatDialogModule,
-    NgxGraphModule
+    NgxGraphModule,
+    NgxChartsModule
   ],
   providers: [
     {
