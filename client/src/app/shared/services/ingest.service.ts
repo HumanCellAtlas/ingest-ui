@@ -118,6 +118,58 @@ export class IngestService {
         .pipe(map(data => data as ListResult<MetadataDocument>));
   }
 
+  public addInputBiomaterialToProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+    return this.http.post(
+      `${this.API_URL}/biomaterials/${biomaterialUuid}/inputToProcesses`,
+      `${this.API_URL}/processes/${processUuid}`
+    );
+  }
+
+  public addOutputBiomaterialToProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+    return this.http.post(
+      `${this.API_URL}/biomaterials/${biomaterialUuid}/derivedByProcesses`,
+      `${this.API_URL}/processes/${processUuid}`
+    );
+  }
+
+  public addProtocolToProcess(processUuid: string, protocolUuid: string): Observable<Object> {
+    return this.http.post(
+      `${this.API_URL}/processes/${processUuid}/protocols`,
+      `${this.API_URL}/protocols/${protocolUuid}`
+    );
+  }
+
+  public addOutputFileToProcess(processUuid: string, fileUuid: string): Observable<Object> {
+    return this.http.post(
+      `${this.API_URL}/files/${fileUuid}/derivedByProcesses`,
+      `${this.API_URL}/processes/${processUuid}`
+    );
+  }
+
+  public deleteInputBiomaterialFromProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+    return this.http.delete(
+      `${this.API_URL}/biomaterials/${biomaterialUuid}/inputToProcesses/${processUuid}`
+    );
+  }
+
+  public deleteOutputBiomaterialFromProcess(processUuid: string, biomaterialUuid: string): Observable<Object> {
+    return this.http.delete(
+      `${this.API_URL}/biomaterials/${biomaterialUuid}/derivedByProcesses/${processUuid}`
+    );
+  }
+
+  public deleteProtocolFromProcess(processUuid: string, protocolUuid: string): Observable<Object> {
+    return this.http.delete(
+      `${this.API_URL}/processes/${processUuid}/protocols/${protocolUuid}`
+    );
+  }
+
+  public deleteOutputFileFromProcess(processUuid: string, fileUuid: string): Observable<Object> {
+    return this.http.delete(
+      `${this.API_URL}/files/${fileUuid}/derivedByProcesses/${processUuid}`
+    );
+  }
+
   public patchProject(projectResource, patch): Observable<Project> {
     return this.doPatchProject(projectResource, patch);
   }
