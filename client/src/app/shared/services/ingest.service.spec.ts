@@ -3,10 +3,12 @@ import {IngestService} from './ingest.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule,
   HttpTestingController } from '@angular/common/http/testing';
+import {HttpClient} from '@angular/common/http';
 
 describe('Ingest Service', () => {
   let service: IngestService;
   let httpTestingController: HttpTestingController;
+  let httpClient: HttpClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,9 +16,10 @@ describe('Ingest Service', () => {
       imports: [HttpClientTestingModule]
     });
 
-    // We inject our service (which imports the HttpClient) and the Test Controller
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(IngestService);
+
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(IngestService);
   });
 
   afterEach(() => {
