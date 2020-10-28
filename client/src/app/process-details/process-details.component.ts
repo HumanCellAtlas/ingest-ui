@@ -48,7 +48,6 @@ export class ProcessDetailsComponent implements OnInit {
     ).subscribe(
       data => {
         this.done = true;
-        console.log(data);
       }
     );
   }
@@ -75,7 +74,6 @@ export class ProcessDetailsComponent implements OnInit {
   }
 
   getProtocols(processUrl: string): Observable<ListResult<MetadataDocument>> {
-    console.log('get protocols');
     return this.ingestService.getAs<ListResult<MetadataDocument>>(`${processUrl}/protocols`).pipe(
       tap(data => {
         const protocols = data._embedded ? data._embedded.protocols : [];

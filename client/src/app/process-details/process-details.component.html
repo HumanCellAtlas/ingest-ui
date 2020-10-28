@@ -63,6 +63,8 @@
           </mat-card>
         </div>
       </ng-container>
+      <app-metadata-picker [entityType]="'biomaterials'"></app-metadata-picker>
+      <button>Add input biomaterial </button>
     </div>
   </div>
 
@@ -84,6 +86,8 @@
           </mat-card>
         </div>
       </ng-container>
+      <app-metadata-picker [entityType]="'protocols'"></app-metadata-picker>
+      <button>Add protocol </button>
     </div>
   </div>
   <div>
@@ -118,6 +122,10 @@
           </mat-card>
         </div>
       </ng-container>
+      <app-metadata-picker [entityType]="'files'"></app-metadata-picker>
+      <button>Add output file </button>
+      <app-metadata-picker [entityType]="'biomaterials'"></app-metadata-picker>
+      <button>Add output biomaterial </button>
     </div>
   </div>
 </div>

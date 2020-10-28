@@ -1,0 +1,27 @@
+<ng-template #optionTemplate let-metadata="option">
+  <div>
+    <span class="vf-text-body vf-text-body--2">id:  {{metadata?.content['biomaterial_core']['biomaterial_id']}}</span>
+    <p>concrete type: {{getConcreteType(metadata)}}</p>
+    <p>type: {{metadata?.content['schema_type']}}</p>
+    <p>uuid:  {{metadata?.uuid?.uuid}}</p>
+    <p>name:  {{metadata?.content['biomaterial_core']['biomaterial_name']}}</p>
+    <p>description: {{metadata?.content['biomaterial_core']['biomaterial_description']}}</p>
+  </div>
+</ng-template>
+<input type="text"
+       placeholder="Search {{entityType}}"
+       matInput
+       [formControl]="searchControl"
+       [matAutocomplete]="auto" class="vf-form__input">
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayMetadata ? displayMetadata : null" (optionSelected)="onSelectedValueChange($event)" >
+  <mat-option *ngFor="let option of options$ | async" [value]="option">
+    <div>
+      <p><strong>id: </strong> {{option?.content['biomaterial_core']['biomaterial_id']}}</p>
+      <p><strong>concrete type: </strong> {{getConcreteType(option)}}</p>
+      <p><strong>type: </strong> {{option?.content['schema_type']}}</p>
+      <p><strong>uuid: </strong> {{option?.uuid?.uuid}}</p>
+      <p><strong>name: </strong> {{option?.content['biomaterial_core']['biomaterial_name']}}</p>
+      <p><strong>description: </strong> {{option?.content['biomaterial_core']['biomaterial_description']}}</p>
+    </div>
+  </mat-option>
+</mat-autocomplete>
