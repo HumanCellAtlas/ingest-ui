@@ -93,42 +93,14 @@ export class MetadataPickerComponent implements OnInit {
     this.searchControl.reset();
   }
 
-  // TODO is there a better way to do this?
   private queryEntity(entityType: string, query: Criteria[]): Observable<MetadataDocument[]> {
-    let response: Observable<MetadataDocument[]>;
-    if (this.entityType === 'biomaterials') {
-      response = this.ingestService.queryBiomaterials(query).pipe(
-        map(data => {
-          return data && data._embedded ? data._embedded.biomaterials : [];
-        }),
-        tap(data => {
-          console.log(`query ${this.entityType}`, data);
-        })
-      );
-    }
-
-    if (this.entityType === 'protocols') {
-      response = this.ingestService.queryProtocols(query).pipe(
-        map(data => {
-          return data && data._embedded ? data._embedded.protocols : [];
-        }),
-        tap(data => {
-          console.log(`query ${this.entityType}`, data);
-        })
-      );
-    }
-
-    if (this.entityType === 'files') {
-      response = this.ingestService.queryFiles(query).pipe(
-        map(data => {
-          return data && data._embedded ? data._embedded.files : [];
-        }),
-        tap(data => {
-          console.log(`query ${this.entityType}`, data);
-        })
-      );
-    }
-    return response;
-
+    const queryEntity = this.ingestService.getQueryEntity(this.entityType);
+    return queryEntity(query).pipe(
+      map(data => {
+        return data && data._embedded ? data._embedded[this.entityType] : [];
+      }),
+      tap(data => {
+        console.log(`query ${this.entityType}`, data);
+      }));
   }
 }
