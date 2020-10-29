@@ -34,7 +34,7 @@
           Links
         </label>
       </ng-template>
-      <app-process-details [selfUrl]="metadata._links['self']['href']"
+      <app-process-details [processUrl]="metadata._links['self']['href']"
                            [schemaUrl]="metadata.content['describedBy']"></app-process-details>
     </mat-tab>
 

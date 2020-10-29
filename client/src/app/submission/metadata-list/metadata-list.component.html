@@ -77,7 +77,7 @@
 
       <ng-container *ngIf="row['type'] === 'Process'">
         <h3>Process Details</h3>
-        <app-process-details [selfUrl]="row['_links.self.href']"
+        <app-process-details [processUrl]="row['_links.self.href']"
                              [schemaUrl]="row['content.describedBy']"></app-process-details>
       </ng-container>
     </ng-template>

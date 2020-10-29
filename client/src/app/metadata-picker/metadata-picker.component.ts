@@ -6,7 +6,6 @@ import {Observable} from 'rxjs';
 import {IngestService} from '../shared/services/ingest.service';
 import {Criteria} from '../shared/models/criteria';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {ListResult} from '../shared/models/hateoas';
 
 @Component({
   selector: 'app-metadata-picker',

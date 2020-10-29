@@ -24,10 +24,12 @@ describe('ProcessDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProcessDetailsComponent);
     component = fixture.componentInstance;
+    component.processUrl = '/processes/id';
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.processId).toBe('id');
   });
 });

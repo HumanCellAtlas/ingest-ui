@@ -109,7 +109,7 @@ export class IngestService {
   }
 
   private getQueryEntity(entityType: string): (query: Criteria[], params?) => Observable<ListResult<MetadataDocument>> {
-   const acceptedEntityTypes: string[] = ['files', 'processes', 'biomaterials', 'projects', 'protocols'];
+    const acceptedEntityTypes: string[] = ['files', 'processes', 'biomaterials', 'projects', 'protocols'];
     if (!acceptedEntityTypes.includes(entityType)) {
       throw new Error(`entityType must be one of ${acceptedEntityTypes.join()}`);
     }
@@ -121,28 +121,47 @@ export class IngestService {
   public addInputBiomaterialToProcess(processId: string, biomaterialId: string): Observable<Object> {
     return this.http.post(
       `${this.API_URL}/biomaterials/${biomaterialId}/inputToProcesses`,
-      `${this.API_URL}/processes/${processId}`
+      `${this.API_URL}/processes/${processId}`,
+      {
+        headers: {
+          'Content-Type': 'text/uri-list',
+        }
+      }
     );
   }
 
   public addOutputBiomaterialToProcess(processId: string, biomaterialId: string): Observable<Object> {
     return this.http.post(
       `${this.API_URL}/biomaterials/${biomaterialId}/derivedByProcesses`,
-      `${this.API_URL}/processes/${processId}`
+      `${this.API_URL}/processes/${processId}`,
+      {
+        headers: {
+          'Content-Type': 'text/uri-list',
+        }
+      }
     );
   }
 
   public addProtocolToProcess(processId: string, protocolId: string): Observable<Object> {
     return this.http.post(
       `${this.API_URL}/processes/${processId}/protocols`,
-      `${this.API_URL}/protocols/${protocolId}`
+      `${this.API_URL}/protocols/${protocolId}`,
+      {
+        headers: {
+          'Content-Type': 'text/uri-list',
+        }
+      }
     );
   }
 
   public addOutputFileToProcess(processId: string, fileId: string): Observable<Object> {
     return this.http.post(
       `${this.API_URL}/files/${fileId}/derivedByProcesses`,
-      `${this.API_URL}/processes/${processId}`
+      `${this.API_URL}/processes/${processId}`, {
+        headers: {
+          'Content-Type': 'text/uri-list',
+        }
+      }
     );
   }
 
