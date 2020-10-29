@@ -79,7 +79,7 @@ export class MetadataPickerComponent implements OnInit {
           value: value
         }
       ];
-      return this.queryEntity(this.entityType, query);
+      return this.queryEntity(query);
     }
   }
 
@@ -93,7 +93,7 @@ export class MetadataPickerComponent implements OnInit {
     this.searchControl.reset();
   }
 
-  private queryEntity(entityType: string, query: Criteria[]): Observable<MetadataDocument[]> {
+  private queryEntity(query: Criteria[]): Observable<MetadataDocument[]> {
     const queryEntity = this.ingestService.getQueryEntity(this.entityType);
     return queryEntity(query).pipe(
       map(data => {
