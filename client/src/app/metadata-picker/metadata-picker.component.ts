@@ -43,9 +43,6 @@ export class MetadataPickerComponent implements OnInit {
         filter(text => text && text.length > 2),
         debounceTime(2000),
         distinctUntilChanged(),
-        tap(data => {
-          console.log('search control value changed', data);
-        }),
         switchMap(newSearch => this.onSearchValueChanged(newSearch))
       );
 
@@ -53,30 +50,38 @@ export class MetadataPickerComponent implements OnInit {
 
   // TODO make this configurable, use a "metadata field accessor" given a path
   displayMetadata(metadata: MetadataDocument): string {
-    if (metadata && metadata.content && metadata.type === 'Biomaterial') {
-      const id = metadata.content['biomaterial_core']['biomaterial_id'];
-      const name = metadata.content['biomaterial_core']['biomaterial_name'];
-      return `${name} [${id}]`;
-    } else if (metadata && metadata.content && metadata.type === 'File') {
-      const filename = metadata.content['file_core']['file_name'];
-      return `${filename}`;
-    } else if (metadata && metadata.content && metadata.type === 'Protocol') {
-      const id = metadata.content['protocol_core']['protocol_id'];
-      const name = metadata.content['protocol_core']['protocol_name'];
-      return `${name} [${id}]`;
+    if (!metadata || !metadata.content) {
+      return '';
     }
-    return '';
+
+    let id: string;
+    let name: string;
+
+    switch (metadata.type) {
+      case 'Biomaterial':
+        id = metadata.content['biomaterial_core']['biomaterial_id'];
+        name = metadata.content['biomaterial_core']['biomaterial_name'];
+        return `${name} [${id}]`;
+      case 'File':
+        const filename = metadata.content['file_core']['file_name'];
+        return `${filename}`;
+      case 'Protocol':
+        id = metadata.content['protocol_core']['protocol_id'];
+        name = metadata.content['protocol_core']['protocol_name'];
+        return `${name} [${id}]`;
+      default:
+        return '';
+    }
   }
 
   onSearchValueChanged(value: string): Observable<MetadataDocument[]> {
     if (typeof value === 'string') {
-      console.log('search value changed');
       const searchText = value ? value.toLowerCase() : '';
       const query: Criteria[] = [
         {
           field: this.searchField[this.entityType],
           operator: 'REGEX',
-          value: value
+          value: searchText
         }
       ];
       return this.queryEntity(query);
@@ -88,7 +93,6 @@ export class MetadataPickerComponent implements OnInit {
   }
 
   onSelectedValueChange($event: MatAutocompleteSelectedEvent) {
-    console.log('metadata picked', $event.option.value);
     this.picked.emit($event.option.value);
     this.searchControl.reset();
   }

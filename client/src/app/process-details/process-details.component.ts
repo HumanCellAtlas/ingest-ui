@@ -78,7 +78,6 @@ export class ProcessDetailsComponent implements OnInit {
   // TODO Add success or error status for add and remove operations
 
   removeInputBiomaterial(biomaterial: MetadataDocument) {
-    console.log('removing input biomaterial', biomaterial);
     const biomaterialId = this.getId(biomaterial);
     this.ingestService.deleteInputBiomaterialFromProcess(this.processId, biomaterialId).subscribe(data => {
       console.log('deleteInputBiomaterialFromProcess', data);
@@ -87,7 +86,6 @@ export class ProcessDetailsComponent implements OnInit {
   }
 
   removeProtocol(protocol: MetadataDocument) {
-    console.log('removing protocol', protocol);
     const protocolId = this.getId(protocol);
     this.ingestService.deleteProtocolFromProcess(this.processId, protocolId).subscribe(data => {
       this.refreshGraph();
@@ -95,7 +93,6 @@ export class ProcessDetailsComponent implements OnInit {
   }
 
   removeOutputBiomaterial(biomaterial: MetadataDocument) {
-    console.log('add output biomaterial', biomaterial);
     const biomaterialId = this.getId(biomaterial);
     this.ingestService.deleteOutputBiomaterialFromProcess(this.processId, biomaterialId).subscribe(data => {
       console.log('deleteOutputBiomaterialFromProcess', data);
@@ -104,10 +101,8 @@ export class ProcessDetailsComponent implements OnInit {
   }
 
   removeOutputFile(file: MetadataDocument) {
-    console.log('add output file', file);
     const fileId = this.getId(file);
     this.ingestService.deleteOutputFileFromProcess(this.processId, fileId).subscribe(data => {
-      console.log('deleteOutputFileFromProcess', data);
       this.refreshGraph();
     });
   }
@@ -117,7 +112,6 @@ export class ProcessDetailsComponent implements OnInit {
     const tasks = this.protocolsToAdd.map(protocol => this.ingestService.addProtocolToProcess(this.processId, this.getId(protocol)));
     forkJoin(tasks).subscribe(
       data => {
-        console.log('addProtocols', data);
         this.protocolsToAdd = [];
         this.refreshGraph();
       }
@@ -128,7 +122,6 @@ export class ProcessDetailsComponent implements OnInit {
     const tasks = this.outputFilesToAdd.map(file => this.ingestService.addOutputFileToProcess(this.processId, this.getId(file)));
     forkJoin(tasks).subscribe(
       data => {
-        console.log('addOutputFiles', data);
         this.outputFilesToAdd = [];
         this.refreshGraph();
       }
@@ -143,7 +136,6 @@ export class ProcessDetailsComponent implements OnInit {
 
     forkJoin(tasks).subscribe(
       data => {
-        console.log('addInputBiomaterials', data);
         this.inputBiomaterialsToAdd = [];
         this.refreshGraph();
       }
@@ -158,7 +150,6 @@ export class ProcessDetailsComponent implements OnInit {
 
     forkJoin(tasks).subscribe(
       data => {
-        console.log('addOutputBiomaterialToProcess', data);
         this.outputBiomaterialsToAdd = [];
         this.refreshGraph();
       }
