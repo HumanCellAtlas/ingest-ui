@@ -30,7 +30,7 @@ describe('Ingest Service', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('query functions', () => {
+  describe('query entity functions', () => {
     const makeTest = name => {
       it(`should work for ${name}`, () => {
         const mockList = {
