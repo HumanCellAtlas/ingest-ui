@@ -108,7 +108,7 @@ export class IngestService {
     return this.http.post(`${this.API_URL}/projects`, project);
   }
 
-  private getQueryEntity(entityType: string): (query: Criteria[], params?) => Observable<ListResult<MetadataDocument>> {
+  public getQueryEntity(entityType: string): (query: Criteria[], params?) => Observable<ListResult<MetadataDocument>> {
     const acceptedEntityTypes: string[] = ['files', 'processes', 'biomaterials', 'projects', 'protocols'];
     if (!acceptedEntityTypes.includes(entityType)) {
       throw new Error(`entityType must be one of ${acceptedEntityTypes.join()}`);
