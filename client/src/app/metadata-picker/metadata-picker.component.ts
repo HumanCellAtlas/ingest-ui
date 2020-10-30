@@ -43,7 +43,7 @@ export class MetadataPickerComponent implements OnInit {
       .pipe(
         startWith(this.searchControl.value ? this.searchControl.value : ''),
         filter(text => text && text.length > 2),
-        debounceTime(2000),
+        debounceTime(800),
         distinctUntilChanged(),
         tap(() => { this.loadingResults = true; }),
         switchMap(newSearch => this.onSearchValueChanged(newSearch))
