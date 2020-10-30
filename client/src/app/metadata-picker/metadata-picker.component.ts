@@ -77,17 +77,16 @@ export class MetadataPickerComponent implements OnInit {
   }
 
   onSearchValueChanged(value: string): Observable<MetadataDocument[]> {
-    if (typeof value === 'string') {
-      const searchText = value ? value.toLowerCase() : '';
-      const query: Criteria[] = [
-        {
-          field: this.searchField[this.entityType],
-          operator: 'REGEX',
-          value: searchText
-        }
-      ];
-      return this.queryEntity(query);
-    }
+    if (typeof value !== 'string') { return; }
+    const searchText = value ? value.toLowerCase() : '';
+    const query: Criteria[] = [
+      {
+        field: this.searchField[this.entityType],
+        operator: 'REGEX',
+        value: searchText
+      }
+    ];
+    return this.queryEntity(query);
   }
 
   getConcreteType(metadata: MetadataDocument): string {
@@ -105,9 +104,8 @@ export class MetadataPickerComponent implements OnInit {
       map(data => {
         return data && data._embedded ? data._embedded[this.entityType] : [];
       }),
-      tap(data => {
+      tap(() => {
         this.loadingResults = false;
-        console.log(`query ${this.entityType}`, data);
       }));
   }
 }
