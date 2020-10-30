@@ -15,6 +15,9 @@
        [matAutocomplete]="auto" class="vf-form__input">
 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayMetadata ? displayMetadata : null"
                   (optionSelected)="onSelectedValueChange($event)">
+  <mat-option disabled *ngIf="loadingResults">
+    <mat-spinner diameter="30" style="margin: 0 auto;"></mat-spinner>
+  </mat-option>
   <ng-container *ngIf="entityType === 'biomaterials'">
     <mat-option *ngFor="let option of options$ | async" [value]="option">
       <div>
